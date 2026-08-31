@@ -1,0 +1,85 @@
+{
+  "navbar": {
+    "home": "Home",
+    "about": "About Us",
+    "services": "Services",
+    "contact": "Contact Us",
+    "bookAppointment": "Book Appointment"
+  },
+
+  "hero": {
+    "clinicName": "HealStride Physiotherapy & Wellness Centre",
+    "tagline": "Pain-Free Life Starts Here.",
+    "description": "Personalized physiotherapy treatments designed to help you recover, move better, and live pain-free with expert care.",
+    "bookAppointment": "Book Appointment",
+    "callNow": "Call Now"
+  },
+
+  "conditions": {
+    "heading": "CONDITIONS WE TREAT",
+    "title": "Recover Faster. Live Better.",
+    "description": "From sports injuries to chronic pain, HealStride offers personalized physiotherapy solutions for a wide range of musculoskeletal and neurological conditions.",
+
+    "items": {
+      "kneePain": {
+        "name": "Knee Pain",
+        "description": "Expert physiotherapy treatment for knee pain."
+      },
+
+      "backPain": {
+        "name": "Back Pain",
+        "description": "Expert physiotherapy treatment for back pain."
+      },
+
+      "neckPain": {
+        "name": "Neck Pain",
+        "description": "Expert physiotherapy treatment for neck pain."
+      },
+
+      "shoulderPain": {
+        "name": "Shoulder Pain",
+        "description": "Expert physiotherapy treatment for shoulder pain."
+      },
+
+      "sciatica": {
+        "name": "Sciatica",
+        "description": "Expert physiotherapy treatment for sciatica."
+      },
+
+      "tennisElbow": {
+        "name": "Tennis Elbow",
+        "description": "Expert physiotherapy treatment for tennis elbow."
+      },
+
+      "frozenShoulder": {
+        "name": "Frozen Shoulder",
+        "description": "Expert physiotherapy treatment for frozen shoulder."
+      },
+
+      "osteoarthritis": {
+        "name": "Osteoarthritis",
+        "description": "Expert physiotherapy treatment for osteoarthritis."
+      },
+
+      "strokeRehab": {
+        "name": "Stroke Rehab",
+        "description": "Expert physiotherapy treatment for stroke rehabilitation."
+      },
+
+      "sportsInjury": {
+        "name": "Sports Injury",
+        "description": "Expert physiotherapy treatment for sports injuries."
+      },
+
+      "postSurgeryRehab": {
+        "name": "Post Surgery Rehab",
+        "description": "Expert physiotherapy treatment for post-surgery rehabilitation."
+      },
+
+      "plantarFasciitis": {
+        "name": "Plantar Fasciitis",
+        "description": "Expert physiotherapy treatment for plantar fasciitis."
+      }
+    }
+  }
+}

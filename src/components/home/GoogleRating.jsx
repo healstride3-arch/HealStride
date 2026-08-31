@@ -1,0 +1,168 @@
+import { useRef, useState, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import {
+  FaUsers,
+  FaStar,
+  FaCalendarAlt,
+  FaHeartbeat,
+} from "react-icons/fa";
+
+const statsData = [
+  {
+    icon: <FaUsers size={26} />,
+    number: "2500+",
+    titleKey: "googleRating.statHappyPatients",
+  },
+  {
+    icon: <FaCalendarAlt size={26} />,
+    number: "5+",
+    titleKey: "googleRating.statYearsExperience",
+  },
+  {
+    icon: <FaStar size={26} />,
+    number: "4.7",
+    titleKey: "googleRating.statGoogleRating",
+  },
+  {
+    icon: <FaHeartbeat size={26} />,
+    number: "5000+",
+    titleKey: "googleRating.statSuccessfulTreatments",
+  },
+];
+
+const AnimatedCounter = ({ value }) => {
+  const [displayValue, setDisplayValue] = useState("0");
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+
+  useEffect(() => {
+    if (!isInView) return;
+    const numericTarget = parseFloat(value.replace(/[^0-9.]/g, ""));
+    const hasPlus = value.includes("+");
+    const isDecimal = value.includes(".");
+
+    if (isNaN(numericTarget)) {
+      setDisplayValue(value);
+      return;
+    }
+
+    let current = 0;
+    const duration = 1200;
+    const steps = 30;
+    const increment = numericTarget / steps;
+    const stepTime = duration / steps;
+
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= numericTarget) {
+        setDisplayValue(
+          isDecimal
+            ? numericTarget.toFixed(1) + (hasPlus ? "+" : "")
+            : Math.floor(numericTarget) + (hasPlus ? "+" : "")
+        );
+        clearInterval(timer);
+      } else {
+        setDisplayValue(
+          isDecimal
+            ? current.toFixed(1) + (hasPlus ? "+" : "")
+            : Math.floor(current) + (hasPlus ? "+" : "")
+        );
+      }
+    }, stepTime);
+
+    return () => clearInterval(timer);
+  }, [isInView, value]);
+
+  return <span ref={ref}>{displayValue}</span>;
+};
+
+const GoogleRating = () => {
+  const { t } = useTranslation();
+
+  return (
+    <section className="bg-teal-50/30 py-8 sm:py-10 lg:py-14 border-y border-slate-100/80">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-6 sm:mb-9"
+        >
+          <p className="text-teal-700 font-semibold uppercase tracking-wider text-xs sm:text-sm">
+            {t("googleRating.badge")}
+          </p>
+
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 text-slate-900 leading-tight">
+            {t("googleRating.title")}
+          </h2>
+
+          <p className="mt-2.5 sm:mt-3 text-slate-600 max-w-2xl mx-auto text-xs sm:text-base leading-relaxed">
+            {t("googleRating.subtitle")}
+          </p>
+        </motion.div>
+
+        {/* Equal Height Grid Cards */}
+        <div className="grid grid-cols-1 mobile:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 items-stretch">
+          {statsData.map((item, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.4,
+                delay: index * 0.06,
+              }}
+              viewport={{ once: true }}
+              whileHover={{ y: -3 }}
+              className="
+                bg-white
+                rounded-2xl
+                p-3
+                xs:p-3.5
+                sm:p-5
+                lg:p-6
+                border
+                border-slate-100
+                shadow-sm
+                hover:shadow-md
+                hover:border-teal-200/80
+                transition-all
+                duration-250
+                flex
+                flex-col
+                items-center
+                justify-center
+                text-center
+                h-full
+                min-h-[118px]
+                xs:min-h-[135px]
+                sm:min-h-[160px]
+              "
+            >
+              {/* Icon Container (40-44px) */}
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center mb-2 sm:mb-2.5 flex-shrink-0 text-base sm:text-xl">
+                {item.icon}
+              </div>
+
+              {/* Stat Number (Strongest Element) */}
+              <h3 className="text-xl xs:text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight flex items-center gap-0.5 sm:gap-1">
+                <AnimatedCounter value={item.number} />
+                {item.number === "4.9" && <span className="text-amber-400 text-base sm:text-2xl">★</span>}
+              </h3>
+
+              {/* Stat Label (13-14px) */}
+              <p className="mt-1 text-[13px] sm:text-sm font-semibold text-slate-600 leading-snug">
+                {t(item.titleKey)}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default GoogleRating;
