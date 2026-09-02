@@ -2,11 +2,15 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
-import { galleryItems } from "../data/galleryItems";
+import { galleryItems as staticGalleryItems } from "../data/galleryItems";
+import { useFirestoreCollection } from "../hooks/useFirestoreCollection";
 
 const GalleryCategory = ({ category, title, titleKey, defaultTitle }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const { t } = useTranslation();
+  const { items: galleryItems } = useFirestoreCollection("gallery", {
+    fallback: staticGalleryItems,
+  });
 
   const displayTitle = titleKey ? t(titleKey) : (title || defaultTitle);
   const images = galleryItems.filter(

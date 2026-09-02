@@ -1,0 +1,963 @@
+import { useEffect, useState } from "react";
+import {
+  collection,
+  addDoc,
+  onSnapshot,
+  updateDoc,
+  deleteDoc,
+  doc,
+  serverTimestamp,
+} from "firebase/firestore";
+import { db } from "../../firebase/firebase";
+const AdminFAQ = () => {
+  const [faqs, setFaqs] = useState([]);
+  const [submittedQuestions, setSubmittedQuestions] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [confirmEditFaq, setConfirmEditFaq] = useState(null);
+  const [editingId, setEditingId] = useState(null);
+  const [formData, setFormData] = useState({
+    question: "",
+    answer: "",
+    active: true,
+  });
+  useEffect(()=>{
+    const unsubscribeFaqs = onSnapshot(
+      collection(db,"faqs"),
+      (faqSnapshot) => {
+        setFaqs(
+          faqSnapshot.docs.map((item)=>({
+            id:item.id,
+            ...item.data()
+          }))
+        );
+      },
+      (error) => console.error(error)
+    );
+
+    const unsubscribeSubmissions = onSnapshot(
+      collection(db,"faqSubmissions"),
+      (submissionSnapshot) => {
+        setSubmittedQuestions(
+          submissionSnapshot.docs.map((item)=>({
+            id:item.id,
+            ...item.data()
+          }))
+        );
+      },
+      (error) => console.error(error)
+    );
+
+    return () => {
+      unsubscribeFaqs();
+      unsubscribeSubmissions();
+    };
+    }, []);
+  const handlePublishQuestion = async(questionData)=>{
+    try{
+      await addDoc(
+        collection(db,"faqs"),
+        {
+          question:questionData.question,
+          answer:"",
+          active:true,
+          notificationRead: false,
+          createdAt:serverTimestamp(),
+        }
+      );
+      await deleteDoc(
+        doc(
+          db,
+          "faqSubmissions",
+          questionData.id
+        )
+      );
+      alert(
+        "Question published successfully"
+      );
+    }catch(error){
+      console.error(error);
+      alert(error.message);
+    }
+  };
+  const handleSave = async()=>{
+    if(!formData.question.trim()){
+      alert(
+        "Question is required"
+      );
+      return;
+    }
+    try{
+      if(editingId){
+        await updateDoc(
+  doc(
+    db,
+    "faqs",
+    editingId
+  ),
+  {
+    question: formData.question,
+    answer: formData.answer,
+    active: formData.active,
+  }
+);
+      }else{
+        await addDoc(
+  collection(db, "faqs"),
+  {
+    ...formData,
+
+    // ADD THIS
+    notificationRead: false,
+
+    createdAt: serverTimestamp(),
+  }
+);
+      }
+      setFormData({
+        question:"",
+        answer:"",
+        active:true,
+      });
+      setEditingId(null);
+      setIsModalOpen(false);
+    }catch(error){
+      console.error(error);
+      alert(error.message);
+    }
+  };
+  const handleEdit=(faq)=>{
+    setEditingId(faq.id);
+    setFormData({
+      question:faq.question ?? "",
+      answer:faq.answer ?? "",
+      active:faq.active ?? true,
+    });
+    setIsModalOpen(true);
+  };
+  const handleDelete=async(id)=>{
+    if(!window.confirm("Delete this FAQ?"))
+      return;
+    try{
+      await deleteDoc(
+        doc(
+          db,
+          "faqs",
+          id
+        )
+      );
+    }catch(error){
+      console.error(error);
+    }
+  };
+  const handleDeleteSubmission=async(id)=>{
+    if(
+      !window.confirm(
+        "Delete this question?"
+      )
+    )
+      return;
+    try{
+      await deleteDoc(
+        doc(
+          db,
+          "faqSubmissions",
+          id
+        )
+      );
+    }catch(error){
+      console.error(error);
+    }
+  };
+  return (
+<div
+className="
+flex-1
+min-w-0
+p-4
+sm:p-6
+lg:p-8
+"
+>
+{/* Header */}
+<div
+className="
+flex
+flex-col
+sm:flex-row
+sm:items-center
+sm:justify-between
+gap-4
+mb-6
+"
+>
+<div>
+<h1
+className="
+text-2xl
+sm:text-3xl
+font-bold
+text-slate-900
+"
+>
+FAQ Management
+</h1>
+<p
+className="
+text-slate-500
+mt-2
+text-sm
+sm:text-base
+"
+>
+Create, update and delete FAQs.
+</p>
+</div>
+<button
+onClick={()=>{
+setEditingId(null);
+setFormData({
+question:"",
+answer:"",
+active:true,
+});
+setIsModalOpen(true);
+}}
+className="
+bg-teal-600
+hover:bg-teal-700
+text-white
+px-4
+sm:px-6
+py-2.5
+sm:py-3
+rounded-xl
+font-medium
+w-full
+sm:w-fit
+text-sm
+sm:text-base
+"
+>
++ Add FAQ
+</button>
+</div>
+{/* Mobile FAQ Cards */}
+<div
+className="
+md:hidden
+space-y-4
+"
+>
+{
+faqs.map((faq)=>(
+<div
+key={faq.id}
+className="
+bg-white
+rounded-xl
+shadow
+border
+p-4
+"
+>
+<h3
+className="
+font-semibold
+text-slate-800
+text-base
+"
+>
+{faq.question}
+</h3>
+<p
+className="
+text-sm
+text-gray-500
+mt-2
+"
+>
+{
+faq.answer
+?
+faq.answer
+:
+"No answer added"
+}
+</p>
+<span
+className={`
+inline-block
+mt-3
+px-3
+py-1
+rounded-full
+text-xs
+font-medium
+${
+faq.active
+?
+"bg-green-100 text-green-700"
+:
+"bg-red-100 text-red-700"
+}
+`}
+>
+{
+faq.active
+?
+"Active"
+:
+"Inactive"
+}
+</span>
+<div
+className="
+flex
+gap-3
+mt-4
+"
+>
+<button
+onClick={()=>{
+alert(
+`Question:
+${faq.question}
+Answer:
+${faq.answer}`
+)
+}}
+className="
+h-9
+w-9
+rounded-lg
+bg-blue-50
+hover:bg-blue-100
+"
+>
+👁️
+</button>
+<button
+onClick={()=>setConfirmEditFaq(faq)}
+className="
+h-9
+w-9
+rounded-lg
+bg-yellow-50
+hover:bg-yellow-100
+"
+>
+✏️
+</button>
+<button
+onClick={()=>handleDelete(faq.id)}
+className="
+h-9
+w-9
+rounded-lg
+bg-red-50
+hover:bg-red-100
+"
+>
+🗑️
+</button>
+</div>
+</div>
+))
+}
+</div>
+{/* Desktop + Tablet FAQ Table */}
+<div
+className="
+hidden
+md:block
+bg-white
+rounded-2xl
+shadow
+border
+overflow-hidden
+w-full
+"
+>
+<div className="overflow-x-auto">
+<table
+className="
+w-full
+min-w-[750px]
+text-sm
+"
+>
+<thead
+className="
+bg-teal-600
+text-white
+"
+>
+<tr>
+<th
+className="
+p-4
+text-left
+"
+>
+Question
+</th>
+<th
+className="
+p-4
+text-left
+"
+>
+Status
+</th>
+<th
+className="
+p-4
+text-center
+"
+>
+Actions
+</th>
+</tr>
+</thead>
+<tbody>
+{
+faqs.length===0
+?
+<tr>
+<td
+colSpan={3}
+className="
+text-center
+py-10
+text-gray-500
+"
+>
+No FAQs Found.
+</td>
+</tr>
+:
+faqs.map((faq)=>(
+<tr
+key={faq.id}
+className="
+border-b
+hover:bg-slate-50
+transition
+"
+>
+<td
+className="
+p-4
+font-medium
+text-slate-800
+"
+>
+{faq.question}
+</td>
+<td
+className="
+p-4
+"
+>
+<span
+className={`
+px-3
+py-1
+rounded-full
+text-xs
+font-medium
+${
+faq.active
+?
+"bg-green-100 text-green-700"
+:
+"bg-red-100 text-red-700"
+}
+`}
+>
+{
+faq.active
+?
+"Active"
+:
+"Inactive"
+}
+</span>
+</td>
+<td
+className="
+p-4
+"
+>
+<div
+className="
+flex
+justify-center
+gap-2
+"
+>
+<button
+onClick={()=>{
+alert(
+`Question:
+${faq.question}
+Answer:
+${faq.answer}`
+)
+}}
+className="
+h-9
+w-9
+rounded-lg
+bg-blue-50
+hover:bg-blue-100
+"
+>
+👁️
+</button>
+<button
+onClick={()=>setConfirmEditFaq(faq)}
+className="
+h-9
+w-9
+rounded-lg
+bg-yellow-50
+hover:bg-yellow-100
+"
+>
+✏️
+</button>
+<button
+onClick={()=>handleDelete(faq.id)}
+className="
+h-9
+w-9
+rounded-lg
+bg-red-50
+hover:bg-red-100
+"
+>
+🗑️
+</button>
+</div>
+</td>
+</tr>
+))
+}
+</tbody>
+</table>
+</div>
+</div>
+{/* Submitted Questions */}
+<div
+className="
+mt-8
+sm:mt-10
+"
+>
+<h2
+className="
+text-xl
+sm:text-2xl
+font-bold
+mb-4
+"
+>
+Submitted Questions
+</h2>
+<div
+className="
+bg-white
+rounded-2xl
+shadow
+border
+overflow-hidden
+"
+>
+<div className="overflow-x-auto">
+<table
+className="
+w-full
+min-w-[850px]
+text-sm
+"
+>
+<thead
+className="
+bg-teal-600
+text-white
+"
+>
+<tr>
+<th className="p-4 text-left">
+Name
+</th>
+<th className="p-4 text-left">
+Email
+</th>
+<th className="p-4 text-left">
+Question
+</th>
+<th className="p-4 text-center">
+Actions
+</th>
+</tr>
+</thead>
+<tbody>
+{
+submittedQuestions.length===0
+?
+<tr>
+<td
+colSpan={4}
+className="
+text-center
+py-8
+text-gray-500
+"
+>
+No Submitted Questions
+</td>
+</tr>
+:
+submittedQuestions.map((item)=>(
+<tr
+key={item.id}
+className="
+border-b
+hover:bg-slate-50
+"
+>
+<td className="p-4">
+{item.name || "-"}
+</td>
+<td className="p-4">
+{item.email || "-"}
+</td>
+<td className="p-4">
+{item.question}
+</td>
+<td className="p-4">
+<div
+className="
+flex
+justify-center
+gap-2
+"
+>
+<button
+onClick={()=>handlePublishQuestion(item)}
+className="
+bg-green-600
+hover:bg-green-700
+text-white
+px-3
+py-2
+rounded-lg
+text-sm
+"
+>
+Publish
+</button>
+<button
+onClick={()=>handleDeleteSubmission(item.id)}
+className="
+bg-red-600
+hover:bg-red-700
+text-white
+px-3
+py-2
+rounded-lg
+text-sm
+"
+>
+Delete
+</button>
+</div>
+</td>
+</tr>
+))
+}
+</tbody>
+</table>
+</div>
+</div>
+</div>
+{/* Edit Confirmation */}
+{
+confirmEditFaq && (
+<div
+className="
+fixed
+inset-0
+z-[60]
+flex
+items-center
+justify-center
+bg-black/50
+p-4
+"
+>
+<div
+className="
+w-full
+max-w-md
+rounded-2xl
+bg-white
+p-6
+shadow-xl
+"
+>
+<h3
+className="
+text-xl
+font-bold
+text-slate-900
+"
+>
+Edit FAQ
+</h3>
+<p
+className="
+mt-3
+text-slate-600
+"
+>
+Do you want to edit this FAQ?
+</p>
+<div
+className="
+mt-8
+flex
+flex-col
+sm:flex-row
+justify-end
+gap-3
+"
+>
+<button
+onClick={()=>setConfirmEditFaq(null)}
+className="
+w-full
+sm:w-auto
+rounded-lg
+border
+px-5
+py-2
+hover:bg-gray-50
+"
+>
+Cancel
+</button>
+<button
+onClick={()=>{
+handleEdit(confirmEditFaq);
+setConfirmEditFaq(null);
+}}
+className="
+w-full
+sm:w-auto
+rounded-lg
+bg-teal-600
+px-5
+py-2
+text-white
+hover:bg-teal-700
+"
+>
+Yes, Edit
+</button>
+</div>
+</div>
+</div>
+)
+}
+{/* Add / Edit Modal */}
+{
+isModalOpen && (
+<div
+className="
+fixed
+inset-0
+z-50
+bg-black/40
+flex
+items-center
+justify-center
+p-4
+"
+>
+<div
+className="
+bg-white
+rounded-2xl
+p-4
+sm:p-6
+lg:p-8
+w-full
+max-w-xl
+max-h-[90vh]
+overflow-y-auto
+"
+>
+<div
+className="
+flex
+items-center
+justify-between
+mb-6
+"
+>
+<h2
+className="
+text-xl
+sm:text-2xl
+font-bold
+"
+>
+{
+editingId
+?
+"Edit FAQ"
+:
+"Add FAQ"
+}
+</h2>
+<button
+onClick={()=>{
+setIsModalOpen(false);
+setEditingId(null);
+}}
+className="
+text-gray-500
+hover:text-red-500
+text-xl
+"
+>
+✕
+</button>
+</div>
+<div
+className="
+space-y-4
+"
+>
+<input
+type="text"
+placeholder="Question"
+value={formData.question}
+onChange={(e)=>
+setFormData({
+...formData,
+question:e.target.value,
+})
+}
+className="
+w-full
+border
+rounded-lg
+p-3
+outline-none
+focus:ring-2
+focus:ring-teal-500
+"
+/>
+<textarea
+rows="5"
+placeholder="Answer"
+value={formData.answer}
+onChange={(e)=>
+setFormData({
+...formData,
+answer:e.target.value,
+})
+}
+className="
+w-full
+border
+rounded-lg
+p-3
+outline-none
+focus:ring-2
+focus:ring-teal-500
+"
+/>
+<label
+className="
+flex
+items-center
+gap-3
+"
+>
+<input
+type="checkbox"
+checked={formData.active}
+onChange={(e)=>
+setFormData({
+...formData,
+active:e.target.checked,
+})
+}
+/>
+<span>
+Active
+</span>
+</label>
+</div>
+<div
+className="
+flex
+flex-col
+sm:flex-row
+justify-end
+gap-3
+mt-8
+"
+>
+<button
+onClick={()=>{
+setEditingId(null);
+setIsModalOpen(false);
+}}
+className="
+w-full
+sm:w-auto
+px-5
+py-2
+border
+rounded-lg
+hover:bg-gray-50
+"
+>
+Cancel
+</button>
+<button
+onClick={handleSave}
+className="
+w-full
+sm:w-auto
+bg-teal-600
+hover:bg-teal-700
+text-white
+px-5
+py-2
+rounded-lg
+"
+>
+{
+editingId
+?
+"Update"
+:
+"Save"
+}
+</button>
+</div>
+</div>
+</div>
+)
+}
+    </div>
+  );
+};
+export default AdminFAQ;

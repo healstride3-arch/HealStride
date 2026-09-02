@@ -1,9 +1,14 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { staff } from "../../data/team";
+import { staff as defaultStaff } from "../../data/team";
+import { useFirestoreCollection, where } from "../../hooks/useFirestoreCollection";
 
 const StaffSection = () => {
   const navigate = useNavigate();
+  const { items: staff } = useFirestoreCollection("staff", {
+    constraints: [where("active", "!=", false)],
+    fallback: defaultStaff,
+  });
 
   if (staff.length === 0) {
     return null;

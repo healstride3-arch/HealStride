@@ -2,6 +2,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { FaStar } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../firebase/firebase";
 import { sendReviewNotification } from "../services/bookingNotificationService";
 
 const ReviewForm = () => {
@@ -33,7 +35,20 @@ const ReviewForm = () => {
     try {
       setLoading(true);
 
-      await sendReviewNotification(formData);
+      const reviewPayload = {
+        ...formData,
+        status: "pending",
+        approved: false,
+        read: false,
+        createdAt: new Date().toISOString(),
+      };
+
+      await addDoc(collection(db, "testimonials"), {
+        ...reviewPayload,
+        createdAt: serverTimestamp(),
+      });
+
+      await sendReviewNotification(reviewPayload);
 
       setSuccess(true);
 

@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { useFirestoreCollection, where } from "../../hooks/useFirestoreCollection";
 
 import {
   FaHandsHelping,
@@ -190,9 +190,10 @@ const isExcluded = (s) => {
 const OurServices = () => {
   const { t } = useTranslation();
 
-  const [services] = useState(
-    defaultHomeServices.filter((s) => !isExcluded(s))
-  );
+  const { items: services } = useFirestoreCollection("services", {
+    constraints: [where("active", "!=", false)],
+    fallback: defaultHomeServices.filter((s) => !isExcluded(s)),
+  });
 
   return (
     <section

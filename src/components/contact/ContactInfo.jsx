@@ -6,9 +6,22 @@ import {
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { useFirestoreDoc } from "../../hooks/useFirestoreDoc";
+
+const DEFAULT_SETTINGS = {
+  phone: "+91 88094 91380",
+  whatsapp: "+91 82525 80389",
+  email: "healstride3@gmail.com",
+  address:
+    "HealStride Physiotherapy & Wellness Centre, LIG 85, New Subhash Nagar, Near Gurudwaran Raisen Road, Bhopal-462023",
+  hours: "Morning 9:00 AM - 12:00 PM\nEvening 5:00 PM - 9:00 PM",
+};
 
 const ContactInfo = () => {
   const { t } = useTranslation();
+  const { data: settings } = useFirestoreDoc("settings", "clinic", DEFAULT_SETTINGS);
+  const phones = [settings.phone, settings.whatsapp].filter(Boolean);
+  const hours = String(settings.hours || "").split("\n").filter(Boolean);
 
   const contactItems = [
     {
@@ -19,8 +32,9 @@ const ContactInfo = () => {
           href="tel:+918809491380"
           className="text-gray-600 hover:text-teal-600 transition"
         >
-          <div>+91 88094 91380</div>
-          <div>+91 82525 80389</div>
+          {phones.map((phone) => (
+            <div key={phone}>{phone}</div>
+          ))}
         </a>
       ),
     },
@@ -29,10 +43,10 @@ const ContactInfo = () => {
       titleKey: "contactInfo.email",
       content: (
         <a
-          href="mailto:healstride3@gmail.com"
+          href={`mailto:${settings.email}`}
           className="text-gray-600 hover:text-teal-600 transition break-all"
         >
-          healstride3@gmail.com
+          {settings.email}
         </a>
       ),
     },
@@ -41,9 +55,7 @@ const ContactInfo = () => {
       titleKey: "contactInfo.address",
       content: (
         <p className="text-gray-600 text-sm sm:text-base leading-7">
-          HealStride Physiotherapy & Wellness Centre
-          <br />
-          LIG 85, New Subhash Nagar, Near Gurudwaran Raisen Road, Bhopal-462023
+          {settings.address}
         </p>
       ),
     },
@@ -56,13 +68,11 @@ const ContactInfo = () => {
             {t("contactInfo.monSat")}
           </p>
 
-          <p className="font-medium text-slate-800 mt-1">
-            Morning 9:00 AM - 12:00 PM
-          </p>
-
-          <p className="font-medium text-slate-800 mt-1">
-            Evening 5:00 PM - 9:00 PM
-          </p>
+          {hours.map((line) => (
+            <p key={line} className="font-medium text-slate-800 mt-1">
+              {line}
+            </p>
+          ))}
 
         </>
       ),

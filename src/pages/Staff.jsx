@@ -1,7 +1,13 @@
 import { UserRound } from "lucide-react";
-import { staff } from "../data/team";
+import { staff as defaultStaff } from "../data/team";
+import { useFirestoreCollection, where } from "../hooks/useFirestoreCollection";
 
 const Staff = () => {
+  const { items: staff } = useFirestoreCollection("staff", {
+    constraints: [where("active", "!=", false)],
+    fallback: defaultStaff,
+  });
+
   return (
     <section className="py-10 sm:py-16 lg:py-20 bg-slate-50 border-b border-slate-100 min-h-[60vh]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

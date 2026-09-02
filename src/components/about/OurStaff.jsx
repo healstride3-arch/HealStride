@@ -1,8 +1,14 @@
 import { UserRound } from "lucide-react";
 import { motion } from "framer-motion";
-import { staff } from "../../data/team";
+import { staff as defaultStaff } from "../../data/team";
+import { useFirestoreCollection, where } from "../../hooks/useFirestoreCollection";
 
 const OurStaff = () => {
+  const { items: staff } = useFirestoreCollection("staff", {
+    constraints: [where("active", "!=", false)],
+    fallback: defaultStaff,
+  });
+
   if (staff.length === 0) {
     return null;
   }

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { useFirestoreCollection, where } from "../../hooks/useFirestoreCollection";
 
 import treatment1 from "../../assets/images/treatment1.jpg";
 import treatment2 from "../../assets/images/treatment2.jpg";
@@ -223,9 +224,10 @@ const categories = [
 const ServicesGrid = () => {
   const { t } = useTranslation();
 
-  const [services] = useState(
-    defaultServices.filter((s) => !isExcluded(s))
-  );
+  const { items: services } = useFirestoreCollection("services", {
+    constraints: [where("active", "!=", false)],
+    fallback: defaultServices.filter((s) => !isExcluded(s)),
+  });
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 

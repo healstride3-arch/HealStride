@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes, FaExpand, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+import { useFirestoreCollection } from "../../hooks/useFirestoreCollection";
 
 import tractionTherapy from "../../assets/images/gallery/traction-therapy.jpg";
 import treatmentRoom from "../../assets/images/gallery/treatment-room.jpg";
@@ -79,7 +80,14 @@ const initialGalleryItems = [
 
 const GalleryPreview = () => {
   const { t } = useTranslation();
-  const [galleryList, setGalleryList] = useState(initialGalleryItems);
+  const { items: galleryList } = useFirestoreCollection("gallery", {
+    fallback: initialGalleryItems,
+    mapItem: (item) => ({
+      ...item,
+      image: item.imageUrl || item.image,
+      subtitle: item.subtitle || item.description || "",
+    }),
+  });
   const [visibleCount, setVisibleCount] = useState(5);
   const [selectedImage, setSelectedImage] = useState(null);
 

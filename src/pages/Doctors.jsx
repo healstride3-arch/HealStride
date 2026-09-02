@@ -1,9 +1,14 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { doctors } from "../data/team";
+import { doctors as defaultDoctors } from "../data/team";
+import { useFirestoreCollection, where } from "../hooks/useFirestoreCollection";
 
 const Doctors = () => {
   const { t } = useTranslation();
+  const { items: doctors } = useFirestoreCollection("doctors", {
+    constraints: [where("active", "!=", false)],
+    fallback: defaultDoctors,
+  });
 
   return (
     <section

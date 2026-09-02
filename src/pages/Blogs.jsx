@@ -1,10 +1,15 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { blogs } from "../data/blogs";
+import { blogs as staticBlogs } from "../data/blogs";
+import { useFirestoreCollection, where } from "../hooks/useFirestoreCollection";
 
 const Blogs = () => {
   const { t } = useTranslation();
+  const { items: blogs } = useFirestoreCollection("blogs", {
+    constraints: [where("active", "!=", false)],
+    fallback: staticBlogs,
+  });
 
   return (
     <section className="bg-slate-50 py-10 sm:py-16 lg:py-20 border-b border-slate-100 min-h-[60vh]">

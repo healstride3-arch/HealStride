@@ -2,7 +2,10 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../../firebase/firebase";
 import { sendQuestionNotification } from "../../services/bookingNotificationService";
+import { useFirestoreCollection, where } from "../../hooks/useFirestoreCollection";
 
 const defaultFaqs = [
   {
@@ -35,6 +38,10 @@ const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState(0);
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
+  const { items: faqs } = useFirestoreCollection("faqs", {
+    constraints: [where("active", "!=", false)],
+    fallback: defaultFaqs,
+  });
 
   const [questionForm, setQuestionForm] = useState({
     name: "",
@@ -48,7 +55,19 @@ const FAQSection = () => {
     try {
       setLoading(true);
 
-      await sendQuestionNotification(questionForm);
+      const questionPayload = {
+        ...questionForm,
+        status: "new",
+        read: false,
+        createdAt: new Date().toISOString(),
+      };
+
+      await addDoc(collection(db, "faqSubmissions"), {
+        ...questionPayload,
+        createdAt: serverTimestamp(),
+      });
+
+      await sendQuestionNotification(questionPayload);
 
       alert(t("faqSection.successMsg"));
 
@@ -97,7 +116,7 @@ const FAQSection = () => {
 
         {/* FAQ List */}
         <div className="space-y-4">
-          {defaultFaqs.map((faq, index) => {
+          {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
 
             return (

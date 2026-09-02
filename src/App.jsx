@@ -1,8 +1,9 @@
-import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import logo from "./assets/images/logo.png";
+import RoleSelection from "./pages/RoleSelection";
 
 import LoadingScreen from "./components/common/LoadingScreen";
 import Navbar from "./components/common/Navbar/Navbar";
@@ -10,6 +11,8 @@ import Footer from "./components/common/Navbar/Footer/Footer";
 import ScrollToTop from "./components/common/ScrollToTop";
 import ScrollToHash from "./components/ScrollToHash";
 
+import AdminServices from "./components/admin/AdminServices";
+import AdminStaff from "./components/admin/AdminStaff";
 import Staff from "./pages/Staff";
 
 import Home from "./pages/Home";
@@ -23,6 +26,7 @@ import BlogDetails from "./pages/BlogDetails";
 
 import Doctors from "./pages/Doctors";
 import DoctorProfile from "./pages/DoctorProfile";
+import Specialists from "./components/home/Specialists";
 
 import GalleryPage from "./pages/GalleryPage";
 import ClinicGallery from "./pages/ClinicGallery";
@@ -32,6 +36,24 @@ import TreatmentGallery from "./pages/TreatmentGallery";
 import PhysiotherapyServices from "./pages/PhysiotherapyServices";
 import ToolsEquipment from "./pages/ToolsEquipment";
 import ReviewForm from "./pages/ReviewForm";
+
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Profile from "./pages/Profile";
+
+import UserProtectedRoute from "./user/UserProtectedRoute";
+import ProtectedRoute from "./components/admin/ProtectedRoute";
+
+import AdminLayout from "./components/admin/AdminLayout";
+import AdminDashboard from "./components/admin/AdminDashboard";
+import AdminDoctorProfile from "./components/admin/AdminDoctorProfile";
+import Appointments from "./components/admin/Appointments";
+import AdminSettings from "./components/admin/AdminSettings";
+import AdminLogin from "./components/admin/AdminLogin";
+import AdminTestimonials from "./components/admin/AdminTestimonials";
+import AdminGallery from "./components/admin/AdminGallery";
+import AdminFAQ from "./components/admin/AdminFAQ";
+import AdminBlogs from "./components/admin/AdminBlogs";
 
 import AnimatedBackground from "./components/AnimatedBackground";
 
@@ -50,7 +72,8 @@ function App() {
   }, []);
 
   const isAdminPage =
-    location.pathname.startsWith("/admin");
+    location.pathname.startsWith("/admin") ||
+    location.pathname === "/adminlogin";
 
   useEffect(() => {
     if (!loading && location.pathname === "/" && !isAdminPage) {
@@ -99,15 +122,132 @@ function App() {
 
         <Route path="/contact" element={<Contact />} />
 
-        <Route path="/booking" element={<Booking />} />
+        <Route
+          path="/booking"
+          element={
+            <UserProtectedRoute>
+              <Booking />
+            </UserProtectedRoute>
+          }
+        />
 
         <Route path="/review" element={<ReviewForm />} />
 
 
-        {/* ==================== DISABLED / FALLBACK ROUTES ==================== */}
-        <Route path="/admin/*" element={<Navigate to="/" replace />} />
-        <Route path="/admin" element={<Navigate to="/" replace />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* Login Role Selection */}
+
+<Route
+  path="/login-selection"
+  element={<RoleSelection />}
+ />
+        {/* User Login */}
+        <Route path="/login" element={<Login />} />
+
+        {/* User Signup */}
+        <Route path="/signup" element={<Signup />} />
+
+        <Route path="/profile" element={<Profile />} />
+
+        <Route path="/doctors" element={<Doctors />} />
+
+        <Route
+          path="/doctors/:doctorName"
+          element={<DoctorProfile />}
+        />
+
+        <Route path="/gallery" element={<GalleryPage />} />
+
+        <Route
+          path="/gallery/clinic"
+          element={<ClinicGallery />}
+        />
+
+        <Route
+          path="/gallery/machine"
+          element={<MachineGallery />}
+        />
+
+        <Route
+          path="/gallery/treatment"
+          element={<TreatmentGallery />}
+        />
+
+        {/* ==================== BLOG ROUTES ==================== */}
+
+        <Route path="/blogs" element={<Blogs />} />
+
+        <Route
+          path="/blogs/:id"
+          element={<BlogDetails />}
+        />
+
+        {/* ==================== ADMIN LOGIN ==================== */}
+
+        <Route
+          path="/adminlogin"
+          element={<AdminLogin />}
+        />
+
+        {/* ==================== ADMIN ROUTES ==================== */}
+
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route
+            index
+            element={<AdminDashboard />}
+          />
+
+          <Route
+            path="appointments"
+            element={<Appointments />}
+          />
+
+          <Route
+  path="doctor-profile"
+  element={<AdminDoctorProfile />}
+/>
+
+          <Route
+            path="gallery"
+            element={<AdminGallery />}
+          />
+
+          <Route
+            path="testimonials"
+            element={<AdminTestimonials />}
+          />
+
+          <Route
+            path="faq"
+            element={<AdminFAQ />}
+          />
+
+          <Route
+            path="staff"
+            element={<AdminStaff />}
+          />
+
+          <Route
+            path="blogs"
+            element={<AdminBlogs />}
+          />
+
+          <Route
+            path="services"
+            element={<AdminServices />}
+          />
+
+          <Route
+            path="settings"
+            element={<AdminSettings />}
+          />
+        </Route>
       </Routes>
 
       {!isAdminPage && <Footer />}

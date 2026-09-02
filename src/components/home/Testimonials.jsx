@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { googleReviews as defaultReviews } from "../../data/googleReviews";
+import { useFirestoreCollection, where } from "../../hooks/useFirestoreCollection";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
@@ -16,7 +17,15 @@ const GOOGLE_MAPS_REVIEW_URL =
   "https://www.google.com/maps/search/?api=1&query=Heal+Stride+Physiotherapy+%26+Wellness+Centre+LIG+85+Raisen+Rd+near+gurudwara+New+Subhash+Nagar+Bhopal";
 
 const Testimonials = () => {
-  const [reviews] = useState(defaultReviews);
+  const { items: reviews } = useFirestoreCollection("testimonials", {
+    constraints: [where("active", "!=", false)],
+    fallback: defaultReviews,
+    mapItem: (item) => ({
+      ...item,
+      review: item.review || item.text || "",
+      treatment: item.treatment || item.designation || "",
+    }),
+  });
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedReview, setSelectedReview] = useState(null);
   const { t } = useTranslation();

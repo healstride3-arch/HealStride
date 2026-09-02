@@ -1,12 +1,17 @@
 import { useParams, Link } from "react-router-dom";
-import { blogs } from "../data/blogs";
+import { blogs as staticBlogs } from "../data/blogs";
 import { useTranslation } from "react-i18next";
+import { useFirestoreCollection, where } from "../hooks/useFirestoreCollection";
 
 const BlogDetails = () => {
   const { id } = useParams();
   const { t } = useTranslation();
+  const { items: blogs } = useFirestoreCollection("blogs", {
+    constraints: [where("active", "!=", false)],
+    fallback: staticBlogs,
+  });
 
-  const blog = blogs.find((item) => item.id === Number(id));
+  const blog = blogs.find((item) => String(item.id) === String(id));
 
   if (!blog) {
     return (
@@ -32,14 +37,16 @@ const BlogDetails = () => {
 
         {/* Hero Image */}
         <img
-          src={blog.image}
+          src={blog.coverImage || blog.image}
           alt={blog.title}
           className="w-full h-60 xs:h-72 sm:h-[360px] lg:h-[450px] object-cover rounded-2xl mt-6 shadow-lg"
         />
 
         {/* Date */}
         <p className="mt-8 text-gray-500">
-          {blog.date}
+          {blog.createdAt?.seconds
+            ? new Date(blog.createdAt.seconds * 1000).toLocaleDateString()
+            : blog.date || ""}
         </p>
 
         {/* Title */}
@@ -54,7 +61,7 @@ const BlogDetails = () => {
 
         {/* Blog Content */}
         <div className="mt-12 space-y-10">
-          {blog.content.map((section, index) => (
+          {blog.content?.map((section, index) => (
             <div key={index}>
               <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-4 leading-tight">
                 {section.heading}

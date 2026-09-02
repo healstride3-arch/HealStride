@@ -8,7 +8,6 @@ import Specialists from "../components/home/Specialists";
 import Testimonials from "../components/home/Testimonials";
 import WhyChooseUs from "../components/home/WhyChooseUs";
 import BlogSection from "../components/home/BlogSection";
-import { blogs } from "../data/blogs";
 import TreatmentSlider from "../components/home/TreatmentSlider";
 import WhatsAppFloat from "../components/common/WhatsAppFloat";
 import ReviewCTA from "./ReviewCTA";
@@ -26,7 +25,7 @@ const Home = () => {
       <Conditions />
       <GalleryPreview />
       <Specialists showViewAllButton={true} />
-      <BlogSection blogsToShow={blogs} />
+      <BlogSection />
       <Testimonials />
       <WhatsAppFloat />
       <ReviewCTA />

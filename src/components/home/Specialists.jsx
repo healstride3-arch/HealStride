@@ -3,11 +3,16 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { UserRound } from "lucide-react";
 import { staff as defaultTeam } from "../../data/team";
+import { useFirestoreCollection, where } from "../../hooks/useFirestoreCollection";
 
 const Specialists = ({ limit = 3 }) => {
   const { t } = useTranslation();
 
-  const teamMembers = limit ? defaultTeam.slice(0, limit) : defaultTeam;
+  const { items: team } = useFirestoreCollection("staff", {
+    constraints: [where("active", "!=", false)],
+    fallback: defaultTeam,
+  });
+  const teamMembers = limit ? team.slice(0, limit) : team;
 
   return (
     <section className="py-8 sm:py-12 lg:py-16 bg-white border-b border-slate-100 overflow-hidden">

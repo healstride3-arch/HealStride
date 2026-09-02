@@ -5,15 +5,18 @@ import BlogModal from "./BlogModal";
 import { useState } from "react";
 import { blogs as staticBlogs } from "../../data/blogs";
 import { ChevronDown, Sparkles } from "lucide-react";
+import { useFirestoreCollection, where } from "../../hooks/useFirestoreCollection";
 
 const BlogSection = ({
   blogsToShow = [],
 }) => {
   const { t } = useTranslation();
 
-  const [blogs] = useState(
-    blogsToShow.length > 0 ? blogsToShow : staticBlogs
-  );
+  const { items: dynamicBlogs } = useFirestoreCollection("blogs", {
+    constraints: [where("active", "!=", false)],
+    fallback: blogsToShow.length > 0 ? blogsToShow : staticBlogs,
+  });
+  const blogs = dynamicBlogs;
   const [selectedBlog, setSelectedBlog] = useState(null);
   const [visibleCount, setVisibleCount] = useState(6);
 

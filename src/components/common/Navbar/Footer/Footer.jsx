@@ -11,10 +11,23 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import logo from "../../../../assets/images/logo.png";
+import { useFirestoreDoc } from "../../../../hooks/useFirestoreDoc";
+
+const DEFAULT_SETTINGS = {
+  phone: "+91 88094 91380",
+  whatsapp: "+91 82525 80389",
+  email: "healstride3@gmail.com",
+  address:
+    "LIG 85, Raisen Rd, Near Gurudwara, New Subhash Nagar, Ashoka Garden, Bhopal - 462023",
+  instagram: "https://www.instagram.com/healstride.physio/",
+  facebook: "https://facebook.com",
+  linkedin: "https://linkedin.com",
+};
 
 const Footer = () => {
   const { t } = useTranslation();
   const [showTerms, setShowTerms] = useState(false);
+  const { data: settings } = useFirestoreDoc("settings", "clinic", DEFAULT_SETTINGS);
 
   return (
     <footer className="bg-slate-900 text-slate-300 border-t border-slate-800">
@@ -46,7 +59,7 @@ const Footer = () => {
             {/* Social Links */}
             <div className="flex items-center gap-3 pt-1">
               <a
-                href="https://www.instagram.com/healstride.physio/"
+                href={settings.instagram || DEFAULT_SETTINGS.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-teal-600 text-white flex items-center justify-center transition-colors text-xs"
@@ -56,7 +69,7 @@ const Footer = () => {
               </a>
 
               <a
-                href="https://wa.me/918809491380"
+                href={`https://wa.me/${String(settings.whatsapp || settings.phone || "").replace(/\D/g, "")}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-emerald-600 text-white flex items-center justify-center transition-colors text-xs"
@@ -66,7 +79,7 @@ const Footer = () => {
               </a>
 
               <a
-                href="https://facebook.com"
+                href={settings.facebook || DEFAULT_SETTINGS.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-teal-600 text-white flex items-center justify-center transition-colors text-xs"
@@ -76,7 +89,7 @@ const Footer = () => {
               </a>
 
               <a
-                href="https://linkedin.com"
+                href={settings.linkedin || DEFAULT_SETTINGS.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-teal-600 text-white flex items-center justify-center transition-colors text-xs"
@@ -156,11 +169,11 @@ const Footer = () => {
               <div className="flex items-start gap-3">
                 <FaPhoneAlt className="text-teal-400 mt-1 shrink-0 text-xs" />
                 <div className="flex flex-col space-y-0.5">
-                  <a href="tel:+918809491380" className="hover:text-teal-400 transition-colors font-medium text-white">
-                    +91 88094 91380
+                  <a href={`tel:${settings.phone}`} className="hover:text-teal-400 transition-colors font-medium text-white">
+                    {settings.phone}
                   </a>
-                  <a href="tel:+918252580389" className="hover:text-teal-400 transition-colors text-slate-400">
-                    +91 82525 80389
+                  <a href={`tel:${settings.whatsapp}`} className="hover:text-teal-400 transition-colors text-slate-400">
+                    {settings.whatsapp}
                   </a>
                 </div>
               </div>
@@ -169,10 +182,10 @@ const Footer = () => {
               <div className="flex items-start gap-3">
                 <FaEnvelope className="text-teal-400 mt-1 shrink-0 text-xs" />
                 <a
-                  href="mailto:healstride3@gmail.com"
+                  href={`mailto:${settings.email}`}
                   className="hover:text-teal-400 transition-colors break-all"
                 >
-                  healstride3@gmail.com
+                  {settings.email}
                 </a>
               </div>
 
@@ -180,7 +193,7 @@ const Footer = () => {
               <div className="flex items-start gap-3">
                 <FaMapMarkerAlt className="text-teal-400 mt-1 shrink-0 text-xs" />
                 <span className="text-slate-400 leading-relaxed">
-                  LIG 85, Raisen Rd, Near Gurudwara, New Subhash Nagar, Ashoka Garden, Bhopal - 462023
+                  {settings.address}
                 </span>
               </div>
             </div>
@@ -212,6 +225,12 @@ const Footer = () => {
           </div>
 
           <div className="flex items-center gap-4">
+            <Link
+              to="/adminlogin"
+              className="text-slate-400 hover:text-teal-400 transition"
+            >
+              Admin Login
+            </Link>
             <button
               type="button"
               onClick={() => setShowTerms(true)}

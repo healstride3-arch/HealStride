@@ -7,11 +7,16 @@ import {
   BadgeCheck,
   ArrowLeft,
 } from "lucide-react";
-import { doctors } from "../data/team";
+import { doctors as defaultDoctors } from "../data/team";
+import { useFirestoreCollection, where } from "../hooks/useFirestoreCollection";
 
 const DoctorProfile = () => {
   const { doctorName } = useParams();
   const { t } = useTranslation();
+  const { items: doctors } = useFirestoreCollection("doctors", {
+    constraints: [where("active", "!=", false)],
+    fallback: defaultDoctors,
+  });
   const doctor = doctors.find((item) => item.slug === doctorName);
 
   if (!doctor) {

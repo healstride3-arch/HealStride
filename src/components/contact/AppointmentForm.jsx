@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import {
   FaCheck,
   FaCalendarAlt,
@@ -15,6 +16,7 @@ import {
   FaShieldAlt,
   FaCheckCircle,
 } from "react-icons/fa";
+import { db } from "../../firebase/firebase";
 import { sendBookingNotification } from "../../services/bookingNotificationService";
 import drRashidImage from "../../assets/images/Dr.MD.Rashid.png";
 import drWazulImage from "../../assets/images/Dr Wazul Quamar.jpeg";
@@ -110,8 +112,15 @@ const AppointmentForm = () => {
         profileImage: "",
         googleName: "",
         source: "website-direct",
+        status: "new",
+        read: false,
         createdAt: new Date().toISOString(),
       };
+
+      await addDoc(collection(db, "appointments"), {
+        ...bookingPayload,
+        createdAt: serverTimestamp(),
+      });
 
       await sendBookingNotification(bookingPayload);
 
