@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { NAVIGATION } from "../../../constants/navigation";
 import logo from "../../../assets/images/logo.png";
 import LanguageSwitcher from "../../LanguageSwitcher";
+import BrandName from "../BrandName";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -67,52 +68,38 @@ const Navbar = () => {
           : "bg-white border-b border-slate-100 shadow-sm"
       }`}
     >
-      <div className="max-w-[1600px] mx-auto h-12 sm:h-13.5 px-3 xs:px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1600px] mx-auto h-14 sm:h-16 px-3 xs:px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-full">
 
-          {/* Logo */}
+          {/* Logo & Brand */}
           <motion.div
             initial={{ opacity: 0, x: -25 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
+            className="shrink-0"
           >
             <Link
               to="/"
-              className="flex items-center gap-1.5 xs:gap-2 sm:gap-2.5 min-w-0"
+              className="flex items-center gap-2 xs:gap-2.5 sm:gap-3 group py-0.5"
             >
               <img
                 src={logo}
-                alt="HealStride Logo"
+                alt="Heal Stride Logo"
                 className="
-                  h-7 w-7
-                  xs:h-8 xs:w-8
-                  sm:h-8.5 sm:w-8.5
-                  md:h-9 md:w-9
+                  h-8 w-8
+                  xs:h-9 xs:w-9
+                  sm:h-10 sm:w-10
                   object-contain
-                  flex-shrink-0
+                  shrink-0
+                  transition-transform duration-200 group-hover:scale-105
                 "
               />
 
-              <div className="min-w-0">
-                <h1
-                  className="
-                    text-[13px]
-                    xs:text-sm
-                    sm:text-base
-                    md:text-lg
-                    font-bold
-                    text-teal-700
-                    truncate
-                    leading-tight
-                  "
-                >
-                  HealStride
-                </h1>
-
-                <p className="hidden lg:block text-[10px] text-gray-500 leading-none mt-0.5">
-                  {t("navbar.tagline")}
-                </p>
-              </div>
+              <BrandName
+                variant="light"
+                size="md"
+                showSubtitle={true}
+              />
             </Link>
           </motion.div>
 
@@ -132,8 +119,8 @@ const Navbar = () => {
                       px-3 py-1.5 lg:px-3.5 xl:px-4 xl:py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all duration-200 block whitespace-nowrap
                       ${
                         active
-                          ? "bg-teal-700 text-white shadow-sm"
-                          : "text-gray-700 hover:text-teal-700 hover:bg-teal-50"
+                          ? "bg-gradient-to-r from-[#0066cc] to-[#16a34a] text-white shadow-sm"
+                          : "text-gray-700 hover:text-blue-700 hover:bg-blue-50"
                       }
                     `}
                   >
@@ -190,7 +177,7 @@ const Navbar = () => {
             <button
               onClick={handleBookAppointment}
               className="
-                bg-teal-700
+                bg-gradient-to-r from-[#0066cc] to-[#16a34a] hover:from-[#0052a3] hover:to-[#15803d]
                 text-white
                 px-3.5
                 py-1.5
@@ -263,8 +250,8 @@ const Navbar = () => {
                         block py-2.5 px-3 xs:px-3.5 rounded-lg font-semibold text-sm transition-all duration-200
                         ${
                           active
-                            ? "bg-teal-700 text-white shadow-sm"
-                            : "text-gray-700 hover:bg-teal-50 hover:text-teal-700"
+                            ? "bg-gradient-to-r from-[#0066cc] to-[#16a34a] text-white shadow-sm"
+                            : "text-gray-700 hover:bg-blue-50 hover:text-blue-700"
                         }
                       `}
                     >
@@ -287,7 +274,7 @@ const Navbar = () => {
               className="
                 w-full
                 mt-4
-                bg-teal-700
+                bg-gradient-to-r from-[#0066cc] to-[#16a34a] hover:from-[#0052a3] hover:to-[#15803d]
                 text-white
                 py-2.5
                 rounded-xl
@@ -318,7 +305,7 @@ const Navbar = () => {
               "
             >
               <FaPhoneAlt className="text-teal-400 text-xs" />
-              <span className="leading-snug">Call Clinic (+91 88094 91380)</span>
+              <span className="leading-snug">{t("navbar.callClinic")}</span>
             </a>
 
           </motion.div>

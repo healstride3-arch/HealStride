@@ -12,11 +12,13 @@ import "swiper/css/pagination";
 
 import { FaQuoteLeft, FaStar, FaMapMarkerAlt, FaCheckCircle, FaExternalLinkAlt, FaTimes } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { useClinicSettings } from "../../hooks/useClinicSettings";
 
 const GOOGLE_MAPS_REVIEW_URL =
   "https://www.google.com/maps/search/?api=1&query=Heal+Stride+Physiotherapy+%26+Wellness+Centre+LIG+85+Raisen+Rd+near+gurudwara+New+Subhash+Nagar+Bhopal";
 
 const Testimonials = () => {
+  const { data: settings } = useClinicSettings();
   const { items: reviews } = useFirestoreCollection("testimonials", {
     constraints: [where("active", "!=", false)],
     fallback: defaultReviews,
@@ -26,29 +28,29 @@ const Testimonials = () => {
       treatment: item.treatment || item.designation || "",
     }),
   });
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedReview, setSelectedReview] = useState(null);
   const { t } = useTranslation();
 
   const categories = [
-    "All",
-    "Back Pain Treatment",
-    "Frozen Shoulder",
-    "Sports Injury & Rehab",
-    "Quality Physiotherapy",
-    "Hygiene & Staff",
+    { id: "all", labelKey: "testimonials.catAll" },
+    { id: "back", labelKey: "testimonials.catBackPain" },
+    { id: "shoulder", labelKey: "testimonials.catFrozenShoulder" },
+    { id: "sports", labelKey: "testimonials.catSportsInjury" },
+    { id: "quality", labelKey: "testimonials.catQuality" },
+    { id: "hygiene", labelKey: "testimonials.catHygiene" },
   ];
 
   const filteredReviews =
-    selectedCategory === "All"
+    selectedCategory === "all"
       ? reviews
       : reviews.filter((r) => {
           const text = `${r.treatment || ""} ${r.review || ""}`.toLowerCase();
-          if (selectedCategory === "Back Pain Treatment") return text.includes("back") || text.includes("sciatica") || text.includes("spine");
-          if (selectedCategory === "Frozen Shoulder") return text.includes("shoulder") || text.includes("frozen");
-          if (selectedCategory === "Sports Injury & Rehab") return text.includes("sports") || text.includes("injury") || text.includes("ligament") || text.includes("knee");
-          if (selectedCategory === "Quality Physiotherapy") return text.includes("dr") || text.includes("rashid") || text.includes("physio") || text.includes("quality") || text.includes("treatment");
-          if (selectedCategory === "Hygiene & Staff") return text.includes("hygiene") || text.includes("staff") || text.includes("friendly") || text.includes("clean") || text.includes("behaviour");
+          if (selectedCategory === "back") return text.includes("back") || text.includes("sciatica") || text.includes("spine");
+          if (selectedCategory === "shoulder") return text.includes("shoulder") || text.includes("frozen");
+          if (selectedCategory === "sports") return text.includes("sports") || text.includes("injury") || text.includes("ligament") || text.includes("knee");
+          if (selectedCategory === "quality") return text.includes("dr") || text.includes("rashid") || text.includes("physio") || text.includes("quality") || text.includes("treatment");
+          if (selectedCategory === "hygiene") return text.includes("hygiene") || text.includes("staff") || text.includes("friendly") || text.includes("clean") || text.includes("behaviour");
           return true;
         });
 
@@ -65,15 +67,15 @@ const Testimonials = () => {
         >
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs sm:text-sm font-semibold uppercase tracking-wider mb-3">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-            <span>Live Google Reviews & Ratings</span>
+            <span>{t("testimonials.liveReviewsBadge")}</span>
           </div>
 
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight">
-            Real Patients, Real Google Feedback
+            {t("testimonials.liveReviewsTitle")}
           </h2>
 
           <p className="text-slate-600 mt-2.5 text-xs sm:text-base leading-relaxed">
-            Verified patient reviews from Google for HealStride Physiotherapy & Wellness Centre in Bhopal.
+            {t("testimonials.liveReviewsSubtitle")}
           </p>
 
           {/* Google Business Live Summary Card */}
@@ -92,7 +94,7 @@ const Testimonials = () => {
                     </div>
                   </div>
                   <p className="text-xs text-slate-500 font-medium mt-0.5">
-                    Based on 43+ Google Reviews • Open & Active
+                    {t("testimonials.ratingSummary")}
                   </p>
                 </div>
               </div>
@@ -106,7 +108,7 @@ const Testimonials = () => {
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-teal-600 hover:bg-teal-700 text-white px-4 py-2.5 rounded-xl font-semibold text-xs sm:text-sm transition-colors shadow-sm"
                 >
                   <FcGoogle className="bg-white rounded-full p-0.5 text-base" />
-                  <span>Review on Google</span>
+                  <span>{t("testimonials.reviewOnGoogle")}</span>
                   <FaExternalLinkAlt className="text-[10px]" />
                 </a>
               </div>
@@ -114,8 +116,8 @@ const Testimonials = () => {
 
             {/* Address Banner */}
             <div className="mt-3.5 pt-3 border-t border-slate-100 flex items-center justify-center sm:justify-start gap-1.5 text-[11px] sm:text-xs text-slate-600 text-center sm:text-left">
-              <FaMapMarkerAlt className="text-teal-600 flex-shrink-0" />
-              <span>LIG 85, Raisen Rd, Near Gurudwara, New Subhash Nagar, Ashoka Garden, Bhopal (462023)</span>
+              <FaMapMarkerAlt className="text-[#0066cc] flex-shrink-0" />
+              <span>{settings.address}</span>
             </div>
           </div>
         </motion.div>
@@ -124,15 +126,15 @@ const Testimonials = () => {
         <div className="flex flex-wrap items-center justify-center gap-2 mb-8 sm:mb-10">
           {categories.map((cat) => (
             <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 ${
-                selectedCategory === cat
+              key={cat.id}
+              onClick={() => setSelectedCategory(cat.id)}
+              className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
+                selectedCategory === cat.id
                   ? "bg-teal-600 text-white shadow-sm"
                   : "bg-white text-slate-600 border border-slate-200 hover:border-teal-500 hover:text-teal-700"
               }`}
             >
-              {cat}
+              {t(cat.labelKey)}
             </button>
           ))}
         </div>

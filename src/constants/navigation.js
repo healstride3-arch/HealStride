@@ -18,6 +18,12 @@ export const NAVIGATION = [
     path: "/services",
   },
   {
+    id: 4,
+    title: "Doctors",
+    key: "navbar.doctors",
+    path: "/doctors",
+  },
+  {
     id: 6,
     title: "Contact",
     key: "navbar.contact",

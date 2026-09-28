@@ -7,12 +7,12 @@ import {
   BadgeCheck,
   ArrowLeft,
 } from "lucide-react";
-import { doctors as defaultDoctors } from "../data/team";
+import { doctors as defaultDoctors, getDoctorLocalizedName } from "../data/team";
 import { useFirestoreCollection, where } from "../hooks/useFirestoreCollection";
 
 const DoctorProfile = () => {
   const { doctorName } = useParams();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { items: doctors } = useFirestoreCollection("doctors", {
     constraints: [where("active", "!=", false)],
     fallback: defaultDoctors,
@@ -26,6 +26,8 @@ const DoctorProfile = () => {
       </div>
     );
   }
+
+  const doctorLocalizedName = getDoctorLocalizedName(doctor, i18n);
 
   return (
     <section className="py-10 sm:py-16 lg:py-20 bg-slate-50 border-b border-slate-100 min-h-[60vh]">
@@ -51,7 +53,7 @@ const DoctorProfile = () => {
           <div className="w-full">
             <img
               src={doctor.image || "/default-user.png"}
-              alt={doctor.name}
+              alt={doctorLocalizedName}
               className="
                 w-full
                 h-[320px]
@@ -78,7 +80,7 @@ const DoctorProfile = () => {
                 leading-tight
               "
             >
-              {doctor.name}
+              {doctorLocalizedName}
             </h1>
 
             <p
@@ -157,7 +159,7 @@ const DoctorProfile = () => {
 
             <div className="mt-8">
               <Link
-                to="/booking"
+                to={`/booking?doctor=${encodeURIComponent(doctor.name || doctorLocalizedName)}`}
                 className="
                   inline-flex
                   items-center

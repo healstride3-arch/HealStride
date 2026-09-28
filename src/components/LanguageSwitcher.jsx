@@ -1,13 +1,14 @@
 import { useTranslation } from "react-i18next";
 import { Globe } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext";
 
 const LanguageSwitcher = ({ variant = "default" }) => {
   const { i18n } = useTranslation();
-  const currentLang = i18n.language || "en";
+  const { language, changeLanguage } = useLanguage();
+  const currentLang = (language || i18n.language || "en").toLowerCase().startsWith("hi") ? "hi" : "en";
 
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-    localStorage.setItem("language", lng);
+  const handleSelectLanguage = (lng) => {
+    changeLanguage(lng);
   };
 
   if (variant === "mobile") {

@@ -243,6 +243,10 @@ const OurServices = () => {
             {services.slice(0, 6).map((service) => {
               const Icon =
                 iconMap[service.icon] || FaHeartbeat;
+              const slug = (service.slug || service.id || "").toLowerCase().trim();
+              const camelKey = slug.replace(/-([a-z0-9])/g, (_, letter) => letter.toUpperCase());
+              const localizedTitle = t(`servicesList.${camelKey}Title`, { defaultValue: service.title });
+              const localizedDesc = t(`servicesList.${camelKey}Desc`, { defaultValue: service.description });
 
               return (
                 <motion.div
@@ -266,7 +270,7 @@ const OurServices = () => {
                   <div className="relative overflow-hidden h-48 sm:h-52 w-full flex-shrink-0 bg-slate-100">
                     <img
                       src={service.imageUrl || treatment1}
-                      alt={service.title}
+                      alt={localizedTitle}
                       className="
                         w-full
                         h-full
@@ -316,7 +320,7 @@ const OurServices = () => {
                         truncate
                       "
                     >
-                      {service.title}
+                      {localizedTitle}
                     </h3>
                   </div>
 
@@ -332,7 +336,7 @@ const OurServices = () => {
                         min-h-[38px]
                       "
                     >
-                      {service.description}
+                      {localizedDesc}
                     </p>
 
                     <div className="mt-4 pt-2">

@@ -11,23 +11,13 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import logo from "../../../../assets/images/logo.png";
-import { useFirestoreDoc } from "../../../../hooks/useFirestoreDoc";
-
-const DEFAULT_SETTINGS = {
-  phone: "+91 88094 91380",
-  whatsapp: "+91 82525 80389",
-  email: "healstride3@gmail.com",
-  address:
-    "LIG 85, Raisen Rd, Near Gurudwara, New Subhash Nagar, Ashoka Garden, Bhopal - 462023",
-  instagram: "https://www.instagram.com/healstride.physio/",
-  facebook: "https://facebook.com",
-  linkedin: "https://linkedin.com",
-};
+import BrandName from "../../BrandName";
+import { useClinicSettings } from "../../../../hooks/useClinicSettings";
 
 const Footer = () => {
   const { t } = useTranslation();
   const [showTerms, setShowTerms] = useState(false);
-  const { data: settings } = useFirestoreDoc("settings", "clinic", DEFAULT_SETTINGS);
+  const { data: settings } = useClinicSettings();
 
   return (
     <footer className="bg-slate-900 text-slate-300 border-t border-slate-800">
@@ -36,66 +26,63 @@ const Footer = () => {
           
           {/* Column 1: Clinic Info */}
           <div className="space-y-4">
-            <Link to="/" className="flex items-center gap-3 h-10 sm:h-11">
+            <Link to="/" className="flex items-center gap-3 group">
               <img
                 src={logo}
-                alt="HealStride Logo"
-                className="h-10 w-10 sm:h-11 sm:w-11 object-contain rounded-lg shrink-0"
+                alt="Heal Stride Logo"
+                className="h-10 w-10 sm:h-11 sm:w-11 object-contain rounded-lg shrink-0 transition-transform duration-200 group-hover:scale-105"
               />
-              <div className="leading-tight">
-                <span className="text-lg sm:text-xl font-bold text-white tracking-tight">
-                  Heal<span className="text-teal-400">Stride</span>
-                </span>
-                <span className="block text-[10px] text-teal-300 font-semibold tracking-wider uppercase">
-                  Physiotherapy & Wellness
-                </span>
-              </div>
+              <BrandName
+                variant="dark"
+                size="lg"
+                showSubtitle={true}
+              />
             </Link>
 
             <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
-              HealStride Physiotherapy & Wellness Centre in Bhopal offers personalized root-cause treatment, pain management, and specialized rehabilitation.
+              {t("footer.desc")}
             </p>
 
-            {/* Social Links */}
-            <div className="flex items-center gap-3 pt-1">
+            {/* Social Links with Authentic Brand Colors on Hover */}
+            <div className="flex items-center gap-2.5 sm:gap-3 pt-1">
               <a
                 href={settings.instagram || DEFAULT_SETTINGS.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-teal-600 text-white flex items-center justify-center transition-colors text-xs"
+                className="social-icon-btn social-icon-instagram"
                 aria-label="Instagram"
               >
-                <FaInstagram />
+                <FaInstagram className="text-[16px]" />
               </a>
 
               <a
                 href={`https://wa.me/${String(settings.whatsapp || settings.phone || "").replace(/\D/g, "")}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-emerald-600 text-white flex items-center justify-center transition-colors text-xs"
+                className="social-icon-btn social-icon-whatsapp"
                 aria-label="WhatsApp"
               >
-                <FaWhatsapp />
+                <FaWhatsapp className="text-[16px]" />
               </a>
 
               <a
                 href={settings.facebook || DEFAULT_SETTINGS.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-teal-600 text-white flex items-center justify-center transition-colors text-xs"
+                className="social-icon-btn social-icon-facebook"
                 aria-label="Facebook"
               >
-                <FaFacebookF />
+                <FaFacebookF className="text-[14px]" />
               </a>
 
               <a
                 href={settings.linkedin || DEFAULT_SETTINGS.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-teal-600 text-white flex items-center justify-center transition-colors text-xs"
+                className="social-icon-btn social-icon-linkedin"
                 aria-label="LinkedIn"
               >
-                <FaLinkedinIn />
+                <FaLinkedinIn className="text-[14px]" />
               </a>
             </div>
           </div>
@@ -104,34 +91,44 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="h-10 sm:h-11 flex items-center">
               <h3 className="text-sm sm:text-base font-bold text-white uppercase tracking-wider">
-                Quick Links
+                {t("footer.quickLinks")}
               </h3>
             </div>
 
             <ul className="space-y-2.5 text-xs sm:text-sm">
               <li>
                 <Link to="/" className="hover:text-teal-400 transition-colors">
-                  Home
+                  {t("navbar.home")}
                 </Link>
               </li>
               <li>
                 <Link to="/about" className="hover:text-teal-400 transition-colors">
-                  About Us
+                  {t("navbar.about")}
                 </Link>
               </li>
               <li>
                 <Link to="/services" className="hover:text-teal-400 transition-colors">
-                  Services
+                  {t("navbar.services")}
+                </Link>
+              </li>
+              <li>
+                <Link to="/doctors" className="hover:text-teal-400 transition-colors">
+                  {t("navbar.doctors")}
+                </Link>
+              </li>
+              <li>
+                <Link to="/staff" className="hover:text-teal-400 transition-colors">
+                  {t("navbar.staff")}
                 </Link>
               </li>
               <li>
                 <Link to="/booking" className="hover:text-teal-400 transition-colors">
-                  Book Appointment
+                  {t("navbar.bookAppointment")}
                 </Link>
               </li>
               <li>
                 <Link to="/contact" className="hover:text-teal-400 transition-colors">
-                  Contact Us
+                  {t("navbar.contact")}
                 </Link>
               </li>
             </ul>
@@ -141,18 +138,18 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="h-10 sm:h-11 flex items-center">
               <h3 className="text-sm sm:text-base font-bold text-white uppercase tracking-wider">
-                Treatments
+                {t("footer.treatments")}
               </h3>
             </div>
 
             <ul className="space-y-2.5 text-xs sm:text-sm text-slate-400">
-              <li>Back & Spine Pain</li>
-              <li>Cervical Neck Pain</li>
-              <li>Knee Osteoarthritis</li>
-              <li>Sciatica & Nerve Pain</li>
-              <li>Frozen Shoulder</li>
-              <li>Cupping (Hijama) Therapy</li>
-              <li>Post-Surgery Rehabilitation</li>
+              <li>{t("footer.backSpine")}</li>
+              <li>{t("footer.cervicalNeck")}</li>
+              <li>{t("footer.kneeOsteo")}</li>
+              <li>{t("footer.sciaticaNerve")}</li>
+              <li>{t("footer.frozenShoulder")}</li>
+              <li>{t("footer.cuppingTherapy")}</li>
+              <li>{t("footer.postSurgery")}</li>
             </ul>
           </div>
 
@@ -160,7 +157,7 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="h-10 sm:h-11 flex items-center">
               <h3 className="text-sm sm:text-base font-bold text-white uppercase tracking-wider">
-                Contact Info
+                {t("footer.contact")}
               </h3>
             </div>
 
@@ -206,14 +203,14 @@ const Footer = () => {
       <div className="border-t border-slate-800 py-4 sm:py-5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
           <div>
-            © {new Date().getFullYear()} HealStride Physiotherapy & Wellness Centre. All rights reserved.
+            © {new Date().getFullYear()} {t("footer.rights")}
           </div>
 
           {/* Made with Love by TexWeb Solution */}
           <div className="flex items-center gap-1.5 text-xs text-slate-400">
-            <span>Made with</span>
+            <span>{t("footer.madeWith")}</span>
             <span className="text-rose-500 inline-block animate-pulse text-sm">❤️</span>
-            <span>by</span>
+            <span>{t("footer.by")}</span>
             <a
               href="https://texwebsolution.in/"
               target="_blank"
@@ -229,14 +226,14 @@ const Footer = () => {
               to="/adminlogin"
               className="text-slate-400 hover:text-teal-400 transition"
             >
-              Admin Login
+              {t("footer.adminLogin")}
             </Link>
             <button
               type="button"
               onClick={() => setShowTerms(true)}
               className="text-slate-400 hover:text-teal-400 transition cursor-pointer"
             >
-              Terms & Policy
+              {t("footer.termsPolicy")}
             </button>
           </div>
         </div>
@@ -256,10 +253,10 @@ const Footer = () => {
             <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-6 sm:px-8 py-4 flex items-center justify-between">
               <div>
                 <h2 className="text-lg sm:text-xl font-bold text-slate-900">
-                  Terms & Clinical Policy
+                  {t("footer.termsTitle")}
                 </h2>
                 <p className="text-xs text-slate-500">
-                  HealStride Physiotherapy & Wellness Centre
+                  {t("footer.termsSubtitle")}
                 </p>
               </div>
 
@@ -277,28 +274,28 @@ const Footer = () => {
             <div className="px-6 sm:px-8 py-5 space-y-4 text-gray-700 text-xs sm:text-sm leading-relaxed">
               <section>
                 <h3 className="font-bold text-slate-900 mb-1">
-                  1. Appointments
+                  {t("footer.term1Title")}
                 </h3>
                 <p>
-                  Appointments are scheduled in advance to ensure dedicated one-on-one attention. Please arrive on time for your consultation.
+                  {t("footer.term1Desc")}
                 </p>
               </section>
 
               <section>
                 <h3 className="font-bold text-slate-900 mb-1">
-                  2. Patient Assessment & Privacy
+                  {t("footer.term2Title")}
                 </h3>
                 <p>
-                  All patient medical records, contact information, and physical assessments are kept strictly confidential.
+                  {t("footer.term2Desc")}
                 </p>
               </section>
 
               <section>
                 <h3 className="font-bold text-slate-900 mb-1">
-                  3. Contact & Inquiries
+                  {t("footer.term3Title")}
                 </h3>
                 <p>
-                  For any questions or assistance, contact us at <strong>+91 8809491380</strong> or <strong>healstride3@gmail.com</strong>.
+                  {t("footer.term3Desc")}
                 </p>
               </section>
             </div>
@@ -310,7 +307,7 @@ const Footer = () => {
                 onClick={() => setShowTerms(false)}
                 className="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs font-semibold transition cursor-pointer"
               >
-                Close
+                {t("footer.close")}
               </button>
             </div>
           </div>

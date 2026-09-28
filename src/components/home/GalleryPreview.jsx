@@ -117,11 +117,11 @@ const GalleryPreview = () => {
           </span>
 
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 text-slate-900 leading-tight">
-            Inside HealStride Clinic & Facilities
+            {t("galleryPreview.title")}
           </h2>
 
           <p className="text-slate-600 mt-2.5 sm:mt-3 max-w-2xl mx-auto text-xs sm:text-base leading-relaxed">
-            Take a look at our state-of-the-art clinic, advanced physiotherapy equipment, treatment rooms, and patient wellness setups in Bhopal.
+            {t("galleryPreview.subtitle")}
           </p>
         </motion.div>
 
@@ -132,6 +132,9 @@ const GalleryPreview = () => {
             const spanClass = isLarge
               ? "col-span-1 sm:col-span-2 lg:col-span-2 h-[260px] sm:h-[300px] lg:h-[340px]"
               : "col-span-1 h-[240px] sm:h-[280px] lg:h-[320px]";
+
+            const itemTitle = t(`galleryPreview.items.${item.id}.title`, { defaultValue: item.title });
+            const itemSubtitle = t(`galleryPreview.items.${item.id}.subtitle`, { defaultValue: item.subtitle });
 
             return (
               <motion.div
@@ -144,7 +147,7 @@ const GalleryPreview = () => {
               >
                 <img
                   src={item.image}
-                  alt={item.title}
+                  alt={itemTitle}
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                 />
 
@@ -152,14 +155,14 @@ const GalleryPreview = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-transparent group-hover:from-slate-950/90 transition-all duration-300 flex flex-col justify-end p-4 sm:p-5">
                   <div className="flex items-center justify-between text-white mb-1">
                     <h3 className="font-bold text-sm sm:text-base tracking-wide line-clamp-1">
-                      {item.title}
+                      {itemTitle}
                     </h3>
                     <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <FaExpand />
                     </div>
                   </div>
                   <p className="text-xs sm:text-[13px] text-slate-300 line-clamp-1">
-                    {item.subtitle}
+                    {itemSubtitle}
                   </p>
                 </div>
               </motion.div>
@@ -202,8 +205,8 @@ const GalleryPreview = () => {
             >
               <span>
                 {visibleCount >= galleryList.length
-                  ? "Show Less Photos"
-                  : "Load More Photos"}
+                  ? t("galleryPreview.showLess")
+                  : t("galleryPreview.loadMore")}
               </span>
               {visibleCount >= galleryList.length ? (
                 <FaChevronUp className="text-xs" />
@@ -233,10 +236,10 @@ const GalleryPreview = () => {
               <div className="flex items-center justify-between p-4 bg-slate-900/90 border-b border-slate-800 text-white">
                 <div>
                   <h3 className="font-bold text-sm sm:text-lg text-white">
-                    {selectedImage.title}
+                    {t(`galleryPreview.items.${selectedImage.id}.title`, { defaultValue: selectedImage.title })}
                   </h3>
                   <p className="text-xs text-teal-400">
-                    {selectedImage.subtitle}
+                    {t(`galleryPreview.items.${selectedImage.id}.subtitle`, { defaultValue: selectedImage.subtitle })}
                   </p>
                 </div>
 

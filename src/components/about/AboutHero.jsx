@@ -100,8 +100,9 @@ const AboutHero = () => {
           "
         >
           {t("aboutHero.title")}
-          <span className="block text-teal-300 mt-1 sm:mt-2">
-            HealStride
+          <span className="block mt-1 sm:mt-2 font-extrabold">
+            <span className="text-sky-300">Heal</span>{" "}
+            <span className="text-emerald-300">Stride</span>
           </span>
         </motion.h1>
 

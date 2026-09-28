@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import logo from "./assets/images/logo.png";
+import BrandName from "./components/common/BrandName";
 import RoleSelection from "./pages/RoleSelection";
 
 import LoadingScreen from "./components/common/LoadingScreen";
@@ -41,7 +42,6 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
 
-import UserProtectedRoute from "./user/UserProtectedRoute";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 
 import AdminLayout from "./components/admin/AdminLayout";
@@ -122,14 +122,7 @@ function App() {
 
         <Route path="/contact" element={<Contact />} />
 
-        <Route
-          path="/booking"
-          element={
-            <UserProtectedRoute>
-              <Booking />
-            </UserProtectedRoute>
-          }
-        />
+        <Route path="/booking" element={<Booking />} />
 
         <Route path="/review" element={<ReviewForm />} />
 
@@ -285,28 +278,26 @@ function App() {
                 ×
               </button>
 
-              {/* Logo */}
-
+              {/* Logo & Brand */}
               <motion.div
-                initial={{
-                  scale: 0,
-                }}
-                animate={{
-                  scale: 1,
-                }}
-                transition={{
-                  duration: 0.4,
-                  delay: 0.2,
-                }}
-                className="flex justify-center mb-5"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.4, delay: 0.2 }}
+                className="flex flex-col items-center mb-5"
               >
-                <div className="w-20 h-20 rounded-full bg-teal-100 flex items-center justify-center">
+                <div className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl bg-teal-50 border border-teal-100/80 flex items-center justify-center p-3 shadow-sm mb-3">
                   <img
                     src={logo}
-                    alt="HealStride"
-                    className="w-14 h-14 object-contain"
+                    alt="Heal Stride Logo"
+                    className="w-full h-full object-contain"
                   />
                 </div>
+                <BrandName
+                  variant="light"
+                  size="sm"
+                  centered={true}
+                  showSubtitle={true}
+                />
               </motion.div>
 
               {/* Heading */}

@@ -6,20 +6,11 @@ import {
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { useFirestoreDoc } from "../../hooks/useFirestoreDoc";
-
-const DEFAULT_SETTINGS = {
-  phone: "+91 88094 91380",
-  whatsapp: "+91 82525 80389",
-  email: "healstride3@gmail.com",
-  address:
-    "HealStride Physiotherapy & Wellness Centre, LIG 85, New Subhash Nagar, Near Gurudwaran Raisen Road, Bhopal-462023",
-  hours: "Morning 9:00 AM - 12:00 PM\nEvening 5:00 PM - 9:00 PM",
-};
+import { useClinicSettings } from "../../hooks/useClinicSettings";
 
 const ContactInfo = () => {
   const { t } = useTranslation();
-  const { data: settings } = useFirestoreDoc("settings", "clinic", DEFAULT_SETTINGS);
+  const { data: settings } = useClinicSettings();
   const phones = [settings.phone, settings.whatsapp].filter(Boolean);
   const hours = String(settings.hours || "").split("\n").filter(Boolean);
 

@@ -17,7 +17,7 @@ const BlogCard = ({ blog, onSelect }) => {
         />
         <div className="absolute top-3 left-3 bg-slate-900/75 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-medium text-teal-300 border border-white/10 flex items-center gap-1.5">
           <User className="w-3 h-3 text-teal-400" />
-          <span>HealStride Physiotherapy</span>
+          <span>{t("blogSection.authorBadge", "HealStride Physiotherapy")}</span>
         </div>
       </div>
 
@@ -32,16 +32,16 @@ const BlogCard = ({ blog, onSelect }) => {
         </div>
 
         <h3 className="text-base sm:text-lg font-bold text-slate-900 line-clamp-2 leading-snug group-hover:text-teal-700 transition-colors">
-          {blog.title}
+          {t(`blogsList.blog${blog.id}.title`, { defaultValue: blog.title })}
         </h3>
 
         <p className="text-xs sm:text-sm text-slate-600 mt-2 line-clamp-3 leading-relaxed">
-          {blog.description}
+          {t(`blogsList.blog${blog.id}.desc`, { defaultValue: blog.description })}
         </p>
 
         <div className="mt-auto pt-4 flex items-center justify-between">
           <span className="inline-flex items-center gap-1.5 text-teal-600 font-semibold text-xs sm:text-sm group-hover:text-teal-700 transition-colors">
-            <span>Read Article</span>
+            <span>{t("blogSection.readArticle", "Read Article")}</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
           </span>
         </div>

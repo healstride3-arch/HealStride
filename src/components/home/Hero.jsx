@@ -66,7 +66,7 @@ const Hero = () => {
           {/* Clinic Name */}
           <p
             className="
-              text-teal-300
+              bg-gradient-to-r from-sky-300 via-blue-200 to-emerald-300 bg-clip-text text-transparent
               font-extrabold
               text-base
               xs:text-lg
@@ -153,9 +153,7 @@ const Hero = () => {
                 sm:min-w-[200px]
                 h-12
                 sm:h-13
-                bg-teal-600
-                hover:bg-teal-700
-                active:bg-teal-800
+                bg-gradient-to-r from-[#0066cc] to-[#16a34a] hover:from-[#0052a3] hover:to-[#15803d] active:scale-[0.98]
                 text-white
                 font-semibold
                 text-sm
@@ -209,7 +207,7 @@ const Hero = () => {
                 duration-200
               "
             >
-              <FaPhoneAlt className="text-sm flex-shrink-0 text-teal-300" />
+              <FaPhoneAlt className="text-sm flex-shrink-0 text-emerald-300" />
               <span>{t("hero.callNow")}</span>
             </a>
           </motion.div>
@@ -217,13 +215,13 @@ const Hero = () => {
           {/* Trust Indicators Row */}
           <div className="mt-5 sm:mt-9 flex flex-wrap items-center justify-center gap-x-3 sm:gap-x-6 gap-y-1.5 text-[11px] xs:text-xs sm:text-sm font-medium text-slate-200/90 drop-shadow-sm">
             <span className="flex items-center gap-1.5">
-              <span className="text-teal-400 font-bold">✓</span> Experienced Physiotherapists
+              <span className="text-emerald-400 font-bold">✓</span> Experienced Physiotherapists
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="text-teal-400 font-bold">✓</span> Personalized Treatment
+              <span className="text-emerald-400 font-bold">✓</span> Personalized Treatment
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="text-teal-400 font-bold">✓</span> 2500+ Patients Treated
+              <span className="text-emerald-400 font-bold">✓</span> 2500+ Patients Treated
             </span>
           </div>
         </motion.div>

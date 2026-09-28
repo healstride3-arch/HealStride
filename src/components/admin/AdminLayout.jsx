@@ -1,5 +1,8 @@
 import { useState } from "react";
+import BrandName from "../common/BrandName";
+import logo from "../../assets/images/logo.png";
 import {
+  Link,
   Outlet,
   useNavigate,
   useLocation,
@@ -131,9 +134,19 @@ const AdminLayout = () => {
         z-40
         "
       >
-        <h1 className="text-xl lg:text-2xl font-bold mb-8 lg:mb-10">
-          HealStride Admin
-        </h1>
+        <Link to="/admin" className="flex items-center gap-3 mb-8 lg:mb-10 group">
+          <img
+            src={logo}
+            alt="Heal Stride Logo"
+            className="w-9 h-9 object-contain shrink-0 transition-transform duration-200 group-hover:scale-105"
+          />
+          <div>
+            <BrandName variant="dark" size="sm" showSubtitle={false} />
+            <span className="block text-[10px] font-bold text-teal-400 uppercase tracking-widest mt-0.5">
+              Admin Portal
+            </span>
+          </div>
+        </Link>
 
         <nav className="space-y-3 flex-1 overflow-y-auto">
           {menuItems.map((item) => (

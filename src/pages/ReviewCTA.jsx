@@ -2,8 +2,11 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Calendar, PhoneCall, CheckCircle2, ArrowRight } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 const ReviewCTA = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-white via-teal-50/40 to-white relative overflow-hidden border-t border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
@@ -16,7 +19,7 @@ const ReviewCTA = () => {
           className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs sm:text-sm font-semibold uppercase tracking-wider mb-3"
         >
           <span className="w-2 h-2 rounded-full bg-teal-600 animate-pulse" />
-          <span>START YOUR RECOVERY TODAY</span>
+          <span>{t("reviewCTA.badge")}</span>
         </motion.div>
 
         {/* Heading */}
@@ -27,7 +30,8 @@ const ReviewCTA = () => {
           transition={{ duration: 0.6 }}
           className="text-2xl sm:text-3xl lg:text-5xl font-extrabold text-slate-900 leading-tight tracking-tight"
         >
-          Start Your <span className="text-teal-600">Pain-Free Journey</span>
+          {t("reviewCTA.titleLine1")}{" "}
+          <span className="text-teal-600">{t("reviewCTA.titleHighlight")}</span>
         </motion.h2>
 
         {/* Subtitle */}
@@ -38,7 +42,7 @@ const ReviewCTA = () => {
           transition={{ duration: 0.7 }}
           className="mt-3.5 sm:mt-4 text-slate-600 max-w-2xl mx-auto text-xs sm:text-base leading-relaxed"
         >
-          Don't let chronic back pain, joint stiffness, or sports injuries limit your life. Get expert physiotherapy evaluation & targeted relief from Dr. MD Rashid and our team in Bhopal.
+          {t("reviewCTA.subtitle")}
         </motion.p>
 
         {/* Value Props / Trust points */}
@@ -51,15 +55,15 @@ const ReviewCTA = () => {
         >
           <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-full border border-teal-100 shadow-sm">
             <CheckCircle2 className="w-4 h-4 text-teal-600" />
-            <span>Root-Cause Assessment</span>
+            <span>{t("reviewCTA.prop1")}</span>
           </div>
           <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-full border border-teal-100 shadow-sm">
             <CheckCircle2 className="w-4 h-4 text-teal-600" />
-            <span>Advanced Physiotherapy Modalities</span>
+            <span>{t("reviewCTA.prop2")}</span>
           </div>
           <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-full border border-teal-100 shadow-sm">
             <CheckCircle2 className="w-4 h-4 text-teal-600" />
-            <span>Dedicated 1-on-1 Care</span>
+            <span>{t("reviewCTA.prop3")}</span>
           </div>
         </motion.div>
 
@@ -98,7 +102,7 @@ const ReviewCTA = () => {
             "
           >
             <Calendar size={18} />
-            <span>Book Consultation</span>
+            <span>{t("reviewCTA.bookConsultation")}</span>
             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-200" />
           </Link>
 
@@ -128,7 +132,7 @@ const ReviewCTA = () => {
             "
           >
             <FaWhatsapp size={18} />
-            <span>Chat on WhatsApp</span>
+            <span>{t("reviewCTA.whatsappDirect")}</span>
           </a>
 
           <a
@@ -157,7 +161,7 @@ const ReviewCTA = () => {
             "
           >
             <PhoneCall size={18} className="text-teal-600" />
-            <span>Call Now</span>
+            <span>{t("reviewCTA.callNow")}</span>
           </a>
         </motion.div>
       </div>

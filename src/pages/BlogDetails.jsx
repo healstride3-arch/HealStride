@@ -1,4 +1,6 @@
 import { useParams, Link } from "react-router-dom";
+import BrandName from "../components/common/BrandName";
+import logo from "../assets/images/logo.png";
 import { blogs as staticBlogs } from "../data/blogs";
 import { useTranslation } from "react-i18next";
 import { useFirestoreCollection, where } from "../hooks/useFirestoreCollection";
@@ -81,14 +83,12 @@ const BlogDetails = () => {
           </h3>
 
           <div className="flex flex-col xs:flex-row xs:items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-teal-600 text-white font-bold flex items-center justify-center text-lg flex-shrink-0 shadow-sm">
-              HS
+            <div className="w-14 h-14 rounded-2xl bg-teal-50 border border-teal-100 p-2 flex items-center justify-center flex-shrink-0 shadow-sm">
+              <img src={logo} alt="Heal Stride Logo" className="w-full h-full object-contain" />
             </div>
             <div>
-              <p className="font-bold text-slate-900 text-base sm:text-lg">
-                HealStride Physiotherapy & Wellness Centre
-              </p>
-              <p className="text-xs sm:text-sm text-teal-600 font-medium">
+              <BrandName variant="light" size="sm" showSubtitle={true} />
+              <p className="text-xs sm:text-sm text-teal-700 font-medium mt-1">
                 Clinical Physical Therapy & Rehabilitation Specialists
               </p>
             </div>
@@ -96,18 +96,18 @@ const BlogDetails = () => {
         </div>
 
         {/* CTA */}
-        <div className="mt-12 sm:mt-20 bg-teal-600 rounded-2xl sm:rounded-3xl p-5 sm:p-10 text-center text-white">
+        <div className="mt-12 sm:mt-20 bg-gradient-to-r from-[#0052a3] via-[#0066cc] to-[#16a34a] rounded-2xl sm:rounded-3xl p-5 sm:p-10 text-center text-white shadow-xl shadow-blue-900/10">
           <h2 className="text-2xl sm:text-3xl font-bold leading-tight">
             {t("blogDetails.ctaTitle")}
           </h2>
 
-          <p className="mt-4 text-sm sm:text-lg">
+          <p className="mt-4 text-sm sm:text-lg text-blue-50">
             {t("blogDetails.ctaSubtitle")}
           </p>
 
           <Link
             to="/booking"
-            className="inline-flex justify-center w-full xs:w-auto mt-6 sm:mt-8 bg-white text-teal-600 font-semibold px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl hover:bg-gray-100 transition"
+            className="inline-flex justify-center w-full xs:w-auto mt-6 sm:mt-8 bg-white text-[#0058a5] hover:text-[#16a34a] font-bold px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl hover:bg-slate-50 hover:scale-105 transition-all duration-200 shadow-md"
           >
             {t("blogDetails.bookBtn")}
           </Link>

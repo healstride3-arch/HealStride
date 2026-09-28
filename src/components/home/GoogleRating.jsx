@@ -143,12 +143,22 @@ const GoogleRating = () => {
               "
             >
               {/* Icon Container (40-44px) */}
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center mb-2 sm:mb-2.5 flex-shrink-0 text-base sm:text-xl">
+              <div
+                className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl ${
+                  index % 2 === 0
+                    ? "bg-blue-50 text-[#0066cc]"
+                    : "bg-emerald-50 text-[#16a34a]"
+                } flex items-center justify-center mb-2 sm:mb-2.5 flex-shrink-0 text-base sm:text-xl transition-colors`}
+              >
                 {item.icon}
               </div>
 
               {/* Stat Number (Strongest Element) */}
-              <h3 className="text-xl xs:text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight flex items-center gap-0.5 sm:gap-1">
+              <h3
+                className={`text-xl xs:text-2xl sm:text-3xl lg:text-4xl font-extrabold ${
+                  index % 2 === 0 ? "text-[#0058a5]" : "text-[#1e8529]"
+                } tracking-tight flex items-center gap-0.5 sm:gap-1`}
+              >
                 <AnimatedCounter value={item.number} />
                 {item.number === "4.9" && <span className="text-amber-400 text-base sm:text-2xl">★</span>}
               </h3>

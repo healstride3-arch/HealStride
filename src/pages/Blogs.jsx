@@ -21,7 +21,7 @@ const Blogs = () => {
             className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 font-semibold text-xs sm:text-sm transition-colors"
           >
             <ArrowLeft size={16} />
-            Back to Home
+            {t("blogsPage.backToHome", "Back to Home")}
           </Link>
         </div>
 
@@ -43,10 +43,14 @@ const Blogs = () => {
         {/* Blogs */}
         {blogs.length === 0 ? (
           <div className="text-center py-12 text-slate-500 text-sm">
-            No blogs available.
+            {t("blogsPage.noBlogs", "No blogs available.")}
           </div>
         ) : (
-          blogs.map((blog) => (
+          blogs.map((blog) => {
+            const blogTitle = t(`blogsList.blog${blog.id}.title`, { defaultValue: blog.title });
+            const blogDesc = t(`blogsList.blog${blog.id}.desc`, { defaultValue: blog.description });
+
+            return (
             <article
               key={blog.id}
               className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden mb-8 sm:mb-12"
@@ -55,7 +59,7 @@ const Blogs = () => {
               <div className="overflow-hidden h-52 sm:h-72 md:h-80 w-full">
                 <img
                   src={blog.coverImage || blog.image}
-                  alt={blog.title}
+                  alt={blogTitle}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -72,12 +76,12 @@ const Blogs = () => {
 
                 {/* Title */}
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mt-2 text-slate-900 leading-snug">
-                  {blog.title}
+                  {blogTitle}
                 </h2>
 
                 {/* Description */}
                 <p className="text-slate-600 text-xs sm:text-base leading-relaxed mt-3">
-                  {blog.description}
+                  {blogDesc}
                 </p>
 
                 {/* Blog Content */}
@@ -113,7 +117,8 @@ const Blogs = () => {
                 </div>
               </div>
             </article>
-          ))
+            );
+          })
         )}
       </div>
     </section>

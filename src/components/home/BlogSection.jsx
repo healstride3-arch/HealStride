@@ -86,17 +86,17 @@ const BlogSection = ({
             {visibleCount < blogs.length ? (
               <button
                 onClick={handleLoadMore}
-                className="inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white px-7 py-3.5 rounded-xl font-semibold text-xs sm:text-sm shadow-sm transition-all duration-200"
+                className="inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white px-7 py-3.5 rounded-xl font-semibold text-xs sm:text-sm shadow-sm transition-all duration-200 cursor-pointer"
               >
-                <span>Load More Articles</span>
+                <span>{t("blogSection.loadMore", "Load More Articles")}</span>
                 <ChevronDown className="w-4 h-4" />
               </button>
             ) : (
               <button
                 onClick={handleShowLess}
-                className="inline-flex items-center justify-center gap-2 bg-white border border-teal-500 text-teal-700 hover:bg-teal-50 px-6 py-3 rounded-xl font-semibold text-xs sm:text-sm shadow-sm transition-all duration-200"
+                className="inline-flex items-center justify-center gap-2 bg-white border border-teal-500 text-teal-700 hover:bg-teal-50 px-6 py-3 rounded-xl font-semibold text-xs sm:text-sm shadow-sm transition-all duration-200 cursor-pointer"
               >
-                <span>Show Less</span>
+                <span>{t("blogSection.showLess", "Show Less")}</span>
               </button>
             )}
           </div>

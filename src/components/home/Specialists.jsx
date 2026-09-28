@@ -1,18 +1,18 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { UserRound } from "lucide-react";
-import { staff as defaultTeam } from "../../data/team";
+import { UserRound, CalendarCheck, ArrowRight } from "lucide-react";
+import { doctors as defaultDoctors, getDoctorLocalizedName } from "../../data/team";
 import { useFirestoreCollection, where } from "../../hooks/useFirestoreCollection";
 
 const Specialists = ({ limit = 3 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
-  const { items: team } = useFirestoreCollection("staff", {
+  const { items: doctors } = useFirestoreCollection("doctors", {
     constraints: [where("active", "!=", false)],
-    fallback: defaultTeam,
+    fallback: defaultDoctors,
   });
-  const teamMembers = limit ? team.slice(0, limit) : team;
+  const doctorList = limit ? doctors.slice(0, limit) : doctors;
 
   return (
     <section className="py-8 sm:py-12 lg:py-16 bg-white border-b border-slate-100 overflow-hidden">
@@ -26,7 +26,7 @@ const Specialists = ({ limit = 3 }) => {
           className="text-center mb-8 sm:mb-12 max-w-3xl mx-auto"
         >
           <p className="text-xs sm:text-sm font-semibold tracking-[0.25em] text-teal-600 uppercase mb-2 sm:mb-3">
-            {t("specialists.badge", "Meet Our Team")}
+            {t("specialists.badge", "Meet Our Doctors")}
           </p>
 
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight">
@@ -43,57 +43,118 @@ const Specialists = ({ limit = 3 }) => {
 
         {/* Centered Cards Container */}
         <div className="flex flex-wrap justify-center items-stretch gap-6 lg:gap-8">
-          {teamMembers.map((member, index) => (
-            <motion.div
-              key={member.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="
-                w-full
-                max-w-[320px]
-                sm:max-w-[350px]
-                bg-white
-                rounded-2xl
-                border
-                border-teal-500
-                overflow-hidden
-                flex
-                flex-col
-                transition-all
-                duration-200
-              "
-            >
-              {/* Image */}
-              <div className="w-full h-80 sm:h-96 md:h-[400px] bg-slate-50 overflow-hidden flex items-center justify-center">
-                {member.imageUrl ? (
-                  <img
-                    src={member.imageUrl}
-                    alt={member.name}
-                    className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-slate-400 bg-slate-100">
-                    <UserRound size={64} />
-                  </div>
-                )}
-              </div>
+          {doctorList.map((doctor, index) => {
+            const docName = getDoctorLocalizedName(doctor, i18n);
+            const docSlug = doctor.slug || doctor.id || "doctor";
 
-              {/* Only Name */}
-              <div className="p-4 sm:p-5 text-center bg-white border-t border-slate-100">
-                <h3 className="text-lg sm:text-xl font-bold text-slate-900">
-                  {member.name}
-                </h3>
-              </div>
-            </motion.div>
-          ))}
+            return (
+              <motion.div
+                key={doctor.id || index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="
+                  w-full
+                  max-w-[320px]
+                  sm:max-w-[350px]
+                  bg-white
+                  rounded-2xl
+                  border
+                  border-teal-500
+                  overflow-hidden
+                  flex
+                  flex-col
+                  shadow-sm
+                  hover:shadow-md
+                  transition-all
+                  duration-200
+                "
+              >
+                {/* Image */}
+                <div className="w-full h-80 sm:h-96 md:h-[400px] bg-slate-50 overflow-hidden flex items-center justify-center relative group">
+                  {doctor.imageUrl || doctor.image ? (
+                    <img
+                      src={doctor.imageUrl || doctor.image}
+                      alt={docName}
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-slate-400 bg-slate-100">
+                      <UserRound size={64} />
+                    </div>
+                  )}
+                </div>
+
+                {/* Content */}
+                <div className="p-4 sm:p-5 text-center bg-white border-t border-slate-100 flex flex-col flex-1 justify-between">
+                  <div>
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 leading-snug">
+                      {docName}
+                    </h3>
+                    <p className="text-xs sm:text-sm font-semibold text-teal-600 mt-1">
+                      {doctor.role || "Consultant Physiotherapist (BPT)"}
+                    </p>
+                    {doctor.specialization && (
+                      <p className="text-xs text-slate-500 mt-2 line-clamp-1">
+                        {doctor.specialization}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-center gap-2">
+                    <Link
+                      to={`/doctors/${docSlug}`}
+                      className="
+                        inline-flex
+                        items-center
+                        gap-1.5
+                        px-3.5
+                        py-2
+                        rounded-xl
+                        bg-teal-50
+                        hover:bg-teal-100
+                        text-teal-700
+                        font-semibold
+                        text-xs
+                        transition-colors
+                      "
+                    >
+                      <span>{t("specialists.viewProfile", "View Profile")}</span>
+                      <ArrowRight size={14} />
+                    </Link>
+
+                    <Link
+                      to={`/booking?doctor=${encodeURIComponent(doctor.name || docName)}`}
+                      className="
+                        inline-flex
+                        items-center
+                        gap-1.5
+                        px-3.5
+                        py-2
+                        rounded-xl
+                        bg-teal-600
+                        hover:bg-teal-700
+                        text-white
+                        font-semibold
+                        text-xs
+                        transition-colors
+                      "
+                    >
+                      <CalendarCheck size={14} />
+                      <span>{t("navbar.book", "Book")}</span>
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
 
-        {/* View All Team Button */}
+        {/* View All Doctors Button */}
         <div className="flex justify-center mt-8 sm:mt-10">
           <Link
-            to="/staff"
+            to="/doctors"
             className="
               inline-flex
               items-center
@@ -112,7 +173,7 @@ const Specialists = ({ limit = 3 }) => {
               transition-colors
             "
           >
-            <span>View All Team Members</span>
+            <span>{t("specialists.viewAllDoctors", "View All Doctors")}</span>
             <span>→</span>
           </Link>
         </div>

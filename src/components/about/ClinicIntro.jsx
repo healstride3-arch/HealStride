@@ -49,15 +49,7 @@ const ClinicIntro = () => {
             </h2>
 
             <p className="mt-3 sm:mt-4 text-slate-600 leading-relaxed text-xs sm:text-base">
-              Hello, I'm Dr. MD Rashid, the Lead Physiotherapist at HealStride
-              Physiotherapy & Wellness Centre. With 5+ years of experience and over
-              2500 happy patients, we are dedicated to helping our patients overcome pain,
-              recover mobility, and improve their quality of life through evidence-based
-              physiotherapy treatments. We are certified in Taping Therapy, Mulligan’s
-              Mobilization with Movement (MWM), and Basic Life Support (BLS) & Critical
-              Care Management. At HealStride, We combine modern technology, expert care,
-              and personalized treatment plans to ensure faster recovery and long-term
-              wellness.
+              {t("clinicIntro.desc")}
             </p>
 
             {/* Features */}

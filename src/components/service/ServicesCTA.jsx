@@ -7,7 +7,7 @@ const ServicesCTA = () => {
   const { t } = useTranslation();
 
   return (
-    <section className="py-8 sm:py-12 lg:py-16 bg-teal-600 text-white">
+    <section className="py-8 sm:py-12 lg:py-16 bg-gradient-to-r from-[#0052a3] via-[#0066cc] to-[#16a34a] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -19,7 +19,7 @@ const ServicesCTA = () => {
             {t("servicesCTA.title")}
           </h2>
 
-          <p className="mt-5 max-w-3xl mx-auto text-lg text-teal-50 leading-8">
+          <p className="mt-5 max-w-3xl mx-auto text-lg text-blue-50 leading-8">
             {t("servicesCTA.subtitle")}
           </p>
 
@@ -35,14 +35,17 @@ const ServicesCTA = () => {
               inline-block
               mt-8
               bg-white
-              text-teal-600
+              text-[#0058a5]
+              hover:text-[#16a34a]
               px-10
               py-4
               rounded-xl
-              font-semibold
+              font-bold
               shadow-lg
-              hover:bg-gray-100
-              transition
+              hover:bg-slate-50
+              hover:scale-105
+              transition-all
+              duration-200
               "
             >
               {t("servicesCTA.bookBtn")}

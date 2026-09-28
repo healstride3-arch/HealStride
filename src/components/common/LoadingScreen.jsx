@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import logo from "../../assets/images/logo.png";
+import BrandName from "./BrandName";
 
 const LoadingScreen = () => {
   return (
@@ -34,22 +35,27 @@ const LoadingScreen = () => {
           }}
         />
 
-        {/* Brand Name */}
-        <motion.h1
+        {/* Brand Name & Tagline */}
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="mt-6 text-4xl md:text-6xl font-bold text-white"
+          className="mt-6 flex flex-col items-center"
         >
-          HealStride
-        </motion.h1>
+          <BrandName
+            variant="dark"
+            size="2xl"
+            centered={true}
+            showSubtitle={true}
+          />
+        </motion.div>
 
-        {/* Tagline */}
+        {/* Core Tagline */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.9 }}
           transition={{ delay: 0.2 }}
-          className="mt-3 text-teal-200 tracking-widest text-sm md:text-base"
+          className="mt-4 text-teal-300 font-semibold tracking-widest text-xs sm:text-sm uppercase"
         >
           Recover • Restore • Revive
         </motion.p>
@@ -57,7 +63,7 @@ const LoadingScreen = () => {
         {/* Progress Bar */}
         <div className="w-64 md:w-80 h-2 bg-white/10 rounded-full overflow-hidden mt-8">
           <motion.div
-            className="h-full bg-gradient-to-r from-cyan-400 via-teal-400 to-green-400 shadow-[0_0_20px_rgba(45,212,191,0.8)]"
+            className="h-full bg-gradient-to-r from-[#0066cc] via-[#0284c7] to-[#16a34a] shadow-[0_0_20px_rgba(0,102,204,0.8)]"
             initial={{ width: "0%" }}
             animate={{ width: "100%" }}
             transition={{

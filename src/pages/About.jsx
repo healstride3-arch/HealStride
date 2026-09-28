@@ -7,7 +7,7 @@ import CTA from "../components/about/CTA";
 import CoreValues from "../components/about/CoreValues";
 import TreatmentProcess from "../components/about/TreatmentProcess";
 import FAQSection from "../components/about/FAQSection";
-import StaffSection from "../components/about/StaffSection";
+import Specialists from "../components/home/Specialists";
 
 const About = () => {
     return (
@@ -17,7 +17,7 @@ const About = () => {
             <MissionVision />
             <CoreValues />
             <OurSpecialities />
-            <StaffSection />
+            <Specialists />
             <TreatmentProcess />
             <WhyPatientsTrustUs />
             <FAQSection />

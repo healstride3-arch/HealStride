@@ -7,6 +7,8 @@ import  {
 import { auth } from "../firebase/firebase";
 import { handleGoogleAuth } from "../utils/googleAuth";
 import { useNavigate, Link } from "react-router-dom";
+import BrandName from "../components/common/BrandName";
+import logo from "../assets/images/logo.png";
 import { FcGoogle } from "react-icons/fc";
 import {
   Eye,
@@ -145,8 +147,17 @@ const Login = () => {
           sm:p-8
         "
       >
+        <div className="flex justify-center mb-5">
+          <Link to="/" className="inline-flex flex-col items-center group">
+            <div className="w-16 h-16 rounded-2xl bg-teal-50 border border-teal-100 p-2 flex items-center justify-center shadow-sm mb-2 group-hover:scale-105 transition-transform duration-200">
+              <img src={logo} alt="Heal Stride Logo" className="w-full h-full object-contain" />
+            </div>
+            <BrandName variant="light" size="sm" centered={true} showSubtitle={true} />
+          </Link>
+        </div>
+
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-slate-900">
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">
             {t("auth.welcomeBack")}
           </h1>
 

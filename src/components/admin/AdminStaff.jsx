@@ -48,18 +48,15 @@ const AdminStaff = () => {
   useEffect(() => {
     setLoading(true);
 
-    const staffQuery = query(
-      collection(db, "staff"),
-      orderBy("order", "asc")
-    );
-
     const unsubscribe = onSnapshot(
-      staffQuery,
+      collection(db, "staff"),
       (snapshot) => {
-        const staffData = snapshot.docs.map((item) => ({
-          id: item.id,
-          ...item.data(),
-        }));
+        const staffData = snapshot.docs
+          .map((item) => ({
+            id: item.id,
+            ...item.data(),
+          }))
+          .sort((a, b) => (Number(a.order) || 999) - (Number(b.order) || 999));
 
         setStaff(staffData);
         setLoading(false);

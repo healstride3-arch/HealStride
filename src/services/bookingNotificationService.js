@@ -7,26 +7,30 @@ const OWNER_EMAIL = "healstride3@gmail.com";
 const EMAIL_WEBHOOK_URL = import.meta.env.VITE_EMAIL_WEBHOOK_URL || "https://formsubmit.co/ajax/healstride3@gmail.com";
 
 const sendEmailLead = async (payload) => {
-  const response = await fetch(EMAIL_WEBHOOK_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify({
-      ...payload,
-      clinicEmail: OWNER_EMAIL,
-      clinicLocation: "LIG 85, Raisen Rd, New Subhash Nagar, Bhopal",
-      submittedAt: new Date().toLocaleString("en-IN", {
-        timeZone: "Asia/Kolkata",
+  try {
+    const response = await fetch(EMAIL_WEBHOOK_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        ...payload,
+        clinicEmail: OWNER_EMAIL,
+        clinicLocation: "LIG 85, Raisen Rd, New Subhash Nagar, Bhopal",
+        submittedAt: new Date().toLocaleString("en-IN", {
+          timeZone: "Asia/Kolkata",
+        }),
+        _template: "table",
+        _captcha: "false",
       }),
-      _template: "table",
-      _captcha: "false",
-    }),
-  });
+    });
 
-  if (!response.ok) {
-    throw new Error("Email lead submission failed");
+    if (!response.ok) {
+      console.warn("Email webhook responded with status:", response.status);
+    }
+  } catch (error) {
+    console.warn("Booking notification service warning (non-fatal):", error);
   }
 };
 

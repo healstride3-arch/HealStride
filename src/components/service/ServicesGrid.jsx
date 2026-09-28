@@ -214,11 +214,11 @@ const isExcluded = (s) => {
 };
 
 const categories = [
-  { id: "all", label: "All Services" },
-  { id: "spine", label: "Spine & Cervical" },
-  { id: "joints", label: "Joint & Muscle" },
-  { id: "therapies", label: "Specialized Therapies" },
-  { id: "rehab", label: "Rehabilitation" },
+  { id: "all", labelKey: "servicesGrid.catAll" },
+  { id: "spine", labelKey: "servicesGrid.catSpine" },
+  { id: "joints", labelKey: "servicesGrid.catJoints" },
+  { id: "therapies", labelKey: "servicesGrid.catTherapies" },
+  { id: "rehab", labelKey: "servicesGrid.catRehab" },
 ];
 
 const ServicesGrid = () => {
@@ -253,13 +253,13 @@ const ServicesGrid = () => {
           className="text-center mb-8 sm:mb-10 max-w-3xl mx-auto"
         >
           <span className="inline-block px-3.5 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs sm:text-sm font-semibold uppercase tracking-wider mb-2">
-            Comprehensive Treatment Plans
+            {t("servicesGrid.badge")}
           </span>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight">
-            Our Physiotherapy & Wellness Services
+            {t("servicesGrid.title")}
           </h2>
           <p className="text-slate-600 mt-2.5 text-xs sm:text-base leading-relaxed">
-            Evidence-based physiotherapy, pain management, and specialized therapies tailored to your unique recovery needs.
+            {t("servicesGrid.subtitle")}
           </p>
         </motion.div>
 
@@ -280,7 +280,7 @@ const ServicesGrid = () => {
                   }
                 `}
               >
-                {cat.label}
+                {t(cat.labelKey)}
               </button>
             ))}
           </div>
@@ -291,7 +291,7 @@ const ServicesGrid = () => {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search treatments..."
+              placeholder={t("servicesGrid.searchPlaceholder")}
               className="w-full px-4 py-2 rounded-xl text-xs sm:text-sm bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-teal-500 transition-colors"
             />
           </div>
@@ -300,16 +300,16 @@ const ServicesGrid = () => {
         {/* No Services Found */}
         {filteredServices.length === 0 && (
           <div className="text-center py-16 bg-white rounded-2xl border border-slate-200 max-w-md mx-auto p-6">
-            <p className="text-slate-700 font-semibold text-base mb-1">No services found</p>
-            <p className="text-slate-500 text-xs sm:text-sm mb-4">Try adjusting your search query or filter category.</p>
+            <p className="text-slate-700 font-semibold text-base mb-1">{t("servicesGrid.noServices")}</p>
+            <p className="text-slate-500 text-xs sm:text-sm mb-4">{t("servicesGrid.noServicesDesc")}</p>
             <button
               onClick={() => {
                 setSelectedCategory("all");
                 setSearchQuery("");
               }}
-              className="px-4 py-2 bg-teal-600 text-white rounded-lg text-xs font-semibold hover:bg-teal-700 transition"
+              className="px-4 py-2 bg-teal-600 text-white rounded-lg text-xs font-semibold hover:bg-teal-700 transition cursor-pointer"
             >
-              Reset Filters
+              {t("servicesGrid.resetFilters")}
             </button>
           </div>
         )}
@@ -317,7 +317,13 @@ const ServicesGrid = () => {
         {/* Cards Grid */}
         {filteredServices.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
-            {filteredServices.map((service, index) => (
+            {filteredServices.map((service, index) => {
+              const slug = (service.slug || service.id || "").toLowerCase().trim();
+              const camelKey = slug.replace(/-([a-z0-9])/g, (_, letter) => letter.toUpperCase());
+              const localizedTitle = t(`servicesList.${camelKey}Title`, { defaultValue: service.title });
+              const localizedDesc = t(`servicesList.${camelKey}Desc`, { defaultValue: service.description });
+
+              return (
               <motion.div
                 key={service.id}
                 initial={{ opacity: 0, y: 25 }}
@@ -346,7 +352,7 @@ const ServicesGrid = () => {
                 <div className="relative overflow-hidden h-48 sm:h-52 w-full flex-shrink-0 bg-slate-100">
                   <img
                     src={service.imageUrl || treatment1}
-                    alt={service.title}
+                    alt={localizedTitle}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   {service.categoryLabel && (
@@ -366,12 +372,12 @@ const ServicesGrid = () => {
                   <div>
                     {/* Title */}
                     <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-snug">
-                      {service.title}
+                      {localizedTitle}
                     </h3>
 
                     {/* Description */}
                     <p className="text-slate-600 mt-2 text-xs sm:text-sm leading-relaxed line-clamp-2 min-h-[38px]">
-                      {service.description}
+                      {localizedDesc}
                     </p>
 
                     {/* Benefits */}
@@ -411,13 +417,14 @@ const ServicesGrid = () => {
                         transition-colors
                       "
                     >
-                      <span>Book Appointment</span>
+                      <span>{t("servicesGrid.bookAppointment")}</span>
                       <span>→</span>
                     </Link>
                   </div>
                 </div>
               </motion.div>
-            ))}
+            );
+          })}
           </div>
         )}
       </div>

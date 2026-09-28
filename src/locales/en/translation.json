@@ -5,6 +5,7 @@
     "services": "Services",
     "contact": "Contact",
     "doctors": "Doctors",
+    "staff": "Staff",
     "gallery": "Gallery",
     "blogs": "Blogs",
     "bookAppointment": "Book Appointment",
@@ -12,20 +13,36 @@
     "login": "Login",
     "logout": "Logout",
     "myProfile": "My Profile",
-    "tagline": "Physiotherapy & Wellness"
+    "tagline": "Physiotherapy & Wellness",
+    "callClinic": "Call Clinic (+91 88094 91380)"
   },
   "footer": {
-    "desc": "Helping you recover faster with personalized physiotherapy, rehabilitation, and wellness treatments delivered by experienced specialists.",
+    "desc": "HealStride Physiotherapy & Wellness Centre in Bhopal offers personalized root-cause treatment, pain management, and specialized rehabilitation.",
     "quickLinks": "Quick Links",
     "treatments": "Treatments",
-    "contact": "Contact",
-    "kneePain": "Knee Pain",
-    "backPain": "Back Pain",
-    "neckPain": "Neck Pain",
-    "sportsInjury": "Sports Injury",
-    "strokeRehab": "Stroke Rehabilitation",
-    "address": "LIG 85, New Subhash Nagar, Near Gurudwaran Raisen Road, Bhopal-462023",
-    "rights": "All Rights Reserved."
+    "contact": "Contact Info",
+    "backSpine": "Back & Spine Pain",
+    "cervicalNeck": "Cervical Neck Pain",
+    "kneeOsteo": "Knee Osteoarthritis",
+    "sciaticaNerve": "Sciatica & Nerve Pain",
+    "frozenShoulder": "Frozen Shoulder",
+    "cuppingTherapy": "Cupping (Hijama) Therapy",
+    "postSurgery": "Post-Surgery Rehabilitation",
+    "address": "LIG 85 New Subhash Nagar Near Gurudwara-Raisen Road  Bhopal 462023",
+    "rights": "HealStride Physiotherapy & Wellness Centre. All rights reserved.",
+    "madeWith": "Made with",
+    "by": "by",
+    "adminLogin": "Admin Login",
+    "termsPolicy": "Terms & Policy",
+    "termsTitle": "Terms & Clinical Policy",
+    "termsSubtitle": "HealStride Physiotherapy & Wellness Centre",
+    "term1Title": "1. Appointments",
+    "term1Desc": "Appointments are scheduled in advance to ensure dedicated one-on-one attention. Please arrive on time for your consultation.",
+    "term2Title": "2. Patient Assessment & Privacy",
+    "term2Desc": "All patient medical records, contact information, and physical assessments are kept strictly confidential.",
+    "term3Title": "3. Contact & Inquiries",
+    "term3Desc": "For any questions or assistance, contact us at +91 8809491380 or healstride3@gmail.com.",
+    "close": "Close"
   },
   "hero": {
   "clinicName": "HealStride Physiotherapy & Wellness Centre",
@@ -176,7 +193,18 @@
     "title": "What Our Patients Say",
     "subtitle": "Hear from our patients who have experienced better mobility, pain relief, and improved quality of life.",
     "noTestimonials": "No testimonials available.",
-    "verified": "Verified Patient"
+    "verified": "Verified Patient",
+    "liveReviewsBadge": "Live Google Reviews & Ratings",
+    "liveReviewsTitle": "Real Patients, Real Google Feedback",
+    "liveReviewsSubtitle": "Verified patient reviews from Google for HealStride Physiotherapy & Wellness Centre in Bhopal.",
+    "ratingSummary": "Based on 43+ Google Reviews • Open & Active",
+    "reviewOnGoogle": "Review on Google",
+    "catAll": "All",
+    "catBackPain": "Back Pain Treatment",
+    "catFrozenShoulder": "Frozen Shoulder",
+    "catSportsInjury": "Sports Injury & Rehab",
+    "catQuality": "Quality Physiotherapy",
+    "catHygiene": "Hygiene & Staff"
   },
   "googleRating": {
     "badge": "TRUSTED BY THOUSANDS",
@@ -189,16 +217,98 @@
   },
   "galleryPreview": {
     "badge": "OUR GALLERY",
-    "title": "Inside HealStride",
-    "subtitle": "Explore our modern physiotherapy clinic, advanced equipment, comfortable treatment rooms and welcoming environment designed for your recovery.",
-    "viewCompleteGallery": "View Complete Gallery"
+    "title": "Inside HealStride Clinic & Facilities",
+    "subtitle": "Take a look at our state-of-the-art clinic, advanced physiotherapy equipment, treatment rooms, and patient wellness setups in Bhopal.",
+    "viewCompleteGallery": "View Complete Gallery",
+    "showLess": "Show Less Photos",
+    "loadMore": "Load More Photos",
+    "items": {
+      "clinic-1": {
+        "title": "Hands-on Physical Therapy & Joint Mobilization",
+        "subtitle": "Targeted physical therapy and joint mobilization."
+      },
+      "clinic-2": {
+        "title": "Advanced Traction Therapy",
+        "subtitle": "Non-surgical spinal joint decompression & pain relief."
+      },
+      "clinic-3": {
+        "title": "Treatment Room",
+        "subtitle": "Clean and comfortable patient care space."
+      },
+      "clinic-4": {
+        "title": "Dedicated Therapy Area",
+        "subtitle": "Electrotherapy, modalities & movement restoration."
+      },
+      "clinic-5": {
+        "title": "Steam & Wellness Pod Therapy",
+        "subtitle": "Detoxification, relaxation & natural immunity booster."
+      },
+      "clinic-6": {
+        "title": "Knee & Musculoskeletal Rehabilitation",
+        "subtitle": "Specialized stretching and strength recovery protocols."
+      },
+      "clinic-7": {
+        "title": "Electronic Acupuncture Treatment Instrument",
+        "subtitle": "Advanced nerve and muscle stimulator for deep pain relief."
+      },
+      "clinic-8": {
+        "title": "Sterile Cupping & Hijama Therapy Kit",
+        "subtitle": "High-quality medical cups for pain & circulation relief."
+      },
+      "clinic-9": {
+        "title": "AB King Pro Abdominal Workout Bench",
+        "subtitle": "Core strengthening and spinal stability exercise equipment."
+      },
+      "clinic-10": {
+        "title": "Comprehensive Physiotherapy Services",
+        "subtitle": "Dr. MD Rashid (PT) - Certified in Cupping, Needling & Taping."
+      }
+    }
   },
   "blogSection": {
     "badge": "LATEST UPDATES",
-    "title": "Health Blogs",
+    "title": "Health Blogs & Helpful Tips",
     "subtitle": "Read expert advice, physiotherapy tips, rehabilitation guides and wellness articles from HealStride specialists.",
+    "readArticle": "Read Article",
+    "authorBadge": "HealStride Physiotherapy",
     "readMore": "Read More",
-    "readMoreBlogs": "Read More Blogs"
+    "readMoreBlogs": "Read More Blogs",
+    "loadMore": "Load More Articles",
+    "showLess": "Show Less"
+  },
+  "blogsList": {
+    "blog1": {
+      "title": "5 Exercises to Reduce Lower Back Pain",
+      "desc": "Simple home exercises recommended by our physiotherapists to ease spinal tension."
+    },
+    "blog2": {
+      "title": "Correct Sitting Posture for Office & Remote Workers",
+      "desc": "Learn how proper workstation ergonomics can eliminate chronic neck and shoulder stiffness."
+    },
+    "blog3": {
+      "title": "How Cupping (Hijama) Therapy Relieves Deep Muscle Tension",
+      "desc": "Understand how negative pressure suction releases myofascial adhesions and speeds cellular repair."
+    },
+    "blog4": {
+      "title": "Dry Needling vs Acupuncture: Understanding the Difference",
+      "desc": "Explore how targeted western dry needling deactivates painful myofascial trigger knots."
+    },
+    "blog5": {
+      "title": "Relieving Cervical Neck Pain & 'Tech Neck'",
+      "desc": "Effective physiotherapy techniques to relieve neck spasms, headache, and cervical spine strain."
+    },
+    "blog6": {
+      "title": "Knee Pain & Osteoarthritis: Mobility & Strengthening Guide",
+      "desc": "How targeted physiotherapy preserves cartilage, reduces joint friction, and improves walking stability."
+    },
+    "blog7": {
+      "title": "Understanding Sciatica Pain & Effective Relief Exercises",
+      "desc": "Learn how nerve gliding and core stabilization relieve shooting pain down the leg."
+    },
+    "blog8": {
+      "title": "Essential Rehabilitation Tips After a Sports Injury",
+      "desc": "Guided recovery protocols to heal ligaments, rebuild agility, and prevent re-injury."
+    }
   },
   "aboutHero": {
     "badge": "About HealStride Physiotherapy",
@@ -212,7 +322,7 @@
   "clinicIntro": {
     "badge": "Clinic Introduction",
     "title": "Welcome to HealStride",
-    "desc": "HealStride Physiotherapy & Wellness Centre is dedicated to helping patients overcome pain, recover mobility, and improve quality of life through evidence-based physiotherapy treatments. We combine modern technology, expert care, and personalized treatment plans to ensure faster recovery and long-term wellness.",
+    "desc": "Hello, I'm Dr. MD Rashid, the Lead Physiotherapist at HealStride Physiotherapy & Wellness Centre. With 5+ years of experience and over 2500 happy patients, we are dedicated to helping our patients overcome pain, recover mobility, and improve their quality of life through evidence-based physiotherapy treatments. We are certified in Taping Therapy, Mulligan’s Mobilization with Movement (MWM), and Basic Life Support (BLS) & Critical Care Management. At HealStride, We combine modern technology, expert care, and personalized treatment plans to ensure faster recovery and long-term wellness.",
     "f1": "Advanced Physiotherapy Equipment",
     "f2": "Personalized Treatment Plans",
     "f3": "Experienced Physiotherapists",
@@ -307,18 +417,78 @@
     "closed": "Closed"
   },
   "appointmentForm": {
-    "badge": "Appointment",
-    "title": "Book Appointment",
-    "subtitle": "Schedule your physiotherapy consultation and begin your recovery journey today.",
-    "loginNotice": "Please login before booking an appointment.",
-    "submittedTitle": "Appointment Request Submitted Successfully 🎉",
-    "submittedDesc": "Our team will contact you shortly.",
-    "namePlaceholder": "Full Name",
-    "phonePlaceholder": "Phone Number",
-    "selectCondition": "Select Condition",
-    "msgPlaceholder": "Additional Message",
-    "bookingBtn": "Book Appointment",
-    "bookingLoading": "Booking..."
+    "badge": "Online Consultation Booking • Priority Appointment",
+    "titleLine1": "Book Your",
+    "titleHighlight": "Physiotherapy",
+    "titleLine2": "Session",
+    "subtitle": "Consult our expert physiotherapists Dr. MD Rashid (PT) and Dr. Wajhul Qamar (PT) for personalized pain relief and rehabilitation.",
+    "specialistTitle": "Our Specialist Physiotherapists",
+    "reviewsRating": "4.7 ★ (43+ Reviews)",
+    "drRashidTitle": "Consultant Physiotherapist (BPT)",
+    "drRashidReg": "Reg. DEG2/71968/2025 • Cupping & Needling Certified",
+    "drWazulTitle": "Physiotherapist & Rehab Specialist (BPT)",
+    "drWazulDesc": "Movement Recovery & Musculoskeletal Rehabilitation",
+    "highlight1": "Evidence-based modalities (Traction, Laser & Stimulator)",
+    "highlight2": "Dedicated one-on-one patient care & zero waiting time",
+    "timingsTitle": "Clinic Timings & Consultation Hours",
+    "morningSession": "Morning Session",
+    "morningTime": "09:00 AM - 12:00 PM",
+    "eveningSession": "Evening Session",
+    "eveningTime": "05:00 PM - 09:00 PM",
+    "callDoctor": "Call Doctor",
+    "whatsapp": "WhatsApp",
+    "formTitle": "Patient Consultation Form",
+    "formSubtitle": "Fill in your details below to schedule your appointment.",
+    "fullNameLabel": "Patient Full Name",
+    "fullNamePlaceholder": "e.g. Ramesh Sharma",
+    "fullNameError": "Please enter your full name.",
+    "phoneLabel": "10-Digit Mobile Number",
+    "phonePlaceholder": "e.g. 9876543210",
+    "phoneError": "Please enter a valid 10-digit mobile number.",
+    "doctorLabel": "Select Specialist Doctor",
+    "doctorOptional": "(Optional)",
+    "doctorAny": "Any Available Specialist (Recommended)",
+    "doctorRashid": "Dr. MD Rashid (PT) - Consultant Physiotherapist",
+    "doctorWazul": "Dr. Wajhul Qamar (PT) - Physiotherapist & Rehab Specialist",
+    "conditionLabel": "Select Condition / Treatment",
+    "conditionPlaceholder": "Choose condition or therapy",
+    "conditionError": "Please select a condition or therapy.",
+    "condBackPain": "Back Pain / Lower Spine Stiffness",
+    "condNeckPain": "Neck Pain / Cervical Spondylosis",
+    "condKneePain": "Knee Pain / Osteoarthritis",
+    "condSciatica": "Sciatica Nerve Pain & Leg Radiating Pain",
+    "condFrozenShoulder": "Frozen Shoulder / Joint Restriction",
+    "condCupping": "Cupping (Hijama) Pain Therapy",
+    "condDryNeedling": "Dry Needling / Trigger Point Release",
+    "condStroke": "Stroke / Neurological Paralysis Rehab",
+    "condPostSurgery": "Post-Surgery Orthopedic Rehab",
+    "condSportsInjury": "Sports Injury / Ligament Sprain",
+    "condTennisElbow": "Tennis Elbow / Forearm Pain",
+    "condPlantarFasciitis": "Plantar Fasciitis / Heel Pain",
+    "condGeneralAssessment": "General Physical Pain Assessment",
+    "condOther": "Other Musculoskeletal Condition",
+    "dateLabel": "Preferred Date",
+    "dateError": "Please select an appointment date.",
+    "timeLabel": "Preferred Time Slot",
+    "timePlaceholder": "e.g. 10:30 AM or select below",
+    "timeError": "Please select or type a preferred time.",
+    "quickSlotsLabel": "Quick Time Slots:",
+    "messageLabel": "Brief Symptoms / Pain Details",
+    "messagePlaceholder": "Describe your pain duration, stiffness, or any previous doctor reports...",
+    "submitBtn": "Confirm Appointment Now",
+    "submittingBtn": "Confirming Your Session...",
+    "guarantee": "Direct SMS / WhatsApp notification to clinic • Priority Session",
+    "confirmationTitle": "Appointment Confirmation",
+    "receivedTitle": "Booking Request Received!",
+    "receivedDesc": "Thank you, {{name}}. Your consultation request has been sent to our doctors. Our clinic reception will call you shortly to confirm your slot.",
+    "patientName": "Patient Name:",
+    "mobileNumber": "Mobile Number:",
+    "specialist": "Specialist:",
+    "condition": "Condition:",
+    "preferredDate": "Preferred Date:",
+    "timeSlot": "Time Slot:",
+    "whatsappClinic": "WhatsApp Clinic",
+    "doneClose": "Done / Close"
   },
   "serviceHero": {
     "badge": "HealStride Healthcare",
@@ -362,7 +532,16 @@
   "blogsPage": {
     "badge": "Health Articles",
     "title": "HealStride Health Blog",
-    "subtitle": "Explore expert physiotherapy advice, rehabilitation techniques, posture correction tips, injury prevention strategies, and wellness articles written by HealStride specialists."
+    "subtitle": "Explore expert physiotherapy advice, rehabilitation techniques, posture correction tips, injury prevention strategies, and wellness articles written by HealStride specialists.",
+    "backToHome": "Back to Home",
+    "noBlogs": "No blogs available."
+  },
+  "blogModal": {
+    "headerTitle": "HealStride Health Article",
+    "summary": "Summary",
+    "writtenBy": "Written & Clinically Verified By",
+    "bookVisit": "Book Visit",
+    "callUs": "Call Us"
   },
   "blogDetails": {
     "notFound": "Blog Not Found",
@@ -451,11 +630,47 @@
     "submitBtn": "Submit Review",
     "submitting": "Submitting..."
   },
+  "reviewCTA": {
+    "badge": "START YOUR RECOVERY TODAY",
+    "titleLine1": "Start Your",
+    "titleHighlight": "Pain-Free Journey",
+    "subtitle": "Don't let chronic back pain, joint stiffness, or sports injuries limit your life. Get expert physiotherapy evaluation & targeted relief from Dr. MD Rashid and our team in Bhopal.",
+    "prop1": "Root-Cause Assessment",
+    "prop2": "Advanced Physiotherapy Modalities",
+    "prop3": "Dedicated 1-on-1 Care",
+    "bookConsultation": "Book Consultation",
+    "whatsappDirect": "Chat on WhatsApp",
+    "callNow": "Call Now"
+  },
+  "servicesGrid": {
+    "badge": "Comprehensive Treatment Plans",
+    "title": "Our Physiotherapy & Wellness Services",
+    "subtitle": "Evidence-based physiotherapy, pain management, and specialized therapies tailored to your unique recovery needs.",
+    "catAll": "All Services",
+    "catSpine": "Spine & Cervical",
+    "catJoints": "Joint & Muscle",
+    "catTherapies": "Specialized Therapies",
+    "catRehab": "Rehabilitation",
+    "searchPlaceholder": "Search treatments...",
+    "noServices": "No services found",
+    "noServicesDesc": "Try adjusting your search query or filter category.",
+    "resetFilters": "Reset Filters",
+    "bookAppointment": "Book Appointment"
+  },
+  "staffSection": {
+    "badge": "Meet Our Team",
+    "title": "Our Staff",
+    "subtitle": "Meet the dedicated professionals who manage our clinic and provide quality care to every patient.",
+    "viewMore": "View More →",
+    "noStaff": "No staff members available.",
+    "supportBadge": "Clinic Support"
+  },
   "common": {
     "loading": "Loading...",
     "error": "An error occurred.",
     "success": "Success",
     "back": "Back",
+    "backToHome": "Back to Home",
     "submit": "Submit",
     "cancel": "Cancel",
     "required": "Required field"

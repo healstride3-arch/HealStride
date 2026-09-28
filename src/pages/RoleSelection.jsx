@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { UserRound, ShieldCheck, ArrowLeft } from "lucide-react";
+import BrandName from "../components/common/BrandName";
+import logo from "../assets/images/logo.png";
 import { useNavigate } from "react-router-dom";
 
 const RoleSelection = () => {
@@ -28,14 +30,15 @@ const RoleSelection = () => {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-teal-700 text-white shadow-lg mb-5"
+            className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-white border border-teal-100 p-3 shadow-lg mb-5"
           >
-            <ShieldCheck size={34} />
+            <img src={logo} alt="Heal Stride Logo" className="w-full h-full object-contain" />
           </motion.div>
 
-          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900">
-            Welcome to HealStride
-          </h1>
+          <div className="flex flex-col items-center justify-center">
+            <span className="text-xl sm:text-2xl text-slate-600 font-semibold mb-1">Welcome to</span>
+            <BrandName variant="light" size="xl" centered={true} showSubtitle={true} />
+          </div>
 
           <p className="mt-3 text-slate-600 text-sm sm:text-base">
             Please select how you would like to continue
