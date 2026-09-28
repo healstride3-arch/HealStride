@@ -41,14 +41,16 @@ export const BrandName = ({
 
   return (
     <div
-      className={`inline-flex flex-col leading-none items-start text-left ${className}`}
+      className={`inline-flex flex-col leading-none ${
+        centered ? "items-center text-center justify-center" : "items-start text-left"
+      } ${className}`}
       style={{ fontFamily: "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" }}
     >
-      {/* Brand Title: Heal Stride (Left aligned next to logo) */}
+      {/* Brand Title: Heal Stride */}
       <span
         className={`font-extrabold tracking-tight inline-flex items-center gap-[0.22em] leading-none ${
-          titleSizes[size] || titleSizes.md
-        }`}
+          centered ? "justify-center" : ""
+        } ${titleSizes[size] || titleSizes.md}`}
       >
         <span
           className={`select-none ${
@@ -78,12 +80,12 @@ export const BrandName = ({
         </span>
       </span>
 
-      {/* Subtitle: Physiotherapy & Wellness (Smaller and centered directly under Heal Stride) */}
+      {/* Subtitle: Physiotherapy & Wellness */}
       {showSubtitle && (
         <span
-          className={`font-medium tracking-[0.02em] mt-[2px] select-none leading-none w-full text-center ${
-            subtitleSizes[size] || subtitleSizes.md
-          } ${
+          className={`font-medium tracking-[0.02em] mt-[2px] select-none leading-none w-full ${
+            centered ? "text-center" : "text-left"
+          } ${subtitleSizes[size] || subtitleSizes.md} ${
             isDark
               ? "text-slate-300/90 font-medium drop-shadow-sm"
               : "text-slate-500 font-medium"

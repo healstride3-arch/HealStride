@@ -7,13 +7,22 @@ const ScrollToHash = () => {
   useEffect(() => {
     if (!hash) return;
 
-    const element = document.getElementById(hash.replace("#", ""));
+    const id = hash.replace("#", "");
+    const scrollToTarget = () => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+        return true;
+      }
+      return false;
+    };
 
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
+    if (!scrollToTarget()) {
+      const timer = setTimeout(scrollToTarget, 100);
+      return () => clearTimeout(timer);
     }
   }, [hash]);
 

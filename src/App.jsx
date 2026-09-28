@@ -297,18 +297,19 @@ function App() {
                   size="sm"
                   centered={true}
                   showSubtitle={true}
+                  className="mx-auto"
                 />
               </motion.div>
 
               {/* Heading */}
 
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 text-center mx-auto">
                 Book Your Appointment
               </h2>
 
               {/* Text */}
 
-              <p className="text-gray-600 mt-4 leading-7">
+              <p className="text-gray-600 mt-4 leading-7 text-center mx-auto max-w-sm">
                 Consult our expert physiotherapists and begin your recovery
                 journey today.
               </p>
