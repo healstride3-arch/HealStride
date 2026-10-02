@@ -50,7 +50,7 @@ export const galleryItems = [
     category: "machine",
     imageUrl: abKingPro,
     title: "AB King Pro",
-    description: "Core strengthening and spine stability equipment.",
+    description: "Core strengthening and back stability equipment.",
   },
   {
     id: "treatment-1",

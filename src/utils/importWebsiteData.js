@@ -10,7 +10,7 @@ const services = [
     title: "Cervical Pain Treatment",
     slug: "cervical-pain",
     category: "spine",
-    categoryLabel: "Spine & Cervical",
+    categoryLabel: "Back & Cervical",
     description:
       "Specialized therapy to relieve neck stiffness, cervical nerve compression, and posture-related pain.",
     benefits: [
@@ -27,11 +27,11 @@ const services = [
     title: "Back Pain Relief",
     slug: "back-pain",
     category: "spine",
-    categoryLabel: "Spine & Cervical",
+    categoryLabel: "Back & Cervical",
     description:
-      "Comprehensive physical therapy for acute/chronic lumbar pain, disc herniation, and spine mobility.",
+      "Comprehensive physical therapy for acute/chronic lumbar pain, disc herniation, and back mobility.",
     benefits: [
-      "Rapid spinal pain relief",
+      "Rapid back pain relief",
       "Core & lower back strengthening",
       "Prevents recurring back spasms",
     ],
@@ -146,12 +146,12 @@ const services = [
     title: "Sciatica Pain Therapy",
     slug: "sciatica",
     category: "spine",
-    categoryLabel: "Spine & Cervical",
+    categoryLabel: "Back & Cervical",
     description:
-      "Targeted sciatic nerve decompression, spinal traction, and core stabilizing exercises.",
+      "Targeted sciatic nerve decompression, back traction, and core stabilizing exercises.",
     benefits: [
-      "Relieves shooting leg & hip pain",
-      "Decompresses pinched spinal nerves",
+      "Relieves shooting & hip pain",
+      "Decompresses pinched back nerves",
       "Restores normal posture",
     ],
     duration: "45-60 mins",
@@ -177,7 +177,7 @@ const services = [
   },
   {
     id: "sports-rehab",
-    title: "Sports Rehabilitation",
+    title: "Sports Injury Rehabilitation",
     slug: "sports-rehab",
     category: "rehab",
     categoryLabel: "Rehabilitation",
@@ -199,7 +199,7 @@ const services = [
     category: "rehab",
     categoryLabel: "Rehabilitation",
     description:
-      "Guided post-operative rehabilitation for joint replacements, fracture repairs, and spine surgeries.",
+      "Guided post-operative rehabilitation for joint replacements, fracture repairs, and back surgeries.",
     benefits: [
       "Safe progressive recovery",
       "Prevents scar tissue stiffness",

@@ -59,10 +59,10 @@ const Footer = () => {
                 href={`https://wa.me/${String(settings.whatsapp || settings.phone || "").replace(/\D/g, "")}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="social-icon-btn social-icon-whatsapp"
+                className="social-icon-btn social-icon-whatsapp flex items-center justify-center p-2"
                 aria-label="WhatsApp"
               >
-                <FaWhatsapp className="text-[16px]" />
+                <img src="/whatsapp.png" alt="WhatsApp" className="w-4 h-4 object-contain" />
               </a>
 
               <a
@@ -150,6 +150,7 @@ const Footer = () => {
               <li>{t("footer.frozenShoulder")}</li>
               <li>{t("footer.cuppingTherapy")}</li>
               <li>{t("footer.postSurgery")}</li>
+              <li>{t("footer.sportsInjury")}</li>
             </ul>
           </div>
 
@@ -164,7 +165,7 @@ const Footer = () => {
             <div className="space-y-3.5 text-xs sm:text-sm">
               {/* Phones */}
               <div className="flex items-start gap-3">
-                <FaPhoneAlt className="text-teal-400 mt-1 shrink-0 text-xs" />
+                <img src="/call.png" alt="Call" className="w-3.5 h-3.5 object-contain shrink-0 mt-0.5" />
                 <div className="flex flex-col space-y-0.5">
                   <a href={`tel:${settings.phone}`} className="hover:text-teal-400 transition-colors font-medium text-white">
                     {settings.phone}

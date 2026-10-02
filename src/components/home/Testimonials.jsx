@@ -116,7 +116,7 @@ const Testimonials = () => {
 
             {/* Address Banner */}
             <div className="mt-3.5 pt-3 border-t border-slate-100 flex items-center justify-center sm:justify-start gap-1.5 text-[11px] sm:text-xs text-slate-600 text-center sm:text-left">
-              <FaMapMarkerAlt className="text-[#0066cc] flex-shrink-0" />
+              <FaMapMarkerAlt className="text-red-600 flex-shrink-0" />
               <span>{settings.address}</span>
             </div>
           </div>

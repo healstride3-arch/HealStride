@@ -58,7 +58,7 @@ const WhyChooseUs = () => {
             {t("whyChooseUs.title")}
           </h2>
 
-          <div className="w-16 h-1 bg-gradient-to-r from-[#0066cc] to-[#16a34a] rounded-full mx-auto my-3"></div>
+          <div className="w-16 h-1 bg-gradient-to-r from-[#d71920] to-[#008272] rounded-full mx-auto my-3"></div>
 
           <p className="text-slate-600 max-w-2xl mx-auto text-xs sm:text-base leading-relaxed">
             {t("whyChooseUs.subtitle")}

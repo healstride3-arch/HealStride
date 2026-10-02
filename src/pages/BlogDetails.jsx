@@ -96,18 +96,18 @@ const BlogDetails = () => {
         </div>
 
         {/* CTA */}
-        <div className="mt-12 sm:mt-20 bg-gradient-to-r from-[#0052a3] via-[#0066cc] to-[#16a34a] rounded-2xl sm:rounded-3xl p-5 sm:p-10 text-center text-white shadow-xl shadow-blue-900/10">
+        <div className="mt-12 sm:mt-20 bg-gradient-to-r from-[#d71920] via-teal-950 to-[#008272] rounded-2xl sm:rounded-3xl p-5 sm:p-10 text-center text-white shadow-xl shadow-teal-900/10">
           <h2 className="text-2xl sm:text-3xl font-bold leading-tight">
             {t("blogDetails.ctaTitle")}
           </h2>
 
-          <p className="mt-4 text-sm sm:text-lg text-blue-50">
+          <p className="mt-4 text-sm sm:text-lg text-teal-50">
             {t("blogDetails.ctaSubtitle")}
           </p>
 
           <Link
             to="/booking"
-            className="inline-flex justify-center w-full xs:w-auto mt-6 sm:mt-8 bg-white text-[#0058a5] hover:text-[#16a34a] font-bold px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl hover:bg-slate-50 hover:scale-105 transition-all duration-200 shadow-md"
+            className="inline-flex justify-center w-full xs:w-auto mt-6 sm:mt-8 bg-white text-[#008272] hover:text-[#d71920] font-bold px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl hover:bg-slate-50 hover:scale-105 transition-all duration-200 shadow-md"
           >
             {t("blogDetails.bookBtn")}
           </Link>

@@ -13,7 +13,7 @@ export const BrandName = ({
   variant = "light", // "light" | "dark"
   size = "md", // "xs" | "sm" | "md" | "lg" | "xl" | "2xl"
   showSubtitle = true,
-  subtitleText = "Physiotherapy & Wellness",
+  subtitleText = "Physiotherapy & Wellness Centre",
   className = "",
   centered = false,
 }) => {
@@ -55,12 +55,12 @@ export const BrandName = ({
         <span
           className={`select-none ${
             isDark
-              ? "bg-gradient-to-b from-[#38bdf8] via-[#2563eb] to-[#1d4ed8] bg-clip-text text-transparent drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]"
-              : "bg-gradient-to-b from-[#006bd8] to-[#004e9c] bg-clip-text text-transparent"
+              ? "bg-gradient-to-b from-[#f87171] to-[#dc2626] bg-clip-text text-transparent drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]"
+              : "bg-gradient-to-b from-[#dc2626] to-[#b91c1c] bg-clip-text text-transparent"
           }`}
           style={{
             // High visibility fallback
-            color: isDark ? "#38bdf8" : "#0058a5",
+            color: isDark ? "#ef4444" : "#d71920",
           }}
         >
           Heal
@@ -68,12 +68,12 @@ export const BrandName = ({
         <span
           className={`select-none ${
             isDark
-              ? "bg-gradient-to-b from-[#4ade80] to-[#16a34a] bg-clip-text text-transparent drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]"
-              : "bg-gradient-to-b from-[#52ba28] to-[#1e8529] bg-clip-text text-transparent"
+              ? "bg-gradient-to-b from-[#2dd4bf] to-[#0d9488] bg-clip-text text-transparent drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]"
+              : "bg-gradient-to-b from-[#008272] to-[#0f766e] bg-clip-text text-transparent"
           }`}
           style={{
             // High visibility fallback
-            color: isDark ? "#4ade80" : "#2f9455",
+            color: isDark ? "#2dd4bf" : "#008272",
           }}
         >
           Stride

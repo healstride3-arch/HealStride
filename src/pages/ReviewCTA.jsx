@@ -114,8 +114,8 @@ const ReviewCTA = () => {
               inline-flex
               items-center
               gap-2.5
-              bg-emerald-600
-              hover:bg-emerald-700
+              bg-[#25D366]
+              hover:bg-[#20ba59]
               text-white
               px-5
               xs:px-6
@@ -131,7 +131,7 @@ const ReviewCTA = () => {
               sm:text-base
             "
           >
-            <FaWhatsapp size={18} />
+            <img src="/whatsapp.png" alt="WhatsApp" className="w-5 h-5 object-contain shrink-0" />
             <span>{t("reviewCTA.whatsappDirect")}</span>
           </a>
 
@@ -160,7 +160,7 @@ const ReviewCTA = () => {
               sm:text-base
             "
           >
-            <PhoneCall size={18} className="text-teal-600" />
+            <img src="/call.png" alt="Call" className="w-4 h-4 object-contain shrink-0" />
             <span>{t("reviewCTA.callNow")}</span>
           </a>
         </motion.div>

@@ -2,6 +2,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Calendar, User, CheckCircle2, Phone, CalendarCheck, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import logo from "../../assets/images/logo.png";
+import BrandName from "../common/BrandName";
 
 const BlogModal = ({ blog, isOpen, onClose }) => {
   const { t } = useTranslation();
@@ -139,7 +141,7 @@ const BlogModal = ({ blog, isOpen, onClose }) => {
                   href="tel:+918809491380"
                   className="inline-flex items-center justify-center gap-1.5 bg-white border border-teal-300 text-teal-700 hover:bg-teal-50 px-4 py-2.5 rounded-xl font-semibold text-xs sm:text-sm transition-colors shadow-sm"
                 >
-                  <Phone className="w-4 h-4" />
+                  <img src="/call.png" alt="Call" className="w-3.5 h-3.5 object-contain" />
                   <span>{t("blogModal.callUs", "Call Us")}</span>
                 </a>
               </div>

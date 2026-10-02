@@ -146,8 +146,8 @@ const GoogleRating = () => {
               <div
                 className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl ${
                   index % 2 === 0
-                    ? "bg-blue-50 text-[#0066cc]"
-                    : "bg-emerald-50 text-[#16a34a]"
+                    ? "bg-red-50 text-[#d71920]"
+                    : "bg-teal-50 text-[#008272]"
                 } flex items-center justify-center mb-2 sm:mb-2.5 flex-shrink-0 text-base sm:text-xl transition-colors`}
               >
                 {item.icon}
@@ -156,7 +156,7 @@ const GoogleRating = () => {
               {/* Stat Number (Strongest Element) */}
               <h3
                 className={`text-xl xs:text-2xl sm:text-3xl lg:text-4xl font-extrabold ${
-                  index % 2 === 0 ? "text-[#0058a5]" : "text-[#1e8529]"
+                  index % 2 === 0 ? "text-[#b91c1c]" : "text-[#0f766e]"
                 } tracking-tight flex items-center gap-0.5 sm:gap-1`}
               >
                 <AnimatedCounter value={item.number} />

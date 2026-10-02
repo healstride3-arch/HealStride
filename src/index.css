@@ -4,26 +4,35 @@
   --breakpoint-xs: 375px;
   --breakpoint-mobile: 425px;
 
-  /* Heal Stride Brand Identity Theme (Blue & Green) */
-  --color-teal-50: #eff6ff;
-  --color-teal-100: #dbeafe;
-  --color-teal-200: #bfdbfe;
-  --color-teal-300: #93c5fd;
-  --color-teal-400: #60a5fa;
-  --color-teal-500: #0284c7;
-  --color-teal-600: #0066cc;
-  --color-teal-700: #0052a3;
-  --color-teal-800: #003d7a;
-  --color-teal-900: #002952;
-  --color-teal-950: #001730;
+  /* Heal Stride Brand Identity Theme (Teal & Crimson Red from Official Logo) */
+  --color-teal-50: #f0fdfa;
+  --color-teal-100: #ccfbf1;
+  --color-teal-200: #99f6e4;
+  --color-teal-300: #5eead4;
+  --color-teal-400: #2dd4bf;
+  --color-teal-500: #14b8a6;
+  --color-teal-600: #0d9488;
+  --color-teal-700: #008272;
+  --color-teal-800: #0f766e;
+  --color-teal-900: #115e59;
+  --color-teal-950: #042f2e;
 
-  --color-brand-blue: #0066cc;
-  --color-brand-blue-dark: #004e9c;
+  /* Brand Crimson Red (Logo 'Heal' & Outer Ring) */
+  --color-brand-red: #d71920;
+  --color-brand-red-dark: #b91c1c;
+  --color-brand-red-light: #fef2f2;
+  --color-brand-red-border: #fecaca;
+
+  /* Brand Deep Teal (Logo 'Stride' & Healing Hand) */
+  --color-brand-teal: #008272;
+  --color-brand-teal-dark: #0f766e;
+  --color-brand-teal-light: #f0fdfa;
+  --color-brand-teal-border: #99f6e4;
+
+  /* Brand Navy Accent (Logo dots) */
+  --color-brand-blue: #1d4ed8;
+  --color-brand-blue-dark: #1e3a8a;
   --color-brand-blue-light: #eff6ff;
-
-  --color-brand-green: #22a038;
-  --color-brand-green-dark: #1b7a2b;
-  --color-brand-green-light: #f0fdf4;
 }
 
 :root {

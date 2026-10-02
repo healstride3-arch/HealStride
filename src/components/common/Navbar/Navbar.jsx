@@ -119,8 +119,8 @@ const Navbar = () => {
                       px-3 py-1.5 lg:px-3.5 xl:px-4 xl:py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all duration-200 block whitespace-nowrap
                       ${
                         active
-                          ? "bg-gradient-to-r from-[#0066cc] to-[#16a34a] text-white shadow-sm"
-                          : "text-gray-700 hover:text-blue-700 hover:bg-blue-50"
+                          ? "bg-gradient-to-r from-[#d71920] to-[#008272] text-white shadow-sm"
+                          : "text-gray-700 hover:text-teal-700 hover:bg-teal-50"
                       }
                     `}
                   >
@@ -141,7 +141,7 @@ const Navbar = () => {
             <button
               onClick={handleBookAppointment}
               className="
-                bg-teal-700
+                bg-gradient-to-r from-[#d71920] to-[#008272]
                 text-white
                 px-3
                 py-1.5
@@ -149,7 +149,7 @@ const Navbar = () => {
                 xl:px-4
                 xl:py-1.5
                 rounded-lg
-                hover:bg-teal-800
+                hover:from-[#b91c1c] hover:to-[#0f766e]
                 hover:scale-105
                 hover:shadow-md
                 transition-all
@@ -177,7 +177,7 @@ const Navbar = () => {
             <button
               onClick={handleBookAppointment}
               className="
-                bg-gradient-to-r from-[#0066cc] to-[#16a34a] hover:from-[#0052a3] hover:to-[#15803d]
+                bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e]
                 text-white
                 px-3.5
                 py-1.5
@@ -250,8 +250,8 @@ const Navbar = () => {
                         block py-2.5 px-3 xs:px-3.5 rounded-lg font-semibold text-sm transition-all duration-200
                         ${
                           active
-                            ? "bg-gradient-to-r from-[#0066cc] to-[#16a34a] text-white shadow-sm"
-                            : "text-gray-700 hover:bg-blue-50 hover:text-blue-700"
+                            ? "bg-gradient-to-r from-[#d71920] to-[#008272] text-white shadow-sm"
+                            : "text-gray-700 hover:bg-teal-50 hover:text-teal-700"
                         }
                       `}
                     >
@@ -274,7 +274,7 @@ const Navbar = () => {
               className="
                 w-full
                 mt-4
-                bg-gradient-to-r from-[#0066cc] to-[#16a34a] hover:from-[#0052a3] hover:to-[#15803d]
+                bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e]
                 text-white
                 py-2.5
                 rounded-xl
@@ -304,7 +304,7 @@ const Navbar = () => {
                 shadow-sm
               "
             >
-              <FaPhoneAlt className="text-teal-400 text-xs" />
+              <img src="/call.png" alt="Call" className="w-3.5 h-3.5 object-contain shrink-0" />
               <span className="leading-snug">{t("navbar.callClinic")}</span>
             </a>
 

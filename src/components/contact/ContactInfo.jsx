@@ -16,7 +16,7 @@ const ContactInfo = () => {
 
   const contactItems = [
     {
-      icon: <FaPhoneAlt />,
+      icon: <img src="/call.png" alt="Call" className="w-5 h-5 object-contain" />,
       titleKey: "contactInfo.phone",
       content: (
         <a

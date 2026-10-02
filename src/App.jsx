@@ -331,7 +331,7 @@ function App() {
                   onClick={() =>
                     setShowAppointmentPopup(false)
                   }
-                  className="flex-1 bg-teal-600 hover:bg-teal-700 text-white py-3 rounded-xl font-semibold shadow-lg transition flex items-center justify-center"
+                  className="flex-1 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] text-white py-3 rounded-xl font-bold shadow-lg transition flex items-center justify-center text-sm sm:text-base"
                 >
                   Book Now
                 </Link>

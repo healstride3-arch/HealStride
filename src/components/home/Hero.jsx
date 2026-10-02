@@ -66,7 +66,7 @@ const Hero = () => {
           {/* Clinic Name */}
           <p
             className="
-              bg-gradient-to-r from-sky-300 via-blue-200 to-emerald-300 bg-clip-text text-transparent
+              bg-gradient-to-r from-red-300 via-rose-100 to-teal-300 bg-clip-text text-transparent
               font-extrabold
               text-base
               xs:text-lg
@@ -153,7 +153,7 @@ const Hero = () => {
                 sm:min-w-[200px]
                 h-12
                 sm:h-13
-                bg-gradient-to-r from-[#0066cc] to-[#16a34a] hover:from-[#0052a3] hover:to-[#15803d] active:scale-[0.98]
+                bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-[0.98]
                 text-white
                 font-semibold
                 text-sm
@@ -207,7 +207,7 @@ const Hero = () => {
                 duration-200
               "
             >
-              <FaPhoneAlt className="text-sm flex-shrink-0 text-emerald-300" />
+              <img src="/call.png" alt="Call" className="w-4 h-4 object-contain flex-shrink-0" />
               <span>{t("hero.callNow")}</span>
             </a>
           </motion.div>

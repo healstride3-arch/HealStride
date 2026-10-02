@@ -44,7 +44,7 @@ const WhyPatientsTrustUs = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-8 sm:mb-12"
         >
-          <span className="text-blue-600 font-semibold uppercase tracking-wider">
+          <span className="text-[#d71920] font-bold uppercase tracking-wider text-xs sm:text-sm">
             {t("whyPatientsTrustUs.badge")}
           </span>
 
@@ -74,10 +74,10 @@ const WhyPatientsTrustUs = () => {
               }}
               className="bg-white rounded-3xl p-8 text-center shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100"
             >
-              <div className="w-16 h-16 rounded-2xl bg-blue-100 flex items-center justify-center mx-auto mb-5">
+              <div className={`w-16 h-16 rounded-2xl ${index % 2 === 0 ? "bg-red-50" : "bg-teal-50"} flex items-center justify-center mx-auto mb-5`}>
                 <card.icon
                   size={30}
-                  className="text-blue-600"
+                  className={index % 2 === 0 ? "text-[#d71920]" : "text-[#008272]"}
                 />
               </div>
 

@@ -41,7 +41,7 @@ export const blogs = [
       },
       {
         heading: "5. Child's Pose",
-        text: "Stretch your spine and relax your lower back by sitting back on your heels and extending your arms forward."
+        text: "Stretch your back and relax your lower back by sitting back on your heels and extending your arms forward."
       },
       {
         heading: "Conclusion",
@@ -156,12 +156,12 @@ export const blogs = [
     date: "August 06, 2026",
     image: neckpain,
     description:
-      "Effective physiotherapy techniques to relieve neck spasms, headache, and cervical spine strain.",
+      "Effective physiotherapy techniques to relieve neck spasms, headache, and cervical back strain.",
 
     content: [
       {
         heading: "What Causes Tech Neck?",
-        text: "Looking down at smartphones and laptop screens adds up to 25–30 kg of extra strain on your cervical spine vertebrae and neck muscles."
+        text: "Looking down at smartphones and laptop screens adds up to 25–30 kg of extra strain on your cervical vertebrae and neck muscles."
       },
       {
         heading: "Key Symptoms of Cervical Strain",
@@ -193,14 +193,14 @@ export const blogs = [
     content: [
       {
         heading: "Why Exercise is Essential for Knee Arthritis",
-        text: "Resting too much weakens supporting leg muscles. Gentle, low-impact exercise lubricates joint cartilage and reduces stiffness."
+        text: "Resting too much weakens supporting muscles. Gentle, low-impact exercise lubricates joint cartilage and reduces stiffness."
       },
       {
         heading: "Strengthening the Quadriceps & Hamstrings",
         text: "Strong thigh muscles act as shock absorbers, taking painful pressure off the knee joint during walking and climbing stairs."
       },
       {
-        heading: "Straight Leg Raises & Wall Sits",
+        heading: "Straight Raises & Wall Sits",
         text: "Non-weight-bearing exercises build quadriceps strength without aggravating joint cartilage."
       },
       {
@@ -220,12 +220,12 @@ export const blogs = [
     date: "July 28, 2026",
     image: sciaticapain,
     description:
-      "Learn how nerve gliding and core stabilization relieve shooting pain down the leg.",
+      "Learn how nerve gliding and core stabilization relieve shooting pain.",
 
     content: [
       {
         heading: "What is Sciatica?",
-        text: "Sciatica occurs when the sciatic nerve is compressed or irritated by a herniated disc, spinal narrowing, or tight piriformis muscle."
+        text: "Sciatica occurs when the sciatic nerve is compressed or irritated by a herniated disc, back narrowing, or tight piriformis muscle."
       },
       {
         heading: "Nerve Flossing / Gliding Techniques",
@@ -269,7 +269,7 @@ export const blogs = [
       },
       {
         heading: "Neuromuscular & Proprioception Training",
-        text: "Balance board and single-leg exercises retrain joint position awareness, preventing future sprains."
+        text: "Balance board and balance exercises retrain joint position awareness, preventing future sprains."
       },
       {
         heading: "Conclusion",

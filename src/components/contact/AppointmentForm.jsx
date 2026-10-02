@@ -177,9 +177,9 @@ const AppointmentForm = () => {
   return (
     <section className="relative py-8 xs:py-10 sm:py-14 lg:py-16 bg-white overflow-hidden min-h-screen flex items-start lg:items-center border-t border-slate-100">
       {/* Background Graphic Accents */}
-      <div className="absolute inset-0 bg-gradient-to-b from-blue-50/40 via-white to-slate-50/50 pointer-events-none" />
-      <div className="absolute top-0 right-1/4 w-96 h-96 bg-blue-100/30 blur-3xl rounded-full pointer-events-none" />
-      <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-emerald-100/30 blur-3xl rounded-full pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-teal-50/30 via-white to-slate-50/50 pointer-events-none" />
+      <div className="absolute top-0 right-1/4 w-96 h-96 bg-red-100/20 blur-3xl rounded-full pointer-events-none" />
+      <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-teal-100/25 blur-3xl rounded-full pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Header Title */}
@@ -189,14 +189,14 @@ const AppointmentForm = () => {
           transition={{ duration: 0.5 }}
           className="text-center max-w-3xl mx-auto mb-6 sm:mb-12"
         >
-          <div className="inline-flex max-w-full items-center justify-center gap-2 px-3 xs:px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#0066cc] font-semibold text-[11px] xs:text-xs sm:text-sm tracking-wide mb-3 text-center leading-snug">
-            <FaShieldAlt className="text-[#0066cc] text-xs" />
+          <div className="inline-flex max-w-full items-center justify-center gap-2 px-3 xs:px-4 py-1.5 rounded-full bg-teal-50 border border-teal-200 text-teal-700 font-semibold text-[11px] xs:text-xs sm:text-sm tracking-wide mb-3 text-center leading-snug">
+            <FaShieldAlt className="text-teal-700 text-xs" />
             <span>{t("appointmentForm.badge")}</span>
           </div>
 
           <h1 className="text-[26px] xs:text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 leading-tight">
             {t("appointmentForm.titleLine1")}{" "}
-            <span className="bg-gradient-to-r from-[#0066cc] to-[#16a34a] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#d71920] to-[#008272] bg-clip-text text-transparent">
               {t("appointmentForm.titleHighlight")}
             </span>{" "}
             {t("appointmentForm.titleLine2")}
@@ -221,7 +221,7 @@ const AppointmentForm = () => {
             <div className="bg-white border border-slate-200/90 rounded-2xl p-4 xs:p-5 sm:p-6 shadow-md shadow-slate-100 relative overflow-hidden space-y-4">
               <div className="flex flex-col mobile:flex-row mobile:items-center mobile:justify-between gap-2.5 pb-3 border-b border-slate-100">
                 <h3 className="text-sm sm:text-base font-bold text-slate-900 flex items-start mobile:items-center gap-2">
-                  <FaStethoscope className="text-[#0066cc]" />
+                  <FaStethoscope className="text-teal-700" />
                   <span>{t("appointmentForm.specialistTitle")}</span>
                 </h3>
                 <div className="flex items-center gap-1 text-amber-500 text-xs font-semibold">
@@ -231,37 +231,44 @@ const AppointmentForm = () => {
               </div>
 
               {/* Doctor 1: Dr. MD Rashid */}
-              <div className="flex flex-col mobile:flex-row mobile:items-center gap-3 bg-slate-50/80 hover:bg-blue-50/40 transition-colors p-3 rounded-xl border border-slate-200/80 text-center mobile:text-left">
+              <div className="flex flex-col mobile:flex-row mobile:items-center gap-3 bg-slate-50/80 hover:bg-teal-50/40 transition-colors p-3 rounded-xl border border-slate-200/80 text-center mobile:text-left">
                 <img
                   src={drRashidImage}
                   alt="Dr. MD Rashid (PT)"
-                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-cover border border-blue-200 shadow-sm shrink-0 mx-auto mobile:mx-0"
+                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-cover border border-teal-200 shadow-sm shrink-0 mx-auto mobile:mx-0"
                 />
                 <div className="w-full">
                   <h4 className="text-sm sm:text-base font-bold text-slate-900">
                     Dr. MD Rashid (PT)
                   </h4>
-                  <p className="text-[#0066cc] text-xs font-semibold">
+                  <p className="text-teal-700 text-xs font-semibold">
                     {t("appointmentForm.drRashidTitle")}
                   </p>
                   <p className="text-slate-500 text-[11px] mt-0.5">
                     {t("appointmentForm.drRashidReg")}
                   </p>
+                  <div className="flex flex-wrap gap-1 mt-1.5 justify-center mobile:justify-start">
+                    <span className="text-[10px] font-semibold bg-teal-50 text-teal-700 border border-teal-200/70 px-1.5 py-0.5 rounded-md">Cupping</span>
+                    <span className="text-[10px] font-semibold bg-teal-50 text-teal-700 border border-teal-200/70 px-1.5 py-0.5 rounded-md">Dry Needling</span>
+                    <span className="text-[10px] font-semibold bg-teal-50 text-teal-700 border border-teal-200/70 px-1.5 py-0.5 rounded-md">Taping</span>
+                    <span className="text-[10px] font-semibold bg-teal-50 text-teal-700 border border-teal-200/70 px-1.5 py-0.5 rounded-md">Mulligan MWM</span>
+                    <span className="text-[10px] font-semibold bg-teal-50 text-teal-700 border border-teal-200/70 px-1.5 py-0.5 rounded-md">BLS</span>
+                  </div>
                 </div>
               </div>
 
               {/* Doctor 2: Dr. Wajhul Qamar */}
-              <div className="flex flex-col mobile:flex-row mobile:items-center gap-3 bg-slate-50/80 hover:bg-blue-50/40 transition-colors p-3 rounded-xl border border-slate-200/80 text-center mobile:text-left">
+              <div className="flex flex-col mobile:flex-row mobile:items-center gap-3 bg-slate-50/80 hover:bg-teal-50/40 transition-colors p-3 rounded-xl border border-slate-200/80 text-center mobile:text-left">
                 <img
                   src={drWazulImage}
                   alt="Dr. Wajhul Qamar (PT)"
-                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-cover border border-blue-200 shadow-sm shrink-0 mx-auto mobile:mx-0"
+                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-cover border border-teal-200 shadow-sm shrink-0 mx-auto mobile:mx-0"
                 />
                 <div className="w-full">
                   <h4 className="text-sm sm:text-base font-bold text-slate-900">
                     Dr. Wajhul Qamar (PT)
                   </h4>
-                  <p className="text-[#0066cc] text-xs font-semibold">
+                  <p className="text-teal-700 text-xs font-semibold">
                     {t("appointmentForm.drWazulTitle")}
                   </p>
                   <p className="text-slate-500 text-[11px] mt-0.5">
@@ -273,11 +280,11 @@ const AppointmentForm = () => {
               {/* Highlights */}
               <div className="pt-2 space-y-2 text-xs text-slate-700">
                 <div className="flex items-start gap-2">
-                  <FaCheckCircle className="text-[#16a34a] mt-0.5 shrink-0" />
+                  <FaCheckCircle className="text-[#008272] mt-0.5 shrink-0" />
                   <span>{t("appointmentForm.highlight1")}</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <FaCheckCircle className="text-[#16a34a] mt-0.5 shrink-0" />
+                  <FaCheckCircle className="text-[#008272] mt-0.5 shrink-0" />
                   <span>{t("appointmentForm.highlight2")}</span>
                 </div>
               </div>
@@ -286,24 +293,24 @@ const AppointmentForm = () => {
             {/* Quick Contact & Consultation Hours Card */}
             <div className="bg-white border border-slate-200/90 rounded-2xl p-4 xs:p-5 sm:p-6 shadow-md shadow-slate-100 space-y-4">
               <h3 className="text-slate-900 font-bold text-sm sm:text-base flex items-center gap-2">
-                <FaClock className="text-[#0066cc]" />
+                <FaClock className="text-teal-700" />
                 <span>{t("appointmentForm.timingsTitle")}</span>
               </h3>
 
               <div className="grid grid-cols-1 mobile:grid-cols-2 gap-3 text-xs sm:text-sm">
                 <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                  <div className="text-[#0066cc] font-bold mb-1">{t("appointmentForm.morningSession")}</div>
+                  <div className="text-teal-700 font-bold mb-1">{t("appointmentForm.morningSession")}</div>
                   <div className="text-slate-800 font-medium">{t("appointmentForm.morningTime")}</div>
                 </div>
                 <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                  <div className="text-[#0066cc] font-bold mb-1">{t("appointmentForm.eveningSession")}</div>
+                  <div className="text-teal-700 font-bold mb-1">{t("appointmentForm.eveningSession")}</div>
                   <div className="text-slate-800 font-medium">{t("appointmentForm.eveningTime")}</div>
                 </div>
               </div>
 
               {/* Address */}
               <div className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-600 pt-1">
-                <FaMapMarkerAlt className="text-[#0066cc] mt-0.5 shrink-0 text-sm" />
+                <FaMapMarkerAlt className="text-red-600 mt-0.5 shrink-0 text-sm" />
                 <span>
                   {settings.address}
                 </span>
@@ -315,7 +322,7 @@ const AppointmentForm = () => {
                   href={`tel:${(settings.phone || "+918809491380").replace(/\s+/g, "")}`}
                   className="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold py-2.5 px-3 rounded-xl text-xs sm:text-sm transition-all border border-slate-300 shadow-sm"
                 >
-                  <FaPhoneAlt className="text-[#0066cc] text-xs" />
+                  <img src="/call.png" alt="Call" className="w-4 h-4 object-contain shrink-0" />
                   <span>{t("appointmentForm.callDoctor")}</span>
                 </a>
 
@@ -323,9 +330,9 @@ const AppointmentForm = () => {
                   href={`https://wa.me/${(settings.whatsapp || "918809491380").replace(/[^0-9]/g, "")}?text=Hello%20Dr.%20MD%20Rashid,%20I%20would%20like%20to%20inquire%20about%20a%20physiotherapy%20appointment.`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 px-3 rounded-xl text-xs sm:text-sm transition-all shadow-sm"
+                  className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white font-semibold py-2.5 px-3 rounded-xl text-xs sm:text-sm transition-all shadow-sm"
                 >
-                  <FaWhatsapp className="text-base" />
+                  <img src="/whatsapp.png" alt="WhatsApp" className="w-5 h-5 object-contain shrink-0" />
                   <span>{t("appointmentForm.whatsapp")}</span>
                 </a>
               </div>
@@ -527,7 +534,7 @@ const AppointmentForm = () => {
                       <option value="Dry Needling Therapy">{t("appointmentForm.condDryNeedling")}</option>
                       <option value="Stroke / Paralysis Rehab">{t("appointmentForm.condStroke")}</option>
                       <option value="Post-Surgery Rehabilitation">{t("appointmentForm.condPostSurgery")}</option>
-                      <option value="Sports Injury Rehab">{t("appointmentForm.condSportsInjury")}</option>
+                      <option value="Sports Injury Rehabilitation">{t("appointmentForm.condSportsInjury")}</option>
                       <option value="Tennis Elbow">{t("appointmentForm.condTennisElbow")}</option>
                       <option value="Plantar Fasciitis / Heel Pain">{t("appointmentForm.condPlantarFasciitis")}</option>
                       <option value="General Physical Assessment">{t("appointmentForm.condGeneralAssessment")}</option>
@@ -698,10 +705,10 @@ const AppointmentForm = () => {
                     h-auto
                     py-3.5
                     bg-gradient-to-r
-                    from-[#0066cc]
-                    to-[#16a34a]
-                    hover:from-[#0052a3]
-                    hover:to-[#15803d]
+                    from-[#d71920]
+                    to-[#008272]
+                    hover:from-[#b91c1c]
+                    hover:to-[#0f766e]
                     active:scale-[0.99]
                     disabled:opacity-70
                     text-white
@@ -737,7 +744,7 @@ const AppointmentForm = () => {
 
                 {/* Guarantee Pill */}
                 <div className="flex flex-wrap items-center justify-center gap-2 text-[11px] text-slate-500 pt-1 text-center">
-                  <FaShieldAlt className="text-[#0066cc]" />
+                  <FaShieldAlt className="text-teal-700" />
                   <span>{t("appointmentForm.guarantee")}</span>
                 </div>
               </form>
@@ -813,11 +820,11 @@ const AppointmentForm = () => {
                   </div>
                   <div className="flex items-start justify-between gap-2.5 pb-2 border-b border-slate-200/60">
                     <span className="text-slate-500 font-medium shrink-0">{t("appointmentForm.preferredDate")}</span>
-                    <span className="text-[#0066cc] font-bold text-right">{formatDateDisplay(lastBooking.date)}</span>
+                    <span className="text-teal-700 font-bold text-right">{formatDateDisplay(lastBooking.date)}</span>
                   </div>
                   <div className="flex items-start justify-between gap-2.5">
                     <span className="text-slate-500 font-medium shrink-0">{t("appointmentForm.timeSlot")}</span>
-                    <span className="text-[#0066cc] font-bold text-right">{lastBooking.time}</span>
+                    <span className="text-teal-700 font-bold text-right">{lastBooking.time}</span>
                   </div>
                 </div>
 
@@ -827,9 +834,9 @@ const AppointmentForm = () => {
                     href={`https://wa.me/${(settings.whatsapp || "918809491380").replace(/[^0-9]/g, "")}?text=Hello%20Heal%20Stride,%20I%20have%20submitted%20an%20appointment%20request%20for%20${encodeURIComponent(lastBooking.name)}.`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-semibold py-2.5 xs:py-3 px-3.5 rounded-xl text-xs mobile:text-sm transition-all shadow-md shadow-emerald-600/20"
+                    className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba59] active:scale-[0.98] text-white font-semibold py-2.5 xs:py-3 px-3.5 rounded-xl text-xs mobile:text-sm transition-all shadow-md shadow-emerald-600/20"
                   >
-                    <FaWhatsapp className="text-sm xs:text-base" />
+                    <img src="/whatsapp.png" alt="WhatsApp" className="w-5 h-5 object-contain shrink-0" />
                     <span>{t("appointmentForm.whatsappClinic")}</span>
                   </a>
 

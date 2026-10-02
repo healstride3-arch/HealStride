@@ -74,7 +74,7 @@ const initialGalleryItems = [
     id: "clinic-10",
     image: servicesBanner,
     title: "Comprehensive Physiotherapy Services",
-    subtitle: "Dr. MD Rashid (PT) - Certified in Cupping, Needling & Tapping",
+    subtitle: "Dr. MD Rashid (PT) - Senior Consultant | MPT (Sports) • Certified in Cupping, Needling, Taping & MWM",
   },
 ];
 

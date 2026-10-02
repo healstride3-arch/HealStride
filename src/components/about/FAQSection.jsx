@@ -154,7 +154,7 @@ const FAQSection = () => {
                   </span>
 
                   <ChevronDown
-                    className={`w-5 h-5 text-blue-600 transition-transform duration-300 ${isOpen ? "rotate-180" : ""
+                    className={`w-5 h-5 text-teal-700 transition-transform duration-300 ${isOpen ? "rotate-180" : ""
                       }`}
                   />
                 </button>

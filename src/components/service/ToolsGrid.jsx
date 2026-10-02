@@ -54,7 +54,7 @@ const toolsData = [
     title: "Traction Unit",
     image: "/tool10.jpg",
     description:
-      "Used to relieve pressure on the spine and improve mobility.",
+      "Used to relieve pressure on the back and improve mobility.",
   },
   {
     title: "Parallel Bars",

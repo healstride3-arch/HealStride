@@ -21,6 +21,7 @@ import frozenshoulder from "../../assets/images/frozenshoulder.jpg";
 import osteoarthritis from "../../assets/images/Osteoarthritis.jpg";
 import sciaticapain from "../../assets/images/sciaticapain.jpg";
 import strokerehab from "../../assets/images/strokerehab.jpg";
+import sportsinjury from "../../assets/images/sportsinjury.jpg";
 import postsurgeryrehab from "../../assets/images/postsurgeryrehab.jpg";
 
 const treatmentsData = [
@@ -70,7 +71,7 @@ const treatmentsData = [
     descKey: "servicesList.strokeRehabDesc",
   },
   {
-    image: treatment4,
+    image: sportsinjury,
     titleKey: "servicesList.sportsRehabTitle",
     descKey: "servicesList.sportsRehabDesc",
   },

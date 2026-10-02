@@ -21,7 +21,7 @@ const GoogleMap = () => {
           viewport={{ once: true }}
           className="text-center mb-8 sm:mb-12"
         >
-          <p className="uppercase tracking-wider text-[#0066cc] font-semibold text-xs sm:text-sm">
+          <p className="uppercase tracking-wider text-teal-700 font-semibold text-xs sm:text-sm">
             OUR LOCATION
           </p>
 
@@ -37,7 +37,7 @@ const GoogleMap = () => {
 
           {/* Live Address Badge */}
           <div className="mt-3.5 inline-flex items-center justify-center gap-2 bg-white px-4 py-2 rounded-full border border-slate-200 text-xs sm:text-sm text-slate-700 shadow-sm font-medium">
-            <FaMapMarkerAlt className="text-[#0066cc] shrink-0" />
+            <FaMapMarkerAlt className="text-red-600 shrink-0" />
             <span>{settings.address}</span>
           </div>
         </motion.div>

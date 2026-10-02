@@ -21,13 +21,14 @@
     "quickLinks": "Quick Links",
     "treatments": "Treatments",
     "contact": "Contact Info",
-    "backSpine": "Back & Spine Pain",
+    "backSpine": "Back Pain",
     "cervicalNeck": "Cervical Neck Pain",
     "kneeOsteo": "Knee Osteoarthritis",
     "sciaticaNerve": "Sciatica & Nerve Pain",
     "frozenShoulder": "Frozen Shoulder",
     "cuppingTherapy": "Cupping (Hijama) Therapy",
     "postSurgery": "Post-Surgery Rehabilitation",
+    "sportsInjury": "Sports Injury Rehabilitation",
     "address": "LIG 85 New Subhash Nagar Near Gurudwara-Raisen Road  Bhopal 462023",
     "rights": "HealStride Physiotherapy & Wellness Centre. All rights reserved.",
     "madeWith": "Made with",
@@ -69,11 +70,11 @@
     "toolsTitle": "Advanced Tools & Equipment",
     "toolsDesc": "State-of-the-art rehabilitation technology and physical therapy equipment.",
     "learnMore": "Learn More →",
-    "viewAll": "View All Services →"
+    "viewAll": "View All Services"
   },
   "servicesList": {
     "cervicalPainTitle": "Cervical Pain Treatment",
-    "cervicalPainDesc": "Targeted therapy to relieve neck stiffness, nerve compression and cervical spine pain.",
+    "cervicalPainDesc": "Targeted therapy to relieve neck stiffness, nerve compression and cervical pain.",
     "backPainTitle": "Back Pain Relief",
     "backPainDesc": "Specialized physiotherapy for lower back ache, disc issues, and spinal strength.",
     "kneePainTitle": "Knee Pain Care",
@@ -87,10 +88,10 @@
     "osteoarthritisTitle": "Osteoarthritis Management",
     "osteoarthritisDesc": "Joint strengthening and movement therapy for long-term arthritis relief.",
     "sciaticaTitle": "Sciatica Pain Therapy",
-    "sciaticaDesc": "Targeted nerve decompression and guided exercises for radiating leg pain.",
+    "sciaticaDesc": "Targeted nerve decompression and guided exercises for radiating pain.",
     "strokeRehabTitle": "Stroke Rehabilitation",
     "strokeRehabDesc": "Neurological therapy to regain motor skills, balance, and daily independence.",
-    "sportsRehabTitle": "Sports Rehabilitation",
+    "sportsRehabTitle": "Sports Injury Rehabilitation",
     "sportsRehabDesc": "Helping athletes recover from injuries and return stronger.",
     "postSurgeryPhysioTitle": "Post Surgery Physio",
     "postSurgeryPhysioDesc": "Guided post-operative care to regain muscle strength and joint flexibility.",
@@ -124,7 +125,7 @@
     "kneeTitle": "Knee Pain & ACL",
     "backTitle": "Back Pain & Sciatica",
     "neckTitle": "Neck & Shoulder Pain",
-    "sportsTitle": "Sports Injuries",
+    "sportsTitle": "Sports Injury Rehabilitation",
     "neuroTitle": "Neurological Rehab",
     "postSurgery": "Post-Surgical Rehab"
   },
@@ -138,8 +139,8 @@
     "osteoarthritis": "Osteoarthritis",
     "sciatica": "Sciatica",
     "strokeRehab": "Stroke Rehab",
-    "sportsInjury": "Sports Rehab",
-    "sportsRehab": "Sports Rehab",
+    "sportsInjury": "Sports Injury Rehabilitation",
+    "sportsRehab": "Sports Injury Rehabilitation",
     "postSurgeryRehab": "Post Surgery Physio",
     "postSurgeryPhysio": "Post Surgery Physio",
     "painReduction": "Pain Reduction",
@@ -261,7 +262,7 @@
       },
       "clinic-10": {
         "title": "Comprehensive Physiotherapy Services",
-        "subtitle": "Dr. MD Rashid (PT) - Certified in Cupping, Needling & Taping."
+        "subtitle": "Dr. MD Rashid (PT) - Senior Consultant | MPT (Sports) • Certified in Cupping, Needling, Taping & MWM."
       }
     }
   },
@@ -295,7 +296,7 @@
     },
     "blog5": {
       "title": "Relieving Cervical Neck Pain & 'Tech Neck'",
-      "desc": "Effective physiotherapy techniques to relieve neck spasms, headache, and cervical spine strain."
+      "desc": "Effective physiotherapy techniques to relieve neck spasms, headache, and cervical strain."
     },
     "blog6": {
       "title": "Knee Pain & Osteoarthritis: Mobility & Strengthening Guide",
@@ -303,7 +304,7 @@
     },
     "blog7": {
       "title": "Understanding Sciatica Pain & Effective Relief Exercises",
-      "desc": "Learn how nerve gliding and core stabilization relieve shooting pain down the leg."
+      "desc": "Learn how nerve gliding and core stabilization relieve shooting pain."
     },
     "blog8": {
       "title": "Essential Rehabilitation Tips After a Sports Injury",
@@ -322,7 +323,7 @@
   "clinicIntro": {
     "badge": "Clinic Introduction",
     "title": "Welcome to HealStride",
-    "desc": "Hello, I'm Dr. MD Rashid, the Lead Physiotherapist at HealStride Physiotherapy & Wellness Centre. With 5+ years of experience and over 2500 happy patients, we are dedicated to helping our patients overcome pain, recover mobility, and improve their quality of life through evidence-based physiotherapy treatments. We are certified in Taping Therapy, Mulligan’s Mobilization with Movement (MWM), and Basic Life Support (BLS) & Critical Care Management. At HealStride, We combine modern technology, expert care, and personalized treatment plans to ensure faster recovery and long-term wellness.",
+    "desc": "Hello, I'm Dr. MD Rashid, Senior Consultant Physiotherapist | MPT (Sports) at HealStride Physiotherapy & Wellness Centre. With 5+ years of clinical experience and over 2,500 happy patients, we are dedicated to helping patients overcome pain, recover mobility, and restore peak performance through evidence-based treatments. Certified in Cupping Therapy, Dry Needling Therapy, Taping Therapy, Mulligan’s Mobilization with Movement (MWM), and Basic Life Support (BLS) & Critical Care Management. At HealStride, we combine modern technology, specialized care, and personalized rehabilitation plans for faster recovery.",
     "f1": "Advanced Physiotherapy Equipment",
     "f2": "Personalized Treatment Plans",
     "f3": "Experienced Physiotherapists",
@@ -356,7 +357,7 @@
     "subtitle": "Comprehensive physiotherapy solutions designed to relieve pain, restore movement, and improve your overall quality of life.",
     "s1Title": "Back & Neck Pain",
     "s1Desc": "Effective treatment for chronic back pain, neck stiffness, and posture-related issues.",
-    "s2Title": "Sports Injury Rehab",
+    "s2Title": "Sports Injury Rehabilitation",
     "s2Desc": "Recovery programs designed for athletes and active individuals to regain strength and mobility.",
     "s3Title": "Post Surgery Rehabilitation",
     "s3Desc": "Personalized physiotherapy plans to accelerate recovery after surgeries and injuries.",
@@ -424,8 +425,8 @@
     "subtitle": "Consult our expert physiotherapists Dr. MD Rashid (PT) and Dr. Wajhul Qamar (PT) for personalized pain relief and rehabilitation.",
     "specialistTitle": "Our Specialist Physiotherapists",
     "reviewsRating": "4.7 ★ (43+ Reviews)",
-    "drRashidTitle": "Consultant Physiotherapist (BPT)",
-    "drRashidReg": "Reg. DEG2/71968/2025 • Cupping & Needling Certified",
+    "drRashidTitle": "Senior Consultant Physiotherapist | MPT (Sports)",
+    "drRashidReg": "Reg. DEG2/71968/2025 • MPT (Sports) • Certified in Cupping, Dry Needling & Taping",
     "drWazulTitle": "Physiotherapist & Rehab Specialist (BPT)",
     "drWazulDesc": "Movement Recovery & Musculoskeletal Rehabilitation",
     "highlight1": "Evidence-based modalities (Traction, Laser & Stimulator)",
@@ -448,24 +449,24 @@
     "doctorLabel": "Select Specialist Doctor",
     "doctorOptional": "(Optional)",
     "doctorAny": "Any Available Specialist (Recommended)",
-    "doctorRashid": "Dr. MD Rashid (PT) - Consultant Physiotherapist",
+    "doctorRashid": "Dr. MD Rashid (PT) - Senior Consultant Physiotherapist | MPT (Sports)",
     "doctorWazul": "Dr. Wajhul Qamar (PT) - Physiotherapist & Rehab Specialist",
     "conditionLabel": "Select Condition / Treatment",
     "conditionPlaceholder": "Choose condition or therapy",
     "conditionError": "Please select a condition or therapy.",
-    "condBackPain": "Back Pain / Lower Spine Stiffness",
+    "condBackPain": "Back Pain / Lower Back Stiffness",
     "condNeckPain": "Neck Pain / Cervical Spondylosis",
     "condKneePain": "Knee Pain / Osteoarthritis",
-    "condSciatica": "Sciatica Nerve Pain & Leg Radiating Pain",
+    "condSciatica": "Sciatica Nerve Pain & Radiating Pain",
     "condFrozenShoulder": "Frozen Shoulder / Joint Restriction",
-    "condCupping": "Cupping (Hijama) Pain Therapy",
+    "condCupping": "Cupping (Hijama) Therapy",
     "condDryNeedling": "Dry Needling / Trigger Point Release",
     "condStroke": "Stroke / Neurological Paralysis Rehab",
     "condPostSurgery": "Post-Surgery Orthopedic Rehab",
-    "condSportsInjury": "Sports Injury / Ligament Sprain",
+    "condSportsInjury": "Sports Injury Rehabilitation / Ligament Sprain",
     "condTennisElbow": "Tennis Elbow / Forearm Pain",
     "condPlantarFasciitis": "Plantar Fasciitis / Heel Pain",
-    "condGeneralAssessment": "General Physical Pain Assessment",
+    "condGeneralAssessment": "General Physical Assessment",
     "condOther": "Other Musculoskeletal Condition",
     "dateLabel": "Preferred Date",
     "dateError": "Please select an appointment date.",
@@ -506,7 +507,8 @@
     "pageSubtitle": "HealStride offers evidence-based physiotherapy treatments designed to reduce pain, restore movement, and improve your quality of life.",
     "benefits": "Benefits",
     "duration": "Duration:",
-    "bookNow": "Book Appointment →"
+    "bookNow": "Book Appointment",
+    "bookAppointment": "Book Appointment"
   },
   "toolsGrid": {
     "title": "Tools & Equipment",
@@ -517,17 +519,31 @@
     "subtitle": "Meet our experienced physiotherapy specialists.",
     "loading": "Loading Doctors...",
     "noDoctors": "No doctors found.",
-    "viewProfile": "View Profile →"
+    "viewProfile": "View Profile"
   },
   "doctorProfile": {
-    "loading": "Loading...",
+    "loading": "Loading Doctor Profile...",
     "notFound": "Doctor Not Found",
-    "back": "Back",
-    "education": "Education",
-    "experience": "Experience",
-    "registration": "Registration",
-    "specialization": "Specialization",
-    "bookAppointment": "Book Appointment"
+    "back": "Back to Doctors",
+    "verifiedDoctor": "Verified Senior Specialist",
+    "education": "Education & Degrees",
+    "experience": "Clinical Experience",
+    "registration": "Medical Registration",
+    "specialization": "Clinical Specializations",
+    "certificationsTitle": "Certified Professional Accreditations",
+    "certificationsSubtitle": "Advanced clinical certifications recognized in modern evidence-based physiotherapy.",
+    "clinicalPhilosophy": "Treatment Philosophy & Approach",
+    "conditionsTreated": "Conditions & Injuries Treated",
+    "bookAppointment": "Book In-Clinic Consultation",
+    "instantConsultation": "Schedule Priority Appointment",
+    "whatsappConsult": "Direct WhatsApp Consultation",
+    "callNow": "Call Doctor Directly",
+    "shareProfile": "Share Profile",
+    "profileCopied": "Doctor profile link copied to clipboard!",
+    "satisfactionRate": "99% Patient Satisfaction",
+    "patientsTreated": "2,500+ Patients Recovered",
+    "clinicalExperience": "5+ Years Experience",
+    "ratingSummary": "5.0 ★ Google Rating"
   },
   "blogsPage": {
     "badge": "Health Articles",
@@ -560,7 +576,7 @@
     "cat2Desc": "Advanced physiotherapy equipment used for effective pain management and recovery.",
     "cat3Title": "Treatment Photos",
     "cat3Desc": "Professional therapy sessions focused on rehabilitation and patient care.",
-    "viewGallery": "View Gallery →"
+    "viewGallery": "View Gallery"
   },
   "galleryCategory": {
     "explore": "Explore our {{title}}",
@@ -647,7 +663,7 @@
     "title": "Our Physiotherapy & Wellness Services",
     "subtitle": "Evidence-based physiotherapy, pain management, and specialized therapies tailored to your unique recovery needs.",
     "catAll": "All Services",
-    "catSpine": "Spine & Cervical",
+    "catSpine": "Back & Cervical",
     "catJoints": "Joint & Muscle",
     "catTherapies": "Specialized Therapies",
     "catRehab": "Rehabilitation",

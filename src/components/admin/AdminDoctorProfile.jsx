@@ -36,6 +36,7 @@ const emptyForm = {
   experience: "",
   registration: "",
   specialization: "",
+  certifications: "",
   description: "",
   active: true,
 };
@@ -88,6 +89,9 @@ const AdminDoctors = () => {
     setFormData({
       ...emptyForm,
       ...doctor,
+      certifications: Array.isArray(doctor.certifications)
+        ? doctor.certifications.join("\n")
+        : (doctor.certifications || ""),
     });
 
     setImageFile(null);
@@ -151,8 +155,19 @@ const AdminDoctors = () => {
           "https://ui-avatars.com/api/?name=Doctor&background=0D9488&color=fff&size=300";
       }
 
+      const certificationsArray =
+        typeof formData.certifications === "string"
+          ? formData.certifications
+              .split("\n")
+              .map((c) => c.trim())
+              .filter(Boolean)
+          : Array.isArray(formData.certifications)
+          ? formData.certifications
+          : [];
+
       const payload = {
         ...formData,
+        certifications: certificationsArray,
         slug: slugify(formData.slug),
         image: imageUrl,
         imagePath,
@@ -695,25 +710,54 @@ const AdminDoctors = () => {
               "
               />
 
+              {/* Certifications (one per line) */}
+              <div className="md:col-span-2">
+                <label className="block text-xs font-semibold text-slate-600 mb-1">
+                  Certifications (One per line)
+                </label>
+                <textarea
+                  rows="4"
+                  placeholder="Certified in Cupping Therapy&#10;Certified in Dry Needling Therapy&#10;Certified in Taping Therapy&#10;Certified in Mulligan’s Mobilization with Movement (MWM)&#10;Certified in Basic Life Support (BLS) & Critical Care Management"
+                  value={formData.certifications}
+                  onChange={(e) =>
+                    handleChange(
+                      "certifications",
+                      e.target.value
+                    )
+                  }
+                  className="
+                  border
+                  rounded-lg
+                  p-3
+                  w-full
+                "
+                />
+              </div>
+
               {/* Description */}
 
-              <textarea
-                rows="5"
-                placeholder="Description"
-                value={formData.description}
-                onChange={(e) =>
-                  handleChange(
-                    "description",
-                    e.target.value
-                  )
-                }
-                className="
-                border
-                rounded-lg
-                p-3
-                md:col-span-2
-              "
-              />
+              <div className="md:col-span-2">
+                <label className="block text-xs font-semibold text-slate-600 mb-1">
+                  Profile Bio / Description
+                </label>
+                <textarea
+                  rows="5"
+                  placeholder="Description"
+                  value={formData.description}
+                  onChange={(e) =>
+                    handleChange(
+                      "description",
+                      e.target.value
+                    )
+                  }
+                  className="
+                  border
+                  rounded-lg
+                  p-3
+                  w-full
+                "
+                />
+              </div>
 
               {/* Active */}
 

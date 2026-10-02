@@ -30,6 +30,7 @@ import frozenshoulder from "../../assets/images/frozenshoulder.jpg";
 import osteoarthritis from "../../assets/images/Osteoarthritis.jpg";
 import sciaticapain from "../../assets/images/sciaticapain.jpg";
 import strokerehab from "../../assets/images/strokerehab.jpg";
+import sportsinjury from "../../assets/images/sportsinjury.jpg";
 import postsurgeryrehab from "../../assets/images/postsurgeryrehab.jpg";
 
 const iconMap = {
@@ -59,7 +60,7 @@ const defaultHomeServices = [
     slug: "back-pain",
     imageUrl: backpain,
     icon: "running",
-    description: "Comprehensive physical therapy for acute/chronic lumbar pain, disc herniation, and spine mobility.",
+    description: "Comprehensive physical therapy for acute/chronic lumbar pain, disc herniation, and back mobility.",
   },
   {
     id: "knee-pain",
@@ -119,9 +120,9 @@ const defaultHomeServices = [
   },
   {
     id: "sports-rehab",
-    title: "Sports Rehabilitation",
+    title: "Sports Injury Rehabilitation",
     slug: "sports-rehab",
-    imageUrl: treatment4,
+    imageUrl: sportsinjury,
     icon: "bolt",
     description: "High-performance recovery protocols to help athletes heal fast and prevent future sports injuries.",
   },
@@ -131,7 +132,7 @@ const defaultHomeServices = [
     slug: "post-surgery-physio",
     imageUrl: postsurgeryrehab,
     icon: "procedures",
-    description: "Guided post-operative rehabilitation for joint replacements, fracture repairs, and spine surgeries.",
+    description: "Guided post-operative rehabilitation for joint replacements, fracture repairs, and back surgeries.",
   },
   {
     id: "pain-reduction",

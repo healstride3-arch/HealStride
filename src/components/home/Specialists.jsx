@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { UserRound, CalendarCheck, ArrowRight } from "lucide-react";
+import { UserRound, CalendarCheck, ArrowRight, BadgeCheck } from "lucide-react";
 import { doctors as defaultDoctors, getDoctorLocalizedName } from "../../data/team";
 import { useFirestoreCollection, where } from "../../hooks/useFirestoreCollection";
 
@@ -43,9 +43,32 @@ const Specialists = ({ limit = 3 }) => {
 
         {/* Centered Cards Container */}
         <div className="flex flex-wrap justify-center items-stretch gap-6 lg:gap-8">
-          {doctorList.map((doctor, index) => {
+          {doctorList.map((rawDoc, index) => {
+            const fallbackMatch = defaultDoctors.find(
+              (d) =>
+                d.slug === rawDoc.slug ||
+                d.id === rawDoc.id ||
+                (rawDoc.slug?.includes("rashid") && d.id === "dr-md-rashid")
+            );
+            const doctor = {
+              ...fallbackMatch,
+              ...rawDoc,
+              certifications:
+                rawDoc.certifications && rawDoc.certifications.length > 0
+                  ? rawDoc.certifications
+                  : fallbackMatch?.certifications || [],
+            };
+
             const docName = getDoctorLocalizedName(doctor, i18n);
             const docSlug = doctor.slug || doctor.id || "doctor";
+            const isRashid =
+              doctor.id === "dr-md-rashid" ||
+              doctor.slug === "dr-md-rashid" ||
+              doctor.name?.toLowerCase().includes("rashid");
+
+            const displayRole = isRashid
+              ? "Senior Consultant Physiotherapist | MPT (Sports)"
+              : (doctor.role || "Physiotherapist & Rehab Specialist (BPT)");
 
             return (
               <motion.div
@@ -93,13 +116,11 @@ const Specialists = ({ limit = 3 }) => {
                       {docName}
                     </h3>
                     <p className="text-xs sm:text-sm font-semibold text-teal-600 mt-1">
-                      {doctor.role || "Consultant Physiotherapist (BPT)"}
+                      {displayRole}
                     </p>
-                    {doctor.specialization && (
-                      <p className="text-xs text-slate-500 mt-2 line-clamp-1">
-                        {doctor.specialization}
-                      </p>
-                    )}
+                    <p className="text-xs text-slate-500 mt-2.5 line-clamp-2 min-h-[2.5rem] leading-relaxed">
+                      {doctor.specialization || doctor.description}
+                    </p>
                   </div>
 
                   <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-center gap-2">

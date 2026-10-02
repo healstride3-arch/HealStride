@@ -107,7 +107,11 @@ const WhatsAppFloat = () => {
               hover:shadow-emerald-500/30
             "
           >
-            <FaWhatsapp className="text-2xl sm:text-3xl" />
+            <img
+              src="/whatsapp.png"
+              alt="WhatsApp"
+              className="w-7 h-7 sm:w-8 sm:h-8 object-contain drop-shadow"
+            />
           </motion.div>
         </div>
       </a>

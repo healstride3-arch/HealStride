@@ -63,7 +63,7 @@ const LoadingScreen = () => {
         {/* Progress Bar */}
         <div className="w-64 md:w-80 h-2 bg-white/10 rounded-full overflow-hidden mt-8">
           <motion.div
-            className="h-full bg-gradient-to-r from-[#0066cc] via-[#0284c7] to-[#16a34a] shadow-[0_0_20px_rgba(0,102,204,0.8)]"
+            className="h-full bg-gradient-to-r from-[#d71920] via-teal-400 to-[#008272] shadow-[0_0_20px_rgba(215,25,32,0.8)]"
             initial={{ width: "0%" }}
             animate={{ width: "100%" }}
             transition={{

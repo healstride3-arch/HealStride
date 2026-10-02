@@ -6,7 +6,7 @@ const CTA = () => {
   const { t } = useTranslation();
 
   return (
-    <section className="py-8 sm:py-12 lg:py-16 bg-gradient-to-r from-blue-600 to-cyan-500">
+    <section className="py-8 sm:py-12 lg:py-16 bg-gradient-to-r from-[#d71920] via-teal-700 to-[#008272]">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -26,7 +26,7 @@ const CTA = () => {
           <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
             <a
               href="/booking"
-              className="inline-flex items-center justify-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:scale-105 transition"
+              className="inline-flex items-center justify-center gap-2 bg-white text-[#d71920] hover:text-[#008272] px-6 py-3 rounded-full font-bold shadow-md hover:scale-105 transition"
             >
               <Calendar className="w-5 h-5" />
               {t("cta.bookBtn")}
@@ -35,9 +35,9 @@ const CTA = () => {
 
             <a
               href="tel:+918809491380"
-              className="inline-flex items-center justify-center gap-2 border-2 border-white text-white px-6 py-3 rounded-full font-medium hover:bg-white hover:text-blue-600 transition"
+              className="inline-flex items-center justify-center gap-2 border-2 border-white text-white px-6 py-3 rounded-full font-medium hover:bg-white hover:text-[#008272] transition"
             >
-              <Phone className="w-5 h-5" />
+              <img src="/call.png" alt="Call" className="w-4 h-4 object-contain" />
               {t("cta.callBtn")}
             </a>
           </div>
