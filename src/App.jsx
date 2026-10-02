@@ -54,6 +54,7 @@ import AdminTestimonials from "./components/admin/AdminTestimonials";
 import AdminGallery from "./components/admin/AdminGallery";
 import AdminFAQ from "./components/admin/AdminFAQ";
 import AdminBlogs from "./components/admin/AdminBlogs";
+import AdminNotificationsPage from "./components/admin/AdminNotificationsPage";
 
 import AnimatedBackground from "./components/AnimatedBackground";
 
@@ -199,6 +200,11 @@ function App() {
           <Route
             path="appointments"
             element={<Appointments />}
+          />
+
+          <Route
+            path="notifications"
+            element={<AdminNotificationsPage />}
           />
 
           <Route

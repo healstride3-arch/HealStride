@@ -14,11 +14,17 @@ import {
 
 import { db } from "../../firebase/firebase";
 import { uploadImage } from "../../utils/imageUpload";
+import Pagination from "./Pagination";
 
 const AdminGallery = () => {
   const [images, setImages] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  // Filter & Pagination
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(8);
 
   const [confirmEditImage, setConfirmEditImage] = useState(null);
 
@@ -28,6 +34,16 @@ const AdminGallery = () => {
     category: "",
     url: "",
   });
+
+  const filteredImages = images.filter((img) => {
+    if (categoryFilter === "all") return true;
+    return img.category === categoryFilter;
+  });
+
+  const paginatedImages = filteredImages.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -292,66 +308,101 @@ const AdminGallery = () => {
             </button>
       </motion.form>
 
+      {/* Category Filter Pills */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
+        {["all", "clinic", "machine", "treatment"].map((cat) => (
+          <button
+            key={cat}
+            type="button"
+            onClick={() => {
+              setCategoryFilter(cat);
+              setCurrentPage(1);
+            }}
+            className={`px-3.5 py-1.5 rounded-xl font-bold capitalize transition whitespace-nowrap ${
+              categoryFilter === cat
+                ? "bg-teal-600 text-white shadow-2xs"
+                : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
+            }`}
+          >
+            {cat === "all" ? "All Photos" : `${cat} Photos`}
+          </button>
+        ))}
+      </div>
+
       {/* Gallery Grid */}
-      {images.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          {images.map((img) => (
-            <motion.div
-              key={img.id}
-              initial={{
-                opacity: 0,
-                y: 20,
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-              }}
-              whileHover={{
-                y: -5,
-              }}
-              className="bg-white rounded-2xl overflow-hidden shadow-lg"
-            >
-              <div className="relative">
-                <img
-                  src={img.imageUrl}
-                  alt={img.title}
-                  className="w-full h-52 object-cover transition-transform duration-300 hover:scale-105"
-                />
+      {filteredImages.length > 0 ? (
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            {paginatedImages.map((img) => (
+              <motion.div
+                key={img.id}
+                initial={{
+                  opacity: 0,
+                  y: 20,
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                whileHover={{
+                  y: -5,
+                }}
+                className="bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-100"
+              >
+                <div className="relative">
+                  <img
+                    src={img.imageUrl}
+                    alt={img.title}
+                    className="w-full h-52 object-cover transition-transform duration-300 hover:scale-105"
+                  />
 
-                <span className="absolute top-3 left-3 bg-gradient-to-r from-teal-500 to-emerald-500 text-white text-xs font-medium px-3 py-1 rounded-full shadow-lg capitalize">
-                  {img.category}
-                </span>
-              </div>
-
-              <div className="p-4">
-                <h3 className="font-semibold text-slate-900">
-                  {img.title}
-                </h3>
-
-                <p className="text-sm text-slate-500 mt-2 line-clamp-4">
-                  {img.description}
-                </p>
-
-                <div className="flex items-center gap-4 mt-4">
-                  <button
-                    onClick={() => setConfirmEditImage(img)}
-                    className="flex items-center gap-2 text-blue-600 hover:text-blue-700"
-                  >
-                    <Edit size={16} />
-                    Edit
-                  </button>
-
-                  <button
-                    onClick={() => handleDelete(img.id)}
-                    className="flex items-center gap-2 text-red-600 hover:text-red-700"
-                  >
-                    <Trash2 size={16} />
-                    Delete
-                  </button>
+                  <span className="absolute top-3 left-3 bg-gradient-to-r from-teal-500 to-emerald-500 text-white text-xs font-medium px-3 py-1 rounded-full shadow-lg capitalize">
+                    {img.category}
+                  </span>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+
+                <div className="p-4">
+                  <h3 className="font-semibold text-slate-900">
+                    {img.title}
+                  </h3>
+
+                  <p className="text-sm text-slate-500 mt-2 line-clamp-3">
+                    {img.description}
+                  </p>
+
+                  <div className="flex items-center gap-4 mt-4 pt-3 border-t border-slate-100">
+                    <button
+                      onClick={() => setConfirmEditImage(img)}
+                      className="flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700"
+                    >
+                      <Edit size={15} />
+                      Edit
+                    </button>
+
+                    <button
+                      onClick={() => handleDelete(img.id)}
+                      className="flex items-center gap-1.5 text-xs font-bold text-red-600 hover:text-red-700"
+                    >
+                      <Trash2 size={15} />
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Pagination */}
+          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-2">
+            <Pagination
+              currentPage={currentPage}
+              totalItems={filteredImages.length}
+              itemsPerPage={itemsPerPage}
+              onPageChange={setCurrentPage}
+              onItemsPerPageChange={setItemsPerPage}
+              pageSizeOptions={[4, 8, 12, 24]}
+            />
+          </div>
         </div>
       ) : (
         <motion.div

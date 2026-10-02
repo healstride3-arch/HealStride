@@ -32,6 +32,7 @@ import { db, storage } from "../../firebase/firebase";
 import toast from "react-hot-toast";
 
 import { uploadImage } from "../../utils/imageUpload";
+import Pagination from "./Pagination";
 
 
 const emptyForm = {
@@ -88,6 +89,26 @@ const AdminBlogs = () => {
   const [imageFile, setImageFile] = useState(null);
 
   const [uploading, setUploading] = useState(false);
+
+  // Search & Pagination States
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(8);
+
+  const filteredBlogs = blogs.filter((b) => {
+    if (!searchQuery.trim()) return true;
+    const q = searchQuery.toLowerCase();
+    return (
+      (b.title || "").toLowerCase().includes(q) ||
+      (b.category || "").toLowerCase().includes(q) ||
+      (b.author || "").toLowerCase().includes(q)
+    );
+  });
+
+  const paginatedBlogs = filteredBlogs.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
 
 
@@ -703,7 +724,12 @@ const AdminBlogs = () => {
 
           <input
             type="text"
-            placeholder="Search blogs..."
+            placeholder="Search blogs by title, category, author..."
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setCurrentPage(1);
+            }}
             className="
             w-full
             border
@@ -837,7 +863,7 @@ const AdminBlogs = () => {
 
 
               {
-                blogs.map((blog) => (
+                paginatedBlogs.map((blog) => (
 
 
                   <div
@@ -1119,7 +1145,7 @@ const AdminBlogs = () => {
 
 
                     {
-                      blogs.map((blog) => (
+                      paginatedBlogs.map((blog) => (
 
 
                         <tr
@@ -1406,10 +1432,19 @@ const AdminBlogs = () => {
 
               </div>
 
+              {/* Pagination */}
+              <div className="bg-white rounded-2xl shadow border p-2 mt-4">
+                <Pagination
+                  currentPage={currentPage}
+                  totalItems={filteredBlogs.length}
+                  itemsPerPage={itemsPerPage}
+                  onPageChange={setCurrentPage}
+                  onItemsPerPageChange={setItemsPerPage}
+                  pageSizeOptions={[4, 8, 12, 24]}
+                />
+              </div>
 
             </div>
-
-
 
           </>
 

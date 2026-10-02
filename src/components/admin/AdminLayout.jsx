@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BrandName from "../common/BrandName";
 import logo from "../../assets/images/logo.png";
 import {
@@ -8,7 +8,8 @@ import {
   useLocation,
 } from "react-router-dom";
 import { signOut } from "firebase/auth";
-import { auth } from "../../firebase/firebase";
+import { collection, onSnapshot } from "firebase/firestore";
+import { auth, db } from "../../firebase/firebase";
 import AdminNotifications from "./AdminNotifications";
 
 import {
@@ -16,6 +17,7 @@ import {
   X,
   LayoutDashboard,
   CalendarDays,
+  Bell,
   Settings,
   LogOut,
   ImageIcon,
@@ -25,6 +27,9 @@ import {
   FileText,
   UsersRound,
   BriefcaseBusiness,
+  ExternalLink,
+  ShieldCheck,
+  ChevronRight,
 } from "lucide-react";
 
 const AdminLayout = () => {
@@ -32,76 +37,122 @@ const AdminLayout = () => {
   const location = useLocation();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [pendingAppointmentsCount, setPendingAppointmentsCount] = useState(0);
+  const [unreadNotificationsCount, setUnreadNotificationsCount] = useState(0);
 
-  const menuItems = [
+  // Realtime badge counts for Appointments and Notifications
+  useEffect(() => {
+    const unsubApp = onSnapshot(collection(db, "appointments"), (snap) => {
+      const pending = snap.docs.filter(
+        (d) =>
+          d.data().status === "pending" ||
+          (d.data().notificationRead !== true && d.data().read !== true)
+      ).length;
+      setPendingAppointmentsCount(pending);
+    });
+
+    const unsubFaq = onSnapshot(collection(db, "faqSubmissions"), (snap) => {
+      const unreadFaq = snap.docs.filter(
+        (d) => d.data().notificationRead !== true && d.data().read !== true
+      ).length;
+      setUnreadNotificationsCount((prev) => prev + unreadFaq);
+    });
+
+    return () => {
+      unsubApp();
+      unsubFaq();
+    };
+  }, []);
+
+  // Professional clinic sidebar navigation grouped logically
+  const navigationGroups = [
     {
-      name: "Appointments",
-      icon: <CalendarDays size={18} />,
-      path: "/admin/appointments",
+      group: "MAIN OVERVIEW",
+      items: [
+        {
+          name: "Dashboard",
+          icon: LayoutDashboard,
+          path: "/admin",
+          exact: true,
+        },
+        {
+          name: "Appointments",
+          icon: CalendarDays,
+          path: "/admin/appointments",
+          badge: pendingAppointmentsCount > 0 ? pendingAppointmentsCount : null,
+          badgeColor: "bg-teal-500 text-white",
+        },
+        {
+          name: "Notifications",
+          icon: Bell,
+          path: "/admin/notifications",
+          badge: pendingAppointmentsCount > 0 ? pendingAppointmentsCount : null,
+          badgeColor: "bg-rose-500 text-white",
+        },
+      ],
     },
     {
-      name: "Blogs",
-      icon: <FileText size={18} />,
-      path: "/admin/blogs",
+      group: "CLINIC MANAGEMENT",
+      items: [
+        {
+          name: "Doctor Profile",
+          icon: UserRound,
+          path: "/admin/doctor-profile",
+        },
+        {
+          name: "Staff & Team",
+          icon: UsersRound,
+          path: "/admin/staff",
+        },
+        {
+          name: "Services & Treatments",
+          icon: BriefcaseBusiness,
+          path: "/admin/services",
+        },
+      ],
     },
     {
-      name: "Dashboard",
-      icon: <LayoutDashboard size={18} />,
-      path: "/admin",
+      group: "CONTENT & MARKETING",
+      items: [
+        {
+          name: "Blogs & Articles",
+          icon: FileText,
+          path: "/admin/blogs",
+        },
+        {
+          name: "FAQ & Inquiries",
+          icon: CircleHelp,
+          path: "/admin/faq",
+        },
+        {
+          name: "Patient Reviews",
+          icon: MessageSquare,
+          path: "/admin/testimonials",
+        },
+        {
+          name: "Clinic Gallery",
+          icon: ImageIcon,
+          path: "/admin/gallery",
+        },
+      ],
     },
     {
-      name: "Doctor Profile",
-      icon: <UserRound size={18} />,
-      path: "/admin/doctor-profile",
+      group: "SYSTEM",
+      items: [
+        {
+          name: "Settings",
+          icon: Settings,
+          path: "/admin/settings",
+        },
+      ],
     },
-    {
-      name: "FAQ",
-      icon: <CircleHelp size={18} />,
-      path: "/admin/faq",
-    },
-    {
-      name: "Gallery",
-      icon: <ImageIcon size={18} />,
-      path: "/admin/gallery",
-    },
-    
-    {
-      name: "Services",
-      icon: <BriefcaseBusiness size={18} />,
-      path: "/admin/services",
-    },
-    {
-      name: "Settings",
-      icon: <Settings size={18} />,
-      path: "/admin/settings",
-    },
-    { name: "Staff", 
-      icon: <UsersRound size={18} />, 
-      path: "/admin/staff" 
-    },
-    {
-      name: "Testimonials",
-      icon: <MessageSquare size={18} />,
-      path: "/admin/testimonials",
-    },
-    
   ];
 
-  const getButtonClass = (path) => {
-    return `
-      flex items-center gap-3
-      w-full
-      px-3 sm:px-4
-      py-3
-      rounded-xl
-      text-sm sm:text-base
-      transition-all duration-300
-      ${
-        location.pathname === path
-          ? "bg-teal-500 text-white shadow-lg shadow-teal-500/30"
-          : "bg-slate-800 text-slate-300 hover:bg-teal-600 hover:text-white"
-      }
-    `;
+  const isActive = (item) => {
+    if (item.exact) {
+      return location.pathname === item.path;
+    }
+    return location.pathname.startsWith(item.path);
   };
 
   const handleLogout = async () => {
@@ -109,199 +160,253 @@ const AdminLayout = () => {
       await signOut(auth);
       navigate("/adminlogin");
     } catch (error) {
-      console.error(error);
+      console.error("Logout error:", error);
     }
   };
 
+  // Find current active page title
+  const getCurrentPageTitle = () => {
+    for (const group of navigationGroups) {
+      for (const item of group.items) {
+        if (isActive(item)) {
+          return item.name;
+        }
+      }
+    }
+    return "Dashboard";
+  };
+
   return (
-    <div className="min-h-screen w-full bg-gray-100 flex overflow-x-hidden">
+    <div className="min-h-screen w-full bg-slate-100/80 flex overflow-x-hidden font-sans">
+      {/* ===================== DESKTOP SIDEBAR ===================== */}
+      <aside className="hidden md:flex fixed left-0 top-0 h-screen w-64 lg:w-72 bg-slate-950 text-white flex-col z-40 border-r border-slate-800/80 shadow-2xl">
+        {/* Brand Header */}
+        <div className="p-5 lg:p-6 border-b border-slate-800/70">
+          <Link to="/admin" className="flex items-center gap-3 group">
+            <img
+              src={logo}
+              alt="Heal Stride Logo"
+              className="w-10 h-10 object-contain shrink-0 transition-transform duration-200 group-hover:scale-105 drop-shadow"
+            />
+            <div>
+              <BrandName variant="dark" size="sm" showSubtitle={false} />
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-[10px] font-extrabold text-teal-400 uppercase tracking-widest">
+                  Admin Workspace
+                </span>
+              </div>
+            </div>
+          </Link>
+        </div>
 
-      {/* Desktop Sidebar */}
-      <aside
-        className="
-        hidden
-        md:flex
-        fixed
-        left-0
-        top-0
-        h-screen
-        w-64
-        lg:w-72
-        bg-[#0F172A]
-        text-white
-        p-5
-        lg:p-6
-        flex-col
-        z-40
-        "
-      >
-        <Link to="/admin" className="flex items-center gap-3 mb-8 lg:mb-10 group">
-          <img
-            src={logo}
-            alt="Heal Stride Logo"
-            className="w-9 h-9 object-contain shrink-0 transition-transform duration-200 group-hover:scale-105"
-          />
-          <div>
-            <BrandName variant="dark" size="sm" showSubtitle={false} />
-            <span className="block text-[10px] font-bold text-teal-400 uppercase tracking-widest mt-0.5">
-              Admin Portal
-            </span>
-          </div>
-        </Link>
+        {/* Navigation links with logical groups and hidden ugly scrollbars */}
+        <nav className="flex-1 overflow-y-auto px-3.5 py-4 space-y-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          {navigationGroups.map((group) => (
+            <div key={group.group} className="space-y-1">
+              <p className="px-3 text-[10px] font-black uppercase tracking-wider text-slate-500 mb-1.5 select-none">
+                {group.group}
+              </p>
 
-        <nav className="space-y-3 flex-1 overflow-y-auto">
-          {menuItems.map((item) => (
-            <button
-              key={item.name}
-              onClick={() => navigate(item.path)}
-              className={getButtonClass(item.path)}
-            >
-              {item.icon}
-              <span>{item.name}</span>
-            </button>
+              {group.items.map((item) => {
+                const Icon = item.icon;
+                const active = isActive(item);
+
+                return (
+                  <button
+                    key={item.name}
+                    type="button"
+                    onClick={() => navigate(item.path)}
+                    className={`group w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-150 ${
+                      active
+                        ? "bg-teal-600 text-white shadow-md shadow-teal-950/60 font-bold"
+                        : "text-slate-400 hover:text-white hover:bg-slate-900/90"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <Icon
+                        size={17}
+                        className={`shrink-0 transition-transform duration-150 ${
+                          active
+                            ? "text-white"
+                            : "text-slate-400 group-hover:text-teal-400 group-hover:scale-110"
+                        }`}
+                      />
+                      <span className="truncate">{item.name}</span>
+                    </div>
+
+                    {item.badge && (
+                      <span
+                        className={`text-[10px] font-black px-1.5 py-0.5 rounded-full shrink-0 ${
+                          active ? "bg-white text-teal-900" : item.badgeColor
+                        }`}
+                      >
+                        {item.badge}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           ))}
         </nav>
 
-        <button
-          onClick={handleLogout}
-          className="
-          flex items-center justify-center gap-3
-          w-full
-          mt-6
-          px-4 py-3
-          rounded-xl
-          bg-red-600
-          hover:bg-red-700
-          transition
-          text-white
-          "
-        >
-          <LogOut size={18} />
-          Logout
-        </button>
-      </aside>
-
-      {/* Mobile Sidebar */}
-      {sidebarOpen && (
-        <div className="fixed inset-0 z-50 flex md:hidden">
-
-          <aside
-            className="
-            w-[85vw]
-            max-w-[300px]
-            bg-[#0F172A]
-            text-white
-            p-5
-            flex flex-col
-            "
-          >
-            <button
-              onClick={() => setSidebarOpen(false)}
-              className="mb-6 self-end"
-            >
-              <X size={26} />
-            </button>
-
-            <h1 className="text-xl font-bold mb-8">
-              HealStride Admin
-            </h1>
-
-            <nav className="space-y-3 flex-1 overflow-y-auto">
-              {menuItems.map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => {
-                    navigate(item.path);
-                    setSidebarOpen(false);
-                  }}
-                  className={getButtonClass(item.path)}
-                >
-                  {item.icon}
-                  <span>{item.name}</span>
-                </button>
-              ))}
-            </nav>
-
-            <button
-              onClick={async () => {
-                await handleLogout();
-                setSidebarOpen(false);
-              }}
-              className="
-              flex items-center justify-center gap-3
-              w-full
-              mt-6
-              px-4 py-3
-              rounded-xl
-              bg-red-600
-              hover:bg-red-700
-              transition
-              text-white
-              "
-            >
-              <LogOut size={18} />
-              Logout
-            </button>
-          </aside>
-
-          <div
-            className="flex-1 bg-black/60 backdrop-blur-sm"
-            onClick={() => setSidebarOpen(false)}
-          />
-        </div>
-      )}
-
-      {/* Main Content */}
-      <main
-        className="
-        flex-1
-        w-full
-        min-w-0
-        md:ml-64
-        lg:ml-72
-        px-3
-        sm:px-4
-        md:px-6
-        lg:px-8
-        py-4
-        overflow-x-hidden
-        "
-      >
-        {/* Admin Top Header Bar */}
-        <div className="flex items-center justify-between mb-4 bg-white px-3.5 sm:px-5 py-3 rounded-2xl border border-slate-200 shadow-xs">
-          <div className="flex items-center gap-3">
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setSidebarOpen(true)}
-              className="md:hidden p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition"
-              title="Open Menu"
-            >
-              <Menu size={22} />
-            </button>
-            <div>
-              <h2 className="text-base sm:text-lg font-bold text-slate-800 capitalize">
-                {location.pathname.replace("/admin", "").replace("/", "") || "Dashboard"}
-              </h2>
-              <p className="text-[11px] text-slate-400 hidden sm:block">HealStride Medical Management</p>
+        {/* Footer Admin Profile & Logout */}
+        <div className="p-4 border-t border-slate-800/80 bg-slate-950/90 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-8 h-8 rounded-xl bg-teal-500/20 border border-teal-400/40 flex items-center justify-center text-teal-300 font-black text-xs shrink-0">
+              HS
+            </div>
+            <div className="min-w-0">
+              <p className="text-xs font-bold text-white truncate">Administrator</p>
+              <p className="text-[10px] text-slate-400 truncate">healstride.in</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <AdminNotifications />
-            <Link
-              to="/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-teal-50 text-teal-700 hover:bg-teal-100 text-xs font-semibold transition"
-            >
-              <span>View Website &rarr;</span>
-            </Link>
-          </div>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="p-2 rounded-xl text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition"
+            title="Logout from Admin"
+          >
+            <LogOut size={16} />
+          </button>
         </div>
+      </aside>
 
-        <Outlet />
-      </main>
+      {/* ===================== MOBILE DRAWER (320px - 768px) ===================== */}
+      {sidebarOpen && (
+        <div className="fixed inset-0 z-50 flex md:hidden">
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm transition-opacity"
+            onClick={() => setSidebarOpen(false)}
+          />
 
+          <aside className="relative w-[85vw] max-w-[290px] xs:max-w-[320px] bg-slate-950 text-white flex flex-col h-full shadow-2xl z-10 border-r border-slate-800">
+            {/* Header */}
+            <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <img src={logo} alt="Logo" className="w-8 h-8 object-contain" />
+                <span className="font-extrabold text-sm text-white">HealStride Admin</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSidebarOpen(false)}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Nav links */}
+            <nav className="flex-1 overflow-y-auto p-3 space-y-4 [scrollbar-width:none]">
+              {navigationGroups.map((group) => (
+                <div key={group.group} className="space-y-1">
+                  <p className="px-2 text-[10px] font-black uppercase text-slate-500 mb-1">
+                    {group.group}
+                  </p>
+                  {group.items.map((item) => {
+                    const Icon = item.icon;
+                    const active = isActive(item);
+
+                    return (
+                      <button
+                        key={item.name}
+                        type="button"
+                        onClick={() => {
+                          navigate(item.path);
+                          setSidebarOpen(false);
+                        }}
+                        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition ${
+                          active
+                            ? "bg-teal-600 text-white font-bold"
+                            : "text-slate-400 hover:text-white hover:bg-slate-900"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <Icon size={16} />
+                          <span className="truncate">{item.name}</span>
+                        </div>
+                        {item.badge && (
+                          <span className="text-[10px] font-black px-1.5 py-0.5 rounded-full bg-teal-500 text-white">
+                            {item.badge}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              ))}
+            </nav>
+
+            {/* Logout button */}
+            <div className="p-3 border-t border-slate-800">
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-rose-600/90 hover:bg-rose-600 text-white font-bold text-xs transition"
+              >
+                <LogOut size={15} />
+                <span>Logout Session</span>
+              </button>
+            </div>
+          </aside>
+        </div>
+      )}
+
+      {/* ===================== MAIN CONTENT WRAPPER ===================== */}
+      <div className="flex-1 w-full min-w-0 md:ml-64 lg:ml-72 flex flex-col min-h-screen">
+        {/* Top Header Bar */}
+        <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-3.5 sm:px-6 py-3 transition">
+          <div className="flex items-center justify-between gap-3">
+            {/* Left: Mobile hamburger + breadcrumbs */}
+            <div className="flex items-center gap-2.5 min-w-0">
+              <button
+                type="button"
+                onClick={() => setSidebarOpen(true)}
+                className="md:hidden p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition"
+                title="Open menu"
+              >
+                <Menu size={20} />
+              </button>
+
+              <div className="min-w-0">
+                <div className="flex items-center gap-1.5 text-[11px] text-slate-400">
+                  <span>Admin</span>
+                  <ChevronRight size={11} />
+                  <span className="text-teal-700 font-bold truncate">
+                    {getCurrentPageTitle()}
+                  </span>
+                </div>
+                <h2 className="text-sm sm:text-base font-extrabold text-slate-900 truncate">
+                  {getCurrentPageTitle()}
+                </h2>
+              </div>
+            </div>
+
+            {/* Right: Actions, Sound, Notifications, Website link */}
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+              <AdminNotifications />
+
+              <Link
+                to="/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-teal-50 hover:text-teal-700 text-slate-700 text-xs font-bold transition border border-slate-200"
+              >
+                <span>Live Site</span>
+                <ExternalLink size={12} />
+              </Link>
+            </div>
+          </div>
+        </header>
+
+        {/* Routed Admin Content with perfect padding for 320px, 375px, 425px, desktop */}
+        <main className="flex-1 p-3 sm:p-5 md:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 };

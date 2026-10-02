@@ -21,10 +21,20 @@ import {
   Upload,
   UserRound,
 } from "lucide-react";
+import Pagination from "./Pagination";
 
 const AdminStaff = () => {
   const [staff, setStaff] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(6);
+
+  const paginatedStaff = staff.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const [showForm, setShowForm] = useState(false);
   const [editingStaff, setEditingStaff] = useState(null);
@@ -286,77 +296,91 @@ const AdminStaff = () => {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {staff.map((member) => (
-            <div
-              key={member.id}
-              className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm"
-            >
-              {/* Image */}
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {paginatedStaff.map((member) => (
+              <div
+                key={member.id}
+                className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm"
+              >
+                {/* Image */}
                 <div className="w-full aspect-[4/3] bg-gray-100 overflow-hidden">
-                {member.imageUrl ? (
-                  <img
-                    src={member.imageUrl}
-                    alt={member.name}
-                    className="w-full h-full object-cover block"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <UserRound size={60} className="text-gray-400" />
+                  {member.imageUrl ? (
+                    <img
+                      src={member.imageUrl}
+                      alt={member.name}
+                      className="w-full h-full object-cover block"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <UserRound size={60} className="text-gray-400" />
+                    </div>
+                  )}
+                </div>
+
+                {/* Content */}
+                <div className="p-5">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-800">
+                        {member.name}
+                      </h3>
+
+                      <p className="text-[#0f766e] font-medium mt-1">
+                        {member.role}
+                      </p>
+                    </div>
+
+                    <span
+                      className={`text-xs px-2.5 py-1 rounded-full ${
+                        member.active
+                          ? "bg-green-100 text-green-700"
+                          : "bg-gray-100 text-gray-500"
+                      }`}
+                    >
+                      {member.active ? "Active" : "Hidden"}
+                    </span>
                   </div>
-                )}
-              </div>
 
-              {/* Content */}
-              <div className="p-5">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-800">
-                      {member.name}
-                    </h3>
-
-                    <p className="text-[#0f766e] font-medium mt-1">
-                      {member.role}
+                  {member.bio && (
+                    <p className="text-sm text-gray-600 mt-3 line-clamp-3">
+                      {member.bio}
                     </p>
+                  )}
+
+                  {/* Actions */}
+                  <div className="flex gap-3 mt-5">
+                    <button
+                      onClick={() => handleEditClick(member)}
+                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition"
+                    >
+                      <Pencil size={16} />
+                      Edit
+                    </button>
+
+                    <button
+                      onClick={() => setConfirmDelete(member)}
+                      className="px-4 py-2 border border-red-200 text-red-600 rounded-lg hover:bg-red-50 transition"
+                    >
+                      <Trash2 size={16} />
+                    </button>
                   </div>
-
-                  <span
-                    className={`text-xs px-2.5 py-1 rounded-full ${
-                      member.active
-                        ? "bg-green-100 text-green-700"
-                        : "bg-gray-100 text-gray-500"
-                    }`}
-                  >
-                    {member.active ? "Active" : "Hidden"}
-                  </span>
-                </div>
-
-                {member.bio && (
-                  <p className="text-sm text-gray-600 mt-3 line-clamp-3">
-                    {member.bio}
-                  </p>
-                )}
-
-                {/* Actions */}
-                <div className="flex gap-3 mt-5">
-                  <button
-                    onClick={() => handleEditClick(member)}
-                    className="flex-1 flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition"
-                  >
-                    <Pencil size={16} />
-                    Edit
-                  </button>
-
-                  <button
-                    onClick={() => setConfirmDelete(member)}
-                    className="px-4 py-2 border border-red-200 text-red-600 rounded-lg hover:bg-red-50 transition"
-                  >
-                    <Trash2 size={16} />
-                  </button>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          {/* Pagination */}
+          <div className="bg-white rounded-xl border border-gray-200 p-2 shadow-xs">
+            <Pagination
+              currentPage={currentPage}
+              totalItems={staff.length}
+              itemsPerPage={itemsPerPage}
+              onPageChange={setCurrentPage}
+              onItemsPerPageChange={setItemsPerPage}
+              pageSizeOptions={[3, 6, 12]}
+            />
+          </div>
         </div>
       )}
 

@@ -23,6 +23,7 @@ import {
 
 import { db } from "../../firebase/firebase";
 import { uploadImage } from "../../utils/imageUpload";
+import Pagination from "./Pagination";
 
 const emptyForm = {
   title: "",
@@ -43,8 +44,17 @@ const AdminServices = () => {
   const [editingId, setEditingId] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
-const [confirmEditService, setConfirmEditService] = useState(null);
-const [confirmDeleteService, setConfirmDeleteService] = useState(null);
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(6);
+
+  const paginatedServices = services.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const [confirmEditService, setConfirmEditService] = useState(null);
+  const [confirmDeleteService, setConfirmDeleteService] = useState(null);
 
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
@@ -885,7 +895,7 @@ const confirmEdit = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
-            {services.map((service) => (
+            {paginatedServices.map((service) => (
               <motion.div
                 key={service.id}
                 initial={{
@@ -1069,6 +1079,18 @@ const confirmEdit = () => {
               </motion.div>
             ))}
 
+          </div>
+
+          {/* Pagination */}
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-2 mt-6">
+            <Pagination
+              currentPage={currentPage}
+              totalItems={services.length}
+              itemsPerPage={itemsPerPage}
+              onPageChange={setCurrentPage}
+              onItemsPerPageChange={setItemsPerPage}
+              pageSizeOptions={[3, 6, 12, 24]}
+            />
           </div>
         )}
     
