@@ -29,6 +29,7 @@ import {
 import { doctors as defaultDoctors, getDoctorLocalizedName } from "../data/team";
 import { useFirestoreCollection, where } from "../hooks/useFirestoreCollection";
 import { useFirestoreDoc } from "../hooks/useFirestoreDoc";
+import SEO from "../components/common/SEO";
 
 const CERTIFICATION_METADATA = {
   cupping: {
@@ -224,9 +225,10 @@ const DoctorProfile = () => {
     doctor.name?.toLowerCase().includes("wajhul") ||
     doctor.name?.toLowerCase().includes("wazul");
 
-  const doctorPhoto = isDrWajhul
-    ? (fallbackMatch?.image || fallbackMatch?.imageUrl || doctor.image || doctor.imageUrl)
-    : (doctor.image || doctor.imageUrl || "/default-user.png");
+  const doctorPhoto =
+    isDrRashid || isDrWajhul
+      ? (fallbackMatch?.image || fallbackMatch?.imageUrl || doctor.image || doctor.imageUrl)
+      : (doctor.image || doctor.imageUrl || "/default-user.png");
 
   const phoneRaw = (clinicSettings?.phone || "8809491380").replace(/[^0-9]/g, "");
   const whatsappRaw = (clinicSettings?.whatsapp || "8252580389").replace(/[^0-9]/g, "");
@@ -272,6 +274,11 @@ const DoctorProfile = () => {
 
   return (
     <div className="bg-slate-50 min-h-screen pb-12 sm:pb-16 overflow-x-hidden">
+      <SEO
+        title={`${doctorLocalizedName} (${doctor.role || "Physiotherapist"})`}
+        description={`Consult ${doctorLocalizedName} at Heal Stride Physiotherapy & Wellness Centre Bhopal. Specializing in ${doctor.specialization || "sports injuries, pain relief and musculoskeletal rehabilitation"}. Book consultation.`}
+        keywords={`${doctorLocalizedName}, Best Physiotherapist in Bhopal, ${doctor.role}, sports injury rehab Bhopal, cupping therapy Bhopal, dry needling Bhopal`}
+      />
       {/* Main Container with responsive page padding */}
       <div className="max-w-7xl mx-auto px-2.5 xs:px-4 sm:px-6 lg:px-8 py-4 xs:py-6 sm:py-10">
         {/* Hero Card */}

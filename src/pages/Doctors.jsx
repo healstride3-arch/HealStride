@@ -5,6 +5,7 @@ import { CalendarCheck, ArrowRight, ShieldCheck, Award, HeartPulse, UserRound } 
 import { doctors as defaultDoctors, getDoctorLocalizedName } from "../data/team";
 import { useFirestoreCollection, where } from "../hooks/useFirestoreCollection";
 import { useFirestoreDoc } from "../hooks/useFirestoreDoc";
+import SEO from "../components/common/SEO";
 
 const Doctors = () => {
   const { t, i18n } = useTranslation();
@@ -19,6 +20,11 @@ const Doctors = () => {
 
   return (
     <div className="bg-slate-50 min-h-screen">
+      <SEO
+        title="Meet Our Expert Physiotherapists in Bhopal"
+        description="Meet Dr. MD Rashid (MPT Sports) and our certified physiotherapy team at Heal Stride Bhopal. Specialized in sports rehabilitation, dry needling, cupping, and non-invasive pain relief."
+        keywords="Physiotherapist in Bhopal, Dr MD Rashid, Dr Wajhul Qamar, Sports Physiotherapy Bhopal, Cupping Specialist Bhopal, Dry Needling Bhopal"
+      />
       {/* Top Hero Section - Matching Services & About Standard Spacing */}
       <section className="relative bg-gradient-to-b from-slate-900 via-slate-900 to-teal-950 text-white py-10 xs:py-14 sm:py-20 overflow-hidden">
         {/* Ambient Glows */}
@@ -118,9 +124,10 @@ const Doctors = () => {
                 doctor.name?.toLowerCase().includes("wajhul") ||
                 doctor.name?.toLowerCase().includes("wazul");
 
-              const cardPhoto = isWajhul
-                ? (fallbackMatch?.image || fallbackMatch?.imageUrl || doctor.imageUrl || doctor.image)
-                : (doctor.imageUrl || doctor.image);
+              const cardPhoto =
+                isRashid || isWajhul
+                  ? (fallbackMatch?.image || fallbackMatch?.imageUrl || doctor.imageUrl || doctor.image)
+                  : (doctor.imageUrl || doctor.image);
 
               const displayRole = isRashid
                 ? "Senior Consultant Physiotherapist | MPT (Sports)"

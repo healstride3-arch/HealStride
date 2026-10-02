@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /login
+Disallow: /signup
+Disallow: /profile
+
+# Google Search Console / Search Engines
+Sitemap: https://healstride.in/sitemap.xml

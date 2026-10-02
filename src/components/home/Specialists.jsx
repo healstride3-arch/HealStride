@@ -74,9 +74,10 @@ const Specialists = ({ limit = 3 }) => {
               doctor.name?.toLowerCase().includes("wajhul") ||
               doctor.name?.toLowerCase().includes("wazul");
 
-            const cardPhoto = isWajhul
-              ? (fallbackMatch?.image || fallbackMatch?.imageUrl || doctor.imageUrl || doctor.image)
-              : (doctor.imageUrl || doctor.image);
+            const cardPhoto =
+              isRashid || isWajhul
+                ? (fallbackMatch?.image || fallbackMatch?.imageUrl || doctor.imageUrl || doctor.image)
+                : (doctor.imageUrl || doctor.image);
 
             const displayRole = isRashid
               ? "Senior Consultant Physiotherapist | MPT (Sports)"

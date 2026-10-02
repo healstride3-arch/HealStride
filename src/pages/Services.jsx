@@ -3,10 +3,16 @@ import { motion } from "framer-motion";
 import { Wrench, ShieldCheck, Clock, Award, Activity } from "lucide-react";
 import ServicesGrid from "../components/service/ServicesGrid";
 import ServicesCTA from "../components/service/ServicesCTA";
+import SEO from "../components/common/SEO";
 
 const Services = () => {
   return (
     <div className="bg-slate-50 min-h-screen">
+      <SEO
+        title="Physiotherapy Treatments & Services in Bhopal"
+        description="Explore evidence-based physiotherapy treatments at Heal Stride Bhopal: Sports injury rehabilitation, cupping therapy, dry needling, spinal decompression, sciatica relief, and post-surgery care."
+        keywords="Physiotherapy Services Bhopal, Cupping Therapy Bhopal, Dry Needling Bhopal, Sports Injury Rehabilitation, Spinal Decompression, Sciatica Treatment Bhopal"
+      />
       {/* Hero Section */}
       <section className="relative bg-gradient-to-b from-slate-900 via-slate-900 to-teal-950 text-white py-14 sm:py-20 overflow-hidden">
         {/* Subtle decorative glows */}
