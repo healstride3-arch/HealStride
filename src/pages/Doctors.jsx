@@ -9,10 +9,10 @@ import SEO from "../components/common/SEO";
 
 const Doctors = () => {
   const { t, i18n } = useTranslation();
-  const { items: doctors } = useFirestoreCollection("doctors", {
-    constraints: [where("active", "!=", false)],
+  const { items: rawDoctors } = useFirestoreCollection("doctors", {
     fallback: defaultDoctors,
   });
+  const doctors = rawDoctors.filter((d) => d.active !== false);
   const { doc: clinicSettings } = useFirestoreDoc("settings", "clinic");
 
   const phoneRaw = (clinicSettings?.phone || "8809491380").replace(/[^0-9]/g, "");
@@ -125,13 +125,22 @@ const Doctors = () => {
                 doctor.name?.toLowerCase().includes("wazul");
 
               const cardPhoto =
-                isRashid || isWajhul
-                  ? (fallbackMatch?.image || fallbackMatch?.imageUrl || doctor.imageUrl || doctor.image)
-                  : (doctor.imageUrl || doctor.image);
+                rawDoc.image ||
+                rawDoc.imageUrl ||
+                rawDoc.photoUrl ||
+                fallbackMatch?.image ||
+                fallbackMatch?.imageUrl ||
+                doctor.imageUrl ||
+                doctor.image ||
+                "/default-user.png";
 
-              const displayRole = isRashid
-                ? "Senior Consultant Physiotherapist | MPT (Sports)"
-                : (doctor.role || "Physiotherapist & Rehab Specialist (BPT)");
+              const displayRole =
+                rawDoc.role ||
+                doctor.role ||
+                fallbackMatch?.role ||
+                (isRashid
+                  ? "Senior Consultant Physiotherapist | MPT (Sports)"
+                  : "Physiotherapist & Rehab Specialist (BPT)");
 
               return (
                 <motion.div

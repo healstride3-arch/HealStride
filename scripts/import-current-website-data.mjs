@@ -83,7 +83,7 @@ const services = loadArray(
 );
 const blogs = loadArray("src/data/blogs.js", "blogs");
 const doctors = loadArray("src/data/team.js", "doctors");
-const staff = doctors;
+const staff = loadArray("src/data/team.js", "staff");
 const galleryItems = loadArray("src/data/galleryItems.js", "galleryItems");
 const faqs = loadArray(
   "src/components/about/FAQSection.jsx",
@@ -186,15 +186,51 @@ const toFirestoreFields = (payload) =>
       .map(([key, value]) => [key, toFirestoreValue(value)])
   );
 
+const getAuthToken = async () => {
+  const authEmail = env.FIREBASE_IMPORT_EMAIL || env.VITE_ADMIN_EMAIL;
+  const authPassword = env.FIREBASE_IMPORT_PASSWORD || env.VITE_FIREBASE_SERVICE_SECRET;
+
+  if (!authEmail || !authPassword) {
+    console.warn("No auth credentials found in .env, continuing without auth");
+    return null;
+  }
+
+  const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      email: authEmail,
+      password: authPassword,
+      returnSecureToken: true,
+    }),
+  });
+
+  const data = await response.json();
+  if (!response.ok || !data.idToken) {
+    throw new Error(`Firebase Auth failed: ${JSON.stringify(data.error || data)}`);
+  }
+
+  console.log(`Authenticated as ${authEmail}`);
+  return data.idToken;
+};
+
+const authToken = await getAuthToken();
+
 const writeDoc = async (collectionName, id, payload) => {
   const url =
     `${firestoreBaseUrl}/${collectionName}/${encodeURIComponent(id)}?key=${apiKey}`;
 
+  const headers = {
+    "Content-Type": "application/json",
+  };
+  if (authToken) {
+    headers["Authorization"] = `Bearer ${authToken}`;
+  }
+
   const response = await fetch(url, {
     method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers,
     body: JSON.stringify({
       fields: toFirestoreFields(payload),
     }),
@@ -222,14 +258,34 @@ const writeDocs = async (collectionName, items, mapper = (item) => item) => {
   console.log(`${collectionName}: ${items.length} documents imported`);
 };
 
-await writeDocs("services", services);
+await writeDocs("services", services, (service) => {
+  const categoryMap = {
+    spine: "Back & Cervical",
+    joints: "Joint & Muscle",
+    therapies: "Specialized Therapy",
+    rehab: "Rehabilitation",
+  };
+  const cat = service.category || "therapies";
+  return {
+    ...service,
+    category: cat,
+    categoryLabel: service.categoryLabel || categoryMap[cat] || "Specialized Therapy",
+    showOnHome: true,
+    active: true,
+  };
+});
 await writeDocs("blogs", blogs, (blog) => ({
   ...blog,
   slug: blog.slug || String(blog.id),
   coverImage: blog.coverImage || blog.image || "",
   image: blog.image || blog.coverImage || "",
 }));
-await writeDocs("doctors", doctors);
+await writeDocs("doctors", doctors, (doctor) => ({
+  ...doctor,
+  image: doctor.imageUrl || doctor.image || "",
+  imageUrl: doctor.imageUrl || doctor.image || "",
+  active: true,
+}));
 await writeDocs("staff", staff);
 await writeDocs("gallery", galleryItems);
 await writeDocs("faqs", faqs);

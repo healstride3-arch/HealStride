@@ -2,9 +2,6 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { db } from "../../firebase/firebase";
-import { sendQuestionNotification } from "../../services/bookingNotificationService";
 import { useFirestoreCollection, where } from "../../hooks/useFirestoreCollection";
 
 const defaultFaqs = [
@@ -36,54 +33,11 @@ const defaultFaqs = [
 
 const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState(0);
-  const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
   const { items: faqs } = useFirestoreCollection("faqs", {
     constraints: [where("active", "!=", false)],
     fallback: defaultFaqs,
   });
-
-  const [questionForm, setQuestionForm] = useState({
-    name: "",
-    email: "",
-    question: "",
-  });
-
-  const handleQuestionSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      setLoading(true);
-
-      const questionPayload = {
-        ...questionForm,
-        status: "new",
-        read: false,
-        notificationRead: false,
-        createdAt: new Date().toISOString(),
-      };
-
-      await addDoc(collection(db, "faqSubmissions"), {
-        ...questionPayload,
-        createdAt: serverTimestamp(),
-      });
-
-      await sendQuestionNotification(questionPayload);
-
-      alert(t("faqSection.successMsg"));
-
-      setQuestionForm({
-        name: "",
-        email: "",
-        question: "",
-      });
-    } catch (error) {
-      console.error("FAQ Submit Error:", error.code, error.message);
-      alert(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <section className="py-8 sm:py-12 lg:py-16 bg-gray-50">
@@ -190,108 +144,6 @@ const FAQSection = () => {
             );
           })}
         </div>
-
-        {/* Ask Question Form */}
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 30,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-          }}
-          transition={{
-            duration: 0.5,
-          }}
-          className="mt-12 bg-white rounded-3xl shadow-md p-6 md:p-8"
-        >
-          <h3 className="text-2xl font-bold text-slate-800">
-            {t("faqSection.askTitle")}
-          </h3>
-
-          <p className="text-slate-600 mt-2 mb-6">
-            {t("faqSection.askSubtitle")}
-          </p>
-
-          <form
-            onSubmit={handleQuestionSubmit}
-            className="space-y-4"
-          >
-            <div>
-              <label htmlFor="faq-name" className="sr-only">Your Name</label>
-              <input
-                id="faq-name"
-                type="text"
-                name="name"
-                autoComplete="name"
-                placeholder={t("faqSection.namePlaceholder")}
-                required
-                value={questionForm.name}
-                onChange={(e) =>
-                  setQuestionForm({
-                    ...questionForm,
-                    name: e.target.value,
-                  })
-                }
-                className="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-teal-500"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="faq-email" className="sr-only">Your Email</label>
-              <input
-                id="faq-email"
-                type="email"
-                name="email"
-                autoComplete="email"
-                placeholder={t("faqSection.emailPlaceholder")}
-                required
-                value={questionForm.email}
-                onChange={(e) =>
-                  setQuestionForm({
-                    ...questionForm,
-                    email: e.target.value,
-                  })
-                }
-                className="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-teal-500"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="faq-question" className="sr-only">Your Question</label>
-              <textarea
-                id="faq-question"
-                name="question"
-                autoComplete="off"
-                rows="5"
-                placeholder={t("faqSection.questionPlaceholder")}
-                required
-                value={questionForm.question}
-                onChange={(e) =>
-                  setQuestionForm({
-                    ...questionForm,
-                    question: e.target.value,
-                  })
-                }
-                className="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-teal-500"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="bg-teal-600 hover:bg-teal-700 disabled:opacity-50 text-white px-6 py-3 rounded-xl font-medium transition"
-            >
-              {loading
-                ? t("faqSection.submitting")
-                : t("faqSection.submitBtn")}
-            </button>
-          </form>
-        </motion.div>
       </div>
     </section>
   );

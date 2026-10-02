@@ -28,6 +28,7 @@ import Pagination from "./Pagination";
 const emptyForm = {
   title: "",
   slug: "",
+  category: "therapies",
   description: "",
   benefits: [""],
   duration: "",
@@ -199,6 +200,13 @@ const AdminServices = () => {
         .map((benefit) => benefit.trim())
         .filter(Boolean);
 
+      const categoryMap = {
+        spine: "Back & Cervical",
+        joints: "Joint & Muscle",
+        therapies: "Specialized Therapy",
+        rehab: "Rehabilitation",
+      };
+
       const payload = {
         title: form.title.trim(),
         slug:
@@ -208,6 +216,8 @@ const AdminServices = () => {
             .trim()
             .replace(/[^a-z0-9]+/g, "-")
             .replace(/^-+|-+$/g, ""),
+        category: form.category || "therapies",
+        categoryLabel: categoryMap[form.category] || "Specialized Therapy",
         description: form.description.trim(),
         benefits: cleanedBenefits,
         duration: form.duration.trim(),
@@ -261,6 +271,7 @@ const confirmEdit = () => {
   setForm({
     title: service.title || "",
     slug: service.slug || "",
+    category: service.category || "therapies",
     description: service.description || "",
     benefits:
       service.benefits?.length > 0
@@ -520,6 +531,36 @@ const confirmEdit = () => {
                   focus:ring-teal-500
                 "
               />
+            </div>
+
+            {/* CATEGORY */}
+            <div>
+              <label htmlFor="service-category" className="block text-sm font-medium text-slate-700 mb-1">
+                Category *
+              </label>
+
+              <select
+                id="service-category"
+                name="category"
+                value={form.category || "therapies"}
+                onChange={handleChange}
+                className="
+                  w-full
+                  border
+                  rounded-xl
+                  px-4
+                  py-3
+                  outline-none
+                  focus:ring-2
+                  focus:ring-teal-500
+                  bg-white
+                "
+              >
+                <option value="spine">Back & Cervical (spine)</option>
+                <option value="joints">Joint & Muscle (joints)</option>
+                <option value="therapies">Specialized Therapy (therapies)</option>
+                <option value="rehab">Rehabilitation (rehab)</option>
+              </select>
             </div>
 
             {/* ICON */}
@@ -928,6 +969,13 @@ const confirmEdit = () => {
                       object-cover
                     "
                   />
+
+                  {/* CATEGORY */}
+                  {service.categoryLabel && (
+                    <span className="absolute top-3 left-3 px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900/80 backdrop-blur-md text-teal-300 border border-teal-500/30">
+                      {service.categoryLabel}
+                    </span>
+                  )}
 
                   {/* STATUS */}
                   <span

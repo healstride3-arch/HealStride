@@ -8,11 +8,11 @@ import { useFirestoreCollection, where } from "../../hooks/useFirestoreCollectio
 const Specialists = ({ limit = 3 }) => {
   const { t, i18n } = useTranslation();
 
-  const { items: doctors } = useFirestoreCollection("doctors", {
-    constraints: [where("active", "!=", false)],
+  const { items: rawDoctors } = useFirestoreCollection("doctors", {
     fallback: defaultDoctors,
   });
-  const doctorList = limit ? doctors.slice(0, limit) : doctors;
+  const activeDoctors = rawDoctors.filter((d) => d.active !== false);
+  const doctorList = limit ? activeDoctors.slice(0, limit) : activeDoctors;
 
   return (
     <section className="py-8 sm:py-12 lg:py-16 bg-white border-b border-slate-100 overflow-hidden">
@@ -75,13 +75,22 @@ const Specialists = ({ limit = 3 }) => {
               doctor.name?.toLowerCase().includes("wazul");
 
             const cardPhoto =
-              isRashid || isWajhul
-                ? (fallbackMatch?.image || fallbackMatch?.imageUrl || doctor.imageUrl || doctor.image)
-                : (doctor.imageUrl || doctor.image);
+              rawDoc.image ||
+              rawDoc.imageUrl ||
+              rawDoc.photoUrl ||
+              fallbackMatch?.image ||
+              fallbackMatch?.imageUrl ||
+              doctor.imageUrl ||
+              doctor.image ||
+              "/default-user.png";
 
-            const displayRole = isRashid
-              ? "Senior Consultant Physiotherapist | MPT (Sports)"
-              : (doctor.role || "Physiotherapist & Rehab Specialist (BPT)");
+            const displayRole =
+              rawDoc.role ||
+              doctor.role ||
+              fallbackMatch?.role ||
+              (isRashid
+                ? "Senior Consultant Physiotherapist | MPT (Sports)"
+                : "Physiotherapist & Rehab Specialist (BPT)");
 
             return (
               <motion.div

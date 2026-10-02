@@ -32,12 +32,11 @@ const AdminNotificationsPage = () => {
   const navigate = useNavigate();
 
   const [appointments, setAppointments] = useState([]);
-  const [faqs, setFaqs] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Filters & Search
-  const [filterType, setFilterType] = useState("all"); // 'all' | 'appointments' | 'faqs' | 'testimonials' | 'unread'
+  const [filterType, setFilterType] = useState("all"); // 'all' | 'appointments' | 'testimonials' | 'unread'
   const [searchQuery, setSearchQuery] = useState("");
   const [soundEnabled, setSoundEnabled] = useState(true);
 
@@ -97,26 +96,6 @@ const AdminNotificationsPage = () => {
       setLoading(false);
     });
 
-    const unsubFaqs = onSnapshot(collection(db, "faqSubmissions"), (snap) => {
-      const data = snap.docs.map((d) => ({
-        id: d.id,
-        notifType: "faq",
-        collectionName: "faqSubmissions",
-        title: "Patient Question / FAQ",
-        name: d.data().name || "Visitor",
-        phone: d.data().email || "",
-        doctor: "Helpdesk",
-        condition: "Question",
-        date: "",
-        time: "",
-        message: d.data().question || "Inquiry submitted",
-        createdAt: d.data().createdAt,
-        isRead: d.data().notificationRead === true || d.data().read === true,
-        redirect: "/admin/faq",
-      }));
-      setFaqs(data);
-    });
-
     const unsubTestimonials = onSnapshot(collection(db, "testimonials"), (snap) => {
       const data = snap.docs.map((d) => ({
         id: d.id,
@@ -139,27 +118,25 @@ const AdminNotificationsPage = () => {
 
     return () => {
       unsubAppointments();
-      unsubFaqs();
       unsubTestimonials();
     };
   }, []);
 
   // Combined notifications sorted newest first
   const allNotifications = useMemo(() => {
-    const list = [...appointments, ...faqs, ...testimonials];
+    const list = [...appointments, ...testimonials];
     return list.sort((a, b) => {
       const timeA = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : 0;
       const timeB = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : 0;
       return timeB - timeA;
     });
-  }, [appointments, faqs, testimonials]);
+  }, [appointments, testimonials]);
 
   // Filtered list
   const filteredNotifications = useMemo(() => {
     return allNotifications.filter((item) => {
       // Type filter
       if (filterType === "appointments" && item.notifType !== "appointment") return false;
-      if (filterType === "faqs" && item.notifType !== "faq") return false;
       if (filterType === "testimonials" && item.notifType !== "testimonial") return false;
       if (filterType === "unread" && item.isRead) return false;
 
@@ -182,7 +159,6 @@ const AdminNotificationsPage = () => {
   // Counts
   const unreadCount = allNotifications.filter((n) => !n.isRead).length;
   const appointmentCount = appointments.length;
-  const faqCount = faqs.length;
   const reviewCount = testimonials.length;
 
   // Pagination calculation
@@ -261,7 +237,7 @@ const AdminNotificationsPage = () => {
                 Notification Center
               </h1>
               <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-                Real-time patient bookings, inquiries, and reviews feed
+                Real-time patient bookings and reviews feed
               </p>
             </div>
           </div>
@@ -364,22 +340,6 @@ const AdminNotificationsPage = () => {
             <span>Appointments</span>
             <span className="px-1.5 py-0.2 rounded-full bg-black/10 text-[10px]">
               {appointmentCount}
-            </span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setFilterType("faqs")}
-            className={`px-3 py-1.5 rounded-lg font-bold transition whitespace-nowrap flex items-center gap-1.5 ${
-              filterType === "faqs"
-                ? "bg-orange-600 text-white shadow-2xs"
-                : "bg-orange-50 text-orange-800 hover:bg-orange-100"
-            }`}
-          >
-            <MessageCircleQuestion size={13} />
-            <span>Inquiries / FAQs</span>
-            <span className="px-1.5 py-0.2 rounded-full bg-black/10 text-[10px]">
-              {faqCount}
             </span>
           </button>
 

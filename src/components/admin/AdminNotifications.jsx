@@ -37,14 +37,12 @@ const AdminNotifications = () => {
   const [soundEnabled, setSoundEnabled] = useState(true);
 
   const [appointments, setAppointments] = useState([]);
-  const [faqSubmissions, setFaqSubmissions] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
 
   // Track known IDs so we only alert for NEW events arriving in real-time
   const knownAppointmentIds = useRef(new Set());
-  const knownFaqIds = useRef(new Set());
   const knownTestimonialIds = useRef(new Set());
-  const isInitialLoad = useRef({ appointments: true, faqs: true, testimonials: true });
+  const isInitialLoad = useRef({ appointments: true, testimonials: true });
   const hasTriggeredWelcomeModal = useRef(false);
 
   // Format timestamp helper
@@ -124,49 +122,6 @@ const AdminNotifications = () => {
     return () => unsub();
   }, [soundEnabled, navigate]);
 
-  // ---------------- 2. Real-time FAQs Listener ----------------
-  useEffect(() => {
-    const unsub = onSnapshot(collection(db, "faqSubmissions"), (snapshot) => {
-      const all = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
-      const unread = all.filter(
-        (item) => item.notificationRead !== true && item.read !== true
-      );
-
-      if (!isInitialLoad.current.faqs) {
-        snapshot.docChanges().forEach((change) => {
-          if (change.type === "added") {
-            const newDoc = { id: change.doc.id, ...change.doc.data() };
-            if (!knownFaqIds.current.has(newDoc.id)) {
-              knownFaqIds.current.add(newDoc.id);
-
-              if (soundEnabled) {
-                playNotificationSound();
-              }
-
-              setShowModal(true);
-
-              toast(
-                `❓ New Question from ${newDoc.name || "Visitor"}: "${(newDoc.question || "").slice(0, 40)}..."`,
-                { icon: "❓", duration: 5000, position: "top-right" }
-              );
-
-              triggerBrowserNotification("New Patient Question! ❓", {
-                body: `${newDoc.name || "Visitor"}: ${newDoc.question || "Asked a question"}`,
-                onClick: () => navigate("/admin/faq"),
-              });
-            }
-          }
-        });
-      } else {
-        snapshot.docs.forEach((d) => knownFaqIds.current.add(d.id));
-        isInitialLoad.current.faqs = false;
-      }
-
-      setFaqSubmissions(unread);
-    });
-
-    return () => unsub();
-  }, [soundEnabled, navigate]);
 
   // ---------------- 3. Real-time Testimonials Listener ----------------
   useEffect(() => {
@@ -228,21 +183,6 @@ const AdminNotifications = () => {
     redirect: "/admin/appointments",
   }));
 
-  const faqNotifications = faqSubmissions.map((item) => ({
-    id: item.id,
-    type: "faq",
-    title: "New Patient Question",
-    patientName: item.name || "Visitor",
-    phone: item.email || "Email",
-    doctor: "FAQ Helpdesk",
-    condition: "Website Inquiry",
-    date: "",
-    timeSlot: "",
-    message: item.question || "Submitted an inquiry.",
-    time: formatTime(item.createdAt),
-    redirect: "/admin/faq",
-  }));
-
   const testimonialNotifications = testimonials.map((item) => ({
     id: item.id,
     type: "testimonial",
@@ -260,7 +200,6 @@ const AdminNotifications = () => {
 
   const notifications = [
     ...appointmentNotifications,
-    ...faqNotifications,
     ...testimonialNotifications,
   ];
 
@@ -350,12 +289,6 @@ const AdminNotifications = () => {
             <Calendar size={16} />
           </div>
         );
-      case "faq":
-        return (
-          <div className="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center shrink-0">
-            <MessageCircleQuestion size={16} />
-          </div>
-        );
       case "testimonial":
         return (
           <div className="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center shrink-0">
@@ -377,8 +310,6 @@ const AdminNotifications = () => {
       const collectionName =
         item.type === "appointment"
           ? "appointments"
-          : item.type === "faq"
-          ? "faqSubmissions"
           : "testimonials";
 
       await updateDoc(doc(db, collectionName, item.id), {
@@ -400,12 +331,6 @@ const AdminNotifications = () => {
       const promises = [
         ...appointments.map((a) =>
           updateDoc(doc(db, "appointments", a.id), {
-            notificationRead: true,
-            read: true,
-          })
-        ),
-        ...faqSubmissions.map((f) =>
-          updateDoc(doc(db, "faqSubmissions", f.id), {
             notificationRead: true,
             read: true,
           })
@@ -523,7 +448,7 @@ const AdminNotifications = () => {
                   <Bell size={32} className="mx-auto text-slate-300 mb-2 stroke-1" />
                   <p className="text-xs font-medium">No unread notifications</p>
                   <p className="text-[11px] text-slate-400 mt-0.5">
-                    New appointments, reviews, and questions will appear here with instant sound alert.
+                    New appointments and reviews will appear here with instant sound alert.
                   </p>
                 </div>
               ) : (
@@ -603,7 +528,7 @@ const AdminNotifications = () => {
                       </span>
                     </div>
                     <p className="text-xs text-teal-300/90 mt-0.5">
-                      New patient appointments & inquiries received while away
+                      New patient appointments & reviews received while away
                     </p>
                   </div>
                 </div>
@@ -699,10 +624,10 @@ const AdminNotifications = () => {
                   </div>
                 )}
 
-                {/* FAQ & Testimonial previews if any */}
-                {(faqNotifications.length > 0 || testimonialNotifications.length > 0) && (
+                {/* Testimonial previews if any */}
+                {testimonialNotifications.length > 0 && (
                   <div className="space-y-2 pt-2">
-                    {[...faqNotifications, ...testimonialNotifications].slice(0, 3).map((other) => (
+                    {testimonialNotifications.slice(0, 3).map((other) => (
                       <div
                         key={other.id}
                         onClick={() => handleView(other)}
@@ -723,7 +648,7 @@ const AdminNotifications = () => {
               </div>
 
               {/* Modal Footer Actions */}
-              <div className="p-4 bg-slate-50 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2.5">
+              <div className="p-3 xs:p-4 bg-slate-50 border-t border-slate-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
                 <button
                   type="button"
                   onClick={handleMarkAllAsRead}
@@ -733,11 +658,11 @@ const AdminNotifications = () => {
                   <span>Mark All as Read</span>
                 </button>
 
-                <div className="w-full sm:w-auto flex items-center gap-2">
+                <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full sm:w-auto">
                   <button
                     type="button"
                     onClick={() => setShowModal(false)}
-                    className="w-1/2 sm:w-auto px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 text-xs font-semibold transition text-center"
+                    className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 text-xs font-semibold transition text-center whitespace-nowrap"
                   >
                     Dismiss
                   </button>
@@ -748,10 +673,10 @@ const AdminNotifications = () => {
                       setShowModal(false);
                       navigate("/admin/appointments");
                     }}
-                    className="w-1/2 sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold shadow-md hover:shadow-lg transition"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-1 px-4 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold shadow-md hover:shadow-lg transition whitespace-nowrap"
                   >
-                    <span>Go to Appointments</span>
-                    <ArrowRight size={14} />
+                    <span>Appointments</span>
+                    <ArrowRight size={14} className="shrink-0" />
                   </button>
                 </div>
               </div>

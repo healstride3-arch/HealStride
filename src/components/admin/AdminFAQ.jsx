@@ -12,13 +12,11 @@ import {
   Plus,
   Search,
   CircleHelp,
-  MessageCircleQuestion,
   Eye,
   Pencil,
   Trash2,
   CheckCircle2,
   X,
-  Upload,
 } from "lucide-react";
 import { db } from "../../firebase/firebase";
 import toast from "react-hot-toast";
@@ -26,18 +24,12 @@ import Pagination from "./Pagination";
 
 const AdminFAQ = () => {
   const [faqs, setFaqs] = useState([]);
-  const [submittedQuestions, setSubmittedQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // Active Tab: 'faqs' | 'submissions'
-  const [activeTab, setActiveTab] = useState("faqs");
 
   // Search & Pagination
   const [searchQuery, setSearchQuery] = useState("");
   const [faqPage, setFaqPage] = useState(1);
   const [faqPerPage, setFaqPerPage] = useState(10);
-  const [subPage, setSubPage] = useState(1);
-  const [subPerPage, setSubPerPage] = useState(10);
 
   // Modals
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -66,21 +58,8 @@ const AdminFAQ = () => {
       }
     );
 
-    const unsubscribeSubmissions = onSnapshot(
-      collection(db, "faqSubmissions"),
-      (submissionSnapshot) => {
-        const data = submissionSnapshot.docs.map((item) => ({
-          id: item.id,
-          ...item.data(),
-        }));
-        setSubmittedQuestions(data);
-      },
-      (error) => console.error(error)
-    );
-
     return () => {
       unsubscribeFaqs();
-      unsubscribeSubmissions();
     };
   }, []);
 
@@ -100,52 +79,6 @@ const AdminFAQ = () => {
     return filteredFaqs.slice(start, start + faqPerPage);
   }, [filteredFaqs, faqPage, faqPerPage]);
 
-  // Filtered Submissions
-  const filteredSubmissions = useMemo(() => {
-    if (!searchQuery.trim()) return submittedQuestions;
-    const q = searchQuery.toLowerCase();
-    return submittedQuestions.filter(
-      (s) =>
-        (s.name || "").toLowerCase().includes(q) ||
-        (s.email || "").toLowerCase().includes(q) ||
-        (s.question || "").toLowerCase().includes(q)
-    );
-  }, [submittedQuestions, searchQuery]);
-
-  const paginatedSubmissions = useMemo(() => {
-    const start = (subPage - 1) * subPerPage;
-    return filteredSubmissions.slice(start, start + subPerPage);
-  }, [filteredSubmissions, subPage, subPerPage]);
-
-  // Publish patient question
-  const handlePublishQuestion = async (questionData) => {
-    try {
-      await addDoc(collection(db, "faqs"), {
-        question: questionData.question,
-        answer: "Our clinical specialists are happy to assist. Please contact our front desk for customized care plans.",
-        active: true,
-        notificationRead: true,
-        createdAt: serverTimestamp(),
-      });
-      await deleteDoc(doc(db, "faqSubmissions", questionData.id));
-      toast.success("Question published to FAQ list!");
-    } catch (error) {
-      console.error(error);
-      toast.error(error.message);
-    }
-  };
-
-  const handleDeleteSubmission = async (id) => {
-    if (!window.confirm("Delete this patient inquiry?")) return;
-    try {
-      await deleteDoc(doc(db, "faqSubmissions", id));
-      toast.success("Inquiry deleted");
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to delete inquiry");
-    }
-  };
-
   const handleSave = async () => {
     if (!formData.question.trim()) {
       toast.error("Question is required");
@@ -158,23 +91,25 @@ const AdminFAQ = () => {
           question: formData.question,
           answer: formData.answer,
           active: formData.active,
+          updatedAt: serverTimestamp(),
         });
         toast.success("FAQ updated successfully");
       } else {
         await addDoc(collection(db, "faqs"), {
-          ...formData,
-          notificationRead: true,
+          question: formData.question,
+          answer: formData.answer,
+          active: formData.active,
           createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
         });
-        toast.success("FAQ created successfully");
+        toast.success("New FAQ published successfully");
       }
-
-      setFormData({ question: "", answer: "", active: true });
-      setEditingId(null);
       setIsModalOpen(false);
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to save FAQ");
+      setEditingId(null);
+      setFormData({ question: "", answer: "", active: true });
+    } catch (err) {
+      console.error(err);
+      toast.error(err.message || "Failed to save FAQ");
     }
   };
 
@@ -182,10 +117,22 @@ const AdminFAQ = () => {
     if (!window.confirm("Are you sure you want to delete this FAQ?")) return;
     try {
       await deleteDoc(doc(db, "faqs", id));
-      toast.success("FAQ deleted");
-    } catch (error) {
-      console.error(error);
+      toast.success("FAQ deleted successfully");
+    } catch (err) {
+      console.error(err);
       toast.error("Failed to delete FAQ");
+    }
+  };
+
+  const toggleActiveStatus = async (faq) => {
+    try {
+      await updateDoc(doc(db, "faqs", faq.id), {
+        active: !faq.active,
+      });
+      toast.success(`FAQ ${!faq.active ? "activated" : "hidden"}`);
+    } catch (err) {
+      console.error(err);
+      toast.error("Status update failed");
     }
   };
 
@@ -210,320 +157,209 @@ const AdminFAQ = () => {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200/90 shadow-2xs">
         <div>
-          <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-            FAQ & Inquiries
-          </h1>
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-700">
+              <CircleHelp size={18} />
+            </div>
+            <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+              FAQ Management
+            </h1>
+          </div>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Manage clinic frequently asked questions and online patient queries
+            Add, edit, and organize frequently asked questions for your patients.
           </p>
         </div>
 
         <button
           type="button"
           onClick={openAdd}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs sm:text-sm transition shadow-xs self-start sm:self-auto"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs sm:text-sm transition shadow-xs self-start sm:self-auto cursor-pointer"
         >
           <Plus size={16} />
           <span>Add New FAQ</span>
         </button>
       </div>
 
-      {/* Tabs & Search */}
-      <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-2xs space-y-3.5">
-        <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-          <button
-            type="button"
-            onClick={() => setActiveTab("faqs")}
-            className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 ${
-              activeTab === "faqs"
-                ? "bg-teal-600 text-white shadow-2xs"
-                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-            }`}
-          >
-            <CircleHelp size={15} />
-            <span>Published FAQs ({faqs.length})</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab("submissions")}
-            className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 ${
-              activeTab === "submissions"
-                ? "bg-slate-900 text-white shadow-2xs"
-                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-            }`}
-          >
-            <MessageCircleQuestion size={15} />
-            <span>Patient Inquiries ({submittedQuestions.length})</span>
-          </button>
-        </div>
-
-        {/* Search */}
+      {/* Search Bar */}
+      <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-2xs">
         <div className="relative">
           <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
-            placeholder={
-              activeTab === "faqs"
-                ? "Search published questions or answers..."
-                : "Search patient inquiries by name, email, or question..."
-            }
+            placeholder="Search FAQs by question or answer..."
             value={searchQuery}
             onChange={(e) => {
               setSearchQuery(e.target.value);
               setFaqPage(1);
-              setSubPage(1);
             }}
             className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 outline-none focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition"
           />
         </div>
       </div>
 
-      {/* Main Content Area */}
+      {/* FAQs List Area */}
       <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs overflow-hidden">
-        {activeTab === "faqs" ? (
-          <>
-            {/* Mobile Cards (320px - 768px) */}
-            <div className="divide-y divide-slate-100 md:hidden">
-              {paginatedFaqs.length === 0 ? (
-                <div className="p-8 text-center text-slate-400 text-xs">No FAQs found.</div>
+        {/* Mobile Cards (320px - 768px) */}
+        <div className="divide-y divide-slate-100 md:hidden">
+          {loading ? (
+            <div className="p-8 text-center text-slate-400 text-xs">Loading FAQs...</div>
+          ) : paginatedFaqs.length === 0 ? (
+            <div className="p-8 text-center text-slate-400 text-xs">No FAQs found.</div>
+          ) : (
+            paginatedFaqs.map((faq) => (
+              <div key={faq.id} className="p-4 space-y-2.5">
+                <div className="flex items-start justify-between gap-2">
+                  <h3 className="font-bold text-sm text-slate-900 leading-snug">
+                    {faq.question}
+                  </h3>
+                  <span
+                    className={`text-[10px] font-black px-2 py-0.5 rounded-full shrink-0 ${
+                      faq.active
+                        ? "bg-emerald-100 text-emerald-800"
+                        : "bg-slate-100 text-slate-600"
+                    }`}
+                  >
+                    {faq.active ? "Active" : "Hidden"}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                  {faq.answer}
+                </p>
+                <div className="flex items-center justify-between pt-2 border-t border-slate-50 text-xs">
+                  <button
+                    type="button"
+                    onClick={() => toggleActiveStatus(faq)}
+                    className="text-teal-700 font-bold hover:underline"
+                  >
+                    Toggle {faq.active ? "Hide" : "Show"}
+                  </button>
+                  <div className="flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => setViewFaq(faq)}
+                      className="p-1.5 text-slate-600 hover:bg-slate-100 rounded-lg"
+                      title="View"
+                    >
+                      <Eye size={15} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => openEdit(faq)}
+                      className="p-1.5 text-teal-600 hover:bg-teal-50 rounded-lg"
+                      title="Edit"
+                    >
+                      <Pencil size={15} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteFaq(faq.id)}
+                      className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-lg"
+                      title="Delete"
+                    >
+                      <Trash2 size={15} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Desktop Table (768px+) */}
+        <div className="hidden md:block overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-slate-50/90 border-b border-slate-200 text-[11px] font-black uppercase text-slate-500">
+                <th className="py-3.5 px-4 w-12 text-center">#</th>
+                <th className="py-3.5 px-4 w-1/3">Question</th>
+                <th className="py-3.5 px-4">Answer Preview</th>
+                <th className="py-3.5 px-4 text-center w-28">Status</th>
+                <th className="py-3.5 px-4 text-right w-36">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100 text-xs sm:text-sm">
+              {loading ? (
+                <tr>
+                  <td colSpan={5} className="py-8 text-center text-slate-400">
+                    Loading FAQs...
+                  </td>
+                </tr>
+              ) : paginatedFaqs.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="py-8 text-center text-slate-400">
+                    No FAQs found. Add your first clinic FAQ above.
+                  </td>
+                </tr>
               ) : (
-                paginatedFaqs.map((faq) => (
-                  <div key={faq.id} className="p-4 space-y-2.5">
-                    <div className="flex items-start justify-between gap-2">
-                      <h3 className="font-bold text-sm text-slate-900 leading-snug">
-                        {faq.question}
-                      </h3>
-                      <span
-                        className={`text-[10px] font-black px-2 py-0.5 rounded-full shrink-0 ${
+                paginatedFaqs.map((faq, index) => (
+                  <tr key={faq.id} className="hover:bg-slate-50/80 transition">
+                    <td className="py-3.5 px-4 text-center font-bold text-slate-400">
+                      {(faqPage - 1) * faqPerPage + index + 1}
+                    </td>
+                    <td className="py-3.5 px-4 font-bold text-slate-900 leading-snug">
+                      {faq.question}
+                    </td>
+                    <td className="py-3.5 px-4 text-slate-600 max-w-md truncate">
+                      {faq.answer}
+                    </td>
+                    <td className="py-3.5 px-4 text-center">
+                      <button
+                        type="button"
+                        onClick={() => toggleActiveStatus(faq)}
+                        className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold transition cursor-pointer ${
                           faq.active
-                            ? "bg-emerald-100 text-emerald-800"
-                            : "bg-slate-200 text-slate-600"
+                            ? "bg-emerald-100 text-emerald-800 hover:bg-emerald-200"
+                            : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                         }`}
                       >
-                        {faq.active ? "Active" : "Draft"}
-                      </span>
-                    </div>
-
-                    <p className="text-xs text-slate-600 line-clamp-2">
-                      {faq.answer || "No answer provided"}
-                    </p>
-
-                    <div className="flex items-center justify-end gap-1.5 pt-2 border-t border-slate-100">
-                      <button
-                        type="button"
-                        onClick={() => setViewFaq(faq)}
-                        className="p-2 rounded-lg bg-teal-50 text-teal-700"
-                        title="View"
-                      >
-                        <Eye size={15} />
+                        <CheckCircle2 size={13} />
+                        <span>{faq.active ? "Published" : "Hidden"}</span>
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => openEdit(faq)}
-                        className="p-2 rounded-lg bg-blue-50 text-blue-700"
-                        title="Edit"
-                      >
-                        <Pencil size={15} />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleDeleteFaq(faq.id)}
-                        className="p-2 rounded-lg bg-rose-50 text-rose-600"
-                        title="Delete"
-                      >
-                        <Trash2 size={15} />
-                      </button>
-                    </div>
-                  </div>
+                    </td>
+                    <td className="py-3.5 px-4 text-right">
+                      <div className="flex items-center justify-end gap-1">
+                        <button
+                          type="button"
+                          onClick={() => setViewFaq(faq)}
+                          className="p-1.5 text-slate-600 hover:bg-slate-100 rounded-lg transition"
+                          title="View"
+                        >
+                          <Eye size={16} />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => openEdit(faq)}
+                          className="p-1.5 text-teal-600 hover:bg-teal-50 rounded-lg transition"
+                          title="Edit"
+                        >
+                          <Pencil size={16} />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteFaq(faq.id)}
+                          className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-lg transition"
+                          title="Delete"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
                 ))
               )}
-            </div>
+            </tbody>
+          </table>
+        </div>
 
-            {/* Desktop Table (>= 768px) */}
-            <div className="hidden md:block overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-slate-50/90 border-b border-slate-200 text-[11px] font-black uppercase text-slate-500">
-                    <th className="py-3.5 px-4 w-1/2">Question</th>
-                    <th className="py-3.5 px-4 w-1/3">Answer Preview</th>
-                    <th className="py-3.5 px-4">Status</th>
-                    <th className="py-3.5 px-4 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 text-xs sm:text-sm">
-                  {paginatedFaqs.length === 0 ? (
-                    <tr>
-                      <td colSpan={4} className="py-8 text-center text-slate-400">
-                        No FAQs found.
-                      </td>
-                    </tr>
-                  ) : (
-                    paginatedFaqs.map((faq) => (
-                      <tr key={faq.id} className="hover:bg-slate-50/80 transition">
-                        <td className="py-3.5 px-4 font-bold text-slate-900">{faq.question}</td>
-                        <td className="py-3.5 px-4 text-slate-600 line-clamp-1 truncate max-w-xs">
-                          {faq.answer || "No answer provided"}
-                        </td>
-                        <td className="py-3.5 px-4">
-                          <span
-                            className={`text-xs font-bold px-2 py-0.5 rounded-full ${
-                              faq.active
-                                ? "bg-emerald-100 text-emerald-800"
-                                : "bg-slate-200 text-slate-600"
-                            }`}
-                          >
-                            {faq.active ? "Active" : "Draft"}
-                          </span>
-                        </td>
-                        <td className="py-3.5 px-4 text-right">
-                          <div className="flex items-center justify-end gap-1.5">
-                            <button
-                              type="button"
-                              onClick={() => setViewFaq(faq)}
-                              className="p-1.5 text-teal-600 hover:bg-teal-50 rounded-lg transition"
-                              title="View"
-                            >
-                              <Eye size={16} />
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => openEdit(faq)}
-                              className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition"
-                              title="Edit"
-                            >
-                              <Pencil size={16} />
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => handleDeleteFaq(faq.id)}
-                              className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-lg transition"
-                              title="Delete"
-                            >
-                              <Trash2 size={16} />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Pagination */}
-            <Pagination
-              currentPage={faqPage}
-              totalItems={filteredFaqs.length}
-              itemsPerPage={faqPerPage}
-              onPageChange={setFaqPage}
-              onItemsPerPageChange={setFaqPerPage}
-              pageSizeOptions={[5, 10, 20]}
-            />
-          </>
-        ) : (
-          <>
-            {/* Submissions Mobile Cards */}
-            <div className="divide-y divide-slate-100 md:hidden">
-              {paginatedSubmissions.length === 0 ? (
-                <div className="p-8 text-center text-slate-400 text-xs">
-                  No patient inquiries submitted yet.
-                </div>
-              ) : (
-                paginatedSubmissions.map((sub) => (
-                  <div key={sub.id} className="p-4 space-y-2.5">
-                    <div className="flex items-center justify-between">
-                      <h4 className="font-bold text-sm text-slate-900">{sub.name || "Anonymous"}</h4>
-                      <span className="text-[11px] text-slate-400">{sub.email}</span>
-                    </div>
-                    <p className="text-xs text-slate-700 bg-slate-50 p-2 rounded-xl border border-slate-100">
-                      "{sub.question}"
-                    </p>
-                    <div className="flex items-center justify-end gap-2 pt-2">
-                      <button
-                        type="button"
-                        onClick={() => handlePublishQuestion(sub)}
-                        className="px-3 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs"
-                      >
-                        Publish to FAQ
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleDeleteSubmission(sub.id)}
-                        className="p-1.5 rounded-lg text-rose-600 hover:bg-rose-50"
-                        title="Delete"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-
-            {/* Submissions Desktop Table */}
-            <div className="hidden md:block overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-slate-50/90 border-b border-slate-200 text-[11px] font-black uppercase text-slate-500">
-                    <th className="py-3.5 px-4">Visitor Name</th>
-                    <th className="py-3.5 px-4">Contact</th>
-                    <th className="py-3.5 px-4 w-1/2">Inquiry / Question</th>
-                    <th className="py-3.5 px-4 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 text-xs sm:text-sm">
-                  {paginatedSubmissions.length === 0 ? (
-                    <tr>
-                      <td colSpan={4} className="py-8 text-center text-slate-400">
-                        No patient inquiries submitted yet.
-                      </td>
-                    </tr>
-                  ) : (
-                    paginatedSubmissions.map((sub) => (
-                      <tr key={sub.id} className="hover:bg-slate-50/80 transition">
-                        <td className="py-3.5 px-4 font-bold text-slate-900">
-                          {sub.name || "Anonymous"}
-                        </td>
-                        <td className="py-3.5 px-4 text-slate-600">{sub.email || "N/A"}</td>
-                        <td className="py-3.5 px-4 text-slate-800">{sub.question}</td>
-                        <td className="py-3.5 px-4 text-right">
-                          <div className="flex items-center justify-end gap-2">
-                            <button
-                              type="button"
-                              onClick={() => handlePublishQuestion(sub)}
-                              className="px-3 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs"
-                            >
-                              Publish to FAQ
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => handleDeleteSubmission(sub.id)}
-                              className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-lg"
-                              title="Delete"
-                            >
-                              <Trash2 size={16} />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Pagination */}
-            <Pagination
-              currentPage={subPage}
-              totalItems={filteredSubmissions.length}
-              itemsPerPage={subPerPage}
-              onPageChange={setSubPage}
-              onItemsPerPageChange={setSubPerPage}
-              pageSizeOptions={[5, 10, 20]}
-            />
-          </>
-        )}
+        {/* Pagination */}
+        <Pagination
+          currentPage={faqPage}
+          totalItems={filteredFaqs.length}
+          itemsPerPage={faqPerPage}
+          onPageChange={setFaqPage}
+          onItemsPerPageChange={setFaqPerPage}
+          pageSizeOptions={[5, 10, 20]}
+        />
       </div>
 
       {/* Add / Edit Modal */}
@@ -537,7 +373,7 @@ const AdminFAQ = () => {
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
               >
                 <X size={18} />
               </button>
@@ -545,23 +381,23 @@ const AdminFAQ = () => {
 
             <div className="space-y-4 mt-4 text-xs sm:text-sm">
               <div>
-                <label className="font-bold text-slate-700 block mb-1">Question</label>
+                <label className="font-bold text-slate-700 block mb-1">Question *</label>
                 <input
                   className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
                   value={formData.question}
                   onChange={(e) => setFormData({ ...formData, question: e.target.value })}
-                  placeholder="e.g. Do you accept health insurance or cashless claims?"
+                  placeholder="e.g. Do I need a doctor's referral for physiotherapy?"
                 />
               </div>
 
               <div>
-                <label className="font-bold text-slate-700 block mb-1">Answer</label>
+                <label className="font-bold text-slate-700 block mb-1">Answer *</label>
                 <textarea
-                  rows={4}
+                  rows={5}
                   className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
                   value={formData.answer}
                   onChange={(e) => setFormData({ ...formData, answer: e.target.value })}
-                  placeholder="Provide comprehensive medical explanation..."
+                  placeholder="Provide clear explanation for patients..."
                 />
               </div>
 
@@ -571,7 +407,7 @@ const AdminFAQ = () => {
                   id="faqActiveCheck"
                   checked={formData.active}
                   onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
-                  className="rounded border-slate-300 text-teal-600 focus:ring-teal-500"
+                  className="rounded border-slate-300 text-teal-600 focus:ring-teal-500 cursor-pointer"
                 />
                 <label htmlFor="faqActiveCheck" className="font-bold text-slate-700 cursor-pointer">
                   Publish to website immediately (Active)
@@ -582,14 +418,14 @@ const AdminFAQ = () => {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 font-bold transition"
+                  className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 font-bold transition cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={handleSave}
-                  className="px-5 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold transition shadow-xs"
+                  className="px-5 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold transition shadow-xs cursor-pointer"
                 >
                   {editingId ? "Update FAQ" : "Save & Publish"}
                 </button>
@@ -608,7 +444,7 @@ const AdminFAQ = () => {
               <button
                 type="button"
                 onClick={() => setViewFaq(null)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 cursor-pointer"
               >
                 <X size={18} />
               </button>
@@ -632,7 +468,7 @@ const AdminFAQ = () => {
                 <button
                   type="button"
                   onClick={() => setViewFaq(null)}
-                  className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold"
+                  className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold cursor-pointer"
                 >
                   Close
                 </button>

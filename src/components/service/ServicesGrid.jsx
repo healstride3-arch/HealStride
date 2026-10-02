@@ -222,12 +222,52 @@ const categories = [
 ];
 
 const ServicesGrid = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
-  const { items: services } = useFirestoreCollection("services", {
-    constraints: [where("active", "!=", false)],
-    fallback: defaultServices.filter((s) => !isExcluded(s)),
+  const { items: rawFirestoreServices } = useFirestoreCollection("services", {
+    fallback: [],
   });
+
+  // Real-time synchronization:
+  // Merges Firestore updates with baseline defaults so clinic services remain available,
+  // while any addition, edit, category change, photo update, or active toggle from Admin updates live!
+  const services = (() => {
+    const map = new Map();
+    // 1. Defaults as baseline
+    defaultServices
+      .filter((s) => !isExcluded(s))
+      .forEach((s) => {
+        const key = (s.slug || s.id).toLowerCase();
+        map.set(key, { ...s });
+      });
+
+    // 2. Overwrite / append from Firestore
+    (rawFirestoreServices || []).forEach((fs) => {
+      const slugKey = (fs.slug || fs.id || fs.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      const existing = map.get(slugKey) || map.get(fs.id) || {};
+      map.set(slugKey, {
+        ...existing,
+        ...fs,
+        id: fs.id || existing.id || slugKey,
+        slug: fs.slug || existing.slug || slugKey,
+        category: fs.category || existing.category || "therapies",
+        categoryLabel:
+          fs.categoryLabel ||
+          existing.categoryLabel ||
+          (fs.category === "spine"
+            ? "Back & Cervical"
+            : fs.category === "joints"
+            ? "Joint & Muscle"
+            : fs.category === "rehab"
+            ? "Rehabilitation"
+            : "Specialized Therapy"),
+        fromFirestore: true,
+      });
+    });
+
+    return Array.from(map.values()).filter((s) => s.active !== false && !isExcluded(s));
+  })();
+
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -236,7 +276,7 @@ const ServicesGrid = () => {
       selectedCategory === "all" || service.category === selectedCategory;
     const matchesSearch =
       searchQuery.trim() === "" ||
-      service.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      service.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       service.description?.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
@@ -320,8 +360,19 @@ const ServicesGrid = () => {
             {filteredServices.map((service, index) => {
               const slug = (service.slug || service.id || "").toLowerCase().trim();
               const camelKey = slug.replace(/-([a-z0-9])/g, (_, letter) => letter.toUpperCase());
-              const localizedTitle = t(`servicesList.${camelKey}Title`, { defaultValue: service.title });
-              const localizedDesc = t(`servicesList.${camelKey}Desc`, { defaultValue: service.description });
+              const isHi = (i18n?.language || "").startsWith("hi");
+              const localizedTitle =
+                service.fromFirestore && service.title
+                  ? isHi && t(`servicesList.${camelKey}Title`) !== `servicesList.${camelKey}Title`
+                    ? t(`servicesList.${camelKey}Title`)
+                    : service.title
+                  : t(`servicesList.${camelKey}Title`, { defaultValue: service.title });
+              const localizedDesc =
+                service.fromFirestore && service.description
+                  ? isHi && t(`servicesList.${camelKey}Desc`) !== `servicesList.${camelKey}Desc`
+                    ? t(`servicesList.${camelKey}Desc`)
+                    : service.description
+                  : t(`servicesList.${camelKey}Desc`, { defaultValue: service.description });
 
               return (
               <motion.div
@@ -351,7 +402,7 @@ const ServicesGrid = () => {
                 {/* Image & Badges */}
                 <div className="relative overflow-hidden h-48 sm:h-52 w-full flex-shrink-0 bg-slate-100">
                   <img
-                    src={service.imageUrl || treatment1}
+                    src={service.imageUrl || service.image || treatment1}
                     alt={localizedTitle}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />

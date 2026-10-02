@@ -136,10 +136,10 @@ const DoctorProfile = () => {
   const [copied, setCopied] = useState(false);
 
   // Real-time Firestore sync with fallback
-  const { items: doctors, loading } = useFirestoreCollection("doctors", {
-    constraints: [where("active", "!=", false)],
+  const { items: rawDoctors, loading } = useFirestoreCollection("doctors", {
     fallback: defaultDoctors,
   });
+  const doctors = rawDoctors.filter((d) => d.active !== false);
 
   // Settings for clinic phone / whatsapp
   const { data: clinicSettings } = useFirestoreDoc("settings", "clinic", {
@@ -148,17 +148,34 @@ const DoctorProfile = () => {
     hours: "Morning 9:00 AM - 12:00 PM\nEvening 5:00 PM - 9:00 PM",
   });
 
+  const slugify = (str) =>
+    (str || "")
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-");
+
+  const cleanDocName = (doctorName || "").toLowerCase().trim();
   const isRequestedWajhul =
-    doctorName?.toLowerCase().includes("wajhul") ||
-    doctorName?.toLowerCase().includes("wazul");
+    cleanDocName.includes("wajhul") ||
+    cleanDocName.includes("wazul");
 
   const rawDoctor =
-    doctors.find((item) => item.slug === doctorName || item.id === doctorName) ||
+    doctors.find(
+      (item) =>
+        item.slug === doctorName ||
+        item.id === doctorName ||
+        slugify(item.name) === cleanDocName ||
+        (cleanDocName.includes("rashid") && (item.id === "dr-md-rashid" || item.slug === "dr-md-rashid")) ||
+        (isRequestedWajhul && (item.id === "dr-wajhul-qamar" || item.slug === "dr-wajhul-qamar"))
+    ) ||
     defaultDoctors.find(
       (item) =>
         item.slug === doctorName ||
         item.id === doctorName ||
-        (doctorName?.toLowerCase().includes("rashid") && item.id === "dr-md-rashid") ||
+        slugify(item.name) === cleanDocName ||
+        (cleanDocName.includes("rashid") && item.id === "dr-md-rashid") ||
         (isRequestedWajhul && item.id === "dr-wajhul-qamar")
     );
 
@@ -166,18 +183,31 @@ const DoctorProfile = () => {
     (item) =>
       item.slug === doctorName ||
       item.id === doctorName ||
-      (doctorName?.toLowerCase().includes("rashid") && item.id === "dr-md-rashid") ||
+      slugify(item.name) === cleanDocName ||
+      (cleanDocName.includes("rashid") && item.id === "dr-md-rashid") ||
       (isRequestedWajhul && item.id === "dr-wajhul-qamar")
   );
 
-  // Intelligent merge: live Firestore data takes precedence, but default fields (certifications, degree) are preserved
+  // Intelligent merge: live Firestore data takes top priority, default fields act as safety fallback
   const doctor = rawDoctor
     ? {
         ...fallbackMatch,
         ...rawDoctor,
+        name: rawDoctor.name || fallbackMatch?.name || "",
+        role: rawDoctor.role || fallbackMatch?.role || "",
+        education: rawDoctor.education || fallbackMatch?.education || "",
+        registration: rawDoctor.registration || fallbackMatch?.registration || "",
+        experience: rawDoctor.experience || fallbackMatch?.experience || "",
+        specialization: rawDoctor.specialization || fallbackMatch?.specialization || "",
+        description: rawDoctor.description || fallbackMatch?.description || "",
         certifications:
-          rawDoctor.certifications && rawDoctor.certifications.length > 0
-            ? rawDoctor.certifications
+          rawDoctor.certifications &&
+          (Array.isArray(rawDoctor.certifications)
+            ? rawDoctor.certifications.length > 0
+            : String(rawDoctor.certifications).trim())
+            ? Array.isArray(rawDoctor.certifications)
+              ? rawDoctor.certifications
+              : String(rawDoctor.certifications).split("\n").map((c) => c.trim()).filter(Boolean)
             : fallbackMatch?.certifications || [],
       }
     : null;
@@ -226,9 +256,14 @@ const DoctorProfile = () => {
     doctor.name?.toLowerCase().includes("wazul");
 
   const doctorPhoto =
-    isDrRashid || isDrWajhul
-      ? (fallbackMatch?.image || fallbackMatch?.imageUrl || doctor.image || doctor.imageUrl)
-      : (doctor.image || doctor.imageUrl || "/default-user.png");
+    rawDoctor?.image ||
+    rawDoctor?.imageUrl ||
+    rawDoctor?.photoUrl ||
+    fallbackMatch?.image ||
+    fallbackMatch?.imageUrl ||
+    doctor?.image ||
+    doctor?.imageUrl ||
+    "/default-user.png";
 
   const phoneRaw = (clinicSettings?.phone || "8809491380").replace(/[^0-9]/g, "");
   const whatsappRaw = (clinicSettings?.whatsapp || "8252580389").replace(/[^0-9]/g, "");
@@ -345,16 +380,20 @@ const DoctorProfile = () => {
 
               {/* Role & Degree */}
               <p className="text-teal-300 text-xs xs:text-sm sm:text-base lg:text-lg font-semibold mt-1">
-                {isDrRashid
-                  ? "Senior Consultant Physiotherapist | MPT (Sports)"
-                  : (doctor.role || "Physiotherapist & Rehab Specialist (BPT)")}
+                {doctor.role ||
+                  fallbackMatch?.role ||
+                  (isDrRashid
+                    ? "Senior Consultant Physiotherapist | MPT (Sports)"
+                    : "Physiotherapist & Rehab Specialist (BPT)")}
               </p>
 
               {/* Bio / Description */}
               <p className="mt-2 xs:mt-3 text-slate-300 text-[11px] xs:text-xs sm:text-sm lg:text-base leading-relaxed max-w-2xl">
-                {doctor.description || (isDrRashid
-                  ? "Senior Consultant Physiotherapist specializing in sports injury rehabilitation, Mulligan’s Mobilization with Movement (MWM), certified cupping, dry needling, and advanced kinesiology taping modalities."
-                  : "Physiotherapist focused on movement recovery, patient education, exercise therapy, and musculoskeletal rehabilitation.")}
+                {doctor.description ||
+                  fallbackMatch?.description ||
+                  (isDrRashid
+                    ? "Senior Consultant Physiotherapist specializing in sports injury rehabilitation, Mulligan’s Mobilization with Movement (MWM), certified cupping, dry needling, and advanced kinesiology taping modalities."
+                    : "Physiotherapist focused on movement recovery, patient education, exercise therapy, and musculoskeletal rehabilitation.")}
               </p>
 
               {/* Quick Summary Highlights Strip */}
@@ -369,9 +408,9 @@ const DoctorProfile = () => {
                   <p className="text-[9px] xs:text-[11px] sm:text-xs text-slate-400 font-medium">Qualification</p>
                   <p
                     className="text-[11px] xs:text-xs sm:text-sm md:text-base font-bold text-teal-300 mt-0.5 truncate"
-                    title={isDrRashid ? "MPT (Sports)" : (doctor.education || "BPT")}
+                    title={doctor.education || fallbackMatch?.education || (isDrRashid ? "MPT (Sports)" : "BPT")}
                   >
-                    {isDrRashid ? "MPT (Sports)" : (doctor.education || "BPT")}
+                    {doctor.education || fallbackMatch?.education || (isDrRashid ? "MPT (Sports)" : "BPT")}
                   </p>
                 </div>
 
@@ -379,9 +418,15 @@ const DoctorProfile = () => {
                   <p className="text-[9px] xs:text-[11px] sm:text-xs text-slate-400 font-medium">Specialization</p>
                   <p
                     className="text-[11px] xs:text-xs sm:text-sm md:text-base font-bold text-white mt-0.5 truncate"
-                    title={isDrRashid ? "Sports Rehab" : "Movement Rehab"}
+                    title={
+                      (doctor.specialization ? doctor.specialization.split(",")[0] : null) ||
+                      fallbackMatch?.specialization?.split(",")?.[0] ||
+                      (isDrRashid ? "Sports Rehab" : "Movement Rehab")
+                    }
                   >
-                    {isDrRashid ? "Sports Rehab" : "Movement Rehab"}
+                    {(doctor.specialization ? doctor.specialization.split(",")[0] : null) ||
+                      fallbackMatch?.specialization?.split(",")?.[0] ||
+                      (isDrRashid ? "Sports Rehab" : "Movement Rehab")}
                   </p>
                 </div>
 
@@ -529,22 +574,22 @@ const DoctorProfile = () => {
 
               {isDrRashid ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 xs:gap-4">
-                  {/* Degree 1: MPT Sports */}
+                  {/* Degree 1: MPT Sports or Doctor Education */}
                   <div className="p-3 xs:p-4 rounded-xl xs:rounded-2xl border border-teal-100 bg-teal-50/40">
                     <div className="flex items-center gap-2 text-teal-700 font-bold text-xs xs:text-sm">
                       <CheckCircle2 size={16} className="shrink-0" />
-                      <span>Master of Physiotherapy - MPT (Sports)</span>
+                      <span>{doctor.education ? doctor.education.split("|")[0].trim() : "Master of Physiotherapy - MPT (Sports)"}</span>
                     </div>
                     <p className="text-[11px] xs:text-xs text-slate-600 mt-1 leading-relaxed">
                       Specialized higher master&apos;s degree in sports kinesiology, athletic injury rehabilitation, and biomechanical movement recovery.
                     </p>
                   </div>
 
-                  {/* Degree 2: BPT */}
+                  {/* Degree 2: BPT or Second Degree */}
                   <div className="p-3 xs:p-4 rounded-xl xs:rounded-2xl border border-slate-200 bg-slate-50/50">
                     <div className="flex items-center gap-2 text-slate-800 font-bold text-xs xs:text-sm">
                       <CheckCircle2 size={16} className="text-teal-600 shrink-0" />
-                      <span>Bachelor of Physiotherapy - BPT</span>
+                      <span>{doctor.education && doctor.education.includes("|") ? doctor.education.split("|")[1].trim() : "Bachelor of Physiotherapy - BPT"}</span>
                     </div>
                     <p className="text-[11px] xs:text-xs text-slate-600 mt-1 leading-relaxed">
                       Comprehensive clinical foundation in orthopedic rehabilitation, neurology, cardio-respiratory physiotherapy, and electro-physical agents.
@@ -558,7 +603,7 @@ const DoctorProfile = () => {
                       <span>Medical Council Registration</span>
                     </div>
                     <p className="text-[11px] xs:text-xs text-slate-600 mt-1 font-semibold text-teal-700">
-                      Reg. DEG2/71968/2025
+                      {doctor.registration ? (doctor.registration.startsWith("Reg") ? doctor.registration : `Reg. ${doctor.registration}`) : "Reg. DEG2/71968/2025"}
                     </p>
                     <p className="text-[11px] xs:text-xs text-slate-500 mt-1 leading-relaxed">
                       Authorized and registered practitioner with state physical therapy councils.
@@ -572,7 +617,7 @@ const DoctorProfile = () => {
                       <span>Clinical Experience</span>
                     </div>
                     <p className="text-[11px] xs:text-xs text-slate-600 mt-1 font-semibold text-teal-700">
-                      5+ Years of Dedicated Clinical Practice
+                      {doctor.experience ? (doctor.experience.toLowerCase().includes("year") ? doctor.experience : `${doctor.experience} Clinical Practice`) : "5+ Years of Dedicated Clinical Practice"}
                     </p>
                     <p className="text-[11px] xs:text-xs text-slate-500 mt-1 leading-relaxed">
                       Over 2,500+ successful musculoskeletal and sports pain rehabilitation cases treated.
@@ -581,36 +626,36 @@ const DoctorProfile = () => {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 xs:gap-4">
-                  {/* Doctor Degree: BPT */}
+                  {/* Doctor Degree */}
                   <div className="p-3 xs:p-4 rounded-xl xs:rounded-2xl border border-teal-100 bg-teal-50/40">
                     <div className="flex items-center gap-2 text-teal-700 font-bold text-xs xs:text-sm">
                       <CheckCircle2 size={16} className="shrink-0" />
-                      <span>Bachelor of Physiotherapy (BPT)</span>
+                      <span>{doctor.education || "Bachelor of Physiotherapy (BPT)"}</span>
                     </div>
                     <p className="text-[11px] xs:text-xs text-slate-600 mt-1 leading-relaxed">
                       Clinical degree in physical therapy, musculoskeletal rehabilitation, and exercise-based therapeutic recovery.
                     </p>
                   </div>
 
-                  {/* Clinical Practice Area */}
+                  {/* Medical Council Registration / Practice */}
                   <div className="p-3 xs:p-4 rounded-xl xs:rounded-2xl border border-slate-200 bg-slate-50/50">
                     <div className="flex items-center gap-2 text-slate-800 font-bold text-xs xs:text-sm">
-                      <CheckCircle2 size={16} className="text-teal-600 shrink-0" />
-                      <span>Movement Recovery Specialist</span>
+                      <BadgeCheck size={16} className="text-teal-600 shrink-0" />
+                      <span>{doctor.registration ? "Council Registration" : "Movement Recovery Specialist"}</span>
                     </div>
                     <p className="text-[11px] xs:text-xs text-slate-600 mt-1 leading-relaxed">
-                      Focused expertise in functional movement restoration, postural re-education, and mobility training.
+                      {doctor.registration || "Focused expertise in functional movement restoration, postural re-education, and mobility training."}
                     </p>
                   </div>
 
-                  {/* Musculoskeletal Rehab */}
+                  {/* Clinical Experience */}
                   <div className="p-3 xs:p-4 rounded-xl xs:rounded-2xl border border-slate-200 bg-slate-50/50">
                     <div className="flex items-center gap-2 text-slate-800 font-bold text-xs xs:text-sm">
-                      <Activity size={16} className="text-teal-600 shrink-0" />
-                      <span>Musculoskeletal Rehabilitation</span>
+                      <BriefcaseMedical size={16} className="text-teal-600 shrink-0" />
+                      <span>Clinical Experience</span>
                     </div>
                     <p className="text-[11px] xs:text-xs text-slate-600 mt-1 leading-relaxed">
-                      Assessment and rehabilitation for joint, spinal, and muscular pain conditions to restore active mobility.
+                      {doctor.experience || "Musculoskeletal and orthopedic rehabilitation clinical practice."}
                     </p>
                   </div>
 
