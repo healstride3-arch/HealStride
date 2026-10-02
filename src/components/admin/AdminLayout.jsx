@@ -42,33 +42,20 @@ const AdminLayout = () => {
 
   // Realtime badge counts for Appointments and Notifications
   useEffect(() => {
-    let unreadApp = 0;
-    let unreadRev = 0;
-
     const unsubApp = onSnapshot(collection(db, "appointments"), (snap) => {
       const pending = snap.docs.filter(
         (d) =>
           d.data().status === "pending" ||
           (d.data().notificationRead !== true && d.data().read !== true)
       ).length;
-      unreadApp = snap.docs.filter(
+      const unreadApp = snap.docs.filter(
         (d) => d.data().notificationRead !== true && d.data().read !== true
       ).length;
       setPendingAppointmentsCount(pending);
-      setUnreadNotificationsCount(unreadApp + unreadRev);
+      setUnreadNotificationsCount(unreadApp);
     });
 
-    const unsubReviews = onSnapshot(collection(db, "testimonials"), (snap) => {
-      unreadRev = snap.docs.filter(
-        (d) => d.data().notificationRead !== true && d.data().read !== true
-      ).length;
-      setUnreadNotificationsCount(unreadApp + unreadRev);
-    });
-
-    return () => {
-      unsubApp();
-      unsubReviews();
-    };
+    return () => unsubApp();
   }, []);
 
   // Professional clinic sidebar navigation grouped logically

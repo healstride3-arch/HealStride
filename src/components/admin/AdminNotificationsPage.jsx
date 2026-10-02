@@ -32,11 +32,10 @@ const AdminNotificationsPage = () => {
   const navigate = useNavigate();
 
   const [appointments, setAppointments] = useState([]);
-  const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Filters & Search
-  const [filterType, setFilterType] = useState("all"); // 'all' | 'appointments' | 'testimonials' | 'unread'
+  const [filterType, setFilterType] = useState("all"); // 'all' | 'unread'
   const [searchQuery, setSearchQuery] = useState("");
   const [soundEnabled, setSoundEnabled] = useState(true);
 
@@ -96,48 +95,22 @@ const AdminNotificationsPage = () => {
       setLoading(false);
     });
 
-    const unsubTestimonials = onSnapshot(collection(db, "testimonials"), (snap) => {
-      const data = snap.docs.map((d) => ({
-        id: d.id,
-        notifType: "testimonial",
-        collectionName: "testimonials",
-        title: "Patient Review",
-        name: d.data().name || "Patient",
-        phone: `${d.data().rating || 5} Stars Rating`,
-        doctor: "Clinic Review",
-        condition: "Testimonial",
-        date: "",
-        time: "",
-        message: d.data().review || "",
-        createdAt: d.data().createdAt,
-        isRead: d.data().notificationRead === true || d.data().read === true,
-        redirect: "/admin/testimonials",
-      }));
-      setTestimonials(data);
-    });
-
-    return () => {
-      unsubAppointments();
-      unsubTestimonials();
-    };
+    return () => unsubAppointments();
   }, []);
 
   // Combined notifications sorted newest first
   const allNotifications = useMemo(() => {
-    const list = [...appointments, ...testimonials];
-    return list.sort((a, b) => {
+    return [...appointments].sort((a, b) => {
       const timeA = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : 0;
       const timeB = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : 0;
       return timeB - timeA;
     });
-  }, [appointments, testimonials]);
+  }, [appointments]);
 
   // Filtered list
   const filteredNotifications = useMemo(() => {
     return allNotifications.filter((item) => {
       // Type filter
-      if (filterType === "appointments" && item.notifType !== "appointment") return false;
-      if (filterType === "testimonials" && item.notifType !== "testimonial") return false;
       if (filterType === "unread" && item.isRead) return false;
 
       // Search query
@@ -159,7 +132,6 @@ const AdminNotificationsPage = () => {
   // Counts
   const unreadCount = allNotifications.filter((n) => !n.isRead).length;
   const appointmentCount = appointments.length;
-  const reviewCount = testimonials.length;
 
   // Pagination calculation
   const paginatedNotifications = useMemo(() => {
@@ -237,7 +209,7 @@ const AdminNotificationsPage = () => {
                 Notification Center
               </h1>
               <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-                Real-time patient bookings and reviews feed
+                Real-time patient bookings and appointment leads feed
               </p>
             </div>
           </div>
@@ -326,38 +298,6 @@ const AdminNotificationsPage = () => {
               {unreadCount}
             </span>
           </button>
-
-          <button
-            type="button"
-            onClick={() => setFilterType("appointments")}
-            className={`px-3 py-1.5 rounded-lg font-bold transition whitespace-nowrap flex items-center gap-1.5 ${
-              filterType === "appointments"
-                ? "bg-teal-600 text-white shadow-2xs"
-                : "bg-teal-50 text-teal-800 hover:bg-teal-100"
-            }`}
-          >
-            <Calendar size={13} />
-            <span>Appointments</span>
-            <span className="px-1.5 py-0.2 rounded-full bg-black/10 text-[10px]">
-              {appointmentCount}
-            </span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setFilterType("testimonials")}
-            className={`px-3 py-1.5 rounded-lg font-bold transition whitespace-nowrap flex items-center gap-1.5 ${
-              filterType === "testimonials"
-                ? "bg-purple-600 text-white shadow-2xs"
-                : "bg-purple-50 text-purple-800 hover:bg-purple-100"
-            }`}
-          >
-            <Star size={13} />
-            <span>Reviews</span>
-            <span className="px-1.5 py-0.2 rounded-full bg-black/10 text-[10px]">
-              {reviewCount}
-            </span>
-          </button>
         </div>
       </div>
 
@@ -374,7 +314,7 @@ const AdminNotificationsPage = () => {
             <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
               {searchQuery
                 ? `No activity matching "${searchQuery}"`
-                : "All caught up! New patient leads and questions will appear here."}
+                : "All caught up! New patient appointment leads will appear here."}
             </p>
           </div>
         ) : (
@@ -389,22 +329,8 @@ const AdminNotificationsPage = () => {
                 {/* Left: Icon & Details */}
                 <div className="flex items-start gap-3.5 min-w-0 flex-1">
                   {/* Avatar / Icon Badge */}
-                  <div
-                    className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 mt-0.5 shadow-2xs ${
-                      item.notifType === "appointment"
-                        ? "bg-teal-100 text-teal-700 border border-teal-200"
-                        : item.notifType === "faq"
-                        ? "bg-orange-100 text-orange-700 border border-orange-200"
-                        : "bg-purple-100 text-purple-700 border border-purple-200"
-                    }`}
-                  >
-                    {item.notifType === "appointment" ? (
-                      <Calendar size={18} />
-                    ) : item.notifType === "faq" ? (
-                      <MessageCircleQuestion size={18} />
-                    ) : (
-                      <Star size={18} />
-                    )}
+                  <div className="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 mt-0.5 shadow-2xs bg-teal-100 text-teal-700 border border-teal-200">
+                    <Calendar size={18} />
                   </div>
 
                   {/* Information */}

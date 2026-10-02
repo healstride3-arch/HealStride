@@ -21,11 +21,13 @@ import {
   CheckCircle,
   XCircle,
   X,
+  Search,
 } from "lucide-react";
 
 import { db, storage } from "../../firebase/firebase";
 import { uploadImage } from "../../utils/imageUpload";
 import { doctors as defaultDoctors } from "../../data/team";
+import Pagination from "./Pagination";
 
 const emptyForm = {
   slug: "",
@@ -58,6 +60,9 @@ const AdminDoctors = () => {
   const [imageFile, setImageFile] = useState(null);
   const [confirmEditDoctor, setConfirmEditDoctor] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(6);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -77,6 +82,27 @@ const AdminDoctors = () => {
 
     return () => unsubscribe();
   }, []);
+
+  const filteredDoctors = doctors.filter((doc) => {
+    if (!searchQuery.trim()) return true;
+    const q = searchQuery.toLowerCase();
+    return (
+      (doc.name || "").toLowerCase().includes(q) ||
+      (doc.role || "").toLowerCase().includes(q) ||
+      (doc.education || "").toLowerCase().includes(q) ||
+      (doc.specialization || "").toLowerCase().includes(q) ||
+      (doc.slug || "").toLowerCase().includes(q)
+    );
+  });
+
+  const paginatedDoctors = filteredDoctors.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, itemsPerPage]);
 
   const openAdd = () => {
     setEditingId(null);
@@ -302,7 +328,7 @@ const AdminDoctors = () => {
           onClick={openAdd}
           className="
     w-full
-    md:w-fit
+    sm:w-fit
     flex
     items-center
     justify-center
@@ -311,173 +337,241 @@ const AdminDoctors = () => {
     hover:bg-teal-700
     text-white
     px-5
-    py-3
+    py-2.5
     rounded-xl
-    font-medium
+    font-bold
+    text-sm
+    shadow-sm
     transition
     whitespace-nowrap
   "
         >
-          
-          + Add Doctor
+          <Plus size={16} />
+          Add Doctor
         </button>
       </div>
 
-      {/* Table */}
+      {/* Search Bar */}
+      <div className="mb-4">
+        <div className="relative">
+          <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Search doctors by name, role, degree, or specialization..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 shadow-2xs transition"
+          />
+        </div>
+      </div>
 
-      <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
+      {/* Content: Mobile Cards + Desktop Table */}
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        {/* Mobile View: Responsive Cards (320px, 375px, 425px) */}
+        <div className="block md:hidden divide-y divide-slate-100">
+          {paginatedDoctors.length === 0 ? (
+            <div className="p-8 text-center text-slate-500">
+              <p className="font-bold text-slate-700 text-sm mb-1">
+                {searchQuery ? `No doctor matching "${searchQuery}"` : "No doctor profiles found."}
+              </p>
+              {doctors.length === 0 && (
+                <button
+                  type="button"
+                  onClick={seedDefaultDoctors}
+                  disabled={uploading}
+                  className="mt-3 px-4 py-2 bg-teal-600 text-white rounded-xl text-xs font-bold shadow transition cursor-pointer"
+                >
+                  {uploading ? "Loading..." : "⚡ Initialize Default Doctors"}
+                </button>
+              )}
+            </div>
+          ) : (
+            paginatedDoctors.map((doctor) => (
+              <div key={doctor.id} className="p-4 space-y-3 hover:bg-slate-50 transition">
+                <div className="flex items-start gap-3">
+                  {doctor.image ? (
+                    <img
+                      src={doctor.image}
+                      alt={doctor.name}
+                      className="w-14 h-14 rounded-2xl object-cover shrink-0 border border-slate-200 shadow-2xs"
+                    />
+                  ) : (
+                    <div className="w-14 h-14 rounded-2xl bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-700 font-bold shrink-0">
+                      Dr
+                    </div>
+                  )}
 
-          <table className="w-full min-w-[900px]">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bold text-slate-900 text-sm leading-tight truncate">
+                      {doctor.name}
+                    </h3>
+                    <p className="text-xs text-teal-700 font-semibold mt-0.5 leading-snug">
+                      {doctor.role}
+                    </p>
+                    <p className="text-[11px] text-slate-400 mt-0.5 truncate">
+                      slug: /{doctor.slug}
+                    </p>
+                  </div>
+                </div>
 
-            <thead className="bg-teal-600 text-white">
-
-              <tr>
-                <th className="p-4 text-left">
-                  Photo
-                </th>
-
-                <th className="p-4 text-left">
-                  Name
-                </th>
-
-                <th className="p-4 text-left">
-                  Role
-                </th>
-
-                <th className="p-4 text-left">
-                  Slug
-                </th>
-
-                <th className="p-4 text-left">
-                  Status
-                </th>
-
-                <th className="p-4 text-center">
-                  Actions
-                </th>
-              </tr>
-
-            </thead>
-
-            <tbody>
-
-              {doctors.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={6}
-                    className="text-center py-12 text-slate-500"
+                {/* Status & Actions */}
+                <div className="flex items-center justify-between pt-1 border-t border-slate-100 text-xs">
+                  <button
+                    type="button"
+                    onClick={() => toggleActive(doctor)}
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold transition ${
+                      doctor.active
+                        ? "bg-green-100 text-green-700 hover:bg-green-200"
+                        : "bg-red-100 text-red-700 hover:bg-red-200"
+                    }`}
                   >
-                    <p className="font-semibold text-slate-700 text-base mb-1">
-                      No doctor profiles in Firestore yet.
-                    </p>
-                    <p className="text-xs text-slate-400 mb-4 max-w-md mx-auto">
-                      Click below to load Dr. MD Rashid and Dr. Wajhul Qamar into the database so you can edit and manage their details in real time.
-                    </p>
+                    {doctor.active ? <CheckCircle size={13} /> : <XCircle size={13} />}
+                    <span>{doctor.active ? "Active" : "Inactive"}</span>
+                  </button>
+
+                  <div className="flex items-center gap-2">
                     <button
                       type="button"
-                      onClick={seedDefaultDoctors}
-                      disabled={uploading}
-                      className="px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold shadow-md transition disabled:opacity-50 cursor-pointer"
+                      onClick={() => setConfirmEditDoctor(doctor)}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 font-bold text-xs transition"
                     >
-                      {uploading ? "Loading..." : "⚡ Initialize Default Doctors to Database"}
+                      <Edit size={14} />
+                      <span>Edit</span>
                     </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(doctor)}
+                      className="p-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition"
+                      title="Delete Doctor"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Desktop View: Table */}
+        <div className="hidden md:block overflow-x-auto">
+          <table className="w-full min-w-[750px]">
+            <thead className="bg-teal-600 text-white">
+              <tr>
+                <th className="p-3.5 text-left text-xs font-bold uppercase tracking-wider">Photo</th>
+                <th className="p-3.5 text-left text-xs font-bold uppercase tracking-wider">Name</th>
+                <th className="p-3.5 text-left text-xs font-bold uppercase tracking-wider">Role</th>
+                <th className="p-3.5 text-left text-xs font-bold uppercase tracking-wider">Slug</th>
+                <th className="p-3.5 text-left text-xs font-bold uppercase tracking-wider">Status</th>
+                <th className="p-3.5 text-center text-xs font-bold uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {paginatedDoctors.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="text-center py-12 text-slate-500">
+                    <p className="font-semibold text-slate-700 text-base mb-1">
+                      {searchQuery ? `No doctor matching "${searchQuery}"` : "No doctor profiles in Firestore yet."}
+                    </p>
+                    {doctors.length === 0 && (
+                      <>
+                        <p className="text-xs text-slate-400 mb-4 max-w-md mx-auto">
+                          Click below to load Dr. MD Rashid and Dr. Wajhul Qamar into the database so you can edit and manage their details in real time.
+                        </p>
+                        <button
+                          type="button"
+                          onClick={seedDefaultDoctors}
+                          disabled={uploading}
+                          className="px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold shadow-md transition disabled:opacity-50 cursor-pointer"
+                        >
+                          {uploading ? "Loading..." : "⚡ Initialize Default Doctors to Database"}
+                        </button>
+                      </>
+                    )}
                   </td>
                 </tr>
               ) : (
-
-                doctors.map((doctor) => (
-
-                  <tr
-                    key={doctor.id}
-                    className="border-b hover:bg-slate-50"
-                  >
-                    <td className="p-4">
-
+                paginatedDoctors.map((doctor) => (
+                  <tr key={doctor.id} className="hover:bg-slate-50 transition">
+                    <td className="p-3.5">
                       {doctor.image ? (
                         <img
                           src={doctor.image}
                           alt={doctor.name}
-                          className="w-14 h-14 rounded-full object-cover"
+                          className="w-12 h-12 rounded-xl object-cover border border-slate-200 shadow-2xs"
                         />
                       ) : (
-                        <div className="w-14 h-14 rounded-full bg-slate-200" />
+                        <div className="w-12 h-12 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-700 font-bold">
+                          Dr
+                        </div>
                       )}
-
                     </td>
-
-                    <td className="p-4 font-medium">
+                    <td className="p-3.5 font-bold text-slate-900 text-sm">
                       {doctor.name}
                     </td>
-
-                    <td className="p-4 text-slate-600">
+                    <td className="p-3.5 text-slate-600 text-xs font-medium">
                       {doctor.role}
                     </td>
-
-                    <td className="p-4 text-sm text-slate-500">
-                      {doctor.slug}
+                    <td className="p-3.5 text-xs text-slate-400 font-mono">
+                      /{doctor.slug}
                     </td>
-
-                    <td className="p-4">
-
+                    <td className="p-3.5">
                       <button
-                        onClick={() =>
-                          toggleActive(doctor)
-                        }
-                        className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium ${doctor.active
-                          ? "bg-green-100 text-green-700"
-                          : "bg-red-100 text-red-700"
-                          }`}
+                        onClick={() => toggleActive(doctor)}
+                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition ${
+                          doctor.active
+                            ? "bg-green-100 text-green-700 hover:bg-green-200"
+                            : "bg-red-100 text-red-700 hover:bg-red-200"
+                        }`}
                       >
                         {doctor.active ? (
                           <>
-                            <CheckCircle size={14} />
+                            <CheckCircle size={13} />
                             Active
                           </>
                         ) : (
                           <>
-                            <XCircle size={14} />
+                            <XCircle size={13} />
                             Inactive
                           </>
                         )}
                       </button>
-
                     </td>
-
-                    <td className="p-4">
-
-                      <div className="flex justify-center gap-3">
-
+                    <td className="p-3.5">
+                      <div className="flex justify-center gap-2">
                         <button
                           onClick={() => setConfirmEditDoctor(doctor)}
-                          className="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100"
+                          className="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                          title="Edit Doctor"
                         >
-                          <Edit size={18} />
+                          <Edit size={16} />
                         </button>
-
                         <button
-                          onClick={() =>
-                            handleDelete(doctor)
-                          }
-                          className="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100"
+                          onClick={() => handleDelete(doctor)}
+                          className="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition"
+                          title="Delete Doctor"
                         >
-                          <Trash2 size={18} />
+                          <Trash2 size={16} />
                         </button>
-
                       </div>
-
                     </td>
-
                   </tr>
-
                 ))
               )}
-
             </tbody>
-
           </table>
-
         </div>
+
+        {/* Pagination Controls */}
+        <Pagination
+          totalItems={filteredDoctors.length}
+          itemsPerPage={itemsPerPage}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          onItemsPerPageChange={setItemsPerPage}
+          pageSizeOptions={[3, 6, 12, 24]}
+        />
       </div>
       {/* Modal */}
 
