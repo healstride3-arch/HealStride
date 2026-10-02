@@ -59,6 +59,7 @@ const FAQSection = () => {
         ...questionForm,
         status: "new",
         read: false,
+        notificationRead: false,
         createdAt: new Date().toISOString(),
       };
 

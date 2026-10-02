@@ -59,6 +59,9 @@ const ensureServiceAuth = async () => {
 export const saveAppointmentToFirestore = async (bookingPayload) => {
   const docData = {
     ...bookingPayload,
+    notificationRead: false,
+    read: false,
+    status: bookingPayload.status || "pending",
     createdAt: serverTimestamp(),
   };
 

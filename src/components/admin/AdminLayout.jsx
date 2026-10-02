@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebase";
+import AdminNotifications from "./AdminNotifications";
 
 import {
   Menu,
@@ -266,22 +267,37 @@ const AdminLayout = () => {
         overflow-x-hidden
         "
       >
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setSidebarOpen(true)}
-          className="
-          md:hidden
-          mb-4
-          bg-white
-          p-2.5
-          rounded-lg
-          shadow
-          hover:bg-gray-100
-          transition
-          "
-        >
-          <Menu size={24} />
-        </button>
+        {/* Admin Top Header Bar */}
+        <div className="flex items-center justify-between mb-4 bg-white px-3.5 sm:px-5 py-3 rounded-2xl border border-slate-200 shadow-xs">
+          <div className="flex items-center gap-3">
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="md:hidden p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition"
+              title="Open Menu"
+            >
+              <Menu size={22} />
+            </button>
+            <div>
+              <h2 className="text-base sm:text-lg font-bold text-slate-800 capitalize">
+                {location.pathname.replace("/admin", "").replace("/", "") || "Dashboard"}
+              </h2>
+              <p className="text-[11px] text-slate-400 hidden sm:block">HealStride Medical Management</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <AdminNotifications />
+            <Link
+              to="/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-teal-50 text-teal-700 hover:bg-teal-100 text-xs font-semibold transition"
+            >
+              <span>View Website &rarr;</span>
+            </Link>
+          </div>
+        </div>
 
         <Outlet />
       </main>

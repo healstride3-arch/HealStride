@@ -142,6 +142,7 @@ const AppointmentForm = () => {
         source: "website-direct",
         status: "new",
         read: false,
+        notificationRead: false,
         createdAt: new Date().toISOString(),
       };
 

@@ -40,6 +40,7 @@ const ReviewForm = () => {
         status: "pending",
         approved: false,
         read: false,
+        notificationRead: false,
         createdAt: new Date().toISOString(),
       };
 

@@ -539,9 +539,6 @@ const AdminDashboard = () => {
 
 
           <div className="flex flex-wrap gap-2">
-
-            <AdminNotifications />
-
             <button
               type="button"
               onClick={handleImportWebsiteData}
