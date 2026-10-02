@@ -15,7 +15,12 @@ import {
   CheckCheck,
   X,
   ExternalLink,
+  AlertTriangle,
+  ArrowRight,
+  Phone,
+  User,
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { db } from "../../firebase/firebase";
@@ -28,6 +33,7 @@ import {
 const AdminNotifications = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
 
   const [appointments, setAppointments] = useState([]);
@@ -39,6 +45,7 @@ const AdminNotifications = () => {
   const knownFaqIds = useRef(new Set());
   const knownTestimonialIds = useRef(new Set());
   const isInitialLoad = useRef({ appointments: true, faqs: true, testimonials: true });
+  const hasTriggeredWelcomeModal = useRef(false);
 
   // Format timestamp helper
   const formatTime = (timestamp) => {
@@ -72,7 +79,6 @@ const AdminNotifications = () => {
     const unsub = onSnapshot(collection(db, "appointments"), (snapshot) => {
       const all = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
 
-      // Any appointment not marked as read
       const unread = all.filter(
         (item) => item.notificationRead !== true && item.read !== true
       );
@@ -90,6 +96,9 @@ const AdminNotifications = () => {
                 playNotificationSound();
               }
 
+              // Show Modal Popup on Screen!
+              setShowModal(true);
+
               // Show Toast Popup
               toast.success(
                 `🔔 New Appointment: ${newDoc.name || "Patient"} (${newDoc.date || "Upcoming"} at ${newDoc.time || "Clinic"})`,
@@ -105,7 +114,6 @@ const AdminNotifications = () => {
           }
         });
       } else {
-        // Initial snapshot load: record IDs without playing sound
         snapshot.docs.forEach((d) => knownAppointmentIds.current.add(d.id));
         isInitialLoad.current.appointments = false;
       }
@@ -134,6 +142,8 @@ const AdminNotifications = () => {
               if (soundEnabled) {
                 playNotificationSound();
               }
+
+              setShowModal(true);
 
               toast(
                 `❓ New Question from ${newDoc.name || "Visitor"}: "${(newDoc.question || "").slice(0, 40)}..."`,
@@ -177,6 +187,8 @@ const AdminNotifications = () => {
                 playNotificationSound();
               }
 
+              setShowModal(true);
+
               toast.success(
                 `⭐ New Patient Review: ${newDoc.name || "Patient"} gave ${newDoc.rating || 5} Stars!`,
                 { duration: 5000, position: "top-right" }
@@ -200,13 +212,18 @@ const AdminNotifications = () => {
     return () => unsub();
   }, [soundEnabled, navigate]);
 
-  // Build combined notification list
+  // Combined notifications
   const appointmentNotifications = appointments.map((item) => ({
     id: item.id,
     type: "appointment",
     title: "New Appointment Booked",
-    subtitle: `${item.name || "Patient"} • ${item.phone || ""}`,
-    message: `${item.condition || "Physiotherapy Consultation"} with ${item.doctor || "Specialist"} on ${item.date || "Upcoming"} at ${item.time || ""}`,
+    patientName: item.name || "Patient",
+    phone: item.phone || "Not provided",
+    doctor: item.doctor || "Any Specialist",
+    condition: item.condition || "General Consultation",
+    date: item.date || "Upcoming",
+    timeSlot: item.time || "",
+    message: `${item.condition || "Consultation"} with ${item.doctor || "Specialist"} on ${item.date || "Upcoming"} at ${item.time || ""}`,
     time: formatTime(item.createdAt),
     redirect: "/admin/appointments",
   }));
@@ -215,7 +232,12 @@ const AdminNotifications = () => {
     id: item.id,
     type: "faq",
     title: "New Patient Question",
-    subtitle: `${item.name || "Visitor"} • ${item.email || ""}`,
+    patientName: item.name || "Visitor",
+    phone: item.email || "Email",
+    doctor: "FAQ Helpdesk",
+    condition: "Website Inquiry",
+    date: "",
+    timeSlot: "",
     message: item.question || "Submitted an inquiry.",
     time: formatTime(item.createdAt),
     redirect: "/admin/faq",
@@ -225,8 +247,13 @@ const AdminNotifications = () => {
     id: item.id,
     type: "testimonial",
     title: "New Review Received",
-    subtitle: `${item.name || "Patient"} • ${item.rating || 5} Stars`,
-    message: item.review || "Submitted positive feedback.",
+    patientName: item.name || "Patient",
+    phone: `${item.rating || 5} Stars`,
+    doctor: "Clinic Review",
+    condition: "Testimonial",
+    date: "",
+    timeSlot: "",
+    message: item.review || "Submitted feedback.",
     time: formatTime(item.createdAt),
     redirect: "/admin/testimonials",
   }));
@@ -236,6 +263,83 @@ const AdminNotifications = () => {
     ...faqNotifications,
     ...testimonialNotifications,
   ];
+
+  // ---------------- Tab Title Flashing Alert (when admin is on another tab/website) ----------------
+  useEffect(() => {
+    if (notifications.length > 0) {
+      let isAlt = false;
+      const interval = setInterval(() => {
+        document.title = isAlt
+          ? `(${notifications.length}) 🔔 New Patient Booking!`
+          : `Heal Stride Admin Panel`;
+        isAlt = !isAlt;
+      }, 1500);
+      return () => {
+        clearInterval(interval);
+        document.title = "Heal Stride Physiotherapy - Admin Panel";
+      };
+    } else {
+      document.title = "Heal Stride Physiotherapy - Admin Panel";
+    }
+  }, [notifications.length]);
+
+  // ---------------- 4. Auto-Popup Modal when Admin Logs In / Opens Admin Panel ----------------
+  useEffect(() => {
+    if (notifications.length > 0 && !hasTriggeredWelcomeModal.current) {
+      hasTriggeredWelcomeModal.current = true;
+      // Slight smooth delay so admin sees the dashboard before popup presents itself
+      const timer = setTimeout(() => {
+        setShowModal(true);
+        if (soundEnabled) {
+          playNotificationSound();
+        }
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [notifications.length, soundEnabled]);
+
+  // ---------------- 5. Auto-Popup Modal when Admin returns from other websites/tabs ----------------
+  const wasAwayRef = useRef(false);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        wasAwayRef.current = true;
+      } else if (document.visibilityState === "visible") {
+        if (wasAwayRef.current && notifications.length > 0) {
+          setShowModal(true);
+          if (soundEnabled) {
+            playNotificationSound();
+          }
+          wasAwayRef.current = false;
+        }
+      }
+    };
+
+    const handleWindowBlur = () => {
+      wasAwayRef.current = true;
+    };
+
+    const handleWindowFocus = () => {
+      if (wasAwayRef.current && notifications.length > 0) {
+        setShowModal(true);
+        if (soundEnabled) {
+          playNotificationSound();
+        }
+        wasAwayRef.current = false;
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("blur", handleWindowBlur);
+    window.addEventListener("focus", handleWindowFocus);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("blur", handleWindowBlur);
+      window.removeEventListener("focus", handleWindowFocus);
+    };
+  }, [notifications.length, soundEnabled]);
 
   // Helper for notification type icon
   const getIcon = (type) => {
@@ -283,6 +387,7 @@ const AdminNotifications = () => {
       });
 
       setOpen(false);
+      setShowModal(false);
       navigate(item.redirect);
     } catch (error) {
       console.error("Notification click error:", error);
@@ -315,6 +420,7 @@ const AdminNotifications = () => {
 
       await Promise.all(promises);
       toast.success("All notifications marked as read!");
+      setShowModal(false);
     } catch (err) {
       console.error("Mark all read error:", err);
     }
@@ -327,147 +433,333 @@ const AdminNotifications = () => {
   };
 
   return (
-    <div className="relative">
-      {/* Bell Button */}
-      <button
-        onClick={() => {
-          setOpen(!open);
-          requestNotificationPermission();
-        }}
-        className="relative p-2.5 rounded-full hover:bg-slate-100 text-slate-700 hover:text-teal-700 transition"
-        title="Admin Notifications"
-      >
-        <Bell size={22} />
+    <>
+      <div className="relative">
+        {/* Bell Button */}
+        <button
+          onClick={() => {
+            setOpen(!open);
+            requestNotificationPermission();
+          }}
+          className="relative p-2.5 rounded-full hover:bg-slate-100 text-slate-700 hover:text-teal-700 transition"
+          title="Admin Notifications"
+        >
+          <Bell size={22} />
 
-        {notifications.length > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[11px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center animate-pulse shadow-md">
-            {notifications.length > 9 ? "9+" : notifications.length}
-          </span>
-        )}
-      </button>
+          {notifications.length > 0 && (
+            <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[11px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center animate-pulse shadow-md">
+              {notifications.length > 9 ? "9+" : notifications.length}
+            </span>
+          )}
+        </button>
 
-      {/* Notification Dropdown / Drawer */}
-      {open && (
-        <div className="absolute right-0 mt-3 w-[340px] xs:w-[380px] bg-white rounded-2xl shadow-2xl border border-slate-200 z-50 overflow-hidden">
-          {/* Header */}
-          <div className="p-4 bg-slate-900 text-white flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Bell size={18} className="text-teal-400" />
-              <h3 className="font-bold text-sm">Real-time Notifications</h3>
+        {/* Dropdown Menu */}
+        {open && (
+          <div className="absolute right-0 mt-3 w-[340px] xs:w-[380px] bg-white rounded-2xl shadow-2xl border border-slate-200 z-50 overflow-hidden">
+            {/* Header */}
+            <div className="p-4 bg-slate-900 text-white flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Bell size={18} className="text-teal-400" />
+                <h3 className="font-bold text-sm">Real-time Notifications</h3>
+                {notifications.length > 0 && (
+                  <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                    {notifications.length} new
+                  </span>
+                )}
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                {/* Sound Toggle */}
+                <button
+                  type="button"
+                  onClick={() => setSoundEnabled(!soundEnabled)}
+                  className={`p-1.5 rounded-lg text-xs transition ${
+                    soundEnabled
+                      ? "bg-teal-500/20 text-teal-300 hover:bg-teal-500/30"
+                      : "bg-white/10 text-slate-400 hover:bg-white/20"
+                  }`}
+                  title={soundEnabled ? "Sound Alert ON (Click to Mute)" : "Sound Alert Muted (Click to Unmute)"}
+                >
+                  {soundEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+            </div>
+
+            {/* Quick Sound & Permission Bar */}
+            <div className="px-4 py-2 bg-slate-50 border-b border-slate-100 flex items-center justify-between text-[11px] text-slate-600">
+              <button
+                type="button"
+                onClick={handleTestChime}
+                className="inline-flex items-center gap-1 text-teal-700 hover:text-teal-900 font-semibold transition"
+              >
+                <Volume2 size={13} />
+                <span>Test Chime Sound</span>
+              </button>
+
               {notifications.length > 0 && (
-                <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                  {notifications.length} new
-                </span>
+                <button
+                  type="button"
+                  onClick={handleMarkAllAsRead}
+                  className="inline-flex items-center gap-1 text-slate-500 hover:text-teal-700 font-medium transition"
+                >
+                  <CheckCheck size={14} />
+                  <span>Mark all read</span>
+                </button>
               )}
             </div>
 
-            <div className="flex items-center gap-1.5">
-              {/* Sound Toggle */}
-              <button
-                type="button"
-                onClick={() => setSoundEnabled(!soundEnabled)}
-                className={`p-1.5 rounded-lg text-xs transition ${
-                  soundEnabled
-                    ? "bg-teal-500/20 text-teal-300 hover:bg-teal-500/30"
-                    : "bg-white/10 text-slate-400 hover:bg-white/20"
-                }`}
-                title={soundEnabled ? "Sound Alert ON (Click to Mute)" : "Sound Alert Muted (Click to Unmute)"}
-              >
-                {soundEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
-              </button>
+            {/* Notification List */}
+            <div className="max-h-[360px] overflow-y-auto divide-y divide-slate-100">
+              {notifications.length === 0 ? (
+                <div className="py-10 text-center text-slate-400">
+                  <Bell size={32} className="mx-auto text-slate-300 mb-2 stroke-1" />
+                  <p className="text-xs font-medium">No unread notifications</p>
+                  <p className="text-[11px] text-slate-400 mt-0.5">
+                    New appointments, reviews, and questions will appear here with instant sound alert.
+                  </p>
+                </div>
+              ) : (
+                notifications.map((item) => (
+                  <div
+                    key={`${item.type}-${item.id}`}
+                    onClick={() => handleView(item)}
+                    className="p-3.5 hover:bg-teal-50/60 transition cursor-pointer flex items-start gap-3 group"
+                  >
+                    {getIcon(item.type)}
 
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-xs font-bold text-slate-900 group-hover:text-teal-700 transition">
+                          {item.title}
+                        </p>
+                        <span className="text-[10px] text-slate-400 shrink-0">
+                          {item.time}
+                        </span>
+                      </div>
+
+                      <p className="text-[11px] font-semibold text-teal-700 mt-0.5 truncate">
+                        {item.patientName} • {item.phone}
+                      </p>
+
+                      <p className="text-[11px] text-slate-600 mt-0.5 line-clamp-2 leading-relaxed">
+                        {item.message}
+                      </p>
+                    </div>
+
+                    <ExternalLink size={13} className="text-slate-300 group-hover:text-teal-600 shrink-0 mt-1" />
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* Footer View All */}
+            <div className="p-2.5 bg-slate-50 border-t border-slate-100 text-center">
               <button
-                type="button"
-                onClick={() => setOpen(false)}
-                className="p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition"
+                onClick={() => {
+                  setOpen(false);
+                  navigate("/admin/appointments");
+                }}
+                className="text-xs font-bold text-teal-700 hover:text-teal-900 transition"
               >
-                <X size={18} />
+                Go to Appointments Panel &rarr;
               </button>
             </div>
           </div>
+        )}
+      </div>
 
-          {/* Quick Sound & Permission Bar */}
-          <div className="px-4 py-2 bg-slate-50 border-b border-slate-100 flex items-center justify-between text-[11px] text-slate-600">
-            <button
-              type="button"
-              onClick={handleTestChime}
-              className="inline-flex items-center gap-1 text-teal-700 hover:text-teal-900 font-semibold transition"
+      {/* ----------------- POPUP MODAL ON ENTRY OR NEW ARRIVAL ----------------- */}
+      <AnimatePresence>
+        {showModal && notifications.length > 0 && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 xs:p-4 bg-slate-950/75 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              className="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-teal-100 overflow-hidden flex flex-col max-h-[90vh]"
             >
-              <Volume2 size={13} />
-              <span>Test Chime Sound</span>
-            </button>
-
-            {notifications.length > 0 && (
-              <button
-                type="button"
-                onClick={handleMarkAllAsRead}
-                className="inline-flex items-center gap-1 text-slate-500 hover:text-teal-700 font-medium transition"
-              >
-                <CheckCheck size={14} />
-                <span>Mark all read</span>
-              </button>
-            )}
-          </div>
-
-          {/* Notification List */}
-          <div className="max-h-[360px] overflow-y-auto divide-y divide-slate-100">
-            {notifications.length === 0 ? (
-              <div className="py-10 text-center text-slate-400">
-                <Bell size={32} className="mx-auto text-slate-300 mb-2 stroke-1" />
-                <p className="text-xs font-medium">No unread notifications</p>
-                <p className="text-[11px] text-slate-400 mt-0.5">
-                  New appointments, reviews, and questions will appear here with instant sound alert.
-                </p>
-              </div>
-            ) : (
-              notifications.map((item) => (
-                <div
-                  key={`${item.type}-${item.id}`}
-                  onClick={() => handleView(item)}
-                  className="p-3.5 hover:bg-teal-50/60 transition cursor-pointer flex items-start gap-3 group"
-                >
-                  {getIcon(item.type)}
-
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between gap-1">
-                      <p className="text-xs font-bold text-slate-900 group-hover:text-teal-700 transition">
-                        {item.title}
-                      </p>
-                      <span className="text-[10px] text-slate-400 shrink-0">
-                        {item.time}
+              {/* Modal Header */}
+              <div className="bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 p-4 sm:p-5 text-white flex items-center justify-between border-b border-teal-800/40">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-teal-500/20 border border-teal-400/40 flex items-center justify-center text-teal-300 shrink-0">
+                    <Bell size={20} className="animate-bounce" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-extrabold text-base sm:text-lg text-white">
+                        New Activity Alert!
+                      </h3>
+                      <span className="bg-red-500 text-white text-[11px] font-black px-2 py-0.5 rounded-full animate-pulse">
+                        {notifications.length} New
                       </span>
                     </div>
-
-                    <p className="text-[11px] font-semibold text-teal-700 mt-0.5 truncate">
-                      {item.subtitle}
-                    </p>
-
-                    <p className="text-[11px] text-slate-600 mt-0.5 line-clamp-2 leading-relaxed">
-                      {item.message}
+                    <p className="text-xs text-teal-300/90 mt-0.5">
+                      New patient appointments & inquiries received while away
                     </p>
                   </div>
-
-                  <ExternalLink size={13} className="text-slate-300 group-hover:text-teal-600 shrink-0 mt-1" />
                 </div>
-              ))
-            )}
-          </div>
 
-          {/* Footer View All */}
-          <div className="p-2.5 bg-slate-50 border-t border-slate-100 text-center">
-            <button
-              onClick={() => {
-                setOpen(false);
-                navigate("/admin/appointments");
-              }}
-              className="text-xs font-bold text-teal-700 hover:text-teal-900 transition"
-            >
-              Go to Appointments Panel &rarr;
-            </button>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSoundEnabled(!soundEnabled);
+                      if (!soundEnabled) {
+                        playNotificationSound();
+                        toast.success("Sound notifications enabled!");
+                      } else {
+                        toast("Sound notifications muted", { icon: "🔇" });
+                      }
+                    }}
+                    className={`p-2 rounded-xl transition ${
+                      soundEnabled
+                        ? "bg-teal-500/20 text-teal-300 hover:bg-teal-500/30"
+                        : "bg-white/10 text-slate-400 hover:bg-white/20"
+                    }`}
+                    title={soundEnabled ? "Mute alert sound" : "Enable alert sound"}
+                  >
+                    {soundEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowModal(false)}
+                    className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white transition"
+                    title="Close popup"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Modal Body: List of Unread Bookings */}
+              <div className="p-4 sm:p-5 overflow-y-auto space-y-3 flex-1">
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                  Pending Unread Leads ({notifications.length})
+                </p>
+
+                {appointmentNotifications.length > 0 && (
+                  <div className="space-y-2.5">
+                    {appointmentNotifications.slice(0, 5).map((app) => (
+                      <div
+                        key={app.id}
+                        onClick={() => handleView(app)}
+                        className="p-3.5 rounded-2xl bg-teal-50/50 hover:bg-teal-100/70 border border-teal-200/80 transition cursor-pointer flex flex-col xs:flex-row items-start justify-between gap-3 group"
+                      >
+                        <div className="flex items-start gap-2.5 min-w-0 flex-1">
+                          <div className="w-8 h-8 rounded-xl bg-teal-600 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+                            <Calendar size={16} />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <h4 className="text-sm font-bold text-slate-900 group-hover:text-teal-700 transition">
+                                {app.patientName}
+                              </h4>
+                              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-teal-200/80 text-teal-900">
+                                {app.timeSlot || "New Booking"}
+                              </span>
+                            </div>
+
+                            <div className="text-xs text-slate-600 mt-1 flex items-center gap-3 flex-wrap">
+                              {app.phone && app.phone !== "Not provided" ? (
+                                <a
+                                  href={`tel:${app.phone}`}
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="inline-flex items-center gap-1 font-bold text-teal-700 bg-white hover:bg-teal-50 px-2 py-0.5 rounded-md border border-teal-200"
+                                >
+                                  <Phone size={11} />
+                                  <span>{app.phone}</span>
+                                </a>
+                              ) : (
+                                <span className="font-semibold text-slate-500">No phone</span>
+                              )}
+                              {app.date && <span>📅 {app.date}</span>}
+                            </div>
+
+                            <p className="text-xs text-slate-500 mt-1 truncate">
+                              <strong>Doctor:</strong> {app.doctor} • <strong>Condition:</strong> {app.condition}
+                            </p>
+                          </div>
+                        </div>
+
+                        <span className="text-[11px] font-bold text-teal-700 group-hover:translate-x-1 transition shrink-0 self-end xs:self-center">
+                          View &rarr;
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* FAQ & Testimonial previews if any */}
+                {(faqNotifications.length > 0 || testimonialNotifications.length > 0) && (
+                  <div className="space-y-2 pt-2">
+                    {[...faqNotifications, ...testimonialNotifications].slice(0, 3).map((other) => (
+                      <div
+                        key={other.id}
+                        onClick={() => handleView(other)}
+                        className="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 transition cursor-pointer flex items-center justify-between gap-2"
+                      >
+                        <div className="flex items-center gap-2">
+                          {getIcon(other.type)}
+                          <div>
+                            <p className="text-xs font-bold text-slate-800">{other.title}: {other.patientName}</p>
+                            <p className="text-[11px] text-slate-500 truncate max-w-[280px]">{other.message}</p>
+                          </div>
+                        </div>
+                        <span className="text-xs text-teal-600 font-semibold shrink-0">Open &rarr;</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Modal Footer Actions */}
+              <div className="p-4 bg-slate-50 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2.5">
+                <button
+                  type="button"
+                  onClick={handleMarkAllAsRead}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-300 hover:bg-white text-slate-700 text-xs font-semibold transition"
+                >
+                  <CheckCheck size={14} />
+                  <span>Mark All as Read</span>
+                </button>
+
+                <div className="w-full sm:w-auto flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowModal(false)}
+                    className="w-1/2 sm:w-auto px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 text-xs font-semibold transition text-center"
+                  >
+                    Dismiss
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowModal(false);
+                      navigate("/admin/appointments");
+                    }}
+                    className="w-1/2 sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold shadow-md hover:shadow-lg transition"
+                  >
+                    <span>Go to Appointments</span>
+                    <ArrowRight size={14} />
+                  </button>
+                </div>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
