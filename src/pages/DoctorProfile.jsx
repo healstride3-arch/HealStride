@@ -271,21 +271,21 @@ const DoctorProfile = () => {
     .filter(Boolean);
 
   return (
-    <div className="bg-slate-50 min-h-screen pb-16">
-      {/* Main Container with standard page top padding */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+    <div className="bg-slate-50 min-h-screen pb-12 sm:pb-16 overflow-x-hidden">
+      {/* Main Container with responsive page padding */}
+      <div className="max-w-7xl mx-auto px-2.5 xs:px-4 sm:px-6 lg:px-8 py-4 xs:py-6 sm:py-10">
         {/* Hero Card */}
-        <div className="relative rounded-3xl bg-gradient-to-br from-slate-900 via-teal-950 to-slate-900 text-white p-6 sm:p-8 lg:p-10 shadow-xl overflow-hidden mb-8 border border-teal-800/40">
+        <div className="relative rounded-2xl xs:rounded-3xl bg-gradient-to-br from-slate-900 via-teal-950 to-slate-900 text-white p-3.5 xs:p-5 sm:p-8 lg:p-10 shadow-xl overflow-hidden mb-5 sm:mb-8 border border-teal-800/40">
           {/* Subtle Ambient Background Gradients */}
           <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-teal-500/20 blur-3xl pointer-events-none" />
           <div className="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-cyan-500/15 blur-3xl pointer-events-none" />
 
-          <div className="relative z-10 grid lg:grid-cols-12 gap-8 items-center">
+          <div className="relative z-10 grid lg:grid-cols-12 gap-5 sm:gap-8 items-center">
             {/* Image Column */}
             <div className="lg:col-span-4 flex flex-col items-center">
-              <div className="relative group">
-                <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-teal-400 to-cyan-400 opacity-75 blur-sm group-hover:opacity-100 transition duration-300" />
-                <div className="relative w-56 h-64 sm:w-64 sm:h-72 lg:w-72 lg:h-80 rounded-2xl overflow-hidden bg-slate-800 border-2 border-white/20 shadow-2xl">
+              <div className="relative group max-w-full">
+                <div className="absolute -inset-1 rounded-2xl xs:rounded-3xl bg-gradient-to-r from-teal-400 to-cyan-400 opacity-75 blur-sm group-hover:opacity-100 transition duration-300" />
+                <div className="relative w-44 h-52 xs:w-56 xs:h-64 sm:w-64 sm:h-72 lg:w-72 lg:h-80 rounded-xl xs:rounded-2xl overflow-hidden bg-slate-800 border-2 border-white/20 shadow-2xl">
                   <img
                     src={doctorPhoto}
                     alt={doctorLocalizedName}
@@ -294,9 +294,9 @@ const DoctorProfile = () => {
                 </div>
 
                 {/* Available for Consultation Badge */}
-                <div className="absolute bottom-3 left-3 right-3 bg-slate-950/85 backdrop-blur-md border border-white/10 text-white px-3 py-1.5 rounded-xl flex items-center justify-center gap-2 shadow-lg">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-[11px] font-semibold tracking-wide">
+                <div className="absolute bottom-2 xs:bottom-3 left-2 xs:left-3 right-2 xs:right-3 bg-slate-950/85 backdrop-blur-md border border-white/10 text-white px-2 xs:px-3 py-1 xs:py-1.5 rounded-lg xs:rounded-xl flex items-center justify-center gap-1.5 xs:gap-2 shadow-lg">
+                  <span className="w-1.5 h-1.5 xs:w-2 xs:h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+                  <span className="text-[10px] xs:text-[11px] font-semibold tracking-wide truncate">
                     Available for Consultation
                   </span>
                 </div>
@@ -304,45 +304,47 @@ const DoctorProfile = () => {
             </div>
 
             {/* Details Column */}
-            <div className="lg:col-span-8 flex flex-col text-center lg:text-left">
+            <div className="lg:col-span-8 flex flex-col text-center lg:text-left mt-2 lg:mt-0">
               {/* Badges Row */}
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-3">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-500/20 border border-teal-400/40 text-teal-300 text-xs font-semibold">
-                  <BadgeCheck size={14} className="text-teal-300" />
-                  {isDrRashid
-                    ? t("doctorProfile.verifiedDoctor", "Verified Senior Specialist")
-                    : "Verified Clinical Specialist"}
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-1.5 xs:gap-2 mb-2 xs:mb-3">
+                <span className="inline-flex items-center gap-1 xs:gap-1.5 px-2 xs:px-3 py-0.5 xs:py-1 rounded-full bg-teal-500/20 border border-teal-400/40 text-teal-300 text-[10px] xs:text-xs font-semibold">
+                  <BadgeCheck size={12} className="text-teal-300 shrink-0" />
+                  <span>
+                    {isDrRashid
+                      ? t("doctorProfile.verifiedDoctor", "Verified Senior Specialist")
+                      : "Verified Clinical Specialist"}
+                  </span>
                 </span>
 
                 {doctor.registration &&
                   doctor.registration !== "Available at clinic" &&
                   doctor.registration.trim() !== "" && (
-                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-slate-200 text-xs font-medium">
-                      <span>Reg. No:</span>
+                    <span className="inline-flex items-center gap-1 px-2 xs:px-3 py-0.5 xs:py-1 rounded-full bg-white/10 border border-white/15 text-slate-200 text-[10px] xs:text-xs font-medium">
+                      <span>Reg:</span>
                       <strong className="text-teal-300">{doctor.registration}</strong>
                     </span>
                   )}
 
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-400/20 border border-amber-400/40 text-amber-300 text-xs font-semibold">
-                  <Star size={13} className="fill-amber-400 text-amber-400" />
+                <span className="inline-flex items-center gap-1 px-1.5 xs:px-2.5 py-0.5 xs:py-1 rounded-full bg-amber-400/20 border border-amber-400/40 text-amber-300 text-[10px] xs:text-xs font-semibold">
+                  <Star size={11} className="fill-amber-400 text-amber-400 shrink-0" />
                   <span>{isDrRashid ? "5.0 (43+ Reviews)" : "5.0 (Recommended)"}</span>
                 </span>
               </div>
 
               {/* Doctor Name */}
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
+              <h1 className="text-xl xs:text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight break-words">
                 {doctorLocalizedName}
               </h1>
 
               {/* Role & Degree */}
-              <p className="text-teal-300 text-sm sm:text-base lg:text-lg font-semibold mt-1">
+              <p className="text-teal-300 text-xs xs:text-sm sm:text-base lg:text-lg font-semibold mt-1">
                 {isDrRashid
                   ? "Senior Consultant Physiotherapist | MPT (Sports)"
                   : (doctor.role || "Physiotherapist & Rehab Specialist (BPT)")}
               </p>
 
               {/* Bio / Description */}
-              <p className="mt-3 text-slate-300 text-xs sm:text-sm lg:text-base leading-relaxed max-w-2xl">
+              <p className="mt-2 xs:mt-3 text-slate-300 text-[11px] xs:text-xs sm:text-sm lg:text-base leading-relaxed max-w-2xl">
                 {doctor.description || (isDrRashid
                   ? "Senior Consultant Physiotherapist specializing in sports injury rehabilitation, Mulligan’s Mobilization with Movement (MWM), certified cupping, dry needling, and advanced kinesiology taping modalities."
                   : "Physiotherapist focused on movement recovery, patient education, exercise therapy, and musculoskeletal rehabilitation.")}
@@ -354,22 +356,22 @@ const DoctorProfile = () => {
                   isDrRashid
                     ? "grid-cols-2 sm:grid-cols-4"
                     : "grid-cols-2 sm:grid-cols-3"
-                } gap-2.5 mt-6 pt-5 border-t border-white/10`}
+                } gap-1.5 xs:gap-2.5 mt-3.5 xs:mt-5 pt-3 xs:pt-4 border-t border-white/10`}
               >
-                <div className="bg-white/5 border border-white/10 rounded-xl p-2.5 text-center">
-                  <p className="text-xs text-slate-400 font-medium">Qualification</p>
+                <div className="bg-white/5 border border-white/10 rounded-lg xs:rounded-xl p-1.5 xs:p-2.5 text-center">
+                  <p className="text-[9px] xs:text-[11px] sm:text-xs text-slate-400 font-medium">Qualification</p>
                   <p
-                    className="text-sm sm:text-base font-bold text-teal-300 mt-0.5 truncate"
+                    className="text-[11px] xs:text-xs sm:text-sm md:text-base font-bold text-teal-300 mt-0.5 truncate"
                     title={isDrRashid ? "MPT (Sports)" : (doctor.education || "BPT")}
                   >
                     {isDrRashid ? "MPT (Sports)" : (doctor.education || "BPT")}
                   </p>
                 </div>
 
-                <div className="bg-white/5 border border-white/10 rounded-xl p-2.5 text-center">
-                  <p className="text-xs text-slate-400 font-medium">Specialization</p>
+                <div className="bg-white/5 border border-white/10 rounded-lg xs:rounded-xl p-1.5 xs:p-2.5 text-center">
+                  <p className="text-[9px] xs:text-[11px] sm:text-xs text-slate-400 font-medium">Specialization</p>
                   <p
-                    className="text-sm sm:text-base font-bold text-white mt-0.5 truncate"
+                    className="text-[11px] xs:text-xs sm:text-sm md:text-base font-bold text-white mt-0.5 truncate"
                     title={isDrRashid ? "Sports Rehab" : "Movement Rehab"}
                   >
                     {isDrRashid ? "Sports Rehab" : "Movement Rehab"}
@@ -378,37 +380,37 @@ const DoctorProfile = () => {
 
                 {isDrRashid ? (
                   <>
-                    <div className="bg-white/5 border border-white/10 rounded-xl p-2.5 text-center">
-                      <p className="text-xs text-slate-400 font-medium">Patients Treated</p>
-                      <p className="text-sm sm:text-base font-bold text-white mt-0.5">
+                    <div className="bg-white/5 border border-white/10 rounded-lg xs:rounded-xl p-1.5 xs:p-2.5 text-center">
+                      <p className="text-[9px] xs:text-[11px] sm:text-xs text-slate-400 font-medium">Patients Treated</p>
+                      <p className="text-[11px] xs:text-xs sm:text-sm md:text-base font-bold text-white mt-0.5">
                         2,500+
                       </p>
                     </div>
 
-                    <div className="bg-white/5 border border-white/10 rounded-xl p-2.5 text-center">
-                      <p className="text-xs text-slate-400 font-medium">Certifications</p>
-                      <p className="text-sm sm:text-base font-bold text-teal-300 mt-0.5">
+                    <div className="bg-white/5 border border-white/10 rounded-lg xs:rounded-xl p-1.5 xs:p-2.5 text-center">
+                      <p className="text-[9px] xs:text-[11px] sm:text-xs text-slate-400 font-medium">Certifications</p>
+                      <p className="text-[11px] xs:text-xs sm:text-sm md:text-base font-bold text-teal-300 mt-0.5">
                         5 Certified
                       </p>
                     </div>
                   </>
                 ) : (
-                  <div className="bg-white/5 border border-white/10 rounded-xl p-2.5 text-center col-span-2 sm:col-span-1">
-                    <p className="text-xs text-slate-400 font-medium">Clinical Practice</p>
-                    <p className="text-sm sm:text-base font-bold text-teal-300 mt-0.5">
+                  <div className="bg-white/5 border border-white/10 rounded-lg xs:rounded-xl p-1.5 xs:p-2.5 text-center col-span-2 sm:col-span-1">
+                    <p className="text-[9px] xs:text-[11px] sm:text-xs text-slate-400 font-medium">Clinical Practice</p>
+                    <p className="text-[11px] xs:text-xs sm:text-sm md:text-base font-bold text-teal-300 mt-0.5 truncate">
                       Musculoskeletal Rehab
                     </p>
                   </div>
                 )}
               </div>
 
-              {/* Action Buttons Row */}
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mt-6">
+              {/* Action Buttons Row - Full Width on Mobile (320-425px) and Inline on sm+ */}
+              <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center justify-center lg:justify-start gap-2 xs:gap-3 mt-4 xs:mt-6">
                 <Link
                   to={`/booking?doctor=${encodeURIComponent(doctor.name || doctorLocalizedName)}`}
-                  className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-white px-6 py-3 rounded-xl font-bold text-xs sm:text-sm shadow-lg hover:shadow-teal-500/25 transition duration-200"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 xs:gap-2 bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-white px-3.5 xs:px-5 py-2.5 xs:py-3 rounded-xl font-bold text-xs xs:text-sm shadow-lg hover:shadow-teal-500/25 transition duration-200 text-center"
                 >
-                  <CalendarCheck size={18} />
+                  <CalendarCheck size={16} />
                   <span>{t("doctorProfile.bookAppointment", "Book In-Clinic Appointment")}</span>
                 </Link>
 
@@ -418,17 +420,17 @@ const DoctorProfile = () => {
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white px-5 py-3 rounded-xl font-bold text-xs sm:text-sm shadow-md transition duration-200"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 xs:gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white px-3.5 xs:px-5 py-2.5 xs:py-3 rounded-xl font-bold text-xs xs:text-sm shadow-md transition duration-200 text-center"
                 >
-                  <img src="/whatsapp.png" alt="WhatsApp" className="w-5 h-5 object-contain shrink-0" />
+                  <img src="/whatsapp.png" alt="WhatsApp" className="w-4 h-4 xs:w-5 xs:h-5 object-contain shrink-0" />
                   <span>{t("doctorProfile.whatsappConsult", "Direct WhatsApp Consultation")}</span>
                 </a>
 
                 <a
                   href={`tel:${phoneRaw}`}
-                  className="inline-flex items-center justify-center gap-2.5 bg-white/10 hover:bg-white/20 border border-white/25 hover:border-white/40 text-white px-5 py-3 rounded-xl font-bold text-xs sm:text-sm backdrop-blur-md shadow-md hover:shadow-lg transition duration-200"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 xs:gap-2 bg-white/10 hover:bg-white/20 border border-white/25 hover:border-white/40 text-white px-3.5 xs:px-5 py-2.5 xs:py-3 rounded-xl font-bold text-xs xs:text-sm backdrop-blur-md shadow-md hover:shadow-lg transition duration-200 text-center"
                 >
-                  <img src="/call.png" alt="Call" className="w-5 h-5 object-contain shrink-0 drop-shadow-sm" />
+                  <img src="/call.png" alt="Call" className="w-4 h-4 xs:w-5 xs:h-5 object-contain shrink-0 drop-shadow-sm" />
                   <span>Call Doctor</span>
                 </a>
               </div>
@@ -437,21 +439,21 @@ const DoctorProfile = () => {
         </div>
 
         {/* Content Layout: 8 cols details + 4 cols booking sidebar */}
-        <div className="grid lg:grid-cols-12 gap-8 items-start">
+        <div className="grid lg:grid-cols-12 gap-5 sm:gap-8 items-start">
           {/* Main Column */}
-          <div className="lg:col-span-8 space-y-8">
+          <div className="lg:col-span-8 space-y-6 sm:space-y-8">
             {/* 1. Official Certifications & Accreditations (Key Request) */}
             {certificationsList.length > 0 && (
-              <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center shrink-0 border border-teal-100">
-                    <Award size={22} />
+              <div className="bg-white rounded-2xl xs:rounded-3xl p-3.5 xs:p-5 sm:p-8 shadow-sm border border-slate-200/80">
+                <div className="flex items-center gap-2.5 xs:gap-3 mb-2">
+                  <div className="w-9 h-9 xs:w-10 xs:h-10 rounded-xl xs:rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center shrink-0 border border-teal-100">
+                    <Award size={20} className="xs:w-[22px] xs:h-[22px]" />
                   </div>
                   <div>
-                    <h2 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
+                    <h2 className="text-lg xs:text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
                       {t("doctorProfile.certificationsTitle", "Certified Professional Accreditations")}
                     </h2>
-                    <p className="text-xs sm:text-sm text-slate-500">
+                    <p className="text-[11px] xs:text-xs sm:text-sm text-slate-500">
                       {t(
                         "doctorProfile.certificationsSubtitle",
                         "Evidence-based advanced therapy certifications"
@@ -460,7 +462,7 @@ const DoctorProfile = () => {
                   </div>
                 </div>
 
-                <div className="grid gap-4 mt-6">
+                <div className="grid gap-3 xs:gap-4 mt-4 xs:mt-6">
                   {certificationsList.map((cert, index) => {
                     const meta = getCertificationMeta(cert);
                     const CertIcon = meta.icon;
@@ -472,26 +474,26 @@ const DoctorProfile = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.3, delay: index * 0.08 }}
-                        className={`rounded-2xl p-4 sm:p-5 border ${meta.border} bg-gradient-to-r ${meta.gradient} flex flex-col sm:flex-row sm:items-start gap-4 transition hover:shadow-md`}
+                        className={`rounded-xl xs:rounded-2xl p-3 xs:p-4 sm:p-5 border ${meta.border} bg-gradient-to-r ${meta.gradient} flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4 transition hover:shadow-md`}
                       >
                         <div
-                          className={`w-12 h-12 rounded-xl bg-white shadow-xs flex items-center justify-center shrink-0 border border-slate-100 ${meta.iconColor}`}
+                          className={`w-10 h-10 xs:w-12 xs:h-12 rounded-xl bg-white shadow-xs flex items-center justify-center shrink-0 border border-slate-100 ${meta.iconColor}`}
                         >
-                          <CertIcon size={24} />
+                          <CertIcon size={20} className="xs:w-6 xs:h-6" />
                         </div>
 
                         <div className="flex-1">
-                          <div className="flex flex-wrap items-center justify-between gap-2">
-                            <h3 className="text-base sm:text-lg font-bold text-slate-900">
+                          <div className="flex flex-wrap items-center justify-between gap-1.5 xs:gap-2">
+                            <h3 className="text-sm xs:text-base sm:text-lg font-bold text-slate-900">
                               {meta.title}
                             </h3>
                             <span
-                              className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${meta.badgeColor}`}
+                              className={`text-[10px] xs:text-[11px] font-semibold px-2 xs:px-2.5 py-0.5 rounded-full ${meta.badgeColor}`}
                             >
                               {meta.badge}
                             </span>
                           </div>
-                          <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
+                          <p className="text-[11px] xs:text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
                             {meta.desc}
                           </p>
                         </div>
@@ -503,115 +505,115 @@ const DoctorProfile = () => {
             )}
 
             {/* 2. Academic Qualifications & Medical Credentials */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center shrink-0 border border-teal-100">
-                  <GraduationCap size={22} />
+            <div className="bg-white rounded-2xl xs:rounded-3xl p-3.5 xs:p-5 sm:p-8 shadow-sm border border-slate-200/80">
+              <div className="flex items-center gap-2.5 xs:gap-3 mb-4 xs:mb-6">
+                <div className="w-9 h-9 xs:w-10 xs:h-10 rounded-xl xs:rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center shrink-0 border border-teal-100">
+                  <GraduationCap size={20} className="xs:w-[22px] xs:h-[22px]" />
                 </div>
                 <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
+                  <h2 className="text-lg xs:text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
                     {t("doctorProfile.education", "Academic Credentials & Qualifications")}
                   </h2>
-                  <p className="text-xs sm:text-sm text-slate-500">
+                  <p className="text-[11px] xs:text-xs sm:text-sm text-slate-500">
                     Verified degrees & professional licensing
                   </p>
                 </div>
               </div>
 
               {isDrRashid ? (
-                <div className="grid sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 xs:gap-4">
                   {/* Degree 1: MPT Sports */}
-                  <div className="p-4 rounded-2xl border border-teal-100 bg-teal-50/40">
-                    <div className="flex items-center gap-2 text-teal-700 font-bold text-sm">
-                      <CheckCircle2 size={16} />
+                  <div className="p-3 xs:p-4 rounded-xl xs:rounded-2xl border border-teal-100 bg-teal-50/40">
+                    <div className="flex items-center gap-2 text-teal-700 font-bold text-xs xs:text-sm">
+                      <CheckCircle2 size={16} className="shrink-0" />
                       <span>Master of Physiotherapy - MPT (Sports)</span>
                     </div>
-                    <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                    <p className="text-[11px] xs:text-xs text-slate-600 mt-1 leading-relaxed">
                       Specialized higher master&apos;s degree in sports kinesiology, athletic injury rehabilitation, and biomechanical movement recovery.
                     </p>
                   </div>
 
                   {/* Degree 2: BPT */}
-                  <div className="p-4 rounded-2xl border border-slate-200 bg-slate-50/50">
-                    <div className="flex items-center gap-2 text-slate-800 font-bold text-sm">
-                      <CheckCircle2 size={16} className="text-teal-600" />
+                  <div className="p-3 xs:p-4 rounded-xl xs:rounded-2xl border border-slate-200 bg-slate-50/50">
+                    <div className="flex items-center gap-2 text-slate-800 font-bold text-xs xs:text-sm">
+                      <CheckCircle2 size={16} className="text-teal-600 shrink-0" />
                       <span>Bachelor of Physiotherapy - BPT</span>
                     </div>
-                    <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                    <p className="text-[11px] xs:text-xs text-slate-600 mt-1 leading-relaxed">
                       Comprehensive clinical foundation in orthopedic rehabilitation, neurology, cardio-respiratory physiotherapy, and electro-physical agents.
                     </p>
                   </div>
 
                   {/* Medical Council Registration */}
-                  <div className="p-4 rounded-2xl border border-slate-200 bg-slate-50/50">
-                    <div className="flex items-center gap-2 text-slate-800 font-bold text-sm">
-                      <BadgeCheck size={16} className="text-teal-600" />
+                  <div className="p-3 xs:p-4 rounded-xl xs:rounded-2xl border border-slate-200 bg-slate-50/50">
+                    <div className="flex items-center gap-2 text-slate-800 font-bold text-xs xs:text-sm">
+                      <BadgeCheck size={16} className="text-teal-600 shrink-0" />
                       <span>Medical Council Registration</span>
                     </div>
-                    <p className="text-xs text-slate-600 mt-1 font-semibold text-teal-700">
+                    <p className="text-[11px] xs:text-xs text-slate-600 mt-1 font-semibold text-teal-700">
                       Reg. DEG2/71968/2025
                     </p>
-                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                    <p className="text-[11px] xs:text-xs text-slate-500 mt-1 leading-relaxed">
                       Authorized and registered practitioner with state physical therapy councils.
                     </p>
                   </div>
 
                   {/* Clinical Experience */}
-                  <div className="p-4 rounded-2xl border border-slate-200 bg-slate-50/50">
-                    <div className="flex items-center gap-2 text-slate-800 font-bold text-sm">
-                      <BriefcaseMedical size={16} className="text-teal-600" />
+                  <div className="p-3 xs:p-4 rounded-xl xs:rounded-2xl border border-slate-200 bg-slate-50/50">
+                    <div className="flex items-center gap-2 text-slate-800 font-bold text-xs xs:text-sm">
+                      <BriefcaseMedical size={16} className="text-teal-600 shrink-0" />
                       <span>Clinical Experience</span>
                     </div>
-                    <p className="text-xs text-slate-600 mt-1 font-semibold text-teal-700">
+                    <p className="text-[11px] xs:text-xs text-slate-600 mt-1 font-semibold text-teal-700">
                       5+ Years of Dedicated Clinical Practice
                     </p>
-                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                    <p className="text-[11px] xs:text-xs text-slate-500 mt-1 leading-relaxed">
                       Over 2,500+ successful musculoskeletal and sports pain rehabilitation cases treated.
                     </p>
                   </div>
                 </div>
               ) : (
-                <div className="grid sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 xs:gap-4">
                   {/* Doctor Degree: BPT */}
-                  <div className="p-4 rounded-2xl border border-teal-100 bg-teal-50/40">
-                    <div className="flex items-center gap-2 text-teal-700 font-bold text-sm">
-                      <CheckCircle2 size={16} />
+                  <div className="p-3 xs:p-4 rounded-xl xs:rounded-2xl border border-teal-100 bg-teal-50/40">
+                    <div className="flex items-center gap-2 text-teal-700 font-bold text-xs xs:text-sm">
+                      <CheckCircle2 size={16} className="shrink-0" />
                       <span>Bachelor of Physiotherapy (BPT)</span>
                     </div>
-                    <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                    <p className="text-[11px] xs:text-xs text-slate-600 mt-1 leading-relaxed">
                       Clinical degree in physical therapy, musculoskeletal rehabilitation, and exercise-based therapeutic recovery.
                     </p>
                   </div>
 
                   {/* Clinical Practice Area */}
-                  <div className="p-4 rounded-2xl border border-slate-200 bg-slate-50/50">
-                    <div className="flex items-center gap-2 text-slate-800 font-bold text-sm">
-                      <CheckCircle2 size={16} className="text-teal-600" />
+                  <div className="p-3 xs:p-4 rounded-xl xs:rounded-2xl border border-slate-200 bg-slate-50/50">
+                    <div className="flex items-center gap-2 text-slate-800 font-bold text-xs xs:text-sm">
+                      <CheckCircle2 size={16} className="text-teal-600 shrink-0" />
                       <span>Movement Recovery Specialist</span>
                     </div>
-                    <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                    <p className="text-[11px] xs:text-xs text-slate-600 mt-1 leading-relaxed">
                       Focused expertise in functional movement restoration, postural re-education, and mobility training.
                     </p>
                   </div>
 
                   {/* Musculoskeletal Rehab */}
-                  <div className="p-4 rounded-2xl border border-slate-200 bg-slate-50/50">
-                    <div className="flex items-center gap-2 text-slate-800 font-bold text-sm">
-                      <Activity size={16} className="text-teal-600" />
+                  <div className="p-3 xs:p-4 rounded-xl xs:rounded-2xl border border-slate-200 bg-slate-50/50">
+                    <div className="flex items-center gap-2 text-slate-800 font-bold text-xs xs:text-sm">
+                      <Activity size={16} className="text-teal-600 shrink-0" />
                       <span>Musculoskeletal Rehabilitation</span>
                     </div>
-                    <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                    <p className="text-[11px] xs:text-xs text-slate-600 mt-1 leading-relaxed">
                       Assessment and rehabilitation for joint, spinal, and muscular pain conditions to restore active mobility.
                     </p>
                   </div>
 
                   {/* Exercise Therapy & Patient Care */}
-                  <div className="p-4 rounded-2xl border border-slate-200 bg-slate-50/50">
-                    <div className="flex items-center gap-2 text-slate-800 font-bold text-sm">
-                      <HeartPulse size={16} className="text-teal-600" />
+                  <div className="p-3 xs:p-4 rounded-xl xs:rounded-2xl border border-slate-200 bg-slate-50/50">
+                    <div className="flex items-center gap-2 text-slate-800 font-bold text-xs xs:text-sm">
+                      <HeartPulse size={16} className="text-teal-600 shrink-0" />
                       <span>Exercise Therapy & Patient Care</span>
                     </div>
-                    <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                    <p className="text-[11px] xs:text-xs text-slate-600 mt-1 leading-relaxed">
                       Individualized therapeutic exercise prescription and patient education for long-term health.
                     </p>
                   </div>
@@ -620,28 +622,28 @@ const DoctorProfile = () => {
             </div>
 
             {/* 3. Specializations & Clinical Modalities */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center shrink-0 border border-teal-100">
-                  <Activity size={22} />
+            <div className="bg-white rounded-2xl xs:rounded-3xl p-3.5 xs:p-5 sm:p-8 shadow-sm border border-slate-200/80">
+              <div className="flex items-center gap-2.5 xs:gap-3 mb-3 xs:mb-4">
+                <div className="w-9 h-9 xs:w-10 xs:h-10 rounded-xl xs:rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center shrink-0 border border-teal-100">
+                  <Activity size={20} className="xs:w-[22px] xs:h-[22px]" />
                 </div>
                 <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
+                  <h2 className="text-lg xs:text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
                     {t("doctorProfile.specialization", "Clinical Specializations")}
                   </h2>
-                  <p className="text-xs sm:text-sm text-slate-500">
+                  <p className="text-[11px] xs:text-xs sm:text-sm text-slate-500">
                     Focused therapeutic domains & modern modalities
                   </p>
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-2.5 mt-4">
+              <div className="flex flex-wrap gap-1.5 xs:gap-2.5 mt-3 xs:mt-4">
                 {specializationsList.map((spec, i) => (
                   <span
                     key={i}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-teal-50 text-teal-800 border border-teal-200/80 text-xs sm:text-sm font-semibold shadow-2xs hover:bg-teal-100/70 transition"
+                    className="inline-flex items-center gap-1 xs:gap-1.5 px-2.5 xs:px-3.5 py-1.5 xs:py-2 rounded-lg xs:rounded-xl bg-teal-50 text-teal-800 border border-teal-200/80 text-[11px] xs:text-xs sm:text-sm font-semibold shadow-2xs hover:bg-teal-100/70 transition"
                   >
-                    <Check size={14} className="text-teal-600 stroke-[3]" />
+                    <Check size={13} className="text-teal-600 stroke-[3] shrink-0" />
                     <span>{spec}</span>
                   </span>
                 ))}
@@ -649,15 +651,15 @@ const DoctorProfile = () => {
             </div>
 
             {/* 4. Conditions Treated & Recovery Focus */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
-              <h2 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight mb-2">
+            <div className="bg-white rounded-2xl xs:rounded-3xl p-3.5 xs:p-5 sm:p-8 shadow-sm border border-slate-200/80">
+              <h2 className="text-lg xs:text-xl sm:text-2xl font-bold text-slate-900 leading-tight mb-1.5 xs:mb-2">
                 {t("doctorProfile.conditionsTreated", "Conditions Treated & Rehabilitation Scope")}
               </h2>
-              <p className="text-xs sm:text-sm text-slate-500 mb-6">
+              <p className="text-[11px] xs:text-xs sm:text-sm text-slate-500 mb-4 xs:mb-6">
                 Specialized targeted protocols for rapid symptom relief and long-term functional recovery
               </p>
 
-              <div className="grid sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 xs:gap-3 text-xs sm:text-sm">
                 {(isDrRashid
                   ? [
                       "Sports Injuries (Ligament Sprains, Meniscus, Muscle Strains)",
@@ -682,10 +684,10 @@ const DoctorProfile = () => {
                 ).map((condition, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-teal-200 transition"
+                    className="flex items-start xs:items-center gap-2 p-2.5 xs:p-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-teal-200 transition"
                   >
-                    <span className="w-2 h-2 rounded-full bg-teal-500 shrink-0" />
-                    <span className="text-slate-700 font-medium">{condition}</span>
+                    <span className="w-1.5 h-1.5 xs:w-2 xs:h-2 rounded-full bg-teal-500 shrink-0 mt-1 xs:mt-0" />
+                    <span className="text-[11px] xs:text-xs sm:text-sm text-slate-700 font-medium">{condition}</span>
                   </div>
                 ))}
               </div>
@@ -693,43 +695,43 @@ const DoctorProfile = () => {
 
             {/* 5. Patient Testimonials for Dr. Rashid */}
             {isDrRashid && (
-              <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
-                <div className="flex items-center justify-between gap-4 mb-6">
+              <div className="bg-white rounded-2xl xs:rounded-3xl p-3.5 xs:p-5 sm:p-8 shadow-sm border border-slate-200/80">
+                <div className="flex flex-wrap items-center justify-between gap-2.5 xs:gap-4 mb-4 xs:mb-6">
                   <div>
-                    <h2 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
+                    <h2 className="text-lg xs:text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
                       Patient Feedback & Recovery Stories
                     </h2>
-                    <p className="text-xs sm:text-sm text-slate-500">
+                    <p className="text-[11px] xs:text-xs sm:text-sm text-slate-500">
                       Real feedback from patients treated by Dr. MD Rashid
                     </p>
                   </div>
-                  <div className="flex items-center gap-1 bg-amber-50 border border-amber-200 px-3 py-1 rounded-xl text-amber-800 text-xs font-bold">
-                    <Star size={14} className="fill-amber-400 text-amber-400" />
+                  <div className="flex items-center gap-1 bg-amber-50 border border-amber-200 px-2.5 xs:px-3 py-1 rounded-xl text-amber-800 text-[11px] xs:text-xs font-bold">
+                    <Star size={13} className="fill-amber-400 text-amber-400" />
                     <span>5.0 Rating</span>
                   </div>
                 </div>
 
-                <div className="grid sm:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 xs:gap-4">
                   {DR_RASHID_REVIEWS.map((rev, i) => (
                     <div
                       key={i}
-                      className="p-4 rounded-2xl bg-slate-50/70 border border-slate-200/80 flex flex-col justify-between"
+                      className="p-3 xs:p-4 rounded-xl xs:rounded-2xl bg-slate-50/70 border border-slate-200/80 flex flex-col justify-between"
                     >
                       <div>
                         <div className="flex items-center gap-1 text-amber-400 mb-2">
                           {[...Array(5)].map((_, starI) => (
-                            <Star key={starI} size={12} className="fill-amber-400 text-amber-400" />
+                            <Star key={starI} size={11} className="fill-amber-400 text-amber-400" />
                           ))}
                         </div>
-                        <p className="text-xs text-slate-700 italic leading-relaxed">
+                        <p className="text-[11px] xs:text-xs text-slate-700 italic leading-relaxed">
                           &quot;{rev.comment}&quot;
                         </p>
                       </div>
 
-                      <div className="mt-4 pt-3 border-t border-slate-200">
+                      <div className="mt-3 xs:mt-4 pt-2.5 xs:pt-3 border-t border-slate-200">
                         <p className="text-xs font-bold text-slate-900">{rev.name}</p>
-                        <p className="text-[11px] text-teal-700 font-semibold">{rev.condition}</p>
-                        <p className="text-[10px] text-slate-400 mt-0.5">{rev.date}</p>
+                        <p className="text-[10px] xs:text-[11px] text-teal-700 font-semibold">{rev.condition}</p>
+                        <p className="text-[9px] xs:text-[10px] text-slate-400 mt-0.5">{rev.date}</p>
                       </div>
                     </div>
                   ))}
@@ -739,51 +741,51 @@ const DoctorProfile = () => {
           </div>
 
           {/* Right Column: Appointment Booking & Consultation Card */}
-          <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-20">
+          <div className="lg:col-span-4 space-y-4 xs:space-y-6 lg:sticky lg:top-20">
             {/* Consultation Card */}
-            <div className="bg-white rounded-3xl p-6 sm:p-7 shadow-lg border border-teal-100 relative overflow-hidden">
+            <div className="bg-white rounded-2xl xs:rounded-3xl p-4 xs:p-5 sm:p-7 shadow-lg border border-teal-100 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-teal-50 rounded-bl-full pointer-events-none -z-0" />
 
               <div className="relative z-10">
-                <span className="inline-block px-3 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs font-semibold uppercase tracking-wider mb-3">
+                <span className="inline-block px-2.5 xs:px-3 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-[10px] xs:text-xs font-semibold uppercase tracking-wider mb-2.5 xs:mb-3">
                   In-Clinic Consultation
                 </span>
 
-                <h3 className="text-xl font-bold text-slate-900 leading-tight">
+                <h3 className="text-lg xs:text-xl font-bold text-slate-900 leading-tight">
                   Schedule Your Session
                 </h3>
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-[11px] xs:text-xs text-slate-500 mt-1">
                   Book direct consultation with {doctorLocalizedName}
                 </p>
 
                 {/* Consultation Details */}
-                <div className="mt-5 space-y-3">
-                  <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
-                    <Clock size={18} className="text-teal-600 shrink-0 mt-0.5" />
+                <div className="mt-4 xs:mt-5 space-y-2.5 xs:space-y-3">
+                  <div className="flex items-start gap-2.5 p-2.5 xs:p-3 rounded-xl bg-slate-50 border border-slate-100">
+                    <Clock size={16} className="text-teal-600 shrink-0 mt-0.5" />
                     <div>
                       <h4 className="text-xs font-bold text-slate-900">Consultation Timings</h4>
-                      <p className="text-xs text-slate-600 mt-0.5">
+                      <p className="text-[11px] xs:text-xs text-slate-600 mt-0.5">
                         Morning: 09:00 AM - 12:00 PM<br />
                         Evening: 05:00 PM - 09:00 PM
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
-                    <MapPin size={18} className="text-teal-600 shrink-0 mt-0.5" />
+                  <div className="flex items-start gap-2.5 p-2.5 xs:p-3 rounded-xl bg-slate-50 border border-slate-100">
+                    <MapPin size={16} className="text-teal-600 shrink-0 mt-0.5" />
                     <div>
                       <h4 className="text-xs font-bold text-slate-900">Clinic Location</h4>
-                      <p className="text-xs text-slate-600 mt-0.5">
+                      <p className="text-[11px] xs:text-xs text-slate-600 mt-0.5">
                         LIG 85, Raisen Rd, Near Gurudwara, New Subhash Nagar, Bhopal
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
-                    <ShieldCheck size={18} className="text-teal-600 shrink-0 mt-0.5" />
+                  <div className="flex items-start gap-2.5 p-2.5 xs:p-3 rounded-xl bg-slate-50 border border-slate-100">
+                    <ShieldCheck size={16} className="text-teal-600 shrink-0 mt-0.5" />
                     <div>
                       <h4 className="text-xs font-bold text-slate-900">Zero Wait Priority</h4>
-                      <p className="text-xs text-slate-600 mt-0.5">
+                      <p className="text-[11px] xs:text-xs text-slate-600 mt-0.5">
                         Confirmed appointment slots with dedicated doctor evaluation.
                       </p>
                     </div>
@@ -793,9 +795,9 @@ const DoctorProfile = () => {
                 {/* Book Action */}
                 <Link
                   to={`/booking?doctor=${encodeURIComponent(doctor.name || doctorLocalizedName)}`}
-                  className="mt-6 w-full inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white py-3.5 rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition duration-200"
+                  className="mt-5 w-full inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white py-3 xs:py-3.5 rounded-xl font-bold text-xs xs:text-sm shadow-md hover:shadow-lg transition duration-200 text-center"
                 >
-                  <CalendarCheck size={18} />
+                  <CalendarCheck size={16} />
                   <span>{t("doctorProfile.bookAppointment", "Book Appointment Now")}</span>
                 </Link>
 
@@ -806,7 +808,7 @@ const DoctorProfile = () => {
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-2.5 w-full inline-flex items-center justify-center gap-2 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-800 py-3 rounded-xl font-bold text-xs transition duration-200"
+                  className="mt-2 w-full inline-flex items-center justify-center gap-2 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-800 py-2.5 xs:py-3 rounded-xl font-bold text-xs transition duration-200 text-center"
                 >
                   <img src="/whatsapp.png" alt="WhatsApp" className="w-4 h-4 object-contain shrink-0" />
                   <span>Chat on WhatsApp</span>
@@ -815,7 +817,7 @@ const DoctorProfile = () => {
                 {/* Direct Phone */}
                 <a
                   href={`tel:${phoneRaw}`}
-                  className="mt-2.5 w-full inline-flex items-center justify-center gap-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 py-3 rounded-xl font-semibold text-xs transition duration-200"
+                  className="mt-2 w-full inline-flex items-center justify-center gap-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 py-2.5 xs:py-3 rounded-xl font-semibold text-xs transition duration-200 text-center"
                 >
                   <img src="/call.png" alt="Call" className="w-3.5 h-3.5 object-contain shrink-0" />
                   <span>Call: +91 88094 91380</span>
@@ -824,16 +826,16 @@ const DoctorProfile = () => {
             </div>
 
             {/* Quick Share Card */}
-            <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs flex items-center justify-between">
+            <div className="bg-white rounded-xl xs:rounded-2xl p-3.5 xs:p-5 border border-slate-200/80 shadow-xs flex items-center justify-between gap-2">
               <div>
                 <p className="text-xs font-bold text-slate-800">Recommend this Doctor</p>
-                <p className="text-[11px] text-slate-500">Share profile with family or friends</p>
+                <p className="text-[10px] xs:text-[11px] text-slate-500">Share profile with family or friends</p>
               </div>
               <button
                 onClick={handleShare}
-                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-teal-50 hover:bg-teal-100 text-teal-700 text-xs font-semibold transition"
+                className="shrink-0 inline-flex items-center gap-1.5 px-2.5 xs:px-3 py-1.5 xs:py-2 rounded-xl bg-teal-50 hover:bg-teal-100 text-teal-700 text-xs font-semibold transition"
               >
-                <Share2 size={14} />
+                <Share2 size={13} />
                 <span>{copied ? "Copied!" : "Share"}</span>
               </button>
             </div>

@@ -16,24 +16,24 @@ const Specialists = ({ limit = 3 }) => {
 
   return (
     <section className="py-8 sm:py-12 lg:py-16 bg-white border-b border-slate-100 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-3 xs:px-4 sm:px-6 lg:px-8">
         {/* Section Heading */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-8 sm:mb-12 max-w-3xl mx-auto"
+          className="text-center mb-6 sm:mb-12 max-w-3xl mx-auto"
         >
-          <p className="text-xs sm:text-sm font-semibold tracking-[0.25em] text-teal-600 uppercase mb-2 sm:mb-3">
+          <p className="text-[11px] xs:text-xs sm:text-sm font-semibold tracking-[0.25em] text-teal-600 uppercase mb-2 sm:mb-3">
             {t("specialists.badge", "Meet Our Doctors")}
           </p>
 
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight">
+          <h2 className="text-xl xs:text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight">
             {t("specialists.title", "Meet Our Expert Physiotherapists")}
           </h2>
 
-          <p className="mt-2.5 sm:mt-3 text-slate-600 text-xs sm:text-base leading-relaxed max-w-2xl mx-auto">
+          <p className="mt-2 xs:mt-2.5 sm:mt-3 text-slate-600 text-xs sm:text-base leading-relaxed max-w-2xl mx-auto">
             {t(
               "specialists.subtitle",
               "Meet our certified and experienced physiotherapists dedicated to personalized patient care and rapid recovery."
@@ -42,13 +42,15 @@ const Specialists = ({ limit = 3 }) => {
         </motion.div>
 
         {/* Centered Cards Container */}
-        <div className="flex flex-wrap justify-center items-stretch gap-6 lg:gap-8">
+        <div className="flex flex-wrap justify-center items-stretch gap-5 sm:gap-6 lg:gap-8">
           {doctorList.map((rawDoc, index) => {
             const fallbackMatch = defaultDoctors.find(
               (d) =>
                 d.slug === rawDoc.slug ||
                 d.id === rawDoc.id ||
-                (rawDoc.slug?.includes("rashid") && d.id === "dr-md-rashid")
+                (rawDoc.slug?.includes("rashid") && d.id === "dr-md-rashid") ||
+                (rawDoc.slug?.includes("wajhul") && d.id === "dr-wajhul-qamar") ||
+                (rawDoc.slug?.includes("wazul") && d.id === "dr-wajhul-qamar")
             );
             const doctor = {
               ...fallbackMatch,
@@ -66,6 +68,16 @@ const Specialists = ({ limit = 3 }) => {
               doctor.slug === "dr-md-rashid" ||
               doctor.name?.toLowerCase().includes("rashid");
 
+            const isWajhul =
+              doctor.id === "dr-wajhul-qamar" ||
+              doctor.slug === "dr-wajhul-qamar" ||
+              doctor.name?.toLowerCase().includes("wajhul") ||
+              doctor.name?.toLowerCase().includes("wazul");
+
+            const cardPhoto = isWajhul
+              ? (fallbackMatch?.image || fallbackMatch?.imageUrl || doctor.imageUrl || doctor.image)
+              : (doctor.imageUrl || doctor.image);
+
             const displayRole = isRashid
               ? "Senior Consultant Physiotherapist | MPT (Sports)"
               : (doctor.role || "Physiotherapist & Rehab Specialist (BPT)");
@@ -79,7 +91,8 @@ const Specialists = ({ limit = 3 }) => {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="
                   w-full
-                  max-w-[320px]
+                  max-w-[290px]
+                  xs:max-w-[320px]
                   sm:max-w-[350px]
                   bg-white
                   rounded-2xl
@@ -95,10 +108,10 @@ const Specialists = ({ limit = 3 }) => {
                 "
               >
                 {/* Image */}
-                <div className="w-full h-80 sm:h-96 md:h-[400px] bg-slate-50 overflow-hidden flex items-center justify-center relative group">
-                  {doctor.imageUrl || doctor.image ? (
+                <div className="w-full h-72 xs:h-80 sm:h-96 md:h-[400px] bg-slate-50 overflow-hidden flex items-center justify-center relative group">
+                  {cardPhoto ? (
                     <img
-                      src={doctor.imageUrl || doctor.image}
+                      src={cardPhoto}
                       alt={docName}
                       className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
                     />
@@ -110,28 +123,28 @@ const Specialists = ({ limit = 3 }) => {
                 </div>
 
                 {/* Content */}
-                <div className="p-4 sm:p-5 text-center bg-white border-t border-slate-100 flex flex-col flex-1 justify-between">
+                <div className="p-3.5 xs:p-4 sm:p-5 text-center bg-white border-t border-slate-100 flex flex-col flex-1 justify-between">
                   <div>
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 leading-snug">
+                    <h3 className="text-base xs:text-lg sm:text-xl font-bold text-slate-900 leading-snug">
                       {docName}
                     </h3>
-                    <p className="text-xs sm:text-sm font-semibold text-teal-600 mt-1">
+                    <p className="text-[11px] xs:text-xs sm:text-sm font-semibold text-teal-600 mt-0.5 xs:mt-1">
                       {displayRole}
                     </p>
-                    <p className="text-xs text-slate-500 mt-2.5 line-clamp-2 min-h-[2.5rem] leading-relaxed">
+                    <p className="text-[11px] xs:text-xs text-slate-500 mt-2 line-clamp-2 min-h-[2.2rem] xs:min-h-[2.5rem] leading-relaxed">
                       {doctor.specialization || doctor.description}
                     </p>
                   </div>
 
-                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-center gap-2">
+                  <div className="mt-3.5 xs:mt-4 pt-2.5 xs:pt-3 border-t border-slate-100 flex items-center justify-center gap-1.5 xs:gap-2">
                     <Link
                       to={`/doctors/${docSlug}`}
                       className="
                         inline-flex
                         items-center
-                        gap-1.5
-                        px-3.5
-                        py-2
+                        gap-1 xs:gap-1.5
+                        px-2.5 xs:px-3.5
+                        py-1.5 xs:py-2
                         rounded-xl
                         bg-teal-50
                         hover:bg-teal-100
@@ -142,7 +155,7 @@ const Specialists = ({ limit = 3 }) => {
                       "
                     >
                       <span>{t("specialists.viewProfile", "View Profile")}</span>
-                      <ArrowRight size={14} />
+                      <ArrowRight size={13} />
                     </Link>
 
                     <Link
@@ -150,9 +163,9 @@ const Specialists = ({ limit = 3 }) => {
                       className="
                         inline-flex
                         items-center
-                        gap-1.5
-                        px-3.5
-                        py-2
+                        gap-1 xs:gap-1.5
+                        px-2.5 xs:px-3.5
+                        py-1.5 xs:py-2
                         rounded-xl
                         bg-teal-600
                         hover:bg-teal-700
@@ -162,7 +175,7 @@ const Specialists = ({ limit = 3 }) => {
                         transition-colors
                       "
                     >
-                      <CalendarCheck size={14} />
+                      <CalendarCheck size={13} />
                       <span>{t("navbar.book", "Book")}</span>
                     </Link>
                   </div>
