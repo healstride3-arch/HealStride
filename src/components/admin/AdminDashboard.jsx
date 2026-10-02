@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import AdminNotifications from "./AdminNotifications";
+import AppointmentsTable from "./AppointmentsTable";
 import {
   collection,
   onSnapshot,
@@ -150,8 +152,6 @@ const AdminDashboard = () => {
 
   const [appointments, setAppointments] = useState([]);
 
-  const [enquiries, setEnquiries] = useState([]);
-
   const [reviews, setReviews] = useState([]);
 
   const [gallery, setGallery] = useState([]);
@@ -231,21 +231,6 @@ const AdminDashboard = () => {
 
 
 
-    const unsubscribeEnquiries =
-      onSnapshot(
-        collection(db, "enquiries"),
-        (snapshot) => {
-
-          setEnquiries(
-            snapshot.docs.map(doc => ({
-              id: doc.id,
-              ...doc.data()
-            }))
-          );
-
-        }
-
-      );
 
 
     const unsubscribeReviews =
@@ -289,8 +274,6 @@ const AdminDashboard = () => {
     return () => {
 
       unsubscribeAppointments();
-
-      unsubscribeEnquiries();
 
       unsubscribeReviews();
 
@@ -529,7 +512,7 @@ const AdminDashboard = () => {
             </h1>
 
             <p className="text-slate-500 mt-1">
-              Manage appointments, enquiries and clinic activities.
+              Manage appointments, doctors, and clinic activities.
             </p>
 
           </div>
@@ -642,10 +625,10 @@ const AdminDashboard = () => {
               <section
                 className="
   grid
-  grid-cols-1
-  sm:grid-cols-2
+  grid-cols-2
+  sm:grid-cols-3
   lg:grid-cols-3
-  xl:grid-cols-6
+  xl:grid-cols-5
   gap-4
   "
               >
@@ -676,13 +659,6 @@ const AdminDashboard = () => {
                   label="Confirmed"
                   value={stats.confirmed}
                   tone="green"
-                />
-
-                <StatCard
-                  icon={MessageSquare}
-                  label="Enquiries"
-                  value={appointments.length}
-                  tone="purple"
                 />
 
                 <StatCard
@@ -799,230 +775,33 @@ p-3 sm:p-5
 
 
 
-              {/* Recent Appointment */}
-
-
-
-              <section className="
-mt-8
-bg-white
-rounded-3xl
-shadow-sm
-p-5
-">
-
-
-                <h2 className="text-xl font-bold mb-5">
-
-                  Recent Appointments
-
-                </h2>
-
-
-
-
-
-                <div className="overflow-x-auto rounded-xl">
-
-
-                  <table className="w-full min-w-[700px] lg:min-w-[900px]">
-
-                    <thead className="bg-teal-600 text-white">
-
-
-                      <tr>
-
-                        <th className="p-4 text-left">
-                          Patient
-                        </th>
-
-
-                        <th className="p-4 text-left">
-                          Phone
-                        </th>
-
-
-                        <th className="p-4 text-left">
-                          Email
-                        </th>
-
-
-                        <th className="p-4 text-left">
-                          Condition
-                        </th>
-
-
-                        <th className="p-4 text-left">
-                          Date
-                        </th>
-
-
-                        <th className="p-4 text-left">
-                          Time
-                        </th>
-
-
-                        <th className="p-4 text-left">
-                          Status
-                        </th>
-
-
-                      </tr>
-
-
-                    </thead>
-
-
-
-
-                    <tbody>
-
-
-                      {
-
-                        appointments
-                          .slice(0, 5)
-                          .map(item => (
-
-
-                            <tr
-                              key={item.id}
-                              className="border-b hover:bg-slate-50"
-                            >
-
-
-                              <td className="p-2 sm:p-4">
-                                {item.name}
-                              </td>
-
-
-                              <td className="p-2 sm:p-4">
-                                {item.phone}
-                              </td>
-
-
-                              <td className="p-2 sm:p-4">
-                                {item.email}
-                              </td>
-
-
-                              <td className="p-2 sm:p-4">
-                                {item.condition}
-                              </td>
-
-
-                              <td className="p-2 sm:p-4">
-                                {item.date}
-                              </td>
-
-
-                              <td className="p-2 sm:p-4">
-                                {item.time}
-                              </td>
-
-
-
-
-                              <td className="p-2 sm:p-4">
-
-
-                                <span
-                                  className={`
-px-3
-py-1
-rounded-full
-text-xs
-font-medium
-
-${item.status === "confirmed"
-                                      ?
-                                      "bg-green-100 text-green-700"
-
-                                      :
-
-                                      item.status === "completed"
-
-                                        ?
-
-                                        "bg-blue-100 text-blue-700"
-
-
-                                        :
-
-                                        item.status === "cancelled"
-
-                                          ?
-
-                                          "bg-red-100 text-red-700"
-
-
-                                          :
-
-                                          "bg-yellow-100 text-yellow-700"
-
-                                    }
-
-`}
-                                >
-
-
-                                  {
-                                    (item.status || "pending")
-                                      .charAt(0)
-                                      .toUpperCase()
-                                    +
-                                    (item.status || "pending")
-                                      .slice(1)
-                                  }
-
-
-                                </span>
-
-
-                              </td>
-
-
-
-                            </tr>
-
-
-                          ))
-
-
-                      }
-
-
-
-
-                      {
-                        appointments.length === 0 &&
-
-                        <tr>
-
-                          <td
-                            colSpan="7"
-                            className="text-center p-6 text-slate-500"
-                          >
-
-                            No appointments found
-
-                          </td>
-
-                        </tr>
-
-                      }
-
-
-                    </tbody>
-
-
-                  </table>
-
-
+              {/* Recent Appointments (Only 5 latest, using the exact same AppointmentsTable) */}
+              <section className="mt-8 bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+                <div className="p-4 sm:p-5 flex flex-col xs:flex-row items-start xs:items-center justify-between gap-2 border-b border-slate-100">
+                  <div className="flex items-center gap-2">
+                    <CalendarDays className="text-teal-600" size={20} />
+                    <h2 className="text-lg sm:text-xl font-bold text-slate-900">
+                      Recent Appointments
+                    </h2>
+                    <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                      Top 5
+                    </span>
+                  </div>
+
+                  <Link
+                    to="/admin/appointments"
+                    className="text-xs sm:text-sm font-bold text-teal-700 hover:text-teal-900 transition flex items-center gap-1"
+                  >
+                    <span>View All Appointments ({appointments.length})</span>
+                    <span>&rarr;</span>
+                  </Link>
                 </div>
 
-
-
+                <AppointmentsTable
+                  appointments={appointments.slice(0, 5)}
+                  loading={loading}
+                  emptyMessage="No recent appointments found"
+                />
               </section>
 
 
