@@ -147,20 +147,26 @@ const DoctorProfile = () => {
     hours: "Morning 9:00 AM - 12:00 PM\nEvening 5:00 PM - 9:00 PM",
   });
 
+  const isRequestedWajhul =
+    doctorName?.toLowerCase().includes("wajhul") ||
+    doctorName?.toLowerCase().includes("wazul");
+
   const rawDoctor =
     doctors.find((item) => item.slug === doctorName || item.id === doctorName) ||
     defaultDoctors.find(
       (item) =>
         item.slug === doctorName ||
         item.id === doctorName ||
-        (doctorName?.toLowerCase().includes("rashid") && item.id === "dr-md-rashid")
+        (doctorName?.toLowerCase().includes("rashid") && item.id === "dr-md-rashid") ||
+        (isRequestedWajhul && item.id === "dr-wajhul-qamar")
     );
 
   const fallbackMatch = defaultDoctors.find(
     (item) =>
       item.slug === doctorName ||
       item.id === doctorName ||
-      (doctorName?.toLowerCase().includes("rashid") && item.id === "dr-md-rashid")
+      (doctorName?.toLowerCase().includes("rashid") && item.id === "dr-md-rashid") ||
+      (isRequestedWajhul && item.id === "dr-wajhul-qamar")
   );
 
   // Intelligent merge: live Firestore data takes precedence, but default fields (certifications, degree) are preserved
@@ -211,6 +217,16 @@ const DoctorProfile = () => {
     doctor.id === "dr-md-rashid" ||
     doctor.slug === "dr-md-rashid" ||
     doctor.name?.toLowerCase().includes("rashid");
+
+  const isDrWajhul =
+    doctor.id === "dr-wajhul-qamar" ||
+    doctor.slug === "dr-wajhul-qamar" ||
+    doctor.name?.toLowerCase().includes("wajhul") ||
+    doctor.name?.toLowerCase().includes("wazul");
+
+  const doctorPhoto = isDrWajhul
+    ? (fallbackMatch?.image || fallbackMatch?.imageUrl || doctor.image || doctor.imageUrl)
+    : (doctor.image || doctor.imageUrl || "/default-user.png");
 
   const phoneRaw = (clinicSettings?.phone || "8809491380").replace(/[^0-9]/g, "");
   const whatsappRaw = (clinicSettings?.whatsapp || "8252580389").replace(/[^0-9]/g, "");
@@ -271,7 +287,7 @@ const DoctorProfile = () => {
                 <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-teal-400 to-cyan-400 opacity-75 blur-sm group-hover:opacity-100 transition duration-300" />
                 <div className="relative w-56 h-64 sm:w-64 sm:h-72 lg:w-72 lg:h-80 rounded-2xl overflow-hidden bg-slate-800 border-2 border-white/20 shadow-2xl">
                   <img
-                    src={doctor.image || doctor.imageUrl || "/default-user.png"}
+                    src={doctorPhoto}
                     alt={doctorLocalizedName}
                     className="w-full h-full object-cover object-top"
                   />
