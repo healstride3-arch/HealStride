@@ -6,7 +6,7 @@
 
   <!-- Home Page -->
   <url>
-    <loc>https://healstride.in/</loc>
+    <loc>https://www.healstride-physiotherapy.in/</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -14,7 +14,7 @@
 
   <!-- Doctors Listing -->
   <url>
-    <loc>https://healstride.in/doctors</loc>
+    <loc>https://www.healstride-physiotherapy.in/doctors</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -22,7 +22,7 @@
 
   <!-- Doctor Profile: Dr. MD Rashid (PT) MPT Sports -->
   <url>
-    <loc>https://healstride.in/doctors/dr-md-rashid</loc>
+    <loc>https://www.healstride-physiotherapy.in/doctors/dr-md-rashid</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -30,7 +30,7 @@
 
   <!-- Doctor Profile: Dr. Wajhul Qamar (PT) -->
   <url>
-    <loc>https://healstride.in/doctors/dr-wajhul-qamar</loc>
+    <loc>https://www.healstride-physiotherapy.in/doctors/dr-wajhul-qamar</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -38,21 +38,21 @@
 
   <!-- Services & Treatments -->
   <url>
-    <loc>https://healstride.in/services</loc>
+    <loc>https://www.healstride-physiotherapy.in/services</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://healstride.in/physiotherapy-services</loc>
+    <loc>https://www.healstride-physiotherapy.in/physiotherapy-services</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://healstride.in/tools-and-equipment</loc>
+    <loc>https://www.healstride-physiotherapy.in/tools-and-equipment</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -60,7 +60,7 @@
 
   <!-- Appointment Booking -->
   <url>
-    <loc>https://healstride.in/booking</loc>
+    <loc>https://www.healstride-physiotherapy.in/booking</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
@@ -68,7 +68,7 @@
 
   <!-- About Clinic -->
   <url>
-    <loc>https://healstride.in/about</loc>
+    <loc>https://www.healstride-physiotherapy.in/about</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -76,7 +76,7 @@
 
   <!-- Contact & Directions -->
   <url>
-    <loc>https://healstride.in/contact</loc>
+    <loc>https://www.healstride-physiotherapy.in/contact</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -84,28 +84,28 @@
 
   <!-- Gallery Pages -->
   <url>
-    <loc>https://healstride.in/gallery</loc>
+    <loc>https://www.healstride-physiotherapy.in/gallery</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://healstride.in/gallery/clinic</loc>
+    <loc>https://www.healstride-physiotherapy.in/gallery/clinic</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://healstride.in/gallery/machine</loc>
+    <loc>https://www.healstride-physiotherapy.in/gallery/machine</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://healstride.in/gallery/treatment</loc>
+    <loc>https://www.healstride-physiotherapy.in/gallery/treatment</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -113,7 +113,7 @@
 
   <!-- Blogs -->
   <url>
-    <loc>https://healstride.in/blogs</loc>
+    <loc>https://www.healstride-physiotherapy.in/blogs</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

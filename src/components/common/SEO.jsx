@@ -42,7 +42,7 @@ const SEO = ({
     }
 
     // 4. Update Canonical Link
-    const currentUrl = canonical || `https://healstride.in${location.pathname}`;
+    const currentUrl = canonical || `https://www.healstride-physiotherapy.in${location.pathname}`;
     let linkCanonical = document.querySelector('link[rel="canonical"]');
     if (!linkCanonical) {
       linkCanonical = document.createElement("link");

@@ -7,4 +7,4 @@ Disallow: /signup
 Disallow: /profile
 
 # Google Search Console / Search Engines
-Sitemap: https://healstride.in/sitemap.xml
+Sitemap: https://www.healstride-physiotherapy.in/sitemap.xml
