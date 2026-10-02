@@ -893,9 +893,10 @@ const confirmEdit = () => {
 
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
-            {paginatedServices.map((service) => (
+              {paginatedServices.map((service) => (
               <motion.div
                 key={service.id}
                 initial={{
@@ -1092,6 +1093,7 @@ const confirmEdit = () => {
               pageSizeOptions={[3, 6, 12, 24]}
             />
           </div>
+        </div>
         )}
     
     {/* EDIT CONFIRMATION MODAL */}

@@ -51,14 +51,21 @@ const [password, setPassword] = useState("");
       <div className="absolute inset-0 bg-black/50 z-0"></div>
 
       {/* Login Card */}
-      <div className="relative z-10 bg-white/95 backdrop-blur-sm shadow-2xl rounded-2xl p-8 md:p-10 w-full max-w-md">
+      <div className="relative z-10 bg-white/95 backdrop-blur-sm shadow-2xl rounded-3xl p-6 sm:p-8 md:p-10 w-full max-w-md border border-slate-100">
+        <div className="flex justify-center mb-3">
+          <img
+            src="/logo.png"
+            alt="Heal Stride Logo"
+            className="w-16 h-16 object-contain drop-shadow-md"
+          />
+        </div>
 
-        <h2 className="text-3xl font-bold text-center text-gray-900 mb-2">
+        <h2 className="text-2xl sm:text-3xl font-black text-center text-slate-900 mb-1">
           Admin Login
         </h2>
 
-        <p className="text-center text-gray-500 mb-8">
-          Sign in to access the admin dashboard
+        <p className="text-center text-slate-500 text-xs sm:text-sm mb-6">
+          Sign in to access the Heal Stride Admin Portal
         </p>
 
         {error && (
