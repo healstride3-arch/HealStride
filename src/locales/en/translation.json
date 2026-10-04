@@ -9,7 +9,7 @@
     "gallery": "Gallery",
     "blogs": "Blogs",
     "bookAppointment": "Book Appointment",
-    "book": "Book",
+    "book": "Book Appointment",
     "login": "Login",
     "logout": "Logout",
     "myProfile": "My Profile",
@@ -69,7 +69,7 @@
     "physiotherapyDesc": "Specialized treatments for orthopedic, neurological, sports, and post-surgical recovery.",
     "toolsTitle": "Advanced Tools & Equipment",
     "toolsDesc": "State-of-the-art rehabilitation technology and physical therapy equipment.",
-    "learnMore": "Learn More →",
+    "learnMore": "Learn More",
     "viewAll": "View All Services"
   },
   "servicesList": {
@@ -323,11 +323,28 @@
   "clinicIntro": {
     "badge": "Clinic Introduction",
     "title": "Welcome to HealStride",
+    "homeTitle": "Dedicated to Your Pain-Free Life",
     "desc": "Hello, I'm Dr. MD Rashid, Senior Consultant Physiotherapist | MPT (Sports) at HealStride Physiotherapy & Wellness Centre. With 5+ years of clinical experience and over 2,500 happy patients, we are dedicated to helping patients overcome pain, recover mobility, and restore peak performance through evidence-based treatments. Certified in Cupping Therapy, Dry Needling Therapy, Taping Therapy, Mulligan’s Mobilization with Movement (MWM), and Basic Life Support (BLS) & Critical Care Management. At HealStride, we combine modern technology, specialized care, and personalized rehabilitation plans for faster recovery.",
     "f1": "Advanced Physiotherapy Equipment",
     "f2": "Personalized Treatment Plans",
     "f3": "Experienced Physiotherapists",
     "f4": "Patient-Centered Care"
+  },
+  "homePhysioSection": {
+    "badge": "Home Visit Physiotherapy",
+    "title": "Best Home Physiotherapy in Bhopal — Now at Your Home",
+    "subtitle": "Unable to visit our clinic due to acute pain, post-surgical recovery, or elderly mobility challenges? Heal Stride brings certified physiotherapists and modern portable rehabilitation equipment directly to your doorstep in Bhopal.",
+    "f1Title": "Comfort of Your Home",
+    "f1Desc": "Recover in a familiar, stress-free environment with no travel or waiting.",
+    "f2Title": "Advanced Portable Tech",
+    "f2Desc": "Digital TENS, Ultrasound, cupping & therapy tools brought to your room.",
+    "f3Title": "Certified Male & Female Therapists",
+    "f3Desc": "Experienced, background-verified specialists for personalized care.",
+    "f4Title": "Post-Op & Elderly Care",
+    "f4Desc": "Specialized protocols for joint replacement, stroke rehab & neurological recovery.",
+    "bookVisit": "Book Your Home Visit",
+    "callNow": "Call for Home Visit",
+    "serviceAreas": "Serving MP Nagar, Arera Colony, Raisen Road, Kolar, Hoshangabad Rd & all across Bhopal"
   },
   "missionVision": {
     "badge": "Our Purpose",
@@ -534,7 +551,7 @@
     "certificationsSubtitle": "Advanced clinical certifications recognized in modern evidence-based physiotherapy.",
     "clinicalPhilosophy": "Treatment Philosophy & Approach",
     "conditionsTreated": "Conditions & Injuries Treated",
-    "bookAppointment": "Book In-Clinic Consultation",
+    "bookAppointment": "Book Appointment",
     "instantConsultation": "Schedule Priority Appointment",
     "whatsappConsult": "Direct WhatsApp Consultation",
     "callNow": "Call Doctor Directly",
@@ -556,7 +573,7 @@
     "headerTitle": "HealStride Health Article",
     "summary": "Summary",
     "writtenBy": "Written & Clinically Verified By",
-    "bookVisit": "Book Visit",
+    "bookVisit": "Book Appointment",
     "callUs": "Call Us"
   },
   "blogDetails": {
@@ -654,7 +671,7 @@
     "prop1": "Root-Cause Assessment",
     "prop2": "Advanced Physiotherapy Modalities",
     "prop3": "Dedicated 1-on-1 Care",
-    "bookConsultation": "Book Consultation",
+    "bookConsultation": "Book Appointment",
     "whatsappDirect": "Chat on WhatsApp",
     "callNow": "Call Now"
   },

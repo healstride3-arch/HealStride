@@ -60,7 +60,7 @@ const ContactHero = () => {
           <div className="mt-5 sm:mt-6 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
             <Link
               to="/booking"
-              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-[0.98] text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-[0.98] text-white font-bold text-xs sm:text-sm px-6 py-3.5 min-h-[46px] rounded-xl shadow-lg hover:shadow-xl transition-all cursor-pointer"
             >
               <Calendar size={16} className="shrink-0" />
               <span>Book Appointment</span>
@@ -68,7 +68,7 @@ const ContactHero = () => {
 
             <a
               href="tel:+918809491380"
-              className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 active:scale-[0.98] text-white font-bold text-xs sm:text-sm px-5 py-3 rounded-xl border border-white/20 backdrop-blur-md shadow-md transition-all cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 active:scale-[0.98] text-white font-bold text-xs sm:text-sm px-5 py-3.5 min-h-[46px] rounded-xl border border-white/20 backdrop-blur-md shadow-md transition-all cursor-pointer"
             >
               <Phone size={15} className="text-red-400" />
               <span>Call: +91 88094 91380</span>

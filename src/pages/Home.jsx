@@ -1,9 +1,10 @@
 import Footer from "../components/common/Navbar/Footer/Footer";
-import Conditions from "../components/home/Conditions";
 import GalleryPreview from "../components/home/GalleryPreview";
 import GoogleRating from "../components/home/GoogleRating";
+import ClinicIntro from "../components/about/ClinicIntro";
 import Hero from "../components/home/Hero";
 import OurServices from "../components/home/OurServices";
+import HomePhysiotherapySection from "../components/home/HomePhysiotherapySection";
 import Specialists from "../components/home/Specialists";
 import Testimonials from "../components/home/Testimonials";
 import WhyChooseUs from "../components/home/WhyChooseUs";
@@ -28,7 +29,8 @@ const Home = () => {
       <TreatmentSlider />
       <WhyChooseUs />
       <OurServices />
-      <Conditions />
+      <HomePhysiotherapySection />
+      <ClinicIntro isHome={true} />
       <GalleryPreview />
       <Specialists showViewAllButton={true} />
       <BlogSection />

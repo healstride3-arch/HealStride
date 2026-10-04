@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaBars, FaTimes, FaPhoneAlt, FaChevronDown } from "react-icons/fa";
-import { MapPin, Clock, Phone, Stethoscope, Activity, ShieldCheck, HeartPulse, Zap, ChevronRight, Wrench } from "lucide-react";
+import { MapPin, Clock, Phone, Stethoscope, Activity, ShieldCheck, HeartPulse, Zap, ChevronRight, Wrench, CalendarCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { NAVIGATION } from "../../../constants/navigation";
@@ -236,7 +236,7 @@ const Navbar = () => {
                       to={item.path}
                       onClick={() => setServicesHovered(false)}
                       className={`
-                        px-3 py-1.5 lg:px-3.5 xl:px-4 xl:py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all duration-200 flex items-center gap-1.5 whitespace-nowrap
+                        px-3.5 py-2.5 lg:px-4 xl:px-4.5 min-h-[40px] rounded-xl text-xs xl:text-sm font-semibold transition-all duration-200 inline-flex items-center justify-center gap-1.5 whitespace-nowrap
                         ${active || servicesHovered
                           ? "bg-gradient-to-r from-[#d71920] to-[#008272] text-white shadow-sm"
                           : "text-gray-700 hover:text-teal-700 hover:bg-teal-50"
@@ -365,9 +365,12 @@ const Navbar = () => {
                                 <Link
                                   to="/booking"
                                   onClick={() => setServicesHovered(false)}
-                                  className="bg-gradient-to-r from-[#d71920] to-[#008272] hover:opacity-95 text-white font-bold px-4 py-1.5 rounded-xl text-xs shadow-sm transition"
+                                  className="bg-gradient-to-r from-[#d71920] to-[#008272] hover:opacity-95 text-white font-bold px-4 py-2 min-h-[36px] rounded-xl text-xs shadow-sm transition"
                                 >
-                                  Book Consultation
+                                  <span className="inline-flex items-center gap-1.5">
+                                    <CalendarCheck size={13} className="shrink-0" />
+                                    <span>{t("navbar.bookAppointment", "Book Appointment")}</span>
+                                  </span>
                                 </Link>
                               </div>
                             </div>
@@ -388,7 +391,7 @@ const Navbar = () => {
                   <Link
                     to={item.path}
                     className={`
-                      px-3 py-1.5 lg:px-3.5 xl:px-4 xl:py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all duration-200 block whitespace-nowrap
+                      px-3.5 py-2.5 lg:px-4 xl:px-4.5 min-h-[40px] rounded-xl text-xs xl:text-sm font-semibold transition-all duration-200 inline-flex items-center justify-center whitespace-nowrap
                       ${active
                         ? "bg-gradient-to-r from-[#d71920] to-[#008272] text-white shadow-sm"
                         : "text-gray-700 hover:text-teal-700 hover:bg-teal-50"
@@ -412,14 +415,19 @@ const Navbar = () => {
             <button
               onClick={handleBookAppointment}
               className="
+                inline-flex
+                items-center
+                justify-center
+                gap-1.5
                 bg-gradient-to-r from-[#d71920] to-[#008272]
                 text-white
-                px-3
-                py-1.5
-                lg:px-3.5
-                xl:px-4
-                xl:py-1.5
-                rounded-lg
+                px-3.5
+                py-2.5
+                lg:px-4
+                xl:px-4.5
+                xl:py-2.5
+                min-h-[40px]
+                rounded-xl
                 hover:from-[#b91c1c] hover:to-[#0f766e]
                 hover:scale-105
                 hover:shadow-md
@@ -431,9 +439,11 @@ const Navbar = () => {
                 text-xs xl:text-sm
                 shadow-sm
                 whitespace-nowrap
+                cursor-pointer
               "
             >
-              {t("navbar.bookAppointment")}
+              <CalendarCheck size={14} className="shrink-0" />
+              <span>{t("navbar.bookAppointment")}</span>
             </button>
 
           </div>
@@ -448,16 +458,23 @@ const Navbar = () => {
             <button
               onClick={handleBookAppointment}
               className="
+                inline-flex
+                items-center
+                justify-center
+                gap-1.5
                 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e]
                 text-white
-                px-3.5
-                py-1.5
-                rounded-lg
+                px-4
+                py-2.5
+                min-h-[38px]
+                rounded-xl
                 text-xs
                 font-semibold
+                cursor-pointer
               "
             >
-              {t("navbar.bookAppointment")}
+              <CalendarCheck size={13} className="shrink-0" />
+              <span>{t("navbar.bookAppointment")}</span>
             </button>
 
             {/* Tablet Menu Button */}
@@ -522,7 +539,7 @@ const Navbar = () => {
                           to={item.path}
                           onClick={() => setOpen(false)}
                           className={`
-                            flex-1 py-2.5 px-3 xs:px-3.5 rounded-lg font-semibold text-sm transition-all duration-200
+                            flex-1 py-3 px-3.5 min-h-[44px] flex items-center rounded-xl font-semibold text-sm transition-all duration-200
                             ${active
                               ? "bg-gradient-to-r from-[#d71920] to-[#008272] text-white shadow-sm"
                               : "text-gray-700 hover:bg-teal-50 hover:text-teal-700"
@@ -593,7 +610,7 @@ const Navbar = () => {
                       to={item.path}
                       onClick={() => setOpen(false)}
                       className={`
-                        block py-2.5 px-3 xs:px-3.5 rounded-lg font-semibold text-sm transition-all duration-200
+                        block py-3 px-3.5 min-h-[44px] flex items-center rounded-xl font-semibold text-sm transition-all duration-200
                         ${active
                           ? "bg-gradient-to-r from-[#d71920] to-[#008272] text-white shadow-sm"
                           : "text-gray-700 hover:bg-teal-50 hover:text-teal-700"
@@ -619,15 +636,21 @@ const Navbar = () => {
               className="
                 w-full
                 mt-4
+                inline-flex
+                items-center
+                justify-center
+                gap-2
                 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e]
                 text-white
                 py-2.5
                 rounded-xl
                 font-semibold
                 text-sm
+                cursor-pointer
               "
             >
-              {t("navbar.bookAppointment")}
+              <CalendarCheck size={16} className="shrink-0" />
+              <span>{t("navbar.bookAppointment")}</span>
             </button>
 
             {/* Quick Call Button */}

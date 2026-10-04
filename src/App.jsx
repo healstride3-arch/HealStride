@@ -2,6 +2,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { CalendarCheck } from "lucide-react";
 import logo from "./assets/images/logo.png";
 import BrandName from "./components/common/BrandName";
 import RoleSelection from "./pages/RoleSelection";
@@ -338,9 +339,10 @@ function App() {
                   onClick={() =>
                     setShowAppointmentPopup(false)
                   }
-                  className="flex-1 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] text-white py-3 rounded-xl font-bold shadow-lg transition flex items-center justify-center text-sm sm:text-base"
+                  className="flex-1 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] text-white py-3 rounded-xl font-bold shadow-lg transition flex items-center justify-center gap-2 text-sm sm:text-base cursor-pointer"
                 >
-                  Book Now
+                  <CalendarCheck size={16} className="shrink-0" />
+                  <span>Book Appointment</span>
                 </Link>
               </div>
             </motion.div>

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useFirestoreCollection, where } from "../../hooks/useFirestoreCollection";
 import SectionHeader from "../common/SectionHeader";
+import { CalendarCheck } from "lucide-react";
 
 import {
   FaHandsHelping,
@@ -243,10 +244,10 @@ const OurServices = () => {
                           group/link
                         "
                       >
+                        <span>{t("ourServices.learnMore", "Learn More")}</span>
                         <span className="group-hover/link:translate-x-1 transition-transform duration-200 inline-block">
-                          {t("ourServices.learnMore")}
+                          →
                         </span>
-                        <span>→</span>
                       </Link>
 
                       <Link
@@ -254,21 +255,26 @@ const OurServices = () => {
                         className="
                           inline-flex
                           items-center
-                          gap-1
+                          justify-center
+                          gap-1.5
                           bg-gradient-to-r from-[#d71920] to-[#008272]
                           hover:from-[#b91c1c] hover:to-[#0f766e]
                           active:scale-95
                           text-white
                           px-3.5
-                          py-1.5
-                          rounded-lg
+                          py-2.5
+                          min-h-[38px]
+                          rounded-xl
                           text-xs
                           font-bold
-                          shadow-xs
+                          shadow-sm
+                          hover:shadow-md
                           transition-all
+                          whitespace-nowrap
                         "
                       >
-                        <span>Book</span>
+                        <CalendarCheck size={14} className="shrink-0" />
+                        <span>{t("navbar.bookAppointment", "Book Appointment")}</span>
                       </Link>
                     </div>
                   </div>

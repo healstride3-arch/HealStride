@@ -81,7 +81,7 @@ const Doctors = () => {
             <div className="mt-5 sm:mt-6 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
               <Link
                 to="/booking"
-                className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-[0.98] text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-[0.98] text-white font-bold text-xs sm:text-sm px-6 py-3.5 min-h-[46px] rounded-xl shadow-lg hover:shadow-xl transition-all cursor-pointer"
               >
                 <Calendar size={16} className="shrink-0" />
                 <span>Book Appointment</span>
@@ -93,7 +93,7 @@ const Doctors = () => {
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 active:scale-[0.98] text-white font-bold text-xs sm:text-sm px-5 py-3 rounded-xl border border-white/20 backdrop-blur-md shadow-md transition-all cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 active:scale-[0.98] text-white font-bold text-xs sm:text-sm px-5 py-3.5 min-h-[46px] rounded-xl border border-white/20 backdrop-blur-md shadow-md transition-all cursor-pointer"
               >
                 <Phone size={15} className="text-emerald-400" />
                 <span>Chat on WhatsApp</span>
@@ -294,9 +294,11 @@ const Doctors = () => {
                         className="
                           inline-flex
                           items-center
+                          justify-center
                           gap-1 xs:gap-1.5
-                          px-2.5 xs:px-3.5
-                          py-1.5 xs:py-2
+                          px-3 xs:px-3.5
+                          py-2.5
+                          min-h-[40px]
                           rounded-xl
                           bg-teal-50
                           hover:bg-teal-100
@@ -313,11 +315,14 @@ const Doctors = () => {
                       <Link
                         to={`/booking?doctor=${encodeURIComponent(doctor.name || docName)}`}
                         className="
+                          flex-1
                           inline-flex
                           items-center
-                          gap-1 xs:gap-1.5
-                          px-2.5 xs:px-3.5
-                          py-1.5 xs:py-2
+                          justify-center
+                          gap-1.5
+                          px-3 xs:px-3.5
+                          py-2.5
+                          min-h-[40px]
                           rounded-xl
                           bg-gradient-to-r from-[#d71920] to-[#008272]
                           hover:from-[#b91c1c] hover:to-[#0f766e]
@@ -325,12 +330,14 @@ const Doctors = () => {
                           text-white
                           font-semibold
                           text-xs
-                          shadow-xs
+                          shadow-sm
+                          hover:shadow-md
                           transition-all
+                          whitespace-nowrap
                         "
                       >
-                        <CalendarCheck size={13} />
-                        <span>{t("navbar.book", "Book")}</span>
+                        <CalendarCheck size={14} className="shrink-0" />
+                        <span>{t("navbar.bookAppointment", "Book Appointment")}</span>
                       </Link>
                     </div>
                   </div>
@@ -362,7 +369,7 @@ const Doctors = () => {
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm shadow-md transition text-center"
+              className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white px-5 py-3 min-h-[44px] rounded-xl font-bold text-xs sm:text-sm shadow-md transition text-center"
             >
               <img src="/whatsapp.png" alt="WhatsApp" className="w-4 h-4 object-contain shrink-0" />
               <span>WhatsApp Us</span>
@@ -370,7 +377,7 @@ const Doctors = () => {
 
             <a
               href={`tel:${phoneRaw}`}
-              className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm backdrop-blur-sm shadow-md transition text-center"
+              className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white px-5 py-3 min-h-[44px] rounded-xl font-bold text-xs sm:text-sm backdrop-blur-sm shadow-md transition text-center"
             >
               <img src="/call.png" alt="Call" className="w-4 h-4 object-contain shrink-0" />
               <span>Call Clinic</span>

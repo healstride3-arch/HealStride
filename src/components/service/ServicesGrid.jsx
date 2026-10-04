@@ -2,7 +2,7 @@ import SectionHeader from "../common/SectionHeader";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Clock, Check } from "lucide-react";
+import { Clock, Check, CalendarCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useFirestoreCollection } from "../../hooks/useFirestoreCollection";
 import { ALL_SERVICES } from "../../data/servicesData";
@@ -264,12 +264,13 @@ const ServicesGrid = () => {
                           inline-flex
                           items-center
                           justify-center
-                          gap-1
+                          gap-1.5
                           bg-gradient-to-r
                           from-[#d71920]
                           to-[#008272]
                           hover:from-[#b91c1c]
                           hover:to-[#0f766e]
+                          active:scale-95
                           text-white
                           font-semibold
                           text-xs
@@ -279,9 +280,11 @@ const ServicesGrid = () => {
                           rounded-xl
                           transition-opacity
                           shadow-sm
+                          whitespace-nowrap
                         "
                       >
-                        <span>Book</span>
+                        <CalendarCheck size={14} className="shrink-0" />
+                        <span>{t("navbar.bookAppointment", "Book Appointment")}</span>
                       </Link>
                     </div>
                   </div>

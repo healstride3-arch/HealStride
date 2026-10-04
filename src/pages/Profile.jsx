@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import {
   Mail,
   Calendar,
+  CalendarCheck,
   LogOut,
   Camera,
   Phone,
@@ -478,9 +479,10 @@ const Profile = () => {
                 onClick={() =>
                   navigate("/booking")
                 }
-                className="text-sm bg-teal-50 text-teal-700 hover:bg-teal-100 px-4 py-2 rounded-lg font-medium transition"
+                className="inline-flex items-center gap-1.5 text-xs sm:text-sm bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] text-white px-4 py-2.5 min-h-[38px] rounded-xl font-bold shadow-sm transition cursor-pointer"
               >
-                {t("profile.bookNew")}
+                <CalendarCheck size={14} className="shrink-0" />
+                <span>{t("navbar.bookAppointment", "Book Appointment")}</span>
               </button>
             </div>
 
@@ -504,9 +506,10 @@ const Profile = () => {
                     onClick={() =>
                       navigate("/booking")
                     }
-                    className="mt-4 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-95 text-white px-6 py-2.5 rounded-xl font-bold transition-all shadow-md cursor-pointer"
+                    className="mt-4 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-95 text-white px-6 py-2.5 rounded-xl font-bold transition-all shadow-md inline-flex items-center gap-2 cursor-pointer"
                   >
-                    {t("profile.bookBtn")}
+                    <CalendarCheck size={16} className="shrink-0" />
+                    <span>{t("profile.bookBtn", "Book Appointment")}</span>
                   </button>
                 </div>
               ) : (

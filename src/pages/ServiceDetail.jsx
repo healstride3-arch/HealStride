@@ -227,14 +227,14 @@ const ServiceDetail = () => {
       </section>
 
       {/* Main Content Body */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-12 sm:space-y-16">
         {/* Section 1: Overview & Mechanism */}
-        <section className="bg-white rounded-3xl p-6 sm:p-10 lg:p-12 border border-slate-200 shadow-sm text-center">
+        <section className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-slate-200 shadow-sm text-center">
           <div className="w-full text-center">
             <SectionHeader
               badge="Clinical Overview"
               title={`Understanding ${service.title}`}
-              className="mb-6"
+              className="mb-3 sm:mb-4"
             />
             <div className="space-y-4 text-slate-600 text-sm sm:text-base md:text-lg leading-relaxed text-center w-full">
               {Array.isArray(service.overview) ? (
@@ -501,9 +501,10 @@ const ServiceDetail = () => {
             <div className="pt-4 flex flex-wrap items-center justify-center gap-4">
               <Link
                 to="/booking"
-                className="bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] text-white px-8 py-3.5 rounded-xl font-bold text-sm sm:text-base shadow-lg transition"
+                className="bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] text-white px-8 py-3.5 rounded-xl font-bold text-sm sm:text-base shadow-lg transition inline-flex items-center gap-2"
               >
-                Book Your Consultation
+                <Calendar className="w-5 h-5 shrink-0" />
+                <span>Book Appointment</span>
               </Link>
               <a
                 href="https://wa.me/918809491380"

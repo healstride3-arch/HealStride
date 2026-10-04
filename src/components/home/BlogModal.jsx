@@ -138,7 +138,7 @@ const BlogModal = ({ blog, isOpen, onClose }) => {
                   className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-95 text-white px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all shadow-sm"
                 >
                   <CalendarCheck className="w-4 h-4" />
-                  <span>{t("blogModal.bookVisit", "Book Visit")}</span>
+                  <span>{t("navbar.bookAppointment", "Book Appointment")}</span>
                 </Link>
                 <a
                   href="tel:+918809491380"

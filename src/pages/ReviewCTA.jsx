@@ -101,8 +101,8 @@ const ReviewCTA = () => {
               sm:text-base
             "
           >
-            <Calendar size={18} />
-            <span>{t("reviewCTA.bookConsultation")}</span>
+            <Calendar size={18} className="shrink-0" />
+            <span>{t("navbar.bookAppointment", "Book Appointment")}</span>
             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-200" />
           </Link>
 

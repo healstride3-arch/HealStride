@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router-dom";
+import { CalendarCheck } from "lucide-react";
 import BrandName from "../components/common/BrandName";
 import logo from "../assets/images/logo.png";
 import { blogs as staticBlogs } from "../data/blogs";
@@ -107,9 +108,10 @@ const BlogDetails = () => {
 
           <Link
             to="/booking"
-            className="inline-flex justify-center w-full xs:w-auto mt-6 sm:mt-8 bg-white text-[#008272] hover:text-[#d71920] font-bold px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl hover:bg-slate-50 hover:scale-105 transition-all duration-200 shadow-md"
+            className="inline-flex items-center justify-center gap-2 w-full xs:w-auto mt-6 sm:mt-8 bg-white text-[#008272] hover:text-[#d71920] font-bold px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl hover:bg-slate-50 hover:scale-105 transition-all duration-200 shadow-md cursor-pointer"
           >
-            {t("blogDetails.bookBtn")}
+            <CalendarCheck size={18} className="shrink-0" />
+            <span>{t("blogDetails.bookBtn", "Book Appointment")}</span>
           </Link>
         </div>
 

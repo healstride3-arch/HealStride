@@ -461,10 +461,10 @@ const DoctorProfile = () => {
               <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center justify-center lg:justify-start gap-2 xs:gap-3 mt-4 xs:mt-6">
                 <Link
                   to={`/booking?doctor=${encodeURIComponent(doctor.name || doctorLocalizedName)}`}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 xs:gap-2 bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-white px-3.5 xs:px-5 py-2.5 xs:py-3 rounded-xl font-bold text-xs xs:text-sm shadow-lg hover:shadow-teal-500/25 transition duration-200 text-center"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 xs:gap-2 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-95 text-white px-3.5 xs:px-5 py-2.5 xs:py-3 rounded-xl font-bold text-xs xs:text-sm shadow-lg transition duration-200 text-center"
                 >
                   <CalendarCheck size={16} />
-                  <span>{t("doctorProfile.bookAppointment", "Book In-Clinic Appointment")}</span>
+                  <span>{t("navbar.bookAppointment", "Book Appointment")}</span>
                 </Link>
 
                 <a
@@ -851,7 +851,7 @@ const DoctorProfile = () => {
                   className="mt-5 w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-[0.98] text-white py-3 xs:py-3.5 rounded-xl font-bold text-xs xs:text-sm shadow-md hover:shadow-lg transition-all duration-200 text-center"
                 >
                   <CalendarCheck size={16} />
-                  <span>{t("doctorProfile.bookAppointment", "Book Appointment Now")}</span>
+                  <span>{t("navbar.bookAppointment", "Book Appointment")}</span>
                 </Link>
 
                 {/* WhatsApp Button */}

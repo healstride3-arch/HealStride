@@ -12,9 +12,10 @@ const SectionHeader = ({
   const isLeft = align === "left";
   const alignClasses = isLeft ? "text-left" : "text-center mx-auto";
   const subtitleClasses = isLeft ? "" : "mx-auto";
+  const hasCustomMargin = className.includes("mb-") || className.includes("my-") || className.includes("pb-");
 
   const content = (
-    <div className={`max-w-3xl ${alignClasses} mb-8 sm:mb-12 ${className}`}>
+    <div className={`max-w-3xl ${alignClasses} ${hasCustomMargin ? "" : "mb-6 sm:mb-10"} ${className}`}>
       {badge && (
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-50/80 border border-teal-200/80 shadow-xs mb-3">
           <span className="w-1.5 h-1.5 rounded-full bg-[#d71920] animate-pulse" />
