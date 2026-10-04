@@ -13,6 +13,12 @@ export const NAVIGATION = [
   },
   {
     id: 3,
+    title: "Treatments",
+    key: "navbar.treatments",
+    path: "/treatments",
+  },
+  {
+    id: 3,
     title: "Services",
     key: "navbar.services",
     path: "/services",

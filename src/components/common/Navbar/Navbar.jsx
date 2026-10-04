@@ -9,6 +9,7 @@ import { NAVIGATION } from "../../../constants/navigation";
 import logo from "../../../assets/images/logo.png";
 import LanguageSwitcher from "../../LanguageSwitcher";
 import BrandName from "../BrandName";
+import { NAVBAR_TREATMENTS_COLUMNS } from "../../../data/treatmentsData";
 
 // Exact 15 Services categorized with Heal Stride Logo Theme
 const SERVICES_DROPDOWN_COLUMNS = [
@@ -69,6 +70,10 @@ const Navbar = () => {
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const hoverTimeoutRef = useRef(null);
 
+  const [treatmentsHovered, setTreatmentsHovered] = useState(false);
+  const [mobileTreatmentsOpen, setMobileTreatmentsOpen] = useState(false);
+  const treatmentsHoverTimeoutRef = useRef(null);
+
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
@@ -86,8 +91,10 @@ const Navbar = () => {
   // Close menus on route change
   useEffect(() => {
     setServicesHovered(false);
+    setTreatmentsHovered(false);
     setOpen(false);
     setMobileServicesOpen(false);
+    setMobileTreatmentsOpen(false);
   }, [location.pathname]);
 
   const handleBookAppointment = () => {
@@ -98,12 +105,27 @@ const Navbar = () => {
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
     }
+    setTreatmentsHovered(false);
     setServicesHovered(true);
   };
 
   const handleMouseLeave = () => {
     hoverTimeoutRef.current = setTimeout(() => {
       setServicesHovered(false);
+    }, 180);
+  };
+
+  const handleTreatmentsMouseEnter = () => {
+    if (treatmentsHoverTimeoutRef.current) {
+      clearTimeout(treatmentsHoverTimeoutRef.current);
+    }
+    setServicesHovered(false);
+    setTreatmentsHovered(true);
+  };
+
+  const handleTreatmentsMouseLeave = () => {
+    treatmentsHoverTimeoutRef.current = setTimeout(() => {
+      setTreatmentsHovered(false);
     }, 180);
   };
 
@@ -126,6 +148,9 @@ const Navbar = () => {
       case "/about":
         return t("navbar.about");
 
+      case "/treatments":
+        return t("navbar.treatments", "Treatments");
+
       case "/services":
         return t("navbar.services");
 
@@ -139,8 +164,8 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${servicesHovered
-          ? "bg-white border-b border-slate-100"
+      className={`sticky top-0 z-50 w-full transition-all duration-300 ${servicesHovered || treatmentsHovered
+          ? "bg-white border-b border-slate-100 shadow-md"
           : scrolled
             ? "bg-white/95 backdrop-blur-md shadow-md border-b border-slate-100/80"
             : "bg-white border-b border-slate-100 shadow-sm"
@@ -223,6 +248,119 @@ const Navbar = () => {
             {NAVIGATION.map((item) => {
               const active = isActive(item.path);
               const isServices = item.path === "/services";
+              const isTreatments = item.path === "/treatments";
+
+              if (isTreatments) {
+                return (
+                  <li
+                    key={item.id}
+                    className="static"
+                    onMouseEnter={handleTreatmentsMouseEnter}
+                    onMouseLeave={handleTreatmentsMouseLeave}
+                  >
+                    <Link
+                      to={item.path}
+                      onClick={() => setTreatmentsHovered(false)}
+                      className={`
+                        px-3.5 py-2.5 lg:px-4 xl:px-4.5 min-h-[40px] rounded-xl text-xs xl:text-sm font-semibold transition-all duration-200 inline-flex items-center justify-center gap-1.5 whitespace-nowrap
+                        ${active || treatmentsHovered
+                          ? "bg-gradient-to-r from-[#d71920] to-[#008272] text-white shadow-sm"
+                          : "text-gray-700 hover:text-teal-700 hover:bg-teal-50"
+                        }
+                      `}
+                    >
+                      <span>{getNavigationLabel(item)}</span>
+                      <FaChevronDown
+                        className={`text-[9px] transition-transform duration-200 ${treatmentsHovered ? "rotate-180" : ""
+                          }`}
+                      />
+                    </Link>
+
+                    {/* Treatments Hover Dropdown Menu */}
+                    <AnimatePresence>
+                      {treatmentsHovered && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -4 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -4 }}
+                          transition={{ duration: 0.16, ease: "easeOut" }}
+                          onMouseEnter={handleTreatmentsMouseEnter}
+                          onMouseLeave={handleTreatmentsMouseLeave}
+                          className="
+                            absolute left-0 w-full top-full z-[9999]
+                            bg-white shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)]
+                            border-b border-slate-200/90
+                          "
+                          style={{ backgroundColor: "#ffffff" }}
+                        >
+                          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-white" style={{ backgroundColor: "#ffffff" }}>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 py-6 gap-6 sm:gap-8 bg-white">
+                              {NAVBAR_TREATMENTS_COLUMNS.map((col, colIdx) => (
+                                <div
+                                  key={colIdx}
+                                  className={`flex flex-col ${
+                                    colIdx !== 0 ? "lg:border-l lg:border-slate-100 lg:pl-6" : ""
+                                  }`}
+                                >
+                                  <div className="flex items-center gap-2 pb-2.5 mb-2 border-b border-slate-100">
+                                    <span className="w-2 h-2 rounded-full bg-[#008272]" />
+                                    <h4 className="text-xs font-bold text-slate-900 leading-tight uppercase tracking-wider truncate">
+                                      {col.title}
+                                    </h4>
+                                  </div>
+
+                                  <div className="flex flex-col space-y-0.5">
+                                    {col.items.map((subItem) => (
+                                      <Link
+                                        key={subItem.slug}
+                                        to={`/treatments/${subItem.slug}`}
+                                        onClick={() => setTreatmentsHovered(false)}
+                                        className="
+                                          py-1.5 px-2 rounded-lg text-[13px] font-semibold text-slate-700
+                                          hover:text-[#008272] hover:bg-teal-50/70 transition-all duration-150
+                                          flex items-center gap-2 group
+                                        "
+                                      >
+                                        <span className="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-[#008272] transition-colors shrink-0" />
+                                        <span className="group-hover:translate-x-0.5 transition-transform duration-150 truncate">
+                                          {subItem.name}
+                                        </span>
+                                      </Link>
+                                    ))}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* Bottom Quick Action Bar matching user screenshot */}
+                            <div className="border-t border-slate-100 bg-slate-50/90 py-3.5 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-3 text-xs">
+                              <div className="flex items-center gap-2 text-slate-700">
+                                <span className="w-2 h-2 rounded-full bg-[#d71920] animate-pulse shrink-0" />
+                                <span className="font-medium text-slate-600">
+                                  Offering 80+ evidence-based, non-surgical pain treatments in Bhopal
+                                </span>
+                              </div>
+
+                              <Link
+                                to="/treatments"
+                                onClick={() => setTreatmentsHovered(false)}
+                                className="
+                                  inline-flex items-center gap-2 px-6 py-2.5 rounded-xl
+                                  bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e]
+                                  text-white font-bold text-xs uppercase tracking-wider shadow-sm hover:shadow-md transition active:scale-95
+                                "
+                              >
+                                <span>VIEW ALL TREATMENTS</span>
+                                <ChevronRight size={14} />
+                              </Link>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </li>
+                );
+              }
 
               if (isServices) {
                 return (
@@ -262,11 +400,12 @@ const Navbar = () => {
                           onMouseLeave={handleMouseLeave}
                           className="
                             absolute left-0 w-full top-full z-[9999]
-                            bg-white shadow-[0_25px_50px_-12px_rgba(0,0,0,0.18)]
+                            bg-white shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)]
                             border-b border-slate-200/90
                           "
+                          style={{ backgroundColor: "#ffffff" }}
                         >
-                          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-white" style={{ backgroundColor: "#ffffff" }}>
                             {/* 4 Categorized Columns Grid */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 py-6 gap-6 sm:gap-8 bg-white">
                               {SERVICES_DROPDOWN_COLUMNS.map((col, colIdx) => (
@@ -530,6 +669,80 @@ const Navbar = () => {
               {NAVIGATION.map((item) => {
                 const active = isActive(item.path);
                 const isServices = item.path === "/services";
+                const isTreatments = item.path === "/treatments";
+
+                if (isTreatments) {
+                  return (
+                    <li key={item.id} className="flex flex-col">
+                      <div className="flex items-center justify-between">
+                        <Link
+                          to={item.path}
+                          onClick={() => setOpen(false)}
+                          className={`
+                            flex-1 py-3 px-3.5 min-h-[44px] flex items-center rounded-xl font-semibold text-sm transition-all duration-200
+                            ${active
+                              ? "bg-gradient-to-r from-[#d71920] to-[#008272] text-white shadow-sm"
+                              : "text-gray-700 hover:bg-teal-50 hover:text-teal-700"
+                            }
+                          `}
+                        >
+                          {getNavigationLabel(item)}
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => setMobileTreatmentsOpen(!mobileTreatmentsOpen)}
+                          className="p-2.5 text-slate-500 hover:text-teal-700 text-xs flex items-center gap-1 font-semibold"
+                          aria-label="Toggle Treatments List"
+                        >
+                          <span>Conditions</span>
+                          <FaChevronDown
+                            className={`transition-transform duration-200 text-[10px] ${mobileTreatmentsOpen ? "rotate-180 text-teal-600" : ""
+                              }`}
+                          />
+                        </button>
+                      </div>
+
+                      {/* Mobile Accordion of Treatments */}
+                      <AnimatePresence>
+                        {mobileTreatmentsOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="overflow-hidden pl-2 pr-1 py-2 bg-slate-50 rounded-xl my-1 border border-slate-100"
+                          >
+                            <div className="max-h-64 overflow-y-auto pr-1 divide-y divide-slate-100 text-xs">
+                              {NAVBAR_TREATMENTS_COLUMNS.flatMap(col => col.items).map((tItem) => (
+                                <Link
+                                  key={tItem.slug}
+                                  to={`/treatments/${tItem.slug}`}
+                                  onClick={() => {
+                                    setOpen(false);
+                                    setMobileTreatmentsOpen(false);
+                                  }}
+                                  className="block py-2 px-2.5 text-slate-700 hover:text-teal-700 hover:bg-white rounded font-medium transition"
+                                >
+                                  {tItem.name}
+                                </Link>
+                              ))}
+                            </div>
+                            <Link
+                              to="/treatments"
+                              onClick={() => {
+                                setOpen(false);
+                                setMobileTreatmentsOpen(false);
+                              }}
+                              className="block text-center py-2.5 text-xs font-bold text-teal-700 hover:underline border-t border-slate-200 mt-2 uppercase tracking-wide"
+                            >
+                              VIEW ALL 80+ TREATMENTS →
+                            </Link>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </li>
+                  );
+                }
 
                 if (isServices) {
                   return (

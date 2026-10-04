@@ -2,7 +2,7 @@ import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import { ALL_SERVICES } from "../data/servicesData";
 import { blogs } from "../data/blogs";
-import { doctors, staff } from "../data/team";
+import { doctors } from "../data/team";
 import { galleryItems } from "../data/galleryItems";
 
 const services = ALL_SERVICES;
@@ -80,7 +80,6 @@ export const importWebsiteData = async () => {
     writeDocs("services", services),
     writeDocs("blogs", blogs, normalizeBlog),
     writeDocs("doctors", doctors, normalizeProfile),
-    writeDocs("staff", staff, normalizeProfile),
     writeDocs("gallery", galleryItems, normalizeProfile),
     writeDocs("faqs", faqs),
     setDoc(doc(db, "settings", "clinic"), settings, { merge: true }),

@@ -70,47 +70,7 @@ export const doctors = [
   },
 ];
 
-export const staff = [
-  {
-    id: "staff-1",
-    slug: "rehab-assistant",
-    name: "Mohit Verma",
-    role: "Senior Clinical & Rehab Assistant",
-    department: "Clinical Support",
-    experience: "3+ Years Experience",
-    bio: "Assists the physiotherapists in setting up modalities, guiding patient rehabilitation exercises, and ensuring optimal patient comfort.",
-    certifications: "Basic Life Support (BLS) & Patient Care Trained",
-    imageUrl: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&q=80&w=600",
-    order: 1,
-    active: true,
-  },
-  {
-    id: "staff-2",
-    slug: "care-coordinator",
-    name: "Sunita Sharma",
-    role: "Patient Care Coordinator & Front Desk",
-    department: "Patient Relations & Reception",
-    experience: "4+ Years Experience",
-    bio: "Coordinates patient appointments, maintains clinic hygiene standards, and manages smooth patient onboarding and queries.",
-    certifications: "Healthcare Administration & Patient Relations",
-    imageUrl: "https://images.unsplash.com/photo-1594824813637-2856417730e6?auto=format&fit=crop&q=80&w=600",
-    order: 2,
-    active: true,
-  },
-  {
-    id: "staff-3",
-    slug: "therapy-technician",
-    name: "Aakash Mehra",
-    role: "Therapy & Equipment Technician",
-    department: "Modality & Equipment Care",
-    experience: "3+ Years Experience",
-    bio: "Manages calibration and hygiene of physiotherapy equipment including traction units, cupping sets, and electrotherapy machines.",
-    certifications: "Electrotherapy Equipment & Modality Certified",
-    imageUrl: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=600",
-    order: 3,
-    active: true,
-  },
-];
+export const staff = [];
 
 export const getDoctorLocalizedName = (member, i18n) => {
   const lang = i18n?.language || "";

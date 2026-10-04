@@ -25,7 +25,6 @@ import {
   CircleHelp,
   UserRound,
   FileText,
-  UsersRound,
   BriefcaseBusiness,
   ExternalLink,
   ShieldCheck,
@@ -92,11 +91,6 @@ const AdminLayout = () => {
           name: "Doctor Profile",
           icon: UserRound,
           path: "/admin/doctor-profile",
-        },
-        {
-          name: "Staff & Team",
-          icon: UsersRound,
-          path: "/admin/staff",
         },
         {
           name: "Services & Treatments",

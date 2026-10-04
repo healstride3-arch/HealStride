@@ -113,6 +113,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/treatments" className="hover:text-teal-400 transition-colors">
+                  {t("navbar.treatments", "Treatments")}
+                </Link>
+              </li>
+              <li>
                 <Link to="/doctors" className="hover:text-teal-400 transition-colors">
                   {t("navbar.doctors")}
                 </Link>
@@ -120,11 +125,6 @@ const Footer = () => {
               <li>
                 <Link to="/blogs" className="hover:text-teal-400 transition-colors">
                   {t("navbar.blogs", "Blogs")}
-                </Link>
-              </li>
-              <li>
-                <Link to="/staff" className="hover:text-teal-400 transition-colors">
-                  {t("navbar.staff")}
                 </Link>
               </li>
               <li>
@@ -144,44 +144,44 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="h-10 sm:h-11 flex items-center">
               <h3 className="text-sm sm:text-base font-bold text-white uppercase tracking-wider">
-                {t("footer.treatments")}
+                {t("footer.treatments", "Top Treatments")}
               </h3>
             </div>
 
             <ul className="space-y-2.5 text-xs sm:text-sm text-slate-400">
               <li>
-                <Link to="/services/chiropractic-treatment" className="hover:text-teal-400 transition-colors">
-                  Chiropractic Treatment
+                <Link to="/treatments/achilles-tendinitis" className="hover:text-teal-400 transition-colors">
+                  Achilles Tendinitis
                 </Link>
               </li>
               <li>
-                <Link to="/services/spinal-decompression-therapy" className="hover:text-teal-400 transition-colors">
-                  Spinal Decompression
+                <Link to="/treatments/sciatica" className="hover:text-teal-400 transition-colors">
+                  Sciatica Pain Relief
                 </Link>
               </li>
               <li>
-                <Link to="/services/red-light-therapy" className="hover:text-teal-400 transition-colors">
-                  Red Light Therapy
+                <Link to="/treatments/cervical-spondylosis-treatment" className="hover:text-teal-400 transition-colors">
+                  Cervical Spondylosis
                 </Link>
               </li>
               <li>
-                <Link to="/services/shockwave-therapy" className="hover:text-teal-400 transition-colors">
-                  Shockwave Therapy
+                <Link to="/treatments/frozen-shoulder" className="hover:text-teal-400 transition-colors">
+                  Frozen Shoulder Therapy
                 </Link>
               </li>
               <li>
-                <Link to="/services/physiotherapy" className="hover:text-teal-400 transition-colors">
-                  Physiotherapy Care
+                <Link to="/treatments/knee-pain" className="hover:text-teal-400 transition-colors">
+                  Knee Pain & ACL Rehab
                 </Link>
               </li>
               <li>
-                <Link to="/services/home-physiotherapy" className="hover:text-teal-400 transition-colors">
-                  Home Physiotherapy
+                <Link to="/treatments/back-pain" className="hover:text-teal-400 transition-colors">
+                  Chronic Back Pain
                 </Link>
               </li>
               <li>
-                <Link to="/services/laser-therapy" className="hover:text-teal-400 transition-colors">
-                  Laser Therapy
+                <Link to="/treatments" className="text-teal-400 font-bold hover:underline transition-colors">
+                  View All 80+ Treatments →
                 </Link>
               </li>
               <li>

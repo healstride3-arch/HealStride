@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -15,13 +15,13 @@ import ScrollToTop from "./components/common/ScrollToTop";
 import ScrollToHash from "./components/ScrollToHash";
 
 import AdminServices from "./components/admin/AdminServices";
-import AdminStaff from "./components/admin/AdminStaff";
-import Staff from "./pages/Staff";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
 import ServiceDetail from "./pages/ServiceDetail";
+import Treatments from "./pages/Treatments";
+import TreatmentDetail from "./pages/TreatmentDetail";
 import Contact from "./pages/Contact";
 import Booking from "./pages/Booking";
 
@@ -108,7 +108,10 @@ function App() {
 
         <Route path="/about" element={<About />} />
 
-        <Route path="/staff" element={<Staff />} />
+        <Route path="/treatments" element={<Treatments />} />
+        <Route path="/treatments/:slug" element={<TreatmentDetail />} />
+
+        <Route path="/staff" element={<Navigate to="/doctors" replace />} />
 
         <Route path="/services" element={<Services />} />
 
@@ -237,7 +240,7 @@ function App() {
 
           <Route
             path="staff"
-            element={<AdminStaff />}
+            element={<Navigate to="/admin/doctor-profile" replace />}
           />
 
           <Route
