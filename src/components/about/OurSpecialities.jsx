@@ -8,6 +8,7 @@ import {
   ShieldPlus,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import SectionHeader from "../common/SectionHeader";
 
 const specialitiesData = [
   {
@@ -48,26 +49,11 @@ const OurSpecialities = () => {
   return (
     <section className="py-8 sm:py-12 lg:py-16 bg-gray-50 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="text-center mb-8 sm:mb-12"
-        >
-          <span className="text-[#d71920] font-bold uppercase tracking-wider text-xs sm:text-sm">
-            {t("ourSpecialities.badge")}
-          </span>
-
-          <h2 className="mt-3 text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-800">
-            {t("ourSpecialities.title")}
-          </h2>
-
-          <p className="mt-4 text-gray-600 max-w-3xl mx-auto text-base sm:text-lg">
-            {t("ourSpecialities.subtitle")}
-          </p>
-        </motion.div>
+        <SectionHeader
+          badge={t("ourSpecialities.badge")}
+          title={t("ourSpecialities.title")}
+          subtitle={t("ourSpecialities.subtitle")}
+        />
 
         {/* Cards */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">

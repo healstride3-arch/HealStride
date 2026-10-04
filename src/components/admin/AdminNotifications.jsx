@@ -98,12 +98,12 @@ const AdminNotifications = () => {
 
               // Show Toast Popup
               toast.success(
-                `🔔 New Appointment: ${newDoc.name || "Patient"} (${newDoc.date || "Upcoming"} at ${newDoc.time || "Clinic"})`,
+                `New Appointment: ${newDoc.name || "Patient"} (${newDoc.date || "Upcoming"} at ${newDoc.time || "Clinic"})`,
                 { duration: 6000, position: "top-right" }
               );
 
               // Desktop Push Notification
-              triggerBrowserNotification("New Appointment Booked! 📅", {
+              triggerBrowserNotification("New Appointment Booked!", {
                 body: `${newDoc.name || "A patient"} booked an appointment with ${newDoc.doctor || "Specialist"} for ${newDoc.date || ""} ${newDoc.time || ""}`,
                 onClick: () => navigate("/admin/appointments"),
               });
@@ -147,7 +147,7 @@ const AdminNotifications = () => {
       let isAlt = false;
       const interval = setInterval(() => {
         document.title = isAlt
-          ? `(${notifications.length}) 🔔 New Patient Booking!`
+          ? `(${notifications.length}) New Patient Booking!`
           : `Heal Stride Admin Panel`;
         isAlt = !isAlt;
       }, 1500);
@@ -279,7 +279,7 @@ const AdminNotifications = () => {
   // Test sound function
   const handleTestChime = () => {
     playNotificationSound();
-    toast.success("🎵 Playing notification chime!", { duration: 2000 });
+    toast.success("Playing notification chime!", { duration: 2000 });
   };
 
   return (
@@ -469,7 +469,7 @@ const AdminNotifications = () => {
                             playNotificationSound();
                             toast.success("Sound notifications enabled!");
                           } else {
-                            toast("Sound notifications muted", { icon: "🔇" });
+                            toast("Sound notifications muted");
                           }
                         }}
                         className={`p-2 rounded-xl transition ${
@@ -534,7 +534,12 @@ const AdminNotifications = () => {
                                   ) : (
                                     <span className="font-semibold text-slate-500">No phone</span>
                                   )}
-                                  {app.date && <span>📅 {app.date}</span>}
+                                  {app.date && (
+                                    <span className="inline-flex items-center gap-1">
+                                      <Calendar size={12} className="text-slate-400" />
+                                      <span>{app.date}</span>
+                                    </span>
+                                  )}
                                 </div>
 
                                 <p className="text-xs text-slate-500 mt-1 truncate">

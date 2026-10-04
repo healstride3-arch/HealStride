@@ -1,3 +1,4 @@
+import SectionHeader from "../common/SectionHeader";
 import { FaClipboardCheck, FaSearch, FaHandsHelping, FaHeartbeat } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 
@@ -34,17 +35,11 @@ const TreatmentProcess = () => {
   return (
     <section className="py-24 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6">
-        <p className="uppercase tracking-[4px] text-center text-teal-600 font-semibold">
-          {t("treatmentProcess.badge")}
-        </p>
-
-        <h2 className="text-5xl font-bold text-center mt-4 text-slate-900">
-          {t("treatmentProcess.title")}
-        </h2>
-
-        <p className="text-center text-gray-600 mt-5 max-w-3xl mx-auto leading-8">
-          {t("treatmentProcess.subtitle")}
-        </p>
+        <SectionHeader
+          badge={t("treatmentProcess.badge")}
+          title={t("treatmentProcess.title")}
+          subtitle={t("treatmentProcess.subtitle")}
+        />
 
         <div className="grid md:grid-cols-4 gap-10 mt-20">
           {stepsData.map((step) => {

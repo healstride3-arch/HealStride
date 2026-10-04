@@ -190,12 +190,14 @@ const AppointmentForm = () => {
           transition={{ duration: 0.5 }}
           className="text-center max-w-3xl mx-auto mb-6 sm:mb-12"
         >
-          <div className="inline-flex max-w-full items-center justify-center gap-2 px-3 xs:px-4 py-1.5 rounded-full bg-teal-50 border border-teal-200 text-teal-700 font-semibold text-[11px] xs:text-xs sm:text-sm tracking-wide mb-3 text-center leading-snug">
-            <FaShieldAlt className="text-teal-700 text-xs" />
-            <span>{t("appointmentForm.badge")}</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-50/80 border border-teal-200/80 shadow-xs mb-3">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#d71920] animate-pulse" />
+            <span className="uppercase tracking-wider font-bold text-[11px] sm:text-xs text-teal-800">
+              {t("appointmentForm.badge")}
+            </span>
           </div>
 
-          <h1 className="text-[26px] xs:text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 leading-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight pb-1 text-slate-900">
             {t("appointmentForm.titleLine1")}{" "}
             <span className="bg-gradient-to-r from-[#d71920] to-[#008272] bg-clip-text text-transparent">
               {t("appointmentForm.titleHighlight")}
@@ -203,7 +205,7 @@ const AppointmentForm = () => {
             {t("appointmentForm.titleLine2")}
           </h1>
 
-          <p className="text-slate-600 mt-3 text-xs sm:text-base leading-relaxed max-w-2xl mx-auto">
+          <p className="mt-2.5 sm:mt-3 text-sm sm:text-base lg:text-lg leading-relaxed text-slate-600 max-w-2xl sm:max-w-3xl mx-auto">
             {t("appointmentForm.subtitle")}
           </p>
         </motion.div>

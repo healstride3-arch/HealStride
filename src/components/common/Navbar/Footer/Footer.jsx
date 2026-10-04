@@ -6,6 +6,7 @@ import {
   FaEnvelope,
   FaMapMarkerAlt,
   FaWhatsapp,
+  FaHeart,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -143,14 +144,56 @@ const Footer = () => {
             </div>
 
             <ul className="space-y-2.5 text-xs sm:text-sm text-slate-400">
-              <li>{t("footer.backSpine")}</li>
-              <li>{t("footer.cervicalNeck")}</li>
-              <li>{t("footer.kneeOsteo")}</li>
-              <li>{t("footer.sciaticaNerve")}</li>
-              <li>{t("footer.frozenShoulder")}</li>
-              <li>{t("footer.cuppingTherapy")}</li>
-              <li>{t("footer.postSurgery")}</li>
-              <li>{t("footer.sportsInjury")}</li>
+              <li>
+                <Link to="/services/chiropractic-treatment" className="hover:text-teal-400 transition-colors">
+                  Chiropractic Treatment
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/spinal-decompression-therapy" className="hover:text-teal-400 transition-colors">
+                  Spinal Decompression
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/red-light-therapy" className="hover:text-teal-400 transition-colors">
+                  Red Light Therapy
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/shockwave-therapy" className="hover:text-teal-400 transition-colors">
+                  Shockwave Therapy
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/physiotherapy" className="hover:text-teal-400 transition-colors">
+                  Physiotherapy Care
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/home-physiotherapy" className="hover:text-teal-400 transition-colors">
+                  Home Physiotherapy
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/laser-therapy" className="hover:text-teal-400 transition-colors">
+                  Laser Therapy
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/cupping-therapy" className="hover:text-teal-400 transition-colors">
+                  Cupping Therapy
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/sports-injury-rehab" className="hover:text-teal-400 transition-colors">
+                  Sports Injury Rehab
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/stroke-rehab" className="hover:text-teal-400 transition-colors">
+                  Stroke Rehabilitation
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -210,7 +253,7 @@ const Footer = () => {
           {/* Made with Love by TexWeb Solution */}
           <div className="flex items-center gap-1.5 text-xs text-slate-400">
             <span>{t("footer.madeWith")}</span>
-            <span className="text-rose-500 inline-block animate-pulse text-sm">❤️</span>
+            <FaHeart className="text-rose-500 inline-block animate-pulse text-xs mx-0.5" />
             <span>{t("footer.by")}</span>
             <a
               href="https://texwebsolution.in/"

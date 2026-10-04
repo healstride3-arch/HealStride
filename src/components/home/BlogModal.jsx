@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Calendar, User, CheckCircle2, Phone, CalendarCheck, Sparkles } from "lucide-react";
+import { X, Calendar, User, CheckCircle2, Phone, CalendarCheck, Sparkles, Lightbulb } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import logo from "../../assets/images/logo.png";
@@ -85,8 +85,11 @@ const BlogModal = ({ blog, isOpen, onClose }) => {
 
             {/* Short Description Box */}
             {blog.description && (
-              <div className="p-4 sm:p-5 rounded-2xl bg-teal-50/70 border border-teal-200 text-teal-950 font-medium text-xs sm:text-sm sm:leading-relaxed">
-                💡 <span className="font-semibold">{t("blogModal.summary", "Summary")}:</span> {blogDesc}
+              <div className="p-4 sm:p-5 rounded-2xl bg-teal-50/70 border border-teal-200 text-teal-950 font-medium text-xs sm:text-sm sm:leading-relaxed flex items-start gap-2">
+                <Lightbulb className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-semibold">{t("blogModal.summary", "Summary")}:</span> {blogDesc}
+                </div>
               </div>
             )}
 

@@ -6,6 +6,7 @@ import {
   Users,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import SectionHeader from "../common/SectionHeader";
 
 const trustCardsData = [
   {
@@ -36,26 +37,11 @@ const WhyPatientsTrustUs = () => {
   return (
     <section className="py-8 sm:py-12 lg:py-16 bg-gradient-to-b from-gray-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-8 sm:mb-12"
-        >
-          <span className="text-[#d71920] font-bold uppercase tracking-wider text-xs sm:text-sm">
-            {t("whyPatientsTrustUs.badge")}
-          </span>
-
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 sm:mt-4 text-slate-900 leading-tight">
-            {t("whyPatientsTrustUs.title")}
-          </h2>
-
-          <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
-            {t("whyPatientsTrustUs.subtitle")}
-          </p>
-        </motion.div>
+        <SectionHeader
+          badge={t("whyPatientsTrustUs.badge")}
+          title={t("whyPatientsTrustUs.title")}
+          subtitle={t("whyPatientsTrustUs.subtitle")}
+        />
 
         {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

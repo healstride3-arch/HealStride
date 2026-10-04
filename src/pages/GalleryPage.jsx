@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Image, Activity, Stethoscope } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import SectionHeader from "../components/common/SectionHeader";
 
 const GalleryPage = () => {
   const { t } = useTranslation();
@@ -52,25 +53,11 @@ const GalleryPage = () => {
       <div className="absolute inset-0 bg-slate-50/80 backdrop-blur-sm"></div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-8 sm:mb-12"
-        >
-          <p className="uppercase tracking-wider text-teal-600 font-semibold text-xs sm:text-sm">
-            {t("galleryPage.badge")}
-          </p>
-
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 text-slate-900 leading-tight">
-            {t("galleryPage.title")}
-          </h1>
-
-          <p className="text-slate-600 mt-2.5 sm:mt-3 max-w-2xl mx-auto text-xs sm:text-base leading-relaxed">
-            {t("galleryPage.subtitle")}
-          </p>
-        </motion.div>
+        <SectionHeader
+          badge={t("galleryPage.badge")}
+          title={t("galleryPage.title")}
+          subtitle={t("galleryPage.subtitle")}
+        />
 
         {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">

@@ -349,8 +349,9 @@ const DoctorProfile = () => {
             <div className="lg:col-span-8 flex flex-col text-center lg:text-left mt-2 lg:mt-0">
               {/* Badges Row */}
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-1.5 xs:gap-2 mb-2 xs:mb-3">
-                <span className="inline-flex items-center gap-1 xs:gap-1.5 px-2 xs:px-3 py-0.5 xs:py-1 rounded-full bg-teal-500/20 border border-teal-400/40 text-teal-300 text-[10px] xs:text-xs font-semibold">
-                  <BadgeCheck size={12} className="text-teal-300 shrink-0" />
+                <span className="inline-flex items-center gap-1.5 px-2.5 xs:px-3 py-1 rounded-full bg-white/10 border border-white/20 text-teal-200 text-[10px] xs:text-xs font-semibold backdrop-blur-md">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#d71920] animate-pulse" />
+                  <BadgeCheck size={13} className="text-teal-300 shrink-0" />
                   <span>
                     {isDrRashid
                       ? t("doctorProfile.verifiedDoctor", "Verified Senior Specialist")
@@ -502,7 +503,7 @@ const DoctorProfile = () => {
                     <Award size={20} className="xs:w-[22px] xs:h-[22px]" />
                   </div>
                   <div>
-                    <h2 className="text-lg xs:text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
+                    <h2 className="text-lg xs:text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#d71920] to-[#008272] bg-clip-text text-transparent leading-tight">
                       {t("doctorProfile.certificationsTitle", "Certified Professional Accreditations")}
                     </h2>
                     <p className="text-[11px] xs:text-xs sm:text-sm text-slate-500">
@@ -563,7 +564,7 @@ const DoctorProfile = () => {
                   <GraduationCap size={20} className="xs:w-[22px] xs:h-[22px]" />
                 </div>
                 <div>
-                  <h2 className="text-lg xs:text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
+                  <h2 className="text-lg xs:text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#d71920] to-[#008272] bg-clip-text text-transparent leading-tight">
                     {t("doctorProfile.education", "Academic Credentials & Qualifications")}
                   </h2>
                   <p className="text-[11px] xs:text-xs sm:text-sm text-slate-500">
@@ -680,7 +681,7 @@ const DoctorProfile = () => {
                   <Activity size={20} className="xs:w-[22px] xs:h-[22px]" />
                 </div>
                 <div>
-                  <h2 className="text-lg xs:text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
+                  <h2 className="text-lg xs:text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#d71920] to-[#008272] bg-clip-text text-transparent leading-tight">
                     {t("doctorProfile.specialization", "Clinical Specializations")}
                   </h2>
                   <p className="text-[11px] xs:text-xs sm:text-sm text-slate-500">
@@ -704,7 +705,7 @@ const DoctorProfile = () => {
 
             {/* 4. Conditions Treated & Recovery Focus */}
             <div className="bg-white rounded-2xl xs:rounded-3xl p-3.5 xs:p-5 sm:p-8 shadow-sm border border-slate-200/80">
-              <h2 className="text-lg xs:text-xl sm:text-2xl font-bold text-slate-900 leading-tight mb-1.5 xs:mb-2">
+              <h2 className="text-lg xs:text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#d71920] to-[#008272] bg-clip-text text-transparent leading-tight mb-1.5 xs:mb-2">
                 {t("doctorProfile.conditionsTreated", "Conditions Treated & Rehabilitation Scope")}
               </h2>
               <p className="text-[11px] xs:text-xs sm:text-sm text-slate-500 mb-4 xs:mb-6">
@@ -750,7 +751,7 @@ const DoctorProfile = () => {
               <div className="bg-white rounded-2xl xs:rounded-3xl p-3.5 xs:p-5 sm:p-8 shadow-sm border border-slate-200/80">
                 <div className="flex flex-wrap items-center justify-between gap-2.5 xs:gap-4 mb-4 xs:mb-6">
                   <div>
-                    <h2 className="text-lg xs:text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
+                    <h2 className="text-lg xs:text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#d71920] to-[#008272] bg-clip-text text-transparent leading-tight">
                       Patient Feedback & Recovery Stories
                     </h2>
                     <p className="text-[11px] xs:text-xs sm:text-sm text-slate-500">

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useFirestoreCollection, where } from "../../hooks/useFirestoreCollection";
+import SectionHeader from "../common/SectionHeader";
 
 const defaultFaqs = [
   {
@@ -42,32 +43,11 @@ const FAQSection = () => {
   return (
     <section className="py-8 sm:py-12 lg:py-16 bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Heading */}
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 30,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-          }}
-          transition={{
-            duration: 0.5,
-          }}
-          className="text-center mb-8 sm:mb-10"
-        >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800">
-            {t("faqSection.title")}
-          </h2>
-
-          <p className="mt-4 text-gray-600">
-            {t("faqSection.subtitle")}
-          </p>
-        </motion.div>
+        <SectionHeader
+          badge={t("faqSection.badge", "Common Questions")}
+          title={t("faqSection.title")}
+          subtitle={t("faqSection.subtitle")}
+        />
 
         {/* FAQ List */}
         <div className="space-y-4">

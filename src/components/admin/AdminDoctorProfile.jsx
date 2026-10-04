@@ -22,6 +22,7 @@ import {
   XCircle,
   X,
   Search,
+  Sparkles,
 } from "lucide-react";
 
 import { db, storage } from "../../firebase/firebase";
@@ -381,7 +382,14 @@ const AdminDoctors = () => {
                   disabled={uploading}
                   className="mt-3 px-4 py-2 bg-teal-600 text-white rounded-xl text-xs font-bold shadow transition cursor-pointer"
                 >
-                  {uploading ? "Loading..." : "⚡ Initialize Default Doctors"}
+                  {uploading ? (
+                    "Loading..."
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5">
+                      <Sparkles size={13} />
+                      <span>Initialize Default Doctors</span>
+                    </span>
+                  )}
                 </button>
               )}
             </div>
@@ -485,7 +493,14 @@ const AdminDoctors = () => {
                           disabled={uploading}
                           className="px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold shadow-md transition disabled:opacity-50 cursor-pointer"
                         >
-                          {uploading ? "Loading..." : "⚡ Initialize Default Doctors to Database"}
+                          {uploading ? (
+                            "Loading..."
+                          ) : (
+                            <span className="inline-flex items-center gap-1.5">
+                              <Sparkles size={14} />
+                              <span>Initialize Default Doctors to Database</span>
+                            </span>
+                          )}
                         </button>
                       </>
                     )}

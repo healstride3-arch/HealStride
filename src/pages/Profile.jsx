@@ -522,12 +522,14 @@ const Profile = () => {
                             {a.condition}
                           </h4>
 
-                          <p className="text-sm text-gray-500 mt-1">
-                            📅 {a.date}
+                          <p className="text-sm text-gray-500 mt-1 flex items-center gap-1.5">
+                            <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                            <span>{a.date}</span>
                           </p>
 
-                          <p className="text-sm text-gray-500">
-                            📞 {a.phone}
+                          <p className="text-sm text-gray-500 flex items-center gap-1.5">
+                            <Phone className="w-3.5 h-3.5 text-slate-400" />
+                            <span>{a.phone}</span>
                           </p>
                         </div>
 

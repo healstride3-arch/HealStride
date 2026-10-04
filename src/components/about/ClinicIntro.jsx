@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { CheckCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import drRashidImage from "../../assets/images/Dr.MD.Rashid.png";
+import SectionHeader from "../common/SectionHeader";
 
 const featureKeys = [
   "clinicIntro.f1",
@@ -40,17 +41,14 @@ const ClinicIntro = () => {
             transition={{ duration: 0.7 }}
             className="text-center lg:text-left"
           >
-            <span className="text-teal-600 font-semibold uppercase tracking-wider text-xs sm:text-sm">
-              {t("clinicIntro.badge")}
-            </span>
-
-            <h2 className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight">
-              {t("clinicIntro.title")}
-            </h2>
-
-            <p className="mt-3 sm:mt-4 text-slate-600 leading-relaxed text-xs sm:text-base">
-              {t("clinicIntro.desc")}
-            </p>
+            <SectionHeader
+              badge={t("clinicIntro.badge")}
+              title={t("clinicIntro.title")}
+              subtitle={t("clinicIntro.desc")}
+              align="left"
+              animate={false}
+              className="mb-4 sm:mb-6"
+            />
 
             {/* Features */}
             <div className="grid sm:grid-cols-2 gap-3 sm:gap-4 mt-6 sm:mt-8">

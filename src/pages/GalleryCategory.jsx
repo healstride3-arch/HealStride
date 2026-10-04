@@ -4,6 +4,7 @@ import { FaTimes } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { galleryItems as staticGalleryItems } from "../data/galleryItems";
 import { useFirestoreCollection } from "../hooks/useFirestoreCollection";
+import SectionHeader from "../components/common/SectionHeader";
 
 const GalleryCategory = ({ category, title, titleKey, defaultTitle }) => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -20,19 +21,11 @@ const GalleryCategory = ({ category, title, titleKey, defaultTitle }) => {
   return (
     <section className="py-10 sm:py-16 lg:py-20 bg-slate-50 border-b border-slate-100 min-h-[60vh]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-8 sm:mb-12 max-w-3xl mx-auto"
-        >
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight">
-            {displayTitle}
-          </h1>
-
-          <p className="text-slate-600 mt-2.5 sm:mt-3 text-xs sm:text-base leading-relaxed">
-            {t("galleryCategory.explore", { title: displayTitle.toLowerCase() })}
-          </p>
-        </motion.div>
+        <SectionHeader
+          badge={category}
+          title={displayTitle}
+          subtitle={t("galleryCategory.explore", { title: displayTitle.toLowerCase() })}
+        />
 
         {images.length === 0 ? (
           <div className="bg-white rounded-2xl p-8 sm:p-12 text-center border border-slate-100 shadow-sm font-semibold text-slate-600 text-xs sm:text-sm">

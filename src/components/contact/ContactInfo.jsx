@@ -7,6 +7,7 @@ import {
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useClinicSettings } from "../../hooks/useClinicSettings";
+import SectionHeader from "../common/SectionHeader";
 
 const ContactInfo = () => {
   const { t } = useTranslation();
@@ -73,26 +74,11 @@ const ContactInfo = () => {
   return (
     <section className="py-6 sm:py-8 lg:py-10 bg-white border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-8 sm:mb-12"
-        >
-          <span className="text-teal-600 font-semibold uppercase tracking-wider text-xs sm:text-sm">
-            {t("contactInfo.badge")}
-          </span>
-
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mt-2 leading-tight">
-            {t("contactInfo.title")}
-          </h2>
-
-          <p className="text-slate-600 mt-2.5 sm:mt-3 max-w-2xl mx-auto text-xs sm:text-base leading-relaxed">
-            {t("contactInfo.subtitle")}
-          </p>
-        </motion.div>
+        <SectionHeader
+          badge={t("contactInfo.badge")}
+          title={t("contactInfo.title")}
+          subtitle={t("contactInfo.subtitle")}
+        />
 
         {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useFirestoreCollection, where } from "../../hooks/useFirestoreCollection";
+import SectionHeader from "../common/SectionHeader";
 
 import {
   FaHandsHelping,
@@ -14,24 +15,7 @@ import {
   FaBone,
 } from "react-icons/fa";
 
-import treatment1 from "../../assets/images/treatment1.jpg";
-import treatment2 from "../../assets/images/treatment2.jpg";
-import treatment3 from "../../assets/images/treatment3.jpg";
-import treatment4 from "../../assets/images/treatment4.jpg";
-import treatment5 from "../../assets/images/treatment5.jpg";
-import treatment6 from "../../assets/images/treatment6.jpg";
-import treatment7 from "../../assets/images/treatment7.jpg";
-import neckpain from "../../assets/images/neckpain.jpg";
-import backpain from "../../assets/images/backpain.jpg";
-import kneepain from "../../assets/images/kneepain.jpg";
-import tenniselbow from "../../assets/images/tenniselbow.jpg";
-import plantarfasciitis from "../../assets/images/plantarfasciitis.jpg";
-import frozenshoulder from "../../assets/images/frozenshoulder.jpg";
-import osteoarthritis from "../../assets/images/Osteoarthritis.jpg";
-import sciaticapain from "../../assets/images/sciaticapain.jpg";
-import strokerehab from "../../assets/images/strokerehab.jpg";
-import sportsinjury from "../../assets/images/sportsinjury.jpg";
-import postsurgeryrehab from "../../assets/images/postsurgeryrehab.jpg";
+import { ALL_SERVICES } from "../../data/servicesData";
 
 const iconMap = {
   activity: FaHeartbeat,
@@ -45,146 +29,22 @@ const iconMap = {
   procedures: FaProcedures,
 };
 
-const defaultHomeServices = [
-  {
-    id: "cervical-pain",
-    title: "Cervical Pain Treatment",
-    slug: "cervical-pain",
-    imageUrl: neckpain,
-    icon: "bone",
-    description: "Specialized therapy to relieve neck stiffness, cervical nerve compression, and posture-related pain.",
-  },
-  {
-    id: "back-pain",
-    title: "Back Pain Relief",
-    slug: "back-pain",
-    imageUrl: backpain,
-    icon: "running",
-    description: "Comprehensive physical therapy for acute/chronic lumbar pain, disc herniation, and back mobility.",
-  },
-  {
-    id: "knee-pain",
-    title: "Knee Pain Care",
-    slug: "knee-pain",
-    imageUrl: kneepain,
-    icon: "bone",
-    description: "Targeted rehabilitation for knee arthritis, ligament sprains (ACL/MCL), and joint stiffness.",
-  },
-  {
-    id: "tennis-elbow",
-    title: "Tennis Elbow Therapy",
-    slug: "tennis-elbow",
-    imageUrl: tenniselbow,
-    icon: "bone",
-    description: "Effective tendon rehab and strengthening for forearm muscle strain and elbow joint inflammation.",
-  },
-  {
-    id: "plantar-fasciitis",
-    title: "Plantar Fasciitis Care",
-    slug: "plantar-fasciitis",
-    imageUrl: plantarfasciitis,
-    icon: "running",
-    description: "Targeted heel pain and foot arch treatment for comfortable, pain-free morning steps and walking.",
-  },
-  {
-    id: "frozen-shoulder",
-    title: "Frozen Shoulder Rehab",
-    slug: "frozen-shoulder",
-    imageUrl: frozenshoulder,
-    icon: "activity",
-    description: "Gentle mobilization techniques and therapeutic stretching to regain complete shoulder movement.",
-  },
-  {
-    id: "osteoarthritis",
-    title: "Osteoarthritis Management",
-    slug: "osteoarthritis",
-    imageUrl: osteoarthritis,
-    icon: "bone",
-    description: "Therapeutic joint exercise programs to preserve cartilage, reduce stiffness, and boost strength.",
-  },
-  {
-    id: "sciatica",
-    title: "Sciatica Pain Therapy",
-    slug: "sciatica",
-    imageUrl: sciaticapain,
-    icon: "running",
-    description: "Targeted sciatic nerve decompression, spinal traction, and core stabilizing exercises.",
-  },
-  {
-    id: "stroke-rehab",
-    title: "Stroke Rehabilitation",
-    slug: "stroke-rehab",
-    imageUrl: strokerehab,
-    icon: "heart",
-    description: "Neurological therapy designed to help patients regain motor control, balance, and daily independence.",
-  },
-  {
-    id: "sports-rehab",
-    title: "Sports Injury Rehabilitation",
-    slug: "sports-rehab",
-    imageUrl: sportsinjury,
-    icon: "bolt",
-    description: "High-performance recovery protocols to help athletes heal fast and prevent future sports injuries.",
-  },
-  {
-    id: "post-surgery-physio",
-    title: "Post Surgery Physio",
-    slug: "post-surgery-physio",
-    imageUrl: postsurgeryrehab,
-    icon: "procedures",
-    description: "Guided post-operative rehabilitation for joint replacements, fracture repairs, and back surgeries.",
-  },
-  {
-    id: "pain-reduction",
-    title: "Pain Reduction Therapy",
-    slug: "pain-reduction",
-    imageUrl: treatment6,
-    icon: "medkit",
-    description: "Advanced physical modalities combined with hands-on manual techniques for swift and lasting relief.",
-  },
-  {
-    id: "cupping-therapy",
-    title: "Cupping (Hijama) Therapy",
-    slug: "cupping-therapy",
-    imageUrl: treatment3,
-    icon: "hands",
-    description: "Traditional therapeutic cupping (Hijama) to release deep fascial tension, detoxify, and boost blood flow.",
-  },
-  {
-    id: "dry-needling",
-    title: "Dry Needling Therapy",
-    slug: "dry-needling",
-    imageUrl: treatment2,
-    icon: "activity",
-    description: "Targeted fine filiform needle stimulation to deactivate painful trigger points and deep muscle knots.",
-  },
-  {
-    id: "iastm-therapy",
-    title: "IASTM Therapy",
-    slug: "iastm-therapy",
-    imageUrl: treatment7,
-    icon: "hands",
-    description: "Instrument-Assisted Soft Tissue Mobilization using ergonomic instruments for accelerated healing.",
-  },
-  {
-    id: "exercise-therapy",
-    title: "Exercise Therapy For Various Conditions",
-    slug: "exercise-therapy",
-    imageUrl: treatment5,
-    icon: "dumbbell",
-    description: "Customized therapeutic strengthening, stretching, and functional movements for every patient.",
-  },
-];
+const categoryIconMap = {
+  spine: FaBone,
+  therapies: FaBolt,
+  rehab: FaHandsHelping,
+};
 
 const isExcluded = (s) => {
   const name = (s.title || s.name || s.slug || s.id || "").toLowerCase().trim();
   return (
+    name.includes("female chiro") ||
+    name.includes("female-chiro") ||
+    name.includes("navel displacement") ||
+    name.includes("navel-displacement") ||
+    name.includes("osteopathy") ||
     name === "manual therapy" ||
-    name === "manual-therapy" ||
-    name === "physiotherapy" ||
-    name === "physiotherapy services" ||
-    name === "physiotherapy-services" ||
-    name.includes("manual therapy")
+    name === "manual-therapy"
   );
 };
 
@@ -196,29 +56,30 @@ const OurServices = () => {
   });
 
   const services = (() => {
-    const map = new Map();
-    defaultHomeServices
+    return ALL_SERVICES
       .filter((s) => !isExcluded(s))
-      .forEach((s) => {
-        const key = (s.slug || s.id).toLowerCase();
-        map.set(key, { ...s });
-      });
+      .map((s) => {
+        const sKey = (s.slug || s.id).toLowerCase();
+        const fs = (rawFirestoreServices || []).find((item) => {
+          const itemKey = (item.slug || item.id || item.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+          return itemKey === sKey;
+        });
 
-    (rawFirestoreServices || []).forEach((fs) => {
-      const slugKey = (fs.slug || fs.id || fs.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
-      const existing = map.get(slugKey) || map.get(fs.id) || {};
-      map.set(slugKey, {
-        ...existing,
-        ...fs,
-        id: fs.id || existing.id || slugKey,
-        slug: fs.slug || existing.slug || slugKey,
-        fromFirestore: true,
-      });
-    });
+        if (!fs) return s;
 
-    return Array.from(map.values()).filter(
-      (s) => s.active !== false && s.showOnHome !== false && !isExcluded(s)
-    );
+        const isUploadedStorageImg = fs.imageUrl && (
+          fs.imageUrl.startsWith("https://firebasestorage") ||
+          fs.imageUrl.startsWith("data:image")
+        );
+
+        return {
+          ...s,
+          active: fs.active !== undefined ? fs.active : s.active,
+          imageUrl: isUploadedStorageImg ? fs.imageUrl : s.imageUrl,
+          image: isUploadedStorageImg ? fs.imageUrl : s.imageUrl,
+        };
+      })
+      .filter((s) => s.active !== false && s.showOnHome !== false && !isExcluded(s));
   })();
 
   return (
@@ -228,27 +89,11 @@ const OurServices = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: true }}
-          className="text-center mb-6 sm:mb-8"
-        >
-          <p className="uppercase tracking-[3px] sm:tracking-[6px] text-teal-600 font-semibold text-xs sm:text-sm">
-            {t("ourServices.badge")}
-          </p>
-
-          <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold mt-2 sm:mt-4 text-slate-900 leading-tight">
-            {t("ourServices.title")}
-          </h2>
-
-          <div className="w-16 sm:w-24 h-1 bg-teal-600 rounded-full mx-auto mt-3 sm:mt-6 mb-3 sm:mb-6"></div>
-
-          <p className="text-gray-600 max-w-3xl mx-auto text-xs sm:text-base lg:text-lg leading-relaxed sm:leading-8">
-            {t("ourServices.subtitle")}
-          </p>
-        </motion.div>
+        <SectionHeader
+          badge={t("ourServices.badge")}
+          title={t("ourServices.title")}
+          subtitle={t("ourServices.subtitle")}
+        />
 
         {/* No services */}
         {services.length === 0 && (
@@ -268,7 +113,7 @@ const OurServices = () => {
           >
             {services.slice(0, 6).map((service) => {
               const Icon =
-                iconMap[service.icon] || FaHeartbeat;
+                (service.icon && iconMap[service.icon]) || categoryIconMap[service.category] || FaHeartbeat;
               const slug = (service.slug || service.id || "").toLowerCase().trim();
               const camelKey = slug.replace(/-([a-z0-9])/g, (_, letter) => letter.toUpperCase());
               const isHi = (i18n?.language || "").startsWith("hi");
@@ -304,9 +149,12 @@ const OurServices = () => {
                   "
                 >
                   {/* Image */}
-                  <div className="relative overflow-hidden h-48 sm:h-52 w-full flex-shrink-0 bg-slate-100">
+                  <Link
+                    to={`/services/${service.slug}`}
+                    className="relative overflow-hidden aspect-[4/3] w-full flex-shrink-0 bg-slate-100 block"
+                  >
                     <img
-                      src={service.imageUrl || service.image || treatment1}
+                      src={service.imageUrl || service.image}
                       alt={localizedTitle}
                       className="
                         w-full
@@ -318,7 +166,7 @@ const OurServices = () => {
                       "
                     />
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-slate-950/20 to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>
 
                     {/* Icon Badge */}
                     <div
@@ -338,6 +186,7 @@ const OurServices = () => {
                         justify-center
                         text-base
                         sm:text-lg
+                        shadow-md
                       "
                     >
                       <Icon />
@@ -355,11 +204,13 @@ const OurServices = () => {
                         sm:text-lg
                         font-bold
                         truncate
+                        group-hover:text-teal-200
+                        transition-colors
                       "
                     >
                       {localizedTitle}
                     </h3>
-                  </div>
+                  </Link>
 
                   {/* Content Container */}
                   <div className="p-4 sm:p-5 flex flex-col flex-1 justify-between">
@@ -376,9 +227,9 @@ const OurServices = () => {
                       {localizedDesc}
                     </p>
 
-                    <div className="mt-4 pt-2">
+                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
                       <Link
-                        to="/booking"
+                        to={`/services/${service.slug}`}
                         className="
                           inline-flex
                           items-center
@@ -395,6 +246,29 @@ const OurServices = () => {
                         <span className="group-hover/link:translate-x-1 transition-transform duration-200 inline-block">
                           {t("ourServices.learnMore")}
                         </span>
+                        <span>→</span>
+                      </Link>
+
+                      <Link
+                        to="/booking"
+                        className="
+                          inline-flex
+                          items-center
+                          gap-1
+                          bg-teal-50
+                          hover:bg-teal-100
+                          text-teal-700
+                          px-3
+                          py-1.5
+                          rounded-lg
+                          text-xs
+                          font-bold
+                          transition
+                          border
+                          border-teal-200
+                        "
+                      >
+                        <span>Book</span>
                       </Link>
                     </div>
                   </div>

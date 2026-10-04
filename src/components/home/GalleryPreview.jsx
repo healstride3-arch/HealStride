@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes, FaExpand, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { useFirestoreCollection } from "../../hooks/useFirestoreCollection";
+import SectionHeader from "../common/SectionHeader";
 
 import tractionTherapy from "../../assets/images/gallery/traction-therapy.jpg";
 import treatmentRoom from "../../assets/images/gallery/treatment-room.jpg";
@@ -105,25 +106,11 @@ const GalleryPreview = () => {
     <section className="py-10 sm:py-14 lg:py-18 bg-slate-50 border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-8 sm:mb-12"
-        >
-          <span className="inline-block px-3.5 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs sm:text-sm font-semibold uppercase tracking-wider mb-2">
-            {t("galleryPreview.badge")}
-          </span>
-
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 text-slate-900 leading-tight">
-            {t("galleryPreview.title")}
-          </h2>
-
-          <p className="text-slate-600 mt-2.5 sm:mt-3 max-w-2xl mx-auto text-xs sm:text-base leading-relaxed">
-            {t("galleryPreview.subtitle")}
-          </p>
-        </motion.div>
+        <SectionHeader
+          badge={t("galleryPreview.badge")}
+          title={t("galleryPreview.title")}
+          subtitle={t("galleryPreview.subtitle")}
+        />
 
         {/* Gallery Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">

@@ -1,3 +1,4 @@
+import SectionHeader from "../common/SectionHeader";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
@@ -101,21 +102,11 @@ const ToolsGrid = () => {
     <section className="py-6 sm:py-8 lg:py-10 bg-slate-50 border-b border-slate-100 min-h-[50vh] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-8 sm:mb-12 max-w-3xl mx-auto"
-        >
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight">
-            {t("toolsGrid.title")}
-          </h2>
-
-          <p className="mt-2.5 sm:mt-3 text-slate-600 text-xs sm:text-base leading-relaxed">
-            {t("toolsGrid.subtitle")}
-          </p>
-        </motion.div>
+        <SectionHeader
+          badge={t("toolsGrid.badge", "Modern Rehabilitation")}
+          title={t("toolsGrid.title", "Advanced Tools & Clinical Equipment")}
+          subtitle={t("toolsGrid.subtitle", "State-of-the-art rehabilitation technology engineered for fast, lasting musculoskeletal recovery.")}
+        />
 
         {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">

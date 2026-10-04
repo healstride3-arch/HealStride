@@ -21,6 +21,7 @@ import {
   Check,
   ExternalLink,
   Filter,
+  Clock,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
@@ -192,7 +193,7 @@ const AdminNotificationsPage = () => {
   // Sound chime test
   const handleTestChime = () => {
     playNotificationSound();
-    toast.success("🎵 Notification Chime Played!", { duration: 2000 });
+    toast.success("Notification Chime Played!", { duration: 2000 });
   };
 
   return (
@@ -351,8 +352,9 @@ const AdminNotificationsPage = () => {
                       </span>
 
                       {item.time && (
-                        <span className="text-[11px] font-semibold text-teal-800 bg-teal-100/80 px-2 py-0.5 rounded-md">
-                          ⏰ {item.time}
+                        <span className="text-[11px] font-semibold text-teal-800 bg-teal-100/80 px-2 py-0.5 rounded-md inline-flex items-center gap-1">
+                          <Clock size={11} />
+                          <span>{item.time}</span>
                         </span>
                       )}
                     </div>
@@ -369,7 +371,12 @@ const AdminNotificationsPage = () => {
                         </a>
                       )}
 
-                      {item.date && <span>📅 Date: <strong>{item.date}</strong></span>}
+                      {item.date && (
+                        <span className="inline-flex items-center gap-1">
+                          <Calendar size={12} className="text-slate-400" />
+                          <span>Date: <strong>{item.date}</strong></span>
+                        </span>
+                      )}
                       {item.doctor && (
                         <span className="text-slate-500">
                           Dr: <strong>{item.doctor}</strong>

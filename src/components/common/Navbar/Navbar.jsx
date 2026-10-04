@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaBars, FaTimes, FaPhoneAlt } from "react-icons/fa";
+import { FaBars, FaTimes, FaPhoneAlt, FaChevronDown } from "react-icons/fa";
+import { MapPin, Clock, Phone, Stethoscope, Activity, ShieldCheck, HeartPulse, Zap, ChevronRight, Wrench } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { NAVIGATION } from "../../../constants/navigation";
@@ -9,8 +10,67 @@ import logo from "../../../assets/images/logo.png";
 import LanguageSwitcher from "../../LanguageSwitcher";
 import BrandName from "../BrandName";
 
+// Exact 15 Services categorized with Heal Stride Logo Theme
+const SERVICES_DROPDOWN_COLUMNS = [
+  {
+    title: "Spine & Joint Care",
+    badge: "Specialized",
+    icon: Activity,
+    iconColor: "text-[#d71920] bg-red-50",
+    items: [
+      { name: "Chiropractic Treatment", slug: "chiropractic-treatment" },
+      { name: "Spinal Decompression", slug: "spinal-decompression-therapy" },
+      { name: "Posture Correction", slug: "posture-correction-therapy" },
+      { name: "Ultrasound Therapy", slug: "ultrasound-therapy" },
+    ],
+  },
+  {
+    title: "Advanced Therapies",
+    badge: "Clinical",
+    icon: ShieldCheck,
+    iconColor: "text-[#008272] bg-teal-50",
+    items: [
+      { name: "Cupping Therapy", slug: "cupping-therapy" },
+      { name: "Cranio Sacral Therapy", slug: "cranio-sacral-therapy" },
+      { name: "Cryo Therapy", slug: "cryo-therapy" },
+      { name: "Laser Therapy", slug: "laser-therapy" },
+    ],
+  },
+  {
+    title: "Rehab & Recovery",
+    badge: "Personalized",
+    icon: HeartPulse,
+    iconColor: "text-emerald-700 bg-emerald-50",
+    items: [
+      { name: "Physiotherapy", slug: "physiotherapy" },
+      { name: "Home Physiotherapy", slug: "home-physiotherapy" },
+      { name: "Sports Injury Rehab", slug: "sports-injury-rehab" },
+      { name: "Stroke Rehab", slug: "stroke-rehab" },
+    ],
+  },
+  {
+    title: "Electro & Modern Tech",
+    badge: "High-Tech",
+    icon: Zap,
+    iconColor: "text-amber-600 bg-amber-50",
+    items: [
+      { name: "Interferential Therapy", slug: "interferential-therapy" },
+      { name: "Shockwave Therapy", slug: "shockwave-therapy" },
+      { name: "Red Light Therapy", slug: "red-light-therapy" },
+    ],
+  },
+];
+
+// Clean slugs helper
+SERVICES_DROPDOWN_COLUMNS[0].items[0].slug = "chiropractic-treatment";
+
+const ALL_SERVICES_FLAT = SERVICES_DROPDOWN_COLUMNS.flatMap((col) => col.items);
+
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [servicesHovered, setServicesHovered] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const hoverTimeoutRef = useRef(null);
 
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -26,8 +86,28 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close menus on route change
+  useEffect(() => {
+    setServicesHovered(false);
+    setOpen(false);
+    setMobileServicesOpen(false);
+  }, [location.pathname]);
+
   const handleBookAppointment = () => {
     navigate("/booking");
+  };
+
+  const handleMouseEnter = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    setServicesHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    hoverTimeoutRef.current = setTimeout(() => {
+      setServicesHovered(false);
+    }, 180);
   };
 
   const isActive = (path) => {
@@ -68,6 +148,43 @@ const Navbar = () => {
           : "bg-white border-b border-slate-100 shadow-sm"
       }`}
     >
+      {/* Top Announcement Marquee */}
+      <div className="bg-gradient-to-r from-slate-950 via-[#008272] to-[#d71920] text-white py-1 sm:py-1.5 overflow-hidden text-[11px] sm:text-xs font-semibold tracking-wide border-b border-white/10 select-none shadow-xs">
+        <div className="overflow-hidden w-full">
+          <div className="animate-hs-marquee flex items-center">
+            {[1, 2].map((repeatIndex) => (
+              <div key={repeatIndex} className="flex items-center shrink-0">
+                <span className="mx-4 flex items-center gap-1.5">
+                  <span className="inline-block w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                  <span>Welcome to Heal Stride Physiotherapy &amp; Wellness Centre Bhopal</span>
+                </span>
+                <span className="text-white/40">•</span>
+                <span className="mx-4 flex items-center gap-1.5">
+                  <MapPin size={13} className="text-amber-300 shrink-0" />
+                  <span>LIG 85, Raisen Rd, New Subhash Nagar, Bhopal</span>
+                </span>
+                <span className="text-white/40">•</span>
+                <span className="mx-4 flex items-center gap-1.5">
+                  <Clock size={13} className="text-amber-300 shrink-0" />
+                  <span>Clinic Timings: Mon - Sat 9:00 AM - 9:00 PM</span>
+                </span>
+                <span className="text-white/40">•</span>
+                <span className="mx-4 flex items-center gap-1.5">
+                  <Phone size={13} className="text-amber-300 shrink-0" />
+                  <span>Call / WhatsApp: +91 88094 91380 / +91 82525 80389</span>
+                </span>
+                <span className="text-white/40">•</span>
+                <span className="mx-4 flex items-center gap-1.5">
+                  <Stethoscope size={13} className="text-amber-300 shrink-0" />
+                  <span>Specializing in Non-Surgical Pain Relief, Cupping, Dry Needling &amp; Sports Rehab</span>
+                </span>
+                <span className="text-white/40">•</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-[1600px] mx-auto h-14 sm:h-16 px-3 xs:px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-full">
 
@@ -107,6 +224,180 @@ const Navbar = () => {
           <ul className="hidden lg:flex items-center gap-2 lg:gap-2.5 xl:gap-5 2xl:gap-8">
             {NAVIGATION.map((item) => {
               const active = isActive(item.path);
+              const isServices = item.path === "/services";
+
+              if (isServices) {
+                return (
+                  <li
+                    key={item.id}
+                    className="static"
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    <Link
+                      to={item.path}
+                      onClick={() => setServicesHovered(false)}
+                      className={`
+                        px-3 py-1.5 lg:px-3.5 xl:px-4 xl:py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all duration-200 flex items-center gap-1.5 whitespace-nowrap
+                        ${
+                          active || servicesHovered
+                            ? "bg-gradient-to-r from-[#d71920] to-[#008272] text-white shadow-sm"
+                            : "text-gray-700 hover:text-teal-700 hover:bg-teal-50"
+                        }
+                      `}
+                    >
+                      <span>{getNavigationLabel(item)}</span>
+                      <FaChevronDown
+                        className={`text-[9px] transition-transform duration-200 ${
+                          servicesHovered ? "rotate-180" : ""
+                        }`}
+                      />
+                    </Link>
+
+                    {/* Services Hover Dropdown Menu - Flush with Navbar (Zero Gap) */}
+                    <AnimatePresence>
+                      {servicesHovered && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -4 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -4 }}
+                          transition={{ duration: 0.16, ease: "easeOut" }}
+                          onMouseEnter={handleMouseEnter}
+                          onMouseLeave={handleMouseLeave}
+                          className="
+                            absolute left-1/2 -translate-x-1/2 top-full z-[9999]
+                            w-[95vw] max-w-[1180px]
+                            bg-white rounded-b-2xl shadow-[0_25px_60px_-15px_rgba(0,130,114,0.22),0_15px_35px_rgba(0,0,0,0.12)]
+                            border-x border-b border-teal-500/25 overflow-hidden
+                          "
+                        >
+                          {/* Top Logo Theme Accent Gradient Border */}
+                          <div className="h-1 w-full bg-gradient-to-r from-[#d71920] via-teal-500 to-[#008272]" />
+
+                          {/* 4 Categorized Columns Grid */}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 p-5 lg:p-6 gap-5 lg:gap-6 bg-white">
+                            {SERVICES_DROPDOWN_COLUMNS.map((col, colIdx) => (
+                              <div
+                                key={colIdx}
+                                className={`flex flex-col ${
+                                  colIdx !== 0 ? "lg:border-l lg:border-slate-100 lg:pl-6" : ""
+                                }`}
+                              >
+                                {/* Column Category Header */}
+                                <div className="flex items-center gap-2.5 pb-2.5 mb-2 border-b border-slate-100">
+                                  <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${col.iconColor}`}>
+                                    <col.icon size={15} />
+                                  </div>
+                                  <div className="min-w-0">
+                                    <h4 className="text-xs font-bold text-slate-900 leading-tight truncate">
+                                      {col.title}
+                                    </h4>
+                                    <span className="text-[10px] font-semibold text-slate-400">
+                                      {col.badge}
+                                    </span>
+                                  </div>
+                                </div>
+
+                                {/* Items List */}
+                                <div className="flex flex-col space-y-0.5">
+                                  {col.items.map((subItem) => (
+                                    <Link
+                                      key={subItem.slug}
+                                      to={`/services/${subItem.slug}`}
+                                      onClick={() => setServicesHovered(false)}
+                                      className="
+                                        py-2 px-2.5 rounded-xl text-[13px] font-semibold text-slate-700
+                                        hover:text-[#008272] hover:bg-gradient-to-r hover:from-teal-50/90 hover:via-teal-50/30 hover:to-transparent
+                                        transition-all duration-150 flex items-center justify-between group
+                                        border border-transparent hover:border-teal-200/50
+                                      "
+                                    >
+                                      <span className="flex items-center gap-2 group-hover:translate-x-0.5 transition-transform duration-150 truncate">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-[#008272] transition-colors shrink-0" />
+                                        <span className="truncate">{subItem.name}</span>
+                                      </span>
+                                      <div className="flex items-center gap-1.5 shrink-0 ml-1">
+                                        {subItem.tag && (
+                                          <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-md shadow-2xs ${subItem.tagColor}`}>
+                                            {subItem.tag}
+                                          </span>
+                                        )}
+                                        <ChevronRight
+                                          size={13}
+                                          className="text-[#008272] opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all shrink-0"
+                                        />
+                                      </div>
+                                    </Link>
+                                  ))}
+
+                                  {/* Col 4 featured highlight for Tools & Equipment */}
+                                  {colIdx === 3 && (
+                                    <Link
+                                      to="/services/tools-equipment"
+                                      onClick={() => setServicesHovered(false)}
+                                      className="mt-2 p-2 rounded-xl bg-gradient-to-br from-teal-50 to-emerald-50/60 border border-teal-200/70 hover:border-teal-400 transition-all flex items-center justify-between group shadow-xs"
+                                    >
+                                      <div className="flex items-center gap-2">
+                                        <div className="w-6 h-6 rounded-lg bg-[#008272] text-white flex items-center justify-center shrink-0">
+                                          <Wrench size={12} />
+                                        </div>
+                                        <div>
+                                          <p className="text-xs font-bold text-slate-900 group-hover:text-[#008272] transition-colors leading-tight">
+                                            Modern Equipment
+                                          </p>
+                                          <p className="text-[10px] text-slate-500 leading-tight">
+                                            Rehab machines &amp; tools →
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </Link>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Bottom Quick Action Bar with Theme Branding */}
+                          <div className="bg-gradient-to-r from-slate-50 via-teal-50/30 to-slate-50 border-t border-slate-100 px-6 py-3 flex flex-wrap items-center justify-between gap-3 text-xs">
+                            <div className="flex items-center gap-2 text-slate-700">
+                              <span className="w-2 h-2 rounded-full bg-[#d71920] animate-pulse shrink-0" />
+                              <span className="font-medium text-slate-600">
+                                Explore all 15+ clinical therapies:
+                              </span>
+                              <Link
+                                to="/services"
+                                onClick={() => setServicesHovered(false)}
+                                className="font-bold text-[#008272] hover:text-[#d71920] underline transition-colors"
+                              >
+                                View All Services →
+                              </Link>
+                            </div>
+
+                            <div className="flex items-center gap-3">
+                              <Link
+                                to="/services/tools-equipment"
+                                onClick={() => setServicesHovered(false)}
+                                className="inline-flex items-center gap-1.5 text-slate-600 hover:text-[#008272] font-semibold transition-colors"
+                              >
+                                <Wrench size={13} className="text-[#008272]" />
+                                <span>Advanced Equipment</span>
+                              </Link>
+                              <Link
+                                to="/booking"
+                                onClick={() => setServicesHovered(false)}
+                                className="bg-gradient-to-r from-[#d71920] to-[#008272] hover:opacity-95 text-white font-bold px-4 py-1.5 rounded-xl text-xs shadow-sm transition"
+                              >
+                                Book Consultation
+                              </Link>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </li>
+                );
+              }
+
               return (
                 <motion.li
                   key={item.id}
@@ -241,6 +532,83 @@ const Navbar = () => {
             <ul className="flex flex-col gap-1.5">
               {NAVIGATION.map((item) => {
                 const active = isActive(item.path);
+                const isServices = item.path === "/services";
+
+                if (isServices) {
+                  return (
+                    <li key={item.id} className="flex flex-col">
+                      <div className="flex items-center justify-between">
+                        <Link
+                          to={item.path}
+                          onClick={() => setOpen(false)}
+                          className={`
+                            flex-1 py-2.5 px-3 xs:px-3.5 rounded-lg font-semibold text-sm transition-all duration-200
+                            ${
+                              active
+                                ? "bg-gradient-to-r from-[#d71920] to-[#008272] text-white shadow-sm"
+                                : "text-gray-700 hover:bg-teal-50 hover:text-teal-700"
+                            }
+                          `}
+                        >
+                          {getNavigationLabel(item)}
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                          className="p-2.5 text-slate-500 hover:text-teal-700 text-xs flex items-center gap-1 font-semibold"
+                          aria-label="Toggle Services List"
+                        >
+                          <span>Treatments</span>
+                          <FaChevronDown
+                            className={`transition-transform duration-200 text-[10px] ${
+                              mobileServicesOpen ? "rotate-180 text-teal-600" : ""
+                            }`}
+                          />
+                        </button>
+                      </div>
+
+                      {/* Mobile Accordion of Services */}
+                      <AnimatePresence>
+                        {mobileServicesOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="overflow-hidden pl-2 pr-1 py-2 bg-slate-50 rounded-xl my-1 border border-slate-100"
+                          >
+                            <div className="max-h-60 overflow-y-auto pr-1 divide-y divide-slate-100 text-xs">
+                              {ALL_SERVICES_FLAT.map((svc) => (
+                                <Link
+                                  key={svc.slug}
+                                  to={`/services/${svc.slug}`}
+                                  onClick={() => {
+                                    setOpen(false);
+                                    setMobileServicesOpen(false);
+                                  }}
+                                  className="block py-2 px-2.5 text-slate-700 hover:text-teal-700 hover:bg-white rounded font-medium transition"
+                                >
+                                  {svc.name}
+                                </Link>
+                              ))}
+                            </div>
+                            <Link
+                              to="/services"
+                              onClick={() => {
+                                setOpen(false);
+                                setMobileServicesOpen(false);
+                              }}
+                              className="block text-center py-2 text-xs font-bold text-teal-700 hover:underline border-t border-slate-200 mt-2"
+                            >
+                              View All 20+ Treatments →
+                            </Link>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </li>
+                  );
+                }
+
                 return (
                   <li key={item.id}>
                     <Link

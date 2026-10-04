@@ -211,8 +211,9 @@ const AppointmentsTable = ({
                 <span className="text-[10px] uppercase font-bold text-slate-400 block">
                   Date
                 </span>
-                <span className="font-semibold text-slate-700 truncate block">
-                  📅 {app.date || "Upcoming"}
+                <span className="font-semibold text-slate-700 truncate flex items-center gap-1">
+                  <Calendar size={13} className="text-slate-400 shrink-0" />
+                  <span>{app.date || "Upcoming"}</span>
                 </span>
               </div>
 
@@ -220,8 +221,9 @@ const AppointmentsTable = ({
                 <span className="text-[10px] uppercase font-bold text-slate-400 block">
                   Slot
                 </span>
-                <span className="font-semibold text-slate-700 truncate block">
-                  ⏰ {app.time || "Clinic Hours"}
+                <span className="font-semibold text-slate-700 truncate flex items-center gap-1">
+                  <Clock size={13} className="text-slate-400 shrink-0" />
+                  <span>{app.time || "Clinic Hours"}</span>
                 </span>
               </div>
             </div>
@@ -337,8 +339,14 @@ const AppointmentsTable = ({
                 {/* Schedule */}
                 <td className="py-3.5 px-4">
                   <div className="space-y-0.5 text-xs">
-                    <p className="font-semibold text-slate-800">📅 {app.date || "Upcoming"}</p>
-                    <p className="text-slate-500">⏰ {app.time || "Clinic Hours"}</p>
+                    <p className="font-semibold text-slate-800 flex items-center gap-1">
+                      <Calendar size={13} className="text-slate-400 shrink-0" />
+                      <span>{app.date || "Upcoming"}</span>
+                    </p>
+                    <p className="text-slate-500 flex items-center gap-1">
+                      <Clock size={13} className="text-slate-400 shrink-0" />
+                      <span>{app.time || "Clinic Hours"}</span>
+                    </p>
                   </div>
                 </td>
 
@@ -625,12 +633,18 @@ const AppointmentsTable = ({
 
                 <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
                   <span className="text-[10px] font-bold text-slate-400 uppercase block">Date</span>
-                  <strong className="text-slate-800">📅 {viewAppointment.date || "Upcoming"}</strong>
+                  <strong className="text-slate-800 flex items-center gap-1.5 mt-0.5">
+                    <Calendar size={14} className="text-slate-400 shrink-0" />
+                    <span>{viewAppointment.date || "Upcoming"}</span>
+                  </strong>
                 </div>
 
                 <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
                   <span className="text-[10px] font-bold text-slate-400 uppercase block">Time Slot</span>
-                  <strong className="text-slate-800">⏰ {viewAppointment.time || "Clinic Hours"}</strong>
+                  <strong className="text-slate-800 flex items-center gap-1.5 mt-0.5">
+                    <Clock size={14} className="text-slate-400 shrink-0" />
+                    <span>{viewAppointment.time || "Clinic Hours"}</span>
+                  </strong>
                 </div>
               </div>
 

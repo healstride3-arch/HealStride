@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import { useTranslation } from "react-i18next";
+import SectionHeader from "../common/SectionHeader";
 import "swiper/css";
 
 import treatment1 from "../../assets/images/treatment1.jpg";
@@ -114,25 +115,11 @@ const TreatmentSlider = () => {
     <section className="bg-slate-50 py-6 sm:py-8 lg:py-10 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-6 sm:mb-8"
-        >
-          <p className="text-teal-600 uppercase tracking-wider font-semibold text-xs sm:text-sm">
-            {t("treatmentSlider.badge")}
-          </p>
-
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 text-slate-900 leading-tight">
-            {t("treatmentSlider.title")}
-          </h2>
-
-          <p className="text-slate-600 mt-2.5 sm:mt-3 max-w-2xl mx-auto text-xs sm:text-base leading-relaxed">
-            {t("treatmentSlider.subtitle")}
-          </p>
-        </motion.div>
+        <SectionHeader
+          badge={t("treatmentSlider.badge")}
+          title={t("treatmentSlider.title")}
+          subtitle={t("treatmentSlider.subtitle")}
+        />
 
         {/* Slider Container */}
         <div className="w-full max-w-full overflow-hidden">

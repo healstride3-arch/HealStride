@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import BlogCard from "./BlogCard";
 import BlogModal from "./BlogModal";
+import SectionHeader from "../common/SectionHeader";
 import { useState } from "react";
 import { blogs as staticBlogs } from "../../data/blogs";
 import { ChevronDown, Sparkles } from "lucide-react";
@@ -35,25 +36,14 @@ const BlogSection = ({
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-8 sm:mb-10 max-w-3xl mx-auto"
-        >
-          <span className="inline-block px-3.5 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs sm:text-sm font-semibold uppercase tracking-wider mb-2">
-            {t("blogSection.badge", "Health & Wellness")}
-          </span>
-
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight">
-            {t("blogSection.title", "Latest Physiotherapy Articles & Health Tips")}
-          </h2>
-
-          <p className="text-slate-600 mt-2.5 text-xs sm:text-base leading-relaxed">
-            {t("blogSection.subtitle", "Expert guidance, home exercise tips, and evidence-based recovery advice from our specialists.")}
-          </p>
-        </motion.div>
+        <SectionHeader
+          badge={t("blogSection.badge", "Health & Wellness")}
+          title={t("blogSection.title", "Latest Physiotherapy Articles & Health Tips")}
+          subtitle={t(
+            "blogSection.subtitle",
+            "Expert guidance, home exercise tips, and evidence-based recovery advice from our specialists."
+          )}
+        />
 
         {/* Blog Cards */}
         <motion.div

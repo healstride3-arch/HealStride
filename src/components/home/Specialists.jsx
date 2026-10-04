@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { UserRound, CalendarCheck, ArrowRight, BadgeCheck } from "lucide-react";
 import { doctors as defaultDoctors, getDoctorLocalizedName } from "../../data/team";
 import { useFirestoreCollection, where } from "../../hooks/useFirestoreCollection";
+import SectionHeader from "../common/SectionHeader";
 
 const Specialists = ({ limit = 3 }) => {
   const { t, i18n } = useTranslation();
@@ -18,28 +19,14 @@ const Specialists = ({ limit = 3 }) => {
     <section className="py-8 sm:py-12 lg:py-16 bg-white border-b border-slate-100 overflow-hidden">
       <div className="max-w-7xl mx-auto px-3 xs:px-4 sm:px-6 lg:px-8">
         {/* Section Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-6 sm:mb-12 max-w-3xl mx-auto"
-        >
-          <p className="text-[11px] xs:text-xs sm:text-sm font-semibold tracking-[0.25em] text-teal-600 uppercase mb-2 sm:mb-3">
-            {t("specialists.badge", "Meet Our Doctors")}
-          </p>
-
-          <h2 className="text-xl xs:text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight">
-            {t("specialists.title", "Meet Our Expert Physiotherapists")}
-          </h2>
-
-          <p className="mt-2 xs:mt-2.5 sm:mt-3 text-slate-600 text-xs sm:text-base leading-relaxed max-w-2xl mx-auto">
-            {t(
-              "specialists.subtitle",
-              "Meet our certified and experienced physiotherapists dedicated to personalized patient care and rapid recovery."
-            )}
-          </p>
-        </motion.div>
+        <SectionHeader
+          badge={t("specialists.badge", "Meet Our Doctors")}
+          title={t("specialists.title", "Meet Our Expert Physiotherapists")}
+          subtitle={t(
+            "specialists.subtitle",
+            "Meet our certified and experienced physiotherapists dedicated to personalized patient care and rapid recovery."
+          )}
+        />
 
         {/* Centered Cards Container */}
         <div className="flex flex-wrap justify-center items-stretch gap-5 sm:gap-6 lg:gap-8">

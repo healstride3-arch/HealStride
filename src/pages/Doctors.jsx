@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { CalendarCheck, ArrowRight, ShieldCheck, Award, HeartPulse, UserRound } from "lucide-react";
+import { CalendarCheck, ArrowRight, ShieldCheck, Award, HeartPulse, UserRound, Calendar, Phone } from "lucide-react";
+import AnimatedCounter from "../components/common/AnimatedCounter";
 import { doctors as defaultDoctors, getDoctorLocalizedName } from "../data/team";
 import { useFirestoreCollection, where } from "../hooks/useFirestoreCollection";
 import { useFirestoreDoc } from "../hooks/useFirestoreDoc";
 import SEO from "../components/common/SEO";
+import SectionHeader from "../components/common/SectionHeader";
 
 const Doctors = () => {
   const { t, i18n } = useTranslation();
@@ -25,47 +27,143 @@ const Doctors = () => {
         description="Meet Dr. MD Rashid (MPT Sports) and our certified physiotherapy team at Heal Stride Bhopal. Specialized in sports rehabilitation, dry needling, cupping, and non-invasive pain relief."
         keywords="Physiotherapist in Bhopal, Dr MD Rashid, Dr Wajhul Qamar, Sports Physiotherapy Bhopal, Cupping Specialist Bhopal, Dry Needling Bhopal"
       />
-      {/* Top Hero Section - Matching Services & About Standard Spacing */}
-      <section className="relative bg-gradient-to-b from-slate-900 via-slate-900 to-teal-950 text-white py-10 xs:py-14 sm:py-20 overflow-hidden">
-        {/* Ambient Glows */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-teal-500/15 blur-3xl rounded-full pointer-events-none" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/10 blur-3xl rounded-full pointer-events-none" />
+      {/* Full-Width Background Banner with Dark Overlay */}
+      <section className="relative w-full min-h-[calc(100vh-90px)] flex flex-col justify-center py-6 sm:py-8 lg:py-10 overflow-hidden border-b border-slate-800 bg-slate-950">
+        {/* Full-Width Background Photo */}
+        <div className="absolute inset-0">
+          <img
+            src="/doctors-hero-bg.jpg"
+            alt="Heal Stride Medical Team Bhopal"
+            className="w-full h-full object-cover object-center opacity-45 brightness-90 contrast-110"
+          />
+        </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-3 xs:px-4 sm:px-6 lg:px-8 text-center">
+        {/* Dark Gradient Overlay for Maximum Text Clarity */}
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/85 via-slate-950/70 to-slate-950/95" />
+
+        {/* Subtle brand ambient glow accents */}
+        <div className="absolute -top-24 left-1/4 w-96 h-96 bg-red-600/15 blur-3xl rounded-full pointer-events-none" />
+        <div className="absolute -bottom-24 right-1/4 w-96 h-96 bg-teal-500/15 blur-3xl rounded-full pointer-events-none" />
+
+        {/* Content Container - Vertically centered with ample breathing room */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center my-auto">
           <motion.div
-            initial={{ opacity: 0, y: 25 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-3xl mx-auto"
+            transition={{ duration: 0.5 }}
+            className="max-w-4xl mx-auto flex flex-col items-center"
           >
-            <span className="inline-block px-3.5 xs:px-4 py-1.5 rounded-full bg-teal-500/20 border border-teal-400/30 text-teal-300 text-[11px] xs:text-xs sm:text-sm font-semibold uppercase tracking-wider mb-3 xs:mb-4 backdrop-blur-md">
-              {t("doctorsPage.badge", "HealStride Medical Team")}
-            </span>
+            {/* Pill Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 shadow-lg mb-3 sm:mb-3.5 w-fit backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-[#d71920] animate-pulse" />
+              <span className="uppercase tracking-wider font-bold text-xs text-teal-300">
+                {t("doctorsPage.badge", "Heal Stride Medical Team • Bhopal")}
+              </span>
+            </div>
 
-            <h1 className="text-2xl xs:text-3xl sm:text-5xl lg:text-6xl font-bold leading-tight bg-gradient-to-r from-teal-200 via-white to-teal-300 bg-clip-text text-transparent break-words">
-              {t("doctorsPage.title", "Meet Our Expert Physiotherapists")}
+            {/* Main Headline */}
+            <h1 className="text-3xl sm:text-5xl lg:text-[52px] font-black text-white tracking-tight leading-tight">
+              {t("doctorsPage.titlePrefix", "Meet Our Expert")}{" "}
+              <span className="bg-gradient-to-r from-red-400 via-rose-300 to-teal-300 bg-clip-text text-transparent">
+                Physiotherapists &amp; Specialists
+              </span>
             </h1>
 
-            <p className="mt-3 sm:mt-4 text-slate-300 text-xs xs:text-sm sm:text-base lg:text-lg leading-relaxed max-w-2xl mx-auto">
+            {/* Subtitle */}
+            <p className="mt-3 text-sm sm:text-base lg:text-lg text-slate-200 max-w-2xl leading-relaxed font-normal">
               {t(
                 "doctorsPage.subtitle",
-                "Certified, dedicated specialists providing evidence-based pain relief, sports injury rehabilitation, and individualized healing plans."
+                "Certified, university-trained specialists providing evidence-based pain relief, sports injury rehabilitation, and dedicated 1-on-1 care."
               )}
             </p>
 
-            {/* Trust Badges Strip */}
-            <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-2 xs:gap-3 sm:gap-6 text-[11px] xs:text-xs sm:text-sm text-slate-200">
-              <div className="flex items-center gap-1.5 xs:gap-2 bg-white/10 backdrop-blur-md px-2.5 xs:px-3.5 py-1.5 rounded-full border border-white/15">
-                <Award className="w-3.5 h-3.5 xs:w-4 xs:h-4 text-teal-400 shrink-0" />
-                <span>Verified Senior Specialists</span>
+            {/* Action Buttons: Direct Booking to /booking */}
+            <div className="mt-5 sm:mt-6 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+              <Link
+                to="/booking"
+                className="inline-flex items-center justify-center gap-2 bg-[#F59E0B] hover:bg-[#D97706] active:scale-[0.98] text-slate-950 font-black text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg transition-all cursor-pointer"
+              >
+                <Calendar size={16} className="shrink-0" />
+                <span>Book Appointment</span>
+              </Link>
+
+              <a
+                href={`https://wa.me/91${whatsappRaw}?text=${encodeURIComponent(
+                  "Hello Heal Stride Clinic, I would like to consult with Dr. MD Rashid regarding physiotherapy treatment."
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 active:scale-[0.98] text-white font-bold text-xs sm:text-sm px-5 py-3 rounded-xl border border-white/20 backdrop-blur-md shadow-md transition-all cursor-pointer"
+              >
+                <Phone size={15} className="text-emerald-400" />
+                <span>Chat on WhatsApp</span>
+              </a>
+            </div>
+
+            {/* Trust highlights */}
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-xs text-slate-300 font-medium">
+              <span className="flex items-center gap-1.5">
+                <Award size={14} className="text-emerald-400 shrink-0" />
+                <span>Verified Medical Council Registration</span>
+              </span>
+              <span className="flex items-center gap-1.5">
+                <ShieldCheck size={14} className="text-teal-400 shrink-0" />
+                <span>100% Non-Surgical Care</span>
+              </span>
+              <span className="flex items-center gap-1.5">
+                <HeartPulse size={14} className="text-rose-400 shrink-0" />
+                <span>1-on-1 Personalized Protocols</span>
+              </span>
+            </div>
+
+            {/* 4 Stats Cards - Uniform 1-Line Layout */}
+            <div className="w-full grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-6 max-w-4xl mx-auto items-stretch">
+              {/* Card 1: 5+ Years Experience */}
+              <div className="bg-slate-900/85 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-3.5 text-center border border-white/15 shadow-xl hover:border-red-500/50 hover:bg-slate-800/90 transition-all flex flex-col justify-center items-center h-full min-h-[92px] sm:min-h-[102px]">
+                <div className="h-8 sm:h-9 lg:h-10 flex items-center justify-center">
+                  <p className="text-2xl sm:text-3xl lg:text-4xl font-black text-red-400 whitespace-nowrap">
+                    <AnimatedCounter target={5} suffix="+" duration={1.2} />
+                  </p>
+                </div>
+                <p className="text-[11px] sm:text-xs text-slate-300 mt-1 font-semibold leading-tight whitespace-nowrap">
+                  Years Clinical Exp.
+                </p>
               </div>
-              <div className="flex items-center gap-1.5 xs:gap-2 bg-white/10 backdrop-blur-md px-2.5 xs:px-3.5 py-1.5 rounded-full border border-white/15">
-                <ShieldCheck className="w-3.5 h-3.5 xs:w-4 xs:h-4 text-teal-400 shrink-0" />
-                <span>100% Non-Invasive Care</span>
+
+              {/* Card 2: 2500+ Patients Recovered */}
+              <div className="bg-slate-900/85 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-3.5 text-center border border-white/15 shadow-xl hover:border-teal-400/50 hover:bg-slate-800/90 transition-all flex flex-col justify-center items-center h-full min-h-[92px] sm:min-h-[102px]">
+                <div className="h-8 sm:h-9 lg:h-10 flex items-center justify-center">
+                  <p className="text-2xl sm:text-3xl lg:text-4xl font-black text-teal-400 whitespace-nowrap">
+                    <AnimatedCounter target={2500} suffix="+" duration={1.6} />
+                  </p>
+                </div>
+                <p className="text-[11px] sm:text-xs text-slate-300 mt-1 font-semibold leading-tight whitespace-nowrap">
+                  Patients Recovered
+                </p>
               </div>
-              <div className="flex items-center gap-1.5 xs:gap-2 bg-white/10 backdrop-blur-md px-2.5 xs:px-3.5 py-1.5 rounded-full border border-white/15">
-                <HeartPulse className="w-3.5 h-3.5 xs:w-4 xs:h-4 text-teal-400 shrink-0" />
-                <span>Personalized Rehab Plans</span>
+
+              {/* Card 3: MPT & BPT Qualified - Single Line Guaranteed */}
+              <div className="bg-slate-900/85 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-3.5 text-center border border-white/15 shadow-xl hover:border-amber-400/50 hover:bg-slate-800/90 transition-all flex flex-col justify-center items-center h-full min-h-[92px] sm:min-h-[102px]">
+                <div className="h-8 sm:h-9 lg:h-10 flex items-center justify-center">
+                  <p className="text-lg sm:text-xl lg:text-2xl font-black text-amber-400 whitespace-nowrap tracking-tight">
+                    MPT &amp; BPT
+                  </p>
+                </div>
+                <p className="text-[11px] sm:text-xs text-slate-300 mt-1 font-semibold leading-tight whitespace-nowrap">
+                  Certified Specialists
+                </p>
+              </div>
+
+              {/* Card 4: 1-on-1 Care */}
+              <div className="bg-slate-900/85 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-3.5 text-center border border-white/15 shadow-xl hover:border-cyan-400/50 hover:bg-slate-800/90 transition-all flex flex-col justify-center items-center h-full min-h-[92px] sm:min-h-[102px]">
+                <div className="h-8 sm:h-9 lg:h-10 flex items-center justify-center">
+                  <p className="text-2xl sm:text-3xl lg:text-4xl font-black text-cyan-300 whitespace-nowrap">
+                    1-on-1
+                  </p>
+                </div>
+                <p className="text-[11px] sm:text-xs text-slate-300 mt-1 font-semibold leading-tight whitespace-nowrap">
+                  Personalized Care
+                </p>
               </div>
             </div>
           </motion.div>
@@ -74,17 +172,11 @@ const Doctors = () => {
 
       {/* Doctor Cards Section - Symmetrical and Identical Design as Home/About */}
       <section className="py-8 xs:py-12 sm:py-16 px-3 xs:px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="text-center mb-6 xs:mb-8 sm:mb-10">
-          <span className="text-[11px] xs:text-xs sm:text-sm font-bold text-teal-600 uppercase tracking-widest">
-            Clinical Specialists
-          </span>
-          <h2 className="text-xl xs:text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">
-            Choose Your Specialist Doctor
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1.5 xs:mt-2 max-w-xl mx-auto">
-            Book an appointment or view detailed medical credentials, certifications, and clinical experience.
-          </p>
-        </div>
+        <SectionHeader
+          badge="Clinical Specialists"
+          title="Choose Your Specialist Doctor"
+          subtitle="Book an appointment or view detailed medical credentials, certifications, and clinical experience."
+        />
 
         {/* Doctor Cards - Centered and Symmetrical (Matching Specialists.jsx) */}
         <div className="flex flex-wrap justify-center gap-5 sm:gap-8 items-stretch">
@@ -246,16 +338,17 @@ const Doctors = () => {
           )}
         </div>
 
-        {/* Quick Consultation Help CTA Banner */}
-        <div className="mt-10 sm:mt-14 max-w-4xl mx-auto rounded-2xl xs:rounded-3xl bg-gradient-to-r from-teal-900 to-slate-900 p-4 xs:p-6 sm:p-8 text-white shadow-lg border border-teal-800/40 flex flex-col md:flex-row items-center justify-between gap-5 sm:gap-6">
+        {/* Quick Consultation Help CTA Banner - Full Width Container */}
+        <div className="mt-10 sm:mt-14 w-full rounded-2xl xs:rounded-3xl bg-gradient-to-r from-teal-900 to-slate-900 p-5 xs:p-6 sm:p-8 lg:p-10 text-white shadow-lg border border-teal-800/40 flex flex-col md:flex-row items-center justify-between gap-5 sm:gap-6">
           <div className="text-center md:text-left">
-            <span className="inline-block px-2.5 xs:px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 text-[10px] xs:text-xs font-semibold mb-2">
-              Need Assistance?
-            </span>
-            <h3 className="text-lg xs:text-xl sm:text-2xl font-bold">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-teal-300 text-[10px] xs:text-xs font-semibold mb-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#d71920] animate-pulse" />
+              <span>Need Assistance?</span>
+            </div>
+            <h3 className="text-lg xs:text-xl sm:text-2xl lg:text-3xl font-bold">
               Not Sure Which Specialist to Consult?
             </h3>
-            <p className="text-[11px] xs:text-xs sm:text-sm text-slate-300 mt-1 max-w-md">
+            <p className="text-[11px] xs:text-xs sm:text-sm text-slate-300 mt-1 max-w-xl">
               Speak directly with our clinic helpdesk or chat on WhatsApp to get matched with the right specialist.
             </p>
           </div>
@@ -267,7 +360,7 @@ const Doctors = () => {
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white px-4 xs:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm shadow-md transition text-center"
+              className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm shadow-md transition text-center"
             >
               <img src="/whatsapp.png" alt="WhatsApp" className="w-4 h-4 object-contain shrink-0" />
               <span>WhatsApp Us</span>
@@ -275,7 +368,7 @@ const Doctors = () => {
 
             <a
               href={`tel:${phoneRaw}`}
-              className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white px-4 xs:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm backdrop-blur-sm shadow-md transition text-center"
+              className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm backdrop-blur-sm shadow-md transition text-center"
             >
               <img src="/call.png" alt="Call" className="w-4 h-4 object-contain shrink-0" />
               <span>Call Clinic</span>

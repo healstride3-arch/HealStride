@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { googleReviews as defaultReviews } from "../../data/googleReviews";
 import { useFirestoreCollection, where } from "../../hooks/useFirestoreCollection";
+import SectionHeader from "../common/SectionHeader";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
@@ -58,69 +59,12 @@ const Testimonials = () => {
     <section className="py-10 sm:py-16 lg:py-20 bg-slate-50 border-b border-slate-100 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-8 sm:mb-12 max-w-3xl mx-auto"
-        >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs sm:text-sm font-semibold uppercase tracking-wider mb-3">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-            <span>{t("testimonials.liveReviewsBadge")}</span>
-          </div>
-
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight">
-            {t("testimonials.liveReviewsTitle")}
-          </h2>
-
-          <p className="text-slate-600 mt-2.5 text-xs sm:text-base leading-relaxed">
-            {t("testimonials.liveReviewsSubtitle")}
-          </p>
-
-          {/* Google Business Live Summary Card */}
-          <div className="mt-6 bg-white rounded-2xl border border-teal-500/40 p-4 sm:p-5 shadow-sm max-w-2xl mx-auto">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              {/* Left Rating Info */}
-              <div className="flex items-center gap-3.5 text-left">
-                <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-2xl flex-shrink-0 shadow-sm">
-                  <FcGoogle />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xl sm:text-2xl font-extrabold text-slate-900">4.7</span>
-                    <div className="flex text-amber-400 text-sm gap-0.5">
-                      <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />
-                    </div>
-                  </div>
-                  <p className="text-xs text-slate-500 font-medium mt-0.5">
-                    {t("testimonials.ratingSummary")}
-                  </p>
-                </div>
-              </div>
-
-              {/* Right CTA */}
-              <div className="flex items-center gap-2 w-full sm:w-auto">
-                <a
-                  href={GOOGLE_MAPS_REVIEW_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-teal-600 hover:bg-teal-700 text-white px-4 py-2.5 rounded-xl font-semibold text-xs sm:text-sm transition-colors shadow-sm"
-                >
-                  <FcGoogle className="bg-white rounded-full p-0.5 text-base" />
-                  <span>{t("testimonials.reviewOnGoogle")}</span>
-                  <FaExternalLinkAlt className="text-[10px]" />
-                </a>
-              </div>
-            </div>
-
-            {/* Address Banner */}
-            <div className="mt-3.5 pt-3 border-t border-slate-100 flex items-center justify-center sm:justify-start gap-1.5 text-[11px] sm:text-xs text-slate-600 text-center sm:text-left">
-              <FaMapMarkerAlt className="text-red-600 flex-shrink-0" />
-              <span>{settings.address}</span>
-            </div>
-          </div>
-        </motion.div>
+        <SectionHeader
+          badge={t("testimonials.liveReviewsBadge")}
+          title={t("testimonials.liveReviewsTitle")}
+          subtitle={t("testimonials.liveReviewsSubtitle")}
+          className="mb-6 sm:mb-8"
+        />
 
         {/* Filter Badges */}
         <div className="flex flex-wrap items-center justify-center gap-2 mb-8 sm:mb-10">

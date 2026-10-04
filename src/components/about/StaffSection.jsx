@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { staff as defaultStaff, getStaffLocalizedRole } from "../../data/team";
 import { useFirestoreCollection, where } from "../../hooks/useFirestoreCollection";
+import SectionHeader from "../common/SectionHeader";
 
 const StaffSection = () => {
   const { t, i18n } = useTranslation();
@@ -29,21 +30,11 @@ const StaffSection = () => {
   return (
     <section className="py-6 sm:py-8 lg:py-10 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-
-        {/* Section Heading */}
-        <div className="text-center mb-8 sm:mb-12">
-          <p className="text-xs sm:text-sm font-semibold tracking-[0.25em] text-teal-600 uppercase mb-2">
-            {t("staffSection.badge", "Meet Our Team")}
-          </p>
-
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
-            {t("staffSection.title", "Our Clinic Support Staff")}
-          </h2>
-
-          <p className="mt-2.5 max-w-2xl mx-auto text-xs sm:text-base text-gray-600">
-            {t("staffSection.subtitle", "Meet our dedicated clinic assistants and coordinators.")}
-          </p>
-        </div>
+        <SectionHeader
+          badge={t("staffSection.badge", "Meet Our Team")}
+          title={t("staffSection.title", "Our Clinic Support Staff")}
+          subtitle={t("staffSection.subtitle", "Meet our dedicated clinic assistants and coordinators.")}
+        />
 
         {/* Staff Cards */}
         <div className="flex flex-wrap justify-center items-stretch gap-6 lg:gap-8">

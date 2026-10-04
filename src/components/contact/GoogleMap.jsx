@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { useClinicSettings } from "../../hooks/useClinicSettings";
+import SectionHeader from "../common/SectionHeader";
 
 const GoogleMap = () => {
   const { data: settings } = useClinicSettings();
@@ -13,34 +14,19 @@ const GoogleMap = () => {
   return (
     <section className="py-6 sm:py-8 lg:py-10 bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-8 sm:mb-12"
-        >
-          <p className="uppercase tracking-wider text-teal-700 font-semibold text-xs sm:text-sm">
-            OUR LOCATION
-          </p>
+        <SectionHeader
+          badge="OUR LOCATION"
+          title="Visit Heal Stride Clinic"
+          subtitle="Find Heal Stride Physiotherapy & Wellness Centre in Bhopal and experience expert physiotherapy care in a comfortable, modern, and patient-friendly environment."
+        />
 
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mt-2 leading-tight">
-            Visit Heal Stride Clinic
-          </h2>
-
-          <p className="text-slate-600 mt-2.5 sm:mt-3 max-w-2xl mx-auto text-xs sm:text-base leading-relaxed">
-            Find Heal Stride Physiotherapy &amp; Wellness Centre in Bhopal and
-            experience expert physiotherapy care in a comfortable,
-            modern, and patient-friendly environment.
-          </p>
-
-          {/* Live Address Badge */}
-          <div className="mt-3.5 inline-flex items-center justify-center gap-2 bg-white px-4 py-2 rounded-full border border-slate-200 text-xs sm:text-sm text-slate-700 shadow-sm font-medium">
+        {/* Live Address Badge */}
+        <div className="text-center -mt-4 sm:-mt-6 mb-8 sm:mb-12">
+          <div className="inline-flex items-center justify-center gap-2 bg-white px-4 py-2 rounded-full border border-slate-200 text-xs sm:text-sm text-slate-700 shadow-sm font-medium">
             <FaMapMarkerAlt className="text-red-600 shrink-0" />
             <span>{settings.address}</span>
           </div>
-        </motion.div>
+        </div>
 
         {/* Google Map */}
         <motion.div

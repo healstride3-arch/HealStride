@@ -1,224 +1,32 @@
+import SectionHeader from "../common/SectionHeader";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Clock, Check } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useFirestoreCollection, where } from "../../hooks/useFirestoreCollection";
-
+import { useFirestoreCollection } from "../../hooks/useFirestoreCollection";
+import { ALL_SERVICES } from "../../data/servicesData";
 import treatment1 from "../../assets/images/treatment1.jpg";
-import treatment2 from "../../assets/images/treatment2.jpg";
-import treatment3 from "../../assets/images/treatment3.jpg";
-import treatment5 from "../../assets/images/treatment5.jpg";
-import treatment6 from "../../assets/images/treatment6.jpg";
-import treatment7 from "../../assets/images/treatment7.jpg";
-import neckpain from "../../assets/images/neckpain.jpg";
-import backpain from "../../assets/images/backpain.jpg";
-import kneepain from "../../assets/images/kneepain.jpg";
-import tenniselbow from "../../assets/images/tenniselbow.jpg";
-import plantarfasciitis from "../../assets/images/plantarfasciitis.jpg";
-import frozenshoulder from "../../assets/images/frozenshoulder.jpg";
-import osteoarthritis from "../../assets/images/Osteoarthritis.jpg";
-import sciaticapain from "../../assets/images/sciaticapain.jpg";
-import strokerehab from "../../assets/images/strokerehab.jpg";
-import sportsinjury from "../../assets/images/sportsinjury.jpg";
-import postsurgeryrehab from "../../assets/images/postsurgeryrehab.jpg";
 
-const defaultServices = [
-  {
-    id: "cervical-pain",
-    title: "Cervical Pain Treatment",
-    category: "spine",
-    categoryLabel: "Back & Cervical",
-    slug: "cervical-pain",
-    imageUrl: neckpain,
-    description: "Specialized therapy to relieve neck stiffness, cervical nerve compression, and posture-related pain.",
-    benefits: ["Relieves neck & upper back stiffness", "Reduces radiating arm pain & tingling", "Restores head & neck movement"],
-    duration: "45-60 mins",
-  },
-  {
-    id: "back-pain",
-    title: "Back Pain Relief",
-    category: "spine",
-    categoryLabel: "Back & Cervical",
-    slug: "back-pain",
-    imageUrl: backpain,
-    description: "Comprehensive physical therapy for acute/chronic lumbar pain, disc herniation, and back mobility.",
-    benefits: ["Rapid back pain relief", "Core & lower back strengthening", "Prevents recurring back spasms"],
-    duration: "45-60 mins",
-  },
-  {
-    id: "knee-pain",
-    title: "Knee Pain Care",
-    category: "joints",
-    categoryLabel: "Joint & Muscle",
-    slug: "knee-pain",
-    imageUrl: kneepain,
-    description: "Targeted rehabilitation for knee arthritis, ligament sprains (ACL/MCL), and joint stiffness.",
-    benefits: ["Reduces joint swelling & pain", "Improves walking stability", "Strengthens quadriceps & hamstrings"],
-    duration: "45-60 mins",
-  },
-  {
-    id: "tennis-elbow",
-    title: "Tennis Elbow Therapy",
-    category: "joints",
-    categoryLabel: "Joint & Muscle",
-    slug: "tennis-elbow",
-    imageUrl: tenniselbow,
-    description: "Effective tendon rehab and strengthening for forearm muscle strain and elbow joint inflammation.",
-    benefits: ["Relieves outer elbow pain", "Improves grip strength", "Speeds up tendon tissue recovery"],
-    duration: "30-45 mins",
-  },
-  {
-    id: "plantar-fasciitis",
-    title: "Plantar Fasciitis Care",
-    category: "joints",
-    categoryLabel: "Joint & Muscle",
-    slug: "plantar-fasciitis",
-    imageUrl: plantarfasciitis,
-    description: "Targeted heel pain and foot arch treatment for comfortable, pain-free morning steps and walking.",
-    benefits: ["Eases morning heel stabbing pain", "Stretches tight calf & plantar fascia", "Custom arch load distribution"],
-    duration: "30-45 mins",
-  },
-  {
-    id: "frozen-shoulder",
-    title: "Frozen Shoulder Rehab",
-    category: "joints",
-    categoryLabel: "Joint & Muscle",
-    slug: "frozen-shoulder",
-    imageUrl: frozenshoulder,
-    description: "Gentle mobilization techniques and therapeutic stretching to regain complete shoulder movement.",
-    benefits: ["Restores overhead arm range", "Alleviates persistent night ache", "Prevents joint capsule adhesions"],
-    duration: "45-60 mins",
-  },
-  {
-    id: "osteoarthritis",
-    title: "Osteoarthritis Management",
-    category: "joints",
-    categoryLabel: "Joint & Muscle",
-    slug: "osteoarthritis",
-    imageUrl: osteoarthritis,
-    description: "Therapeutic joint exercise programs to preserve cartilage, reduce stiffness, and boost strength.",
-    benefits: ["Delays joint degeneration", "Maintains independent mobility", "Reduces joint friction & pain"],
-    duration: "45-60 mins",
-  },
-  {
-    id: "sciatica",
-    title: "Sciatica Pain Therapy",
-    category: "spine",
-    categoryLabel: "Back & Cervical",
-    slug: "sciatica",
-    imageUrl: sciaticapain,
-    description: "Targeted sciatic nerve decompression, back traction, and core stabilizing exercises.",
-    benefits: ["Relieves shooting & hip pain", "Decompresses pinched back nerves", "Restores normal posture"],
-    duration: "45-60 mins",
-  },
-  {
-    id: "stroke-rehab",
-    title: "Stroke Rehabilitation",
-    category: "rehab",
-    categoryLabel: "Rehabilitation",
-    slug: "stroke-rehab",
-    imageUrl: strokerehab,
-    description: "Neurological therapy designed to help patients regain motor control, balance, and daily independence.",
-    benefits: ["Relearns motor patterns & balance", "Prevents limb spasticity & weakness", "Promotes independence"],
-    duration: "60 mins",
-  },
-  {
-    id: "sports-rehab",
-    title: "Sports Injury Rehabilitation",
-    category: "rehab",
-    categoryLabel: "Rehabilitation",
-    slug: "sports-rehab",
-    imageUrl: sportsinjury,
-    description: "High-performance recovery protocols to help athletes heal fast and prevent future sports injuries.",
-    benefits: ["Faster return to sports", "Agility and neuromuscular conditioning", "Injury prevention protocols"],
-    duration: "45-60 mins",
-  },
-  {
-    id: "post-surgery-physio",
-    title: "Post Surgery Physio",
-    category: "rehab",
-    categoryLabel: "Rehabilitation",
-    slug: "post-surgery-physio",
-    imageUrl: postsurgeryrehab,
-    description: "Guided post-operative rehabilitation for joint replacements, fracture repairs, and back surgeries.",
-    benefits: ["Safe progressive recovery", "Prevents scar tissue stiffness", "Restores muscular endurance"],
-    duration: "45-60 mins",
-  },
-  {
-    id: "pain-reduction",
-    title: "Pain Reduction Therapy",
-    category: "rehab",
-    categoryLabel: "Rehabilitation",
-    slug: "pain-reduction",
-    imageUrl: treatment6,
-    description: "Advanced modalities combined with hands-on manual techniques for swift and lasting relief.",
-    benefits: ["Non-invasive fast pain control", "Improves local blood circulation", "Decreases muscle spasms"],
-    duration: "30-45 mins",
-  },
-  {
-    id: "cupping-therapy",
-    title: "Cupping (Hijama) Therapy",
-    category: "therapies",
-    categoryLabel: "Specialized Therapy",
-    slug: "cupping-therapy",
-    imageUrl: treatment3,
-    description: "Traditional therapeutic cupping (Hijama) to release deep fascial tension, detoxify, and boost blood flow.",
-    benefits: ["Enhances cellular microcirculation", "Releases deep myofascial tension", "Accelerates natural healing"],
-    duration: "30-45 mins",
-  },
-  {
-    id: "dry-needling",
-    title: "Dry Needling Therapy",
-    category: "therapies",
-    categoryLabel: "Specialized Therapy",
-    slug: "dry-needling",
-    imageUrl: treatment2,
-    description: "Targeted fine filiform needle stimulation to deactivate painful trigger points and deep muscle knots.",
-    benefits: ["Instantly releases trigger knots", "Restores muscle length & flexibility", "Reduces referred pain"],
-    duration: "30-45 mins",
-  },
-  {
-    id: "iastm-therapy",
-    title: "IASTM Therapy",
-    category: "therapies",
-    categoryLabel: "Specialized Therapy",
-    slug: "iastm-therapy",
-    imageUrl: treatment7,
-    description: "Instrument-Assisted Soft Tissue Mobilization using ergonomic instruments for accelerated healing.",
-    benefits: ["Breaks down fascial adhesions & scar tissue", "Improves cellular repair", "Restores muscle glide"],
-    duration: "30-45 mins",
-  },
-  {
-    id: "exercise-therapy",
-    title: "Exercise Therapy For Various Conditions",
-    category: "therapies",
-    categoryLabel: "Specialized Therapy",
-    slug: "exercise-therapy",
-    imageUrl: treatment5,
-    description: "Customized therapeutic strengthening, stretching, and functional movements for every patient.",
-    benefits: ["Builds strength & functional endurance", "Corrects postural imbalances", "Prevents injury recurrence"],
-    duration: "45-60 mins",
-  },
-];
-
+// Specifically EXCLUDES: Female Chiropractor, Navel Displacement Treatment, Osteopathy
 const isExcluded = (s) => {
   const name = (s.title || s.name || s.slug || s.id || "").toLowerCase().trim();
   return (
+    name.includes("female chiro") ||
+    name.includes("female-chiro") ||
+    name.includes("navel displacement") ||
+    name.includes("navel-displacement") ||
+    name.includes("osteopathy") ||
     name === "manual therapy" ||
-    name === "manual-therapy" ||
-    name === "physiotherapy" ||
-    name === "physiotherapy services" ||
-    name === "physiotherapy-services" ||
-    name.includes("manual therapy")
+    name === "manual-therapy"
   );
 };
 
 const categories = [
-  { id: "all", labelKey: "servicesGrid.catAll" },
-  { id: "spine", labelKey: "servicesGrid.catSpine" },
-  { id: "joints", labelKey: "servicesGrid.catJoints" },
-  { id: "therapies", labelKey: "servicesGrid.catTherapies" },
-  { id: "rehab", labelKey: "servicesGrid.catRehab" },
+  { id: "all", labelKey: "servicesGrid.catAll", fallback: "All 15 Treatments" },
+  { id: "spine", labelKey: "servicesGrid.catSpine", fallback: "Spine & Posture" },
+  { id: "therapies", labelKey: "servicesGrid.catTherapies", fallback: "Advanced Therapies" },
+  { id: "rehab", labelKey: "servicesGrid.catRehab", fallback: "Rehabilitation & Care" },
 ];
 
 const ServicesGrid = () => {
@@ -228,44 +36,34 @@ const ServicesGrid = () => {
     fallback: [],
   });
 
-  // Real-time synchronization:
-  // Merges Firestore updates with baseline defaults so clinic services remain available,
-  // while any addition, edit, category change, photo update, or active toggle from Admin updates live!
+  // 15 official PainFlame services from ALL_SERVICES (canonical single source of truth)
+  // Ensures brand new AI images with Indian doctors and verified clinical content are ALWAYS displayed
   const services = (() => {
-    const map = new Map();
-    // 1. Defaults as baseline
-    defaultServices
+    return ALL_SERVICES
       .filter((s) => !isExcluded(s))
-      .forEach((s) => {
-        const key = (s.slug || s.id).toLowerCase();
-        map.set(key, { ...s });
-      });
+      .map((s) => {
+        const sKey = (s.slug || s.id).toLowerCase();
+        const fs = (rawFirestoreServices || []).find((item) => {
+          const itemKey = (item.slug || item.id || item.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+          return itemKey === sKey;
+        });
 
-    // 2. Overwrite / append from Firestore
-    (rawFirestoreServices || []).forEach((fs) => {
-      const slugKey = (fs.slug || fs.id || fs.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
-      const existing = map.get(slugKey) || map.get(fs.id) || {};
-      map.set(slugKey, {
-        ...existing,
-        ...fs,
-        id: fs.id || existing.id || slugKey,
-        slug: fs.slug || existing.slug || slugKey,
-        category: fs.category || existing.category || "therapies",
-        categoryLabel:
-          fs.categoryLabel ||
-          existing.categoryLabel ||
-          (fs.category === "spine"
-            ? "Back & Cervical"
-            : fs.category === "joints"
-            ? "Joint & Muscle"
-            : fs.category === "rehab"
-            ? "Rehabilitation"
-            : "Specialized Therapy"),
-        fromFirestore: true,
-      });
-    });
+        if (!fs) return s;
 
-    return Array.from(map.values()).filter((s) => s.active !== false && !isExcluded(s));
+        // Only accept custom uploaded images from Firebase Storage
+        const isUploadedStorageImg = fs.imageUrl && (
+          fs.imageUrl.startsWith("https://firebasestorage") ||
+          fs.imageUrl.startsWith("data:image")
+        );
+
+        return {
+          ...s,
+          active: fs.active !== undefined ? fs.active : s.active,
+          imageUrl: isUploadedStorageImg ? fs.imageUrl : s.imageUrl,
+          image: isUploadedStorageImg ? fs.imageUrl : s.imageUrl,
+        };
+      })
+      .filter((s) => s.active !== false && !isExcluded(s));
   })();
 
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -285,23 +83,11 @@ const ServicesGrid = () => {
     <section className="py-8 sm:py-12 lg:py-16 bg-slate-50 border-b border-slate-200/80 min-h-[50vh]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-8 sm:mb-10 max-w-3xl mx-auto"
-        >
-          <span className="inline-block px-3.5 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs sm:text-sm font-semibold uppercase tracking-wider mb-2">
-            {t("servicesGrid.badge")}
-          </span>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight">
-            {t("servicesGrid.title")}
-          </h2>
-          <p className="text-slate-600 mt-2.5 text-xs sm:text-base leading-relaxed">
-            {t("servicesGrid.subtitle")}
-          </p>
-        </motion.div>
+        <SectionHeader
+          badge="Evidence-Based Care"
+          title="Our Specialized Treatments & Therapies"
+          subtitle="Non-surgical, clinically validated rehabilitation programs designed for rapid pain relief and long-term joint health."
+        />
 
         {/* Filters & Search */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8 sm:mb-10">
@@ -320,7 +106,7 @@ const ServicesGrid = () => {
                   }
                 `}
               >
-                {t(cat.labelKey)}
+                {t(cat.labelKey, { defaultValue: cat.fallback })}
               </button>
             ))}
           </div>
@@ -331,8 +117,8 @@ const ServicesGrid = () => {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={t("servicesGrid.searchPlaceholder")}
-              className="w-full px-4 py-2 rounded-xl text-xs sm:text-sm bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-teal-500 transition-colors"
+              placeholder="Search treatments or pain area..."
+              className="w-full px-4 py-2 rounded-xl text-xs sm:text-sm bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-teal-500 transition-colors shadow-sm"
             />
           </div>
         </div>
@@ -340,8 +126,8 @@ const ServicesGrid = () => {
         {/* No Services Found */}
         {filteredServices.length === 0 && (
           <div className="text-center py-16 bg-white rounded-2xl border border-slate-200 max-w-md mx-auto p-6">
-            <p className="text-slate-700 font-semibold text-base mb-1">{t("servicesGrid.noServices")}</p>
-            <p className="text-slate-500 text-xs sm:text-sm mb-4">{t("servicesGrid.noServicesDesc")}</p>
+            <p className="text-slate-700 font-semibold text-base mb-1">No Treatments Found</p>
+            <p className="text-slate-500 text-xs sm:text-sm mb-4">Try searching with a different keyword or reset filters.</p>
             <button
               onClick={() => {
                 setSelectedCategory("all");
@@ -349,7 +135,7 @@ const ServicesGrid = () => {
               }}
               className="px-4 py-2 bg-teal-600 text-white rounded-lg text-xs font-semibold hover:bg-teal-700 transition cursor-pointer"
             >
-              {t("servicesGrid.resetFilters")}
+              Reset Filters
             </button>
           </div>
         )}
@@ -359,123 +145,149 @@ const ServicesGrid = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
             {filteredServices.map((service, index) => {
               const slug = (service.slug || service.id || "").toLowerCase().trim();
-              const camelKey = slug.replace(/-([a-z0-9])/g, (_, letter) => letter.toUpperCase());
-              const isHi = (i18n?.language || "").startsWith("hi");
-              const localizedTitle =
-                service.fromFirestore && service.title
-                  ? isHi && t(`servicesList.${camelKey}Title`) !== `servicesList.${camelKey}Title`
-                    ? t(`servicesList.${camelKey}Title`)
-                    : service.title
-                  : t(`servicesList.${camelKey}Title`, { defaultValue: service.title });
-              const localizedDesc =
-                service.fromFirestore && service.description
-                  ? isHi && t(`servicesList.${camelKey}Desc`) !== `servicesList.${camelKey}Desc`
-                    ? t(`servicesList.${camelKey}Desc`)
-                    : service.description
-                  : t(`servicesList.${camelKey}Desc`, { defaultValue: service.description });
+              const localizedTitle = service.title;
+              const localizedDesc = service.description;
 
               return (
-              <motion.div
-                key={service.id}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.4,
-                  delay: (index % 6) * 0.05,
-                }}
-                viewport={{ once: true }}
-                className="
-                  group
-                  bg-white
-                  rounded-2xl
-                  border
-                  border-teal-500
-                  transition-all
-                  duration-200
-                  overflow-hidden
-                  flex
-                  flex-col
-                  h-full
-                  justify-between
-                "
-              >
-                {/* Image & Badges */}
-                <div className="relative overflow-hidden h-48 sm:h-52 w-full flex-shrink-0 bg-slate-100">
-                  <img
-                    src={service.imageUrl || service.image || treatment1}
-                    alt={localizedTitle}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  {service.categoryLabel && (
-                    <div className="absolute top-3 left-3 bg-teal-600/90 backdrop-blur-sm text-white px-2.5 py-1 rounded-md text-[11px] font-semibold tracking-wide uppercase">
-                      {service.categoryLabel}
-                    </div>
-                  )}
-                  {service.duration && (
-                    <div className="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-sm text-slate-200 px-2 py-0.5 rounded text-[11px] font-medium">
-                      ⏱ {service.duration}
-                    </div>
-                  )}
-                </div>
-
-                {/* Content */}
-                <div className="p-5 flex flex-col flex-1 justify-between">
-                  <div>
-                    {/* Title */}
-                    <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-snug">
-                      {localizedTitle}
-                    </h3>
-
-                    {/* Description */}
-                    <p className="text-slate-600 mt-2 text-xs sm:text-sm leading-relaxed line-clamp-2 min-h-[38px]">
-                      {localizedDesc}
-                    </p>
-
-                    {/* Benefits */}
-                    {service.benefits?.length > 0 && (
-                      <div className="mt-3.5 pt-3 border-t border-slate-100">
-                        <ul className="text-xs text-slate-600 space-y-1.5">
-                          {service.benefits.map((benefit, i) => (
-                            <li key={i} className="flex items-start gap-1.5">
-                              <span className="text-teal-600 font-bold flex-shrink-0">✓</span>
-                              <span className="line-clamp-1">{benefit}</span>
-                            </li>
-                          ))}
-                        </ul>
+                <motion.div
+                  key={service.id || slug}
+                  initial={{ opacity: 0, y: 25 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.4,
+                    delay: (index % 6) * 0.05,
+                  }}
+                  viewport={{ once: true }}
+                  className="
+                    group
+                    bg-white
+                    rounded-2xl
+                    border
+                    border-slate-200
+                    hover:border-teal-500
+                    shadow-sm
+                    hover:shadow-md
+                    transition-all
+                    duration-200
+                    overflow-hidden
+                    flex
+                    flex-col
+                    h-full
+                    justify-between
+                  "
+                >
+                  {/* Image & Badges */}
+                  <Link
+                    to={`/services/${slug}`}
+                    className="relative overflow-hidden aspect-[4/3] w-full flex-shrink-0 bg-slate-100 block"
+                  >
+                    <img
+                      src={service.imageUrl || service.image || treatment1}
+                      alt={localizedTitle}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    {service.categoryLabel && (
+                      <div className="absolute top-3 left-3 bg-teal-600/90 backdrop-blur-sm text-white px-2.5 py-1 rounded-md text-[11px] font-semibold tracking-wide uppercase shadow-sm">
+                        {service.categoryLabel}
                       </div>
                     )}
-                  </div>
+                    {service.duration && (
+                      <div className="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-sm text-slate-200 px-2 py-0.5 rounded text-[11px] font-medium flex items-center gap-1">
+                        <Clock className="w-3 h-3 text-slate-300" />
+                        <span>{service.duration}</span>
+                      </div>
+                    )}
+                  </Link>
 
-                  {/* Appointment Button */}
-                  <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
-                    <Link
-                      to="/booking"
-                      className="
-                        inline-flex
-                        items-center
-                        justify-center
-                        gap-1.5
-                        w-full
-                        bg-teal-600
-                        hover:bg-teal-700
-                        text-white
-                        font-semibold
-                        text-xs
-                        sm:text-sm
-                        py-2.5
-                        px-4
-                        rounded-xl
-                        transition-colors
-                      "
-                    >
-                      <span>{t("servicesGrid.bookAppointment")}</span>
-                      <span>→</span>
-                    </Link>
+                  {/* Content */}
+                  <div className="p-5 flex flex-col flex-1 justify-between">
+                    <div>
+                      {/* Title */}
+                      <Link to={`/services/${slug}`} className="hover:text-teal-700 transition-colors">
+                        <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-snug">
+                          {localizedTitle}
+                        </h3>
+                      </Link>
+
+                      {/* Description */}
+                      <p className="text-slate-600 mt-2 text-xs sm:text-sm leading-relaxed line-clamp-2 min-h-[38px]">
+                        {localizedDesc}
+                      </p>
+
+                      {/* Benefits */}
+                      {service.benefits?.length > 0 && (
+                        <div className="mt-3.5 pt-3 border-t border-slate-100">
+                          <ul className="text-xs text-slate-600 space-y-1.5">
+                            {service.benefits.slice(0, 3).map((benefit, i) => (
+                              <li key={i} className="flex items-start gap-1.5">
+                                <Check className="w-3.5 h-3.5 text-teal-600 flex-shrink-0 mt-0.5" />
+                                <span className="line-clamp-1">{benefit}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Action Buttons: Details & Book Appointment */}
+                    <div className="mt-5 pt-3 border-t border-slate-100 flex items-center gap-2">
+                      <Link
+                        to={`/services/${slug}`}
+                        className="
+                          flex-1
+                          inline-flex
+                          items-center
+                          justify-center
+                          gap-1
+                          bg-teal-50
+                          hover:bg-teal-100
+                          text-teal-700
+                          font-semibold
+                          text-xs
+                          sm:text-sm
+                          py-2.5
+                          px-3
+                          rounded-xl
+                          transition-colors
+                          border
+                          border-teal-200
+                        "
+                      >
+                        <span>Details</span>
+                        <span>→</span>
+                      </Link>
+
+                      <Link
+                        to="/booking"
+                        className="
+                          flex-1
+                          inline-flex
+                          items-center
+                          justify-center
+                          gap-1
+                          bg-gradient-to-r
+                          from-[#d71920]
+                          to-[#008272]
+                          hover:from-[#b91c1c]
+                          hover:to-[#0f766e]
+                          text-white
+                          font-semibold
+                          text-xs
+                          sm:text-sm
+                          py-2.5
+                          px-3
+                          rounded-xl
+                          transition-opacity
+                          shadow-sm
+                        "
+                      >
+                        <span>Book</span>
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            );
-          })}
+                </motion.div>
+              );
+            })}
           </div>
         )}
       </div>

@@ -7,6 +7,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import SectionHeader from "../common/SectionHeader";
 
 const stepsData = [
   {
@@ -37,21 +38,11 @@ const TreatmentProcess = () => {
   return (
     <section className="py-8 sm:py-12 lg:py-16 bg-gradient-to-b from-teal-50/40 via-white to-white">
       <div className="max-w-7xl mx-auto px-4">
-
-        {/* Heading */}
-        <div className="text-center mb-8 sm:mb-12">
-          <span className="text-[#d71920] font-bold uppercase tracking-wider text-xs sm:text-sm">
-            {t("treatmentProcess.badge")}
-          </span>
-
-          <h2 className="mt-3 text-4xl md:text-5xl font-bold text-slate-800">
-            {t("treatmentProcess.title")}
-          </h2>
-
-          <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
-            {t("treatmentProcess.subtitle")}
-          </p>
-        </div>
+        <SectionHeader
+          badge={t("treatmentProcess.badge")}
+          title={t("treatmentProcess.title")}
+          subtitle={t("treatmentProcess.subtitle")}
+        />
 
         {/* Timeline */}
         <div className="grid md:grid-cols-4 gap-8 relative">

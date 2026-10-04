@@ -1,3 +1,4 @@
+import SectionHeader from "../components/common/SectionHeader";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -26,19 +27,11 @@ const Blogs = () => {
         </div>
 
         {/* Page Header */}
-        <div className="text-center mb-8 sm:mb-12">
-          <p className="text-teal-600 font-semibold uppercase tracking-wider text-xs sm:text-sm">
-            {t("blogsPage.badge")}
-          </p>
-
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 text-slate-900 leading-tight">
-            {t("blogsPage.title")}
-          </h1>
-
-          <p className="text-slate-600 text-xs sm:text-base mt-2.5 sm:mt-3 max-w-2xl mx-auto leading-relaxed">
-            {t("blogsPage.subtitle")}
-          </p>
-        </div>
+        <SectionHeader
+          badge={t("blogsPage.badge")}
+          title={t("blogsPage.title")}
+          subtitle={t("blogsPage.subtitle")}
+        />
 
         {/* Blogs */}
         {blogs.length === 0 ? (

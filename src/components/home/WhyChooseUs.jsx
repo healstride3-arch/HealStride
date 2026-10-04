@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import SectionHeader from "../common/SectionHeader";
 
 const featuresData = [
   {
@@ -49,21 +50,11 @@ const WhyChooseUs = () => {
     <section className="py-6 sm:py-8 lg:py-10 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-6 sm:mb-8">
-          <p className="uppercase tracking-wider text-teal-600 font-semibold text-xs sm:text-sm">
-            {t("whyChooseUs.badge")}
-          </p>
-
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 text-slate-900 leading-tight">
-            {t("whyChooseUs.title")}
-          </h2>
-
-          <div className="w-16 h-1 bg-gradient-to-r from-[#d71920] to-[#008272] rounded-full mx-auto my-3"></div>
-
-          <p className="text-slate-600 max-w-2xl mx-auto text-xs sm:text-base leading-relaxed">
-            {t("whyChooseUs.subtitle")}
-          </p>
-        </div>
+        <SectionHeader
+          badge={t("whyChooseUs.badge")}
+          title={t("whyChooseUs.title")}
+          subtitle={t("whyChooseUs.subtitle")}
+        />
 
         {/* Feature Benefit Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 items-stretch">

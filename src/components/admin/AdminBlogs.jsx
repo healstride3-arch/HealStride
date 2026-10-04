@@ -20,6 +20,7 @@ import {
   Pencil,
   Trash2,
   PlusIcon,
+  X,
 } from "lucide-react";
 
 import {
@@ -1506,9 +1507,7 @@ const AdminBlogs = () => {
           hover:bg-slate-100
           "
               >
-
-                ✕
-
+                <X className="w-5 h-5 mx-auto text-slate-500 hover:text-slate-800" />
               </button>
 
 
@@ -2379,9 +2378,7 @@ font-bold
                   }
 
                 >
-
-                  ✕
-
+                  <X className="w-5 h-5 text-slate-500 hover:text-slate-800" />
                 </button>
 
 

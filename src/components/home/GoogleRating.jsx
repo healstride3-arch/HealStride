@@ -1,3 +1,4 @@
+import SectionHeader from "../common/SectionHeader";
 import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -34,10 +35,13 @@ const statsData = [
 const AnimatedCounter = ({ value }) => {
   const [displayValue, setDisplayValue] = useState("0");
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const isInView = useInView(ref, { once: false, margin: "0px 0px -30px 0px", amount: 0.1 });
 
   useEffect(() => {
-    if (!isInView) return;
+    if (!isInView) {
+      setDisplayValue("0");
+      return;
+    }
     const numericTarget = parseFloat(value.replace(/[^0-9.]/g, ""));
     const hasPlus = value.includes("+");
     const isDecimal = value.includes(".");
@@ -84,25 +88,12 @@ const GoogleRating = () => {
     <section className="bg-teal-50/30 py-8 sm:py-10 lg:py-14 border-y border-slate-100/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-6 sm:mb-9"
-        >
-          <p className="text-teal-700 font-semibold uppercase tracking-wider text-xs sm:text-sm">
-            {t("googleRating.badge")}
-          </p>
-
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 text-slate-900 leading-tight">
-            {t("googleRating.title")}
-          </h2>
-
-          <p className="mt-2.5 sm:mt-3 text-slate-600 max-w-2xl mx-auto text-xs sm:text-base leading-relaxed">
-            {t("googleRating.subtitle")}
-          </p>
-        </motion.div>
+        <SectionHeader
+          badge={t("googleRating.badge")}
+          title={t("googleRating.title")}
+          subtitle={t("googleRating.subtitle")}
+          className="mb-6 sm:mb-8"
+        />
 
         {/* Equal Height Grid Cards */}
         <div className="grid grid-cols-1 mobile:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 items-stretch">
@@ -160,7 +151,7 @@ const GoogleRating = () => {
                 } tracking-tight flex items-center gap-0.5 sm:gap-1`}
               >
                 <AnimatedCounter value={item.number} />
-                {item.number === "4.9" && <span className="text-amber-400 text-base sm:text-2xl">★</span>}
+                {(item.number === "4.9" || item.number === "4.7") && <FaStar className="text-amber-400 text-sm sm:text-xl ml-1 shrink-0" />}
               </h3>
 
               {/* Stat Label (13-14px) */}
