@@ -61,9 +61,6 @@ const SERVICES_DROPDOWN_COLUMNS = [
   },
 ];
 
-// Clean slugs helper
-SERVICES_DROPDOWN_COLUMNS[0].items[0].slug = "chiropractic-treatment";
-
 const ALL_SERVICES_FLAT = SERVICES_DROPDOWN_COLUMNS.flatMap((col) => col.items);
 
 const Navbar = () => {
@@ -142,11 +139,12 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-        scrolled
-          ? "bg-white/95 backdrop-blur-md shadow-md border-b border-slate-100/80"
-          : "bg-white border-b border-slate-100 shadow-sm"
-      }`}
+      className={`sticky top-0 z-50 w-full transition-all duration-300 ${servicesHovered
+          ? "bg-white border-b border-slate-100"
+          : scrolled
+            ? "bg-white/95 backdrop-blur-md shadow-md border-b border-slate-100/80"
+            : "bg-white border-b border-slate-100 shadow-sm"
+        }`}
     >
       {/* Top Announcement Marquee */}
       <div className="bg-gradient-to-r from-slate-950 via-[#008272] to-[#d71920] text-white py-1 sm:py-1.5 overflow-hidden text-[11px] sm:text-xs font-semibold tracking-wide border-b border-white/10 select-none shadow-xs">
@@ -239,22 +237,20 @@ const Navbar = () => {
                       onClick={() => setServicesHovered(false)}
                       className={`
                         px-3 py-1.5 lg:px-3.5 xl:px-4 xl:py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all duration-200 flex items-center gap-1.5 whitespace-nowrap
-                        ${
-                          active || servicesHovered
-                            ? "bg-gradient-to-r from-[#d71920] to-[#008272] text-white shadow-sm"
-                            : "text-gray-700 hover:text-teal-700 hover:bg-teal-50"
+                        ${active || servicesHovered
+                          ? "bg-gradient-to-r from-[#d71920] to-[#008272] text-white shadow-sm"
+                          : "text-gray-700 hover:text-teal-700 hover:bg-teal-50"
                         }
                       `}
                     >
                       <span>{getNavigationLabel(item)}</span>
                       <FaChevronDown
-                        className={`text-[9px] transition-transform duration-200 ${
-                          servicesHovered ? "rotate-180" : ""
-                        }`}
+                        className={`text-[9px] transition-transform duration-200 ${servicesHovered ? "rotate-180" : ""
+                          }`}
                       />
                     </Link>
 
-                    {/* Services Hover Dropdown Menu - Flush with Navbar (Zero Gap) */}
+                    {/* Services Hover Dropdown Menu - Full-Width Pure White Matching Navbar */}
                     <AnimatePresence>
                       {servicesHovered && (
                         <motion.div
@@ -265,130 +261,115 @@ const Navbar = () => {
                           onMouseEnter={handleMouseEnter}
                           onMouseLeave={handleMouseLeave}
                           className="
-                            absolute left-1/2 -translate-x-1/2 top-full z-[9999]
-                            w-[95vw] max-w-[1180px]
-                            bg-white rounded-b-2xl shadow-[0_25px_60px_-15px_rgba(0,130,114,0.22),0_15px_35px_rgba(0,0,0,0.12)]
-                            border-x border-b border-teal-500/25 overflow-hidden
+                            absolute left-0 w-full top-full z-[9999]
+                            bg-white shadow-[0_25px_50px_-12px_rgba(0,0,0,0.18)]
+                            border-b border-slate-200/90
                           "
                         >
-                          {/* Top Logo Theme Accent Gradient Border */}
-                          <div className="h-1 w-full bg-gradient-to-r from-[#d71920] via-teal-500 to-[#008272]" />
-
-                          {/* 4 Categorized Columns Grid */}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 p-5 lg:p-6 gap-5 lg:gap-6 bg-white">
-                            {SERVICES_DROPDOWN_COLUMNS.map((col, colIdx) => (
-                              <div
-                                key={colIdx}
-                                className={`flex flex-col ${
-                                  colIdx !== 0 ? "lg:border-l lg:border-slate-100 lg:pl-6" : ""
-                                }`}
-                              >
-                                {/* Column Category Header */}
-                                <div className="flex items-center gap-2.5 pb-2.5 mb-2 border-b border-slate-100">
-                                  <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${col.iconColor}`}>
-                                    <col.icon size={15} />
-                                  </div>
-                                  <div className="min-w-0">
-                                    <h4 className="text-xs font-bold text-slate-900 leading-tight truncate">
-                                      {col.title}
-                                    </h4>
-                                    <span className="text-[10px] font-semibold text-slate-400">
-                                      {col.badge}
-                                    </span>
-                                  </div>
-                                </div>
-
-                                {/* Items List */}
-                                <div className="flex flex-col space-y-0.5">
-                                  {col.items.map((subItem) => (
-                                    <Link
-                                      key={subItem.slug}
-                                      to={`/services/${subItem.slug}`}
-                                      onClick={() => setServicesHovered(false)}
-                                      className="
-                                        py-2 px-2.5 rounded-xl text-[13px] font-semibold text-slate-700
-                                        hover:text-[#008272] hover:bg-gradient-to-r hover:from-teal-50/90 hover:via-teal-50/30 hover:to-transparent
-                                        transition-all duration-150 flex items-center justify-between group
-                                        border border-transparent hover:border-teal-200/50
-                                      "
-                                    >
-                                      <span className="flex items-center gap-2 group-hover:translate-x-0.5 transition-transform duration-150 truncate">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-[#008272] transition-colors shrink-0" />
-                                        <span className="truncate">{subItem.name}</span>
+                          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            {/* 4 Categorized Columns Grid */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 py-6 gap-6 sm:gap-8 bg-white">
+                              {SERVICES_DROPDOWN_COLUMNS.map((col, colIdx) => (
+                                <div
+                                  key={colIdx}
+                                  className={`flex flex-col ${colIdx !== 0 ? "lg:border-l lg:border-slate-100 lg:pl-6" : ""
+                                    }`}
+                                >
+                                  {/* Column Category Header */}
+                                  <div className="flex items-center gap-2.5 pb-2.5 mb-2 border-b border-slate-100">
+                                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${col.iconColor}`}>
+                                      <col.icon size={15} />
+                                    </div>
+                                    <div className="min-w-0">
+                                      <h4 className="text-xs font-bold text-slate-900 leading-tight truncate">
+                                        {col.title}
+                                      </h4>
+                                      <span className="text-[10px] font-semibold text-slate-400">
+                                        {col.badge}
                                       </span>
-                                      <div className="flex items-center gap-1.5 shrink-0 ml-1">
-                                        {subItem.tag && (
-                                          <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-md shadow-2xs ${subItem.tagColor}`}>
-                                            {subItem.tag}
-                                          </span>
-                                        )}
-                                        <ChevronRight
-                                          size={13}
-                                          className="text-[#008272] opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all shrink-0"
-                                        />
-                                      </div>
-                                    </Link>
-                                  ))}
+                                    </div>
+                                  </div>
 
-                                  {/* Col 4 featured highlight for Tools & Equipment */}
-                                  {colIdx === 3 && (
-                                    <Link
-                                      to="/services/tools-equipment"
-                                      onClick={() => setServicesHovered(false)}
-                                      className="mt-2 p-2 rounded-xl bg-gradient-to-br from-teal-50 to-emerald-50/60 border border-teal-200/70 hover:border-teal-400 transition-all flex items-center justify-between group shadow-xs"
-                                    >
-                                      <div className="flex items-center gap-2">
-                                        <div className="w-6 h-6 rounded-lg bg-[#008272] text-white flex items-center justify-center shrink-0">
-                                          <Wrench size={12} />
+                                  {/* Items List */}
+                                  <div className="flex flex-col space-y-0.5">
+                                    {col.items.map((subItem) => (
+                                      <Link
+                                        key={subItem.slug}
+                                        to={`/services/${subItem.slug}`}
+                                        onClick={() => setServicesHovered(false)}
+                                        className="
+                                          py-2 px-2.5 rounded-xl text-[13px] font-semibold text-slate-700
+                                          hover:text-[#008272] hover:bg-teal-50/70 transition-all duration-150
+                                          flex items-center gap-2 group
+                                        "
+                                      >
+                                        <span className="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-[#008272] transition-colors shrink-0" />
+                                        <span className="group-hover:translate-x-0.5 transition-transform duration-150 truncate">
+                                          {subItem.name}
+                                        </span>
+                                      </Link>
+                                    ))}
+
+                                    {/* Col 4 featured highlight for Tools & Equipment */}
+                                    {colIdx === 3 && (
+                                      <Link
+                                        to="/services/tools-equipment"
+                                        onClick={() => setServicesHovered(false)}
+                                        className="mt-2 p-2 rounded-xl bg-teal-50/60 border border-teal-200/70 hover:border-teal-400 transition-all flex items-center justify-between group shadow-xs"
+                                      >
+                                        <div className="flex items-center gap-2">
+                                          <div className="w-6 h-6 rounded-lg bg-[#008272] text-white flex items-center justify-center shrink-0">
+                                            <Wrench size={12} />
+                                          </div>
+                                          <div>
+                                            <p className="text-xs font-bold text-slate-900 group-hover:text-[#008272] transition-colors leading-tight">
+                                              Modern Equipment
+                                            </p>
+                                            <p className="text-[10px] text-slate-500 leading-tight">
+                                              Rehab machines &amp; tools →
+                                            </p>
+                                          </div>
                                         </div>
-                                        <div>
-                                          <p className="text-xs font-bold text-slate-900 group-hover:text-[#008272] transition-colors leading-tight">
-                                            Modern Equipment
-                                          </p>
-                                          <p className="text-[10px] text-slate-500 leading-tight">
-                                            Rehab machines &amp; tools →
-                                          </p>
-                                        </div>
-                                      </div>
-                                    </Link>
-                                  )}
+                                      </Link>
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            ))}
-                          </div>
-
-                          {/* Bottom Quick Action Bar with Theme Branding */}
-                          <div className="bg-gradient-to-r from-slate-50 via-teal-50/30 to-slate-50 border-t border-slate-100 px-6 py-3 flex flex-wrap items-center justify-between gap-3 text-xs">
-                            <div className="flex items-center gap-2 text-slate-700">
-                              <span className="w-2 h-2 rounded-full bg-[#d71920] animate-pulse shrink-0" />
-                              <span className="font-medium text-slate-600">
-                                Explore all 15+ clinical therapies:
-                              </span>
-                              <Link
-                                to="/services"
-                                onClick={() => setServicesHovered(false)}
-                                className="font-bold text-[#008272] hover:text-[#d71920] underline transition-colors"
-                              >
-                                View All Services →
-                              </Link>
+                              ))}
                             </div>
 
-                            <div className="flex items-center gap-3">
-                              <Link
-                                to="/services/tools-equipment"
-                                onClick={() => setServicesHovered(false)}
-                                className="inline-flex items-center gap-1.5 text-slate-600 hover:text-[#008272] font-semibold transition-colors"
-                              >
-                                <Wrench size={13} className="text-[#008272]" />
-                                <span>Advanced Equipment</span>
-                              </Link>
-                              <Link
-                                to="/booking"
-                                onClick={() => setServicesHovered(false)}
-                                className="bg-gradient-to-r from-[#d71920] to-[#008272] hover:opacity-95 text-white font-bold px-4 py-1.5 rounded-xl text-xs shadow-sm transition"
-                              >
-                                Book Consultation
-                              </Link>
+                            {/* Bottom Quick Action Bar - Pure White Matching Navbar */}
+                            <div className="border-t border-slate-100 bg-white py-3 flex flex-wrap items-center justify-between gap-3 text-xs">
+                              <div className="flex items-center gap-2 text-slate-700">
+                                <span className="w-2 h-2 rounded-full bg-[#d71920] animate-pulse shrink-0" />
+                                <span className="font-medium text-slate-600">
+                                  Explore all 15+ clinical therapies:
+                                </span>
+                                <Link
+                                  to="/services"
+                                  onClick={() => setServicesHovered(false)}
+                                  className="font-bold text-[#008272] hover:text-[#d71920] underline transition-colors"
+                                >
+                                  View All Services →
+                                </Link>
+                              </div>
+
+                              <div className="flex items-center gap-3">
+                                <Link
+                                  to="/services/tools-equipment"
+                                  onClick={() => setServicesHovered(false)}
+                                  className="inline-flex items-center gap-1.5 text-slate-600 hover:text-[#008272] font-semibold transition-colors"
+                                >
+                                  <Wrench size={13} className="text-[#008272]" />
+                                  <span>Advanced Equipment</span>
+                                </Link>
+                                <Link
+                                  to="/booking"
+                                  onClick={() => setServicesHovered(false)}
+                                  className="bg-gradient-to-r from-[#d71920] to-[#008272] hover:opacity-95 text-white font-bold px-4 py-1.5 rounded-xl text-xs shadow-sm transition"
+                                >
+                                  Book Consultation
+                                </Link>
+                              </div>
                             </div>
                           </div>
                         </motion.div>
@@ -408,10 +389,9 @@ const Navbar = () => {
                     to={item.path}
                     className={`
                       px-3 py-1.5 lg:px-3.5 xl:px-4 xl:py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all duration-200 block whitespace-nowrap
-                      ${
-                        active
-                          ? "bg-gradient-to-r from-[#d71920] to-[#008272] text-white shadow-sm"
-                          : "text-gray-700 hover:text-teal-700 hover:bg-teal-50"
+                      ${active
+                        ? "bg-gradient-to-r from-[#d71920] to-[#008272] text-white shadow-sm"
+                        : "text-gray-700 hover:text-teal-700 hover:bg-teal-50"
                       }
                     `}
                   >
@@ -543,10 +523,9 @@ const Navbar = () => {
                           onClick={() => setOpen(false)}
                           className={`
                             flex-1 py-2.5 px-3 xs:px-3.5 rounded-lg font-semibold text-sm transition-all duration-200
-                            ${
-                              active
-                                ? "bg-gradient-to-r from-[#d71920] to-[#008272] text-white shadow-sm"
-                                : "text-gray-700 hover:bg-teal-50 hover:text-teal-700"
+                            ${active
+                              ? "bg-gradient-to-r from-[#d71920] to-[#008272] text-white shadow-sm"
+                              : "text-gray-700 hover:bg-teal-50 hover:text-teal-700"
                             }
                           `}
                         >
@@ -560,9 +539,8 @@ const Navbar = () => {
                         >
                           <span>Treatments</span>
                           <FaChevronDown
-                            className={`transition-transform duration-200 text-[10px] ${
-                              mobileServicesOpen ? "rotate-180 text-teal-600" : ""
-                            }`}
+                            className={`transition-transform duration-200 text-[10px] ${mobileServicesOpen ? "rotate-180 text-teal-600" : ""
+                              }`}
                           />
                         </button>
                       </div>
@@ -616,10 +594,9 @@ const Navbar = () => {
                       onClick={() => setOpen(false)}
                       className={`
                         block py-2.5 px-3 xs:px-3.5 rounded-lg font-semibold text-sm transition-all duration-200
-                        ${
-                          active
-                            ? "bg-gradient-to-r from-[#d71920] to-[#008272] text-white shadow-sm"
-                            : "text-gray-700 hover:bg-teal-50 hover:text-teal-700"
+                        ${active
+                          ? "bg-gradient-to-r from-[#d71920] to-[#008272] text-white shadow-sm"
+                          : "text-gray-700 hover:bg-teal-50 hover:text-teal-700"
                         }
                       `}
                     >

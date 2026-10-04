@@ -164,13 +164,13 @@ const Hero = () => {
                   required
                 />
 
-                {/* Vibrant Yellow/Amber Button */}
+                {/* Logo Gradient Button */}
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="inline-flex items-center justify-center gap-2 bg-[#F59E0B] hover:bg-[#D97706] active:scale-[0.98] text-slate-950 font-black text-xs sm:text-sm px-5 sm:px-6 py-3 rounded-xl shadow-xs transition-all shrink-0 cursor-pointer"
+                  className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-[0.98] text-white font-bold text-xs sm:text-sm px-5 sm:px-6 py-3 rounded-xl shadow-md hover:shadow-lg transition-all shrink-0 cursor-pointer"
                 >
-                  <Phone size={15} className="fill-slate-950 shrink-0" />
+                  <Phone size={15} className="fill-white text-white shrink-0" />
                   <span>{submitting ? "Requesting..." : "Request A Callback"}</span>
                 </button>
               </form>

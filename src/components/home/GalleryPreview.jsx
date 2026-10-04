@@ -170,11 +170,11 @@ const GalleryPreview = () => {
               onClick={handleToggle}
               className="
                 group
-                bg-teal-600
-                hover:bg-teal-700
-                active:bg-teal-800
+                bg-gradient-to-r from-[#d71920] to-[#008272]
+                hover:from-[#b91c1c] hover:to-[#0f766e]
+                active:scale-[0.98]
                 text-white
-                font-semibold
+                font-bold
                 px-7
                 py-3.5
                 rounded-xl

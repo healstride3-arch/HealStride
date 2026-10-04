@@ -289,18 +289,21 @@ const Login = () => {
     disabled={loading}
     className="
       w-full
-      bg-teal-600
-      hover:bg-teal-700
+      bg-gradient-to-r from-[#d71920] to-[#008272]
+      hover:from-[#b91c1c] hover:to-[#0f766e]
+      active:scale-[0.99]
       text-white
       py-3
       rounded-xl
-      transition
+      shadow-md
+      hover:shadow-lg
+      transition-all
       disabled:opacity-60
       flex
       items-center
       justify-center
       gap-2
-      font-medium
+      font-bold
     "
   >
     {loading ? (

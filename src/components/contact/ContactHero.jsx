@@ -60,7 +60,7 @@ const ContactHero = () => {
           <div className="mt-5 sm:mt-6 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
             <Link
               to="/booking"
-              className="inline-flex items-center justify-center gap-2 bg-[#F59E0B] hover:bg-[#D97706] active:scale-[0.98] text-slate-950 font-black text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg transition-all cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-[0.98] text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all cursor-pointer"
             >
               <Calendar size={16} className="shrink-0" />
               <span>Book Appointment</span>

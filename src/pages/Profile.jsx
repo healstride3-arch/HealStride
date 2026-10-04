@@ -444,7 +444,7 @@ const Profile = () => {
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="w-full bg-teal-700 hover:bg-teal-800 text-white font-semibold py-2.5 rounded-lg transition disabled:opacity-60"
+                className="w-full bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-[0.98] text-white font-bold py-2.5 rounded-xl shadow-md hover:shadow-lg transition-all disabled:opacity-60 cursor-pointer"
               >
                 {saving
                   ? t("profile.saving")
@@ -504,7 +504,7 @@ const Profile = () => {
                     onClick={() =>
                       navigate("/booking")
                     }
-                    className="mt-4 bg-teal-700 text-white px-5 py-2 rounded-lg hover:bg-teal-800 transition"
+                    className="mt-4 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-95 text-white px-6 py-2.5 rounded-xl font-bold transition-all shadow-md cursor-pointer"
                   >
                     {t("profile.bookBtn")}
                   </button>

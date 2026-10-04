@@ -83,15 +83,15 @@ const ReviewCTA = () => {
               inline-flex
               items-center
               gap-2.5
-              bg-teal-600
-              hover:bg-teal-700
-              active:bg-teal-800
+              bg-gradient-to-r from-[#d71920] to-[#008272]
+              hover:from-[#b91c1c] hover:to-[#0f766e]
+              active:scale-[0.98]
               text-white
               px-5
               xs:px-7
               py-3.5
               rounded-xl
-              font-semibold
+              font-bold
               transition-all
               duration-200
               shadow-md

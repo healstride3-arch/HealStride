@@ -255,17 +255,17 @@ const OurServices = () => {
                           inline-flex
                           items-center
                           gap-1
-                          bg-teal-50
-                          hover:bg-teal-100
-                          text-teal-700
-                          px-3
+                          bg-gradient-to-r from-[#d71920] to-[#008272]
+                          hover:from-[#b91c1c] hover:to-[#0f766e]
+                          active:scale-95
+                          text-white
+                          px-3.5
                           py-1.5
                           rounded-lg
                           text-xs
                           font-bold
-                          transition
-                          border
-                          border-teal-200
+                          shadow-xs
+                          transition-all
                         "
                       >
                         <span>Book</span>
@@ -293,17 +293,18 @@ const OurServices = () => {
                 inline-flex
                 items-center
                 gap-2
-                bg-teal-600
+                bg-gradient-to-r from-[#d71920] to-[#008272]
+                hover:from-[#b91c1c] hover:to-[#0f766e]
+                active:scale-[0.98]
                 text-white
-                hover:bg-teal-700
                 px-8
                 py-3.5
                 rounded-xl
-                font-semibold
+                font-bold
                 text-sm
                 sm:text-base
-                shadow-sm
-                hover:shadow-md
+                shadow-md
+                hover:shadow-lg
                 transition-all
                 duration-200
                 group

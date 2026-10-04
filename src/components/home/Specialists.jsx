@@ -164,12 +164,14 @@ const Specialists = ({ limit = 3 }) => {
                         px-2.5 xs:px-3.5
                         py-1.5 xs:py-2
                         rounded-xl
-                        bg-teal-600
-                        hover:bg-teal-700
+                        bg-gradient-to-r from-[#d71920] to-[#008272]
+                        hover:from-[#b91c1c] hover:to-[#0f766e]
+                        active:scale-95
                         text-white
                         font-semibold
                         text-xs
-                        transition-colors
+                        shadow-xs
+                        transition-all
                       "
                     >
                       <CalendarCheck size={13} />

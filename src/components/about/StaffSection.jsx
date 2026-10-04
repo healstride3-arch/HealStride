@@ -104,7 +104,7 @@ const StaffSection = () => {
       <div className="flex justify-center mt-10">
         <button
           onClick={() => navigate("/staff")}
-          className="px-8 py-3 rounded-xl bg-teal-600 text-white font-semibold hover:bg-teal-700 transition shadow-sm cursor-pointer"
+          className="px-8 py-3 rounded-xl bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-[0.98] text-white font-bold transition-all shadow-md hover:shadow-lg cursor-pointer"
         >
           {t("staffSection.viewMore")}
         </button>

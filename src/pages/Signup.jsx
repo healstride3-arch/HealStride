@@ -141,7 +141,7 @@ const Signup = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-teal-600 text-white py-3 rounded-xl hover:bg-teal-700 font-medium transition disabled:opacity-50"
+            className="w-full bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-[0.99] text-white py-3 rounded-xl font-bold shadow-md hover:shadow-lg transition-all disabled:opacity-50"
           >
             {loading ? t("auth.creatingAccount") : t("auth.signUp")}
           </button>

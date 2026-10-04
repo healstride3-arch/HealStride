@@ -226,7 +226,7 @@ const DoctorProfile = () => {
         </p>
         <Link
           to="/doctors"
-          className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-teal-600 text-white font-semibold hover:bg-teal-700 transition"
+          className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] text-white font-semibold shadow-sm hover:shadow-md transition-all"
         >
           <ArrowLeft size={16} />
           {t("doctorProfile.back", "Back to Doctors")}
@@ -848,7 +848,7 @@ const DoctorProfile = () => {
                 {/* Book Action */}
                 <Link
                   to={`/booking?doctor=${encodeURIComponent(doctor.name || doctorLocalizedName)}`}
-                  className="mt-5 w-full inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white py-3 xs:py-3.5 rounded-xl font-bold text-xs xs:text-sm shadow-md hover:shadow-lg transition duration-200 text-center"
+                  className="mt-5 w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-[0.98] text-white py-3 xs:py-3.5 rounded-xl font-bold text-xs xs:text-sm shadow-md hover:shadow-lg transition-all duration-200 text-center"
                 >
                   <CalendarCheck size={16} />
                   <span>{t("doctorProfile.bookAppointment", "Book Appointment Now")}</span>

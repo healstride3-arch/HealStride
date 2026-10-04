@@ -76,7 +76,7 @@ const BlogSection = ({
             {visibleCount < blogs.length ? (
               <button
                 onClick={handleLoadMore}
-                className="inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white px-7 py-3.5 rounded-xl font-semibold text-xs sm:text-sm shadow-sm transition-all duration-200 cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-[0.98] text-white px-7 py-3.5 rounded-xl font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer"
               >
                 <span>{t("blogSection.loadMore", "Load More Articles")}</span>
                 <ChevronDown className="w-4 h-4" />

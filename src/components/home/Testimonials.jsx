@@ -258,7 +258,7 @@ const Testimonials = () => {
               <div className="flex justify-end pt-2">
                 <button
                   onClick={() => setSelectedReview(null)}
-                  className="bg-teal-600 hover:bg-teal-700 text-white px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-colors"
+                  className="bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-95 text-white px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all shadow-sm"
                 >
                   Close
                 </button>
