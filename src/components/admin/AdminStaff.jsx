@@ -459,7 +459,7 @@ const AdminStaff = () => {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder="e.g. Dr. Wazul Quamar"
+                  placeholder="e.g. Dr. Md Wajhul Qumar (PT)"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0f766e]"
                   required
                 />

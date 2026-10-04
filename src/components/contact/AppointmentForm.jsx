@@ -260,16 +260,16 @@ const AppointmentForm = () => {
                 </div>
               </div>
 
-              {/* Doctor 2: Dr. Wajhul Qamar */}
+              {/* Doctor 2: Dr. Md Wajhul Qumar (PT) */}
               <div className="flex flex-col mobile:flex-row mobile:items-center gap-3 bg-slate-50/80 hover:bg-teal-50/40 transition-colors p-3 rounded-xl border border-slate-200/80 text-center mobile:text-left">
                 <img
                   src={drWazulImage}
-                  alt="Dr. Wajhul Qamar (PT)"
+                  alt="Dr. Md Wajhul Qumar (PT)"
                   className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-cover border border-teal-200 shadow-sm shrink-0 mx-auto mobile:mx-0"
                 />
                 <div className="w-full">
                   <h4 className="text-sm sm:text-base font-bold text-slate-900">
-                    Dr. Wajhul Qamar (PT)
+                    Dr. Md Wajhul Qumar (PT)
                   </h4>
                   <p className="text-teal-700 text-xs font-semibold">
                     {t("appointmentForm.drWazulTitle")}
@@ -488,7 +488,7 @@ const AppointmentForm = () => {
                     >
                       <option value="Any Available Specialist">{t("appointmentForm.doctorAny")}</option>
                       <option value="Dr. MD Rashid (PT)">{t("appointmentForm.doctorRashid")}</option>
-                      <option value="Dr. Wajhul Qamar (PT)">{t("appointmentForm.doctorWazul")}</option>
+                      <option value="Dr. Md Wajhul Qumar (PT)">{t("appointmentForm.doctorWazul")}</option>
                     </select>
                   </div>
                 </div>

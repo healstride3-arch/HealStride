@@ -88,7 +88,7 @@ const AboutHero = () => {
             </span>
             <span className="flex items-center gap-1.5">
               <Star size={14} className="fill-amber-400 text-amber-400 shrink-0" />
-              <span>5.0 Rated in Bhopal</span>
+              <span>4.7 Rated on Google</span>
             </span>
           </div>
 

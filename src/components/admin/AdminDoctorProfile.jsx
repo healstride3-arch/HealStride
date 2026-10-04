@@ -275,7 +275,7 @@ const AdminDoctors = () => {
   const seedDefaultDoctors = async () => {
     if (
       !window.confirm(
-        "Do you want to initialize default clinic doctors (Dr. MD Rashid & Dr. Wajhul Qamar) into the database?"
+        "Do you want to initialize default clinic doctors (Dr. MD Rashid (PT) & Dr. Md Wajhul Qumar (PT)) into the database?"
       )
     )
       return;
@@ -485,7 +485,7 @@ const AdminDoctors = () => {
                     {doctors.length === 0 && (
                       <>
                         <p className="text-xs text-slate-400 mb-4 max-w-md mx-auto">
-                          Click below to load Dr. MD Rashid and Dr. Wajhul Qamar into the database so you can edit and manage their details in real time.
+                          Click below to load Dr. MD Rashid (PT) and Dr. Md Wajhul Qumar (PT) into the database so you can edit and manage their details in real time.
                         </p>
                         <button
                           type="button"

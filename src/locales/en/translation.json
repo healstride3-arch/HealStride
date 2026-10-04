@@ -275,7 +275,8 @@
     "readMore": "Read More",
     "readMoreBlogs": "Read More Blogs",
     "loadMore": "Load More Articles",
-    "showLess": "Show Less"
+    "showLess": "Show Less",
+    "exploreMore": "Explore More"
   },
   "blogsList": {
     "blog1": {
@@ -439,13 +440,13 @@
     "titleLine1": "Book Your",
     "titleHighlight": "Physiotherapy",
     "titleLine2": "Session",
-    "subtitle": "Consult our expert physiotherapists Dr. MD Rashid (PT) and Dr. Wajhul Qamar (PT) for personalized pain relief and rehabilitation.",
+    "subtitle": "Consult our expert physiotherapists Dr. MD Rashid (PT) and Dr. Md Wajhul Qumar (PT) for personalized pain relief and rehabilitation.",
     "specialistTitle": "Our Specialist Physiotherapists",
     "reviewsRating": "4.7 (43+ Reviews)",
     "drRashidTitle": "Senior Consultant Physiotherapist | MPT (Sports)",
     "drRashidReg": "Reg. DEG2/71968/2025 • MPT (Sports) • Certified in Cupping, Dry Needling & Taping",
-    "drWazulTitle": "Physiotherapist & Rehab Specialist (BPT)",
-    "drWazulDesc": "Movement Recovery & Musculoskeletal Rehabilitation",
+    "drWazulTitle": "Physiotherapist & Rehab Specialist (BPT) • 7 Certified",
+    "drWazulDesc": "Cardiopulmonary Rehab, Cupping, Dry Needling, IASTM, Taping & Manual Therapy",
     "highlight1": "Evidence-based modalities (Traction, Laser & Stimulator)",
     "highlight2": "Dedicated one-on-one patient care & zero waiting time",
     "timingsTitle": "Clinic Timings & Consultation Hours",
@@ -467,7 +468,7 @@
     "doctorOptional": "(Optional)",
     "doctorAny": "Any Available Specialist (Recommended)",
     "doctorRashid": "Dr. MD Rashid (PT) - Senior Consultant Physiotherapist | MPT (Sports)",
-    "doctorWazul": "Dr. Wajhul Qamar (PT) - Physiotherapist & Rehab Specialist",
+    "doctorWazul": "Dr. Md Wajhul Qumar (PT) - Physiotherapist & Rehab Specialist (7 Certified)",
     "conditionLabel": "Select Condition / Treatment",
     "conditionPlaceholder": "Choose condition or therapy",
     "conditionError": "Please select a condition or therapy.",
@@ -560,7 +561,7 @@
     "satisfactionRate": "99% Patient Satisfaction",
     "patientsTreated": "2,500+ Patients Recovered",
     "clinicalExperience": "5+ Years Experience",
-    "ratingSummary": "5.0 Google Rating"
+    "ratingSummary": "4.7 Google Rating"
   },
   "blogsPage": {
     "badge": "Health Articles",
@@ -578,7 +579,7 @@
   },
   "blogDetails": {
     "notFound": "Blog Not Found",
-    "back": "← Back to Blogs",
+    "back": "Back to Blogs",
     "ctaTitle": "Need Professional Physiotherapy?",
     "ctaSubtitle": "Our experienced physiotherapists are here to help you recover faster and live pain-free.",
     "bookBtn": "Book Appointment"

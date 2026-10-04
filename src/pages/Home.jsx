@@ -11,7 +11,6 @@ import WhyChooseUs from "../components/home/WhyChooseUs";
 import BlogSection from "../components/home/BlogSection";
 import TreatmentSlider from "../components/home/TreatmentSlider";
 import WhatsAppFloat from "../components/common/WhatsAppFloat";
-import ReviewCTA from "./ReviewCTA";
 import FloatingIcons from "../components/FloatingIcons";
 import SEO from "../components/common/SEO";
 
@@ -36,7 +35,6 @@ const Home = () => {
       <BlogSection />
       <Testimonials />
       <WhatsAppFloat />
-      <ReviewCTA />
     </>
   );
 };

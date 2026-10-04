@@ -38,23 +38,34 @@ export const doctors = [
   {
     id: "dr-wajhul-qamar",
     slug: "dr-wajhul-qamar",
-    name: "Dr. Wajhul Qamar (PT)",
+    name: "Dr. Md Wajhul Qumar (PT)",
     role: "Physiotherapist & Rehab Specialist (BPT)",
     designation: "Physiotherapist & Rehab Specialist",
     specialization:
-      "Movement Recovery, Musculoskeletal Rehabilitation, Exercise Therapy, Pain Management",
+      "Cardiopulmonary Rehab, Cupping Therapy, Dry Needling, IASTM, Manual Therapy, Taping & Neuro-Rehabilitation",
     description:
-      "Physiotherapist focused on movement recovery, patient education, exercise therapy, and musculoskeletal rehabilitation.",
+      "Certified physiotherapist specializing in Cardiopulmonary Rehabilitation, Dry Needling, Cupping, IASTM, Taping, and comprehensive musculoskeletal recovery with 7 advanced clinical certifications.",
     education: "Bachelor of Physiotherapy (BPT)",
-    experience: "Clinical rehabilitation experience",
+    experience: "3+ Years of Dedicated Clinical Practice",
     registration: "Available at clinic",
     image: drWazul,
     imageUrl: drWazul,
+    certifications: [
+      "Certified in Cupping Therapy",
+      "Certified in Dry Needling Therapy",
+      "Certified in IASTM (Instrument Assisted Soft Tissue Mobilization)",
+      "Certified in Cardiopulmonary Rehabilitation",
+      "Certified in Neuro & Orthopedic Rehabilitation",
+      "Certified in Taping Therapy",
+      "Certified in Manual Therapy",
+    ],
     qualifications: [
       "Bachelor of Physiotherapy (BPT)",
-      "Movement Recovery Specialist",
-      "Musculoskeletal Rehabilitation",
-      "Exercise Therapy & Patient Care",
+      "Cardiopulmonary Rehabilitation Specialist",
+      "Manual Therapy & Joint Mobilization",
+      "Myofascial Trigger Point & Dry Needling",
+      "IASTM & Fascial Restructuring",
+      "Kinesiology & Biomechanical Taping",
     ],
   },
 ];
@@ -108,8 +119,8 @@ export const getDoctorLocalizedName = (member, i18n) => {
   if (identifier.includes("rashid")) {
     return isHi ? "डॉ. एमडी राशिद (पीटी)" : "Dr. MD Rashid (PT)";
   }
-  if (identifier.includes("wajhul") || identifier.includes("wazul") || identifier.includes("qamar")) {
-    return isHi ? "डॉ. वजहुल कमर (पीटी)" : "Dr. Wajhul Qamar (PT)";
+  if (identifier.includes("wajhul") || identifier.includes("wazul") || identifier.includes("qamar") || identifier.includes("qumar")) {
+    return isHi ? "डॉ. एमडी वजहुल क़मर (पीटी)" : "Dr. Md Wajhul Qumar (PT)";
   }
   return member?.name || "";
 };

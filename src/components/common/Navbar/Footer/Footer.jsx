@@ -118,6 +118,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/blogs" className="hover:text-teal-400 transition-colors">
+                  {t("navbar.blogs", "Blogs")}
+                </Link>
+              </li>
+              <li>
                 <Link to="/staff" className="hover:text-teal-400 transition-colors">
                   {t("navbar.staff")}
                 </Link>

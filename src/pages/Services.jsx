@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Wrench, ShieldCheck, Award, Calendar, ArrowRight, CheckCircle2, Star, ChevronRight } from "lucide-react";
 import ServicesGrid from "../components/service/ServicesGrid";
-import ServicesCTA from "../components/service/ServicesCTA";
 import SEO from "../components/common/SEO";
 import AnimatedCounter from "../components/common/AnimatedCounter";
 
@@ -93,7 +92,7 @@ const Services = () => {
               </span>
               <span className="flex items-center gap-1.5">
                 <Star size={14} className="fill-amber-400 text-amber-400 shrink-0" />
-                <span>5.0 Rated in Bhopal</span>
+                <span>4.7 Rated on Google</span>
               </span>
             </div>
 
@@ -185,9 +184,6 @@ const Services = () => {
 
       {/* Full 15 Services Grid with Tabs & Search */}
       <ServicesGrid />
-
-      {/* Booking CTA Section */}
-      <ServicesCTA />
     </div>
   );
 };

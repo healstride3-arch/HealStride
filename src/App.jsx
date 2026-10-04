@@ -10,6 +10,7 @@ import RoleSelection from "./pages/RoleSelection";
 import LoadingScreen from "./components/common/LoadingScreen";
 import Navbar from "./components/common/Navbar/Navbar";
 import Footer from "./components/common/Navbar/Footer/Footer";
+import CTA from "./components/about/CTA";
 import ScrollToTop from "./components/common/ScrollToTop";
 import ScrollToHash from "./components/ScrollToHash";
 
@@ -171,9 +172,14 @@ function App() {
         {/* ==================== BLOG ROUTES ==================== */}
 
         <Route path="/blogs" element={<Blogs />} />
+        <Route path="/blog" element={<Blogs />} />
 
         <Route
           path="/blogs/:id"
+          element={<BlogDetails />}
+        />
+        <Route
+          path="/blog/:id"
           element={<BlogDetails />}
         />
 
@@ -251,6 +257,7 @@ function App() {
         </Route>
       </Routes>
 
+      {!isAdminPage && <CTA />}
       {!isAdminPage && <Footer />}
 
       {/* ==================== APPOINTMENT POPUP ==================== */}
@@ -273,7 +280,7 @@ function App() {
               transition={{
                 duration: 0.4,
               }}
-              className="bg-white rounded-[32px] p-8 max-w-md w-full text-center relative shadow-[0_20px_60px_rgba(0,0,0,0.15)]"
+              className="bg-white rounded-[32px] p-6 sm:p-8 max-w-[480px] w-full text-center relative shadow-[0_20px_60px_rgba(0,0,0,0.15)]"
             >
               {/* Close Button */}
 
@@ -324,12 +331,12 @@ function App() {
 
               {/* Buttons */}
 
-              <div className="flex gap-4 mt-8">
+              <div className="flex items-center gap-3 sm:gap-4 mt-8">
                 <button
                   onClick={() =>
                     setShowAppointmentPopup(false)
                   }
-                  className="flex-1 border border-slate-300 py-3 rounded-xl font-medium hover:bg-slate-100 transition"
+                  className="w-28 sm:w-32 shrink-0 border border-slate-300 py-3 rounded-xl font-medium text-slate-700 hover:bg-slate-100 transition cursor-pointer text-sm sm:text-base"
                 >
                   Later
                 </button>
@@ -339,9 +346,9 @@ function App() {
                   onClick={() =>
                     setShowAppointmentPopup(false)
                   }
-                  className="flex-1 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] text-white py-3 rounded-xl font-bold shadow-lg transition flex items-center justify-center gap-2 text-sm sm:text-base cursor-pointer"
+                  className="flex-1 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] text-white px-5 sm:px-6 py-3 rounded-xl font-bold shadow-lg transition flex items-center justify-center gap-2 text-sm sm:text-base cursor-pointer whitespace-nowrap"
                 >
-                  <CalendarCheck size={16} className="shrink-0" />
+                  <CalendarCheck size={17} className="shrink-0" />
                   <span>Book Appointment</span>
                 </Link>
               </div>

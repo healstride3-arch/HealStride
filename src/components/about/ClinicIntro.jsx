@@ -50,7 +50,7 @@ const ClinicIntro = ({ isHome = false }) => {
                   </div>
                   <div className="text-right shrink-0">
                     <span className="inline-block text-[11px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
-                      ★ 5.0 (43+ Reviews)
+                      ★ 4.7 (43+ Reviews)
                     </span>
                   </div>
                 </div>

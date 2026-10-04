@@ -14,7 +14,7 @@ import interferential_therapy_main from "../assets/images/services/interferentia
 import posture_correction_therapy_main from "../assets/images/services/posture-correction-therapy-main.jpg";
 import spinal_decompression_therapy_main from "../assets/images/services/spinal-decompression-therapy-main.jpg";
 
-// EXACT 15 Services from Painflame with Clean Content & Images
+// Comprehensive 15 Clinical Services for Heal Stride Physiotherapy Bhopal
 // Excluded: Female Chiropractor, Navel Displacement Treatment, Osteopathy
 export const ALL_SERVICES = [
   {

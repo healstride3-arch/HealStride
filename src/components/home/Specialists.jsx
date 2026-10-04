@@ -59,7 +59,9 @@ const Specialists = ({ limit = 3 }) => {
               doctor.id === "dr-wajhul-qamar" ||
               doctor.slug === "dr-wajhul-qamar" ||
               doctor.name?.toLowerCase().includes("wajhul") ||
-              doctor.name?.toLowerCase().includes("wazul");
+              doctor.name?.toLowerCase().includes("wazul") ||
+              doctor.name?.toLowerCase().includes("qumar") ||
+              doctor.name?.toLowerCase().includes("qamar");
 
             const cardPhoto =
               rawDoc.image ||

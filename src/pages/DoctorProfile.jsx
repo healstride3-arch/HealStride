@@ -82,13 +82,57 @@ const CERTIFICATION_METADATA = {
     badgeColor: "bg-purple-100 text-purple-800",
     iconColor: "text-purple-600",
   },
+  iastm: {
+    title: "Certified in IASTM (Instrument Assisted Soft Tissue Mobilization)",
+    badge: "Myofascial Blade & Scar Release",
+    desc: "Ergonomic stainless-steel instrument technique to release chronic fascial restrictions, break scar tissue adhesions, and stimulate microvascular cellular repair.",
+    icon: Activity,
+    gradient: "from-emerald-500/10 to-teal-500/10",
+    border: "border-emerald-200/80",
+    badgeColor: "bg-emerald-100 text-emerald-800",
+    iconColor: "text-emerald-600",
+  },
+  cardiopulmonary: {
+    title: "Certified in Cardiopulmonary Rehabilitation",
+    badge: "Respiratory & Cardiac Conditioning",
+    desc: "Specialized clinical rehabilitation protocols for pulmonary hygiene, thoracic expansion, breathlessness management, and post-viral cardiac endurance recovery.",
+    icon: HeartPulse,
+    gradient: "from-red-500/10 to-rose-500/10",
+    border: "border-red-200/80",
+    badgeColor: "bg-red-100 text-red-800",
+    iconColor: "text-red-600",
+  },
+  rehabilitation: {
+    title: "Certified in Neuro & Orthopedic Rehabilitation",
+    badge: "Comprehensive Functional Recovery",
+    desc: "Advanced therapeutic exercise protocols for neuromuscular re-education, stroke and spinal recovery, gait correction, and post-surgical joint restoration.",
+    icon: ShieldCheck,
+    gradient: "from-indigo-500/10 to-purple-500/10",
+    border: "border-indigo-200/80",
+    badgeColor: "bg-indigo-100 text-indigo-800",
+    iconColor: "text-indigo-600",
+  },
+  manual: {
+    title: "Certified in Manual Therapy",
+    badge: "Joint Mobilization & Manipulation",
+    desc: "Hands-on joint mobilization, translational glides, spinal traction techniques, and myofascial trigger point release for rapid restoration of pain-free movement.",
+    icon: Stethoscope,
+    gradient: "from-amber-500/10 to-yellow-500/10",
+    border: "border-amber-200/80",
+    badgeColor: "bg-amber-100 text-amber-800",
+    iconColor: "text-amber-600",
+  },
 };
 
 const getCertificationMeta = (certName) => {
   const lower = (certName || "").toLowerCase();
   if (lower.includes("cup")) return CERTIFICATION_METADATA.cupping;
   if (lower.includes("needl")) return CERTIFICATION_METADATA.needling;
+  if (lower.includes("iastm") || lower.includes("soft tissue") || lower.includes("graston")) return CERTIFICATION_METADATA.iastm;
+  if (lower.includes("cardio") || lower.includes("pulmonary") || lower.includes("pulomanry")) return CERTIFICATION_METADATA.cardiopulmonary;
+  if (lower.includes("rehab") || lower.includes("reahabalitation") || lower.includes("neuro")) return CERTIFICATION_METADATA.rehabilitation;
   if (lower.includes("tap")) return CERTIFICATION_METADATA.taping;
+  if (lower.includes("manual") || lower.includes("manuall") || lower.includes("joint mob")) return CERTIFICATION_METADATA.manual;
   if (lower.includes("mulligan") || lower.includes("mwm")) return CERTIFICATION_METADATA.mwm;
   if (lower.includes("bls") || lower.includes("life support") || lower.includes("critical")) return CERTIFICATION_METADATA.bls;
   return {
@@ -130,6 +174,33 @@ const DR_RASHID_REVIEWS = [
   },
 ];
 
+const DR_WAJHUL_REVIEWS = [
+  {
+    name: "Vikramaditya Singh",
+    condition: "Cardiopulmonary Rehab & Breathing Stamina",
+    comment:
+      "Dr. Md Wajhul Qumar (PT) is an exceptional physiotherapist. His cardiopulmonary rehabilitation and targeted breathing exercise protocols helped me regain full stamina and lung function. Very encouraging and attentive doctor.",
+    rating: 5,
+    date: "Verified Google Review",
+  },
+  {
+    name: "Anjali Saxena",
+    condition: "Chronic Muscle Spasm & Fascial Tightness",
+    comment:
+      "Dr. Md Wajhul Qumar (PT) treated my severe shoulder stiffness with IASTM blade therapy and cupping. The relief in movement was immediate. Truly a master in dry needling and manual therapy techniques!",
+    rating: 5,
+    date: "Verified Google Review",
+  },
+  {
+    name: "Sunil Patidar",
+    condition: "Post-Fracture Knee Stiffness & Gait Rehab",
+    comment:
+      "After surgery my knee joint was very stiff. Dr. Md Wajhul Qumar (PT) carefully planned my daily manual joint mobilization and taping sessions. Within 4 weeks I was able to walk without any limp. Highly recommended!",
+    rating: 5,
+    date: "Verified Google Review",
+  },
+];
+
 const DoctorProfile = () => {
   const { doctorName } = useParams();
   const { t, i18n } = useTranslation();
@@ -159,7 +230,9 @@ const DoctorProfile = () => {
   const cleanDocName = (doctorName || "").toLowerCase().trim();
   const isRequestedWajhul =
     cleanDocName.includes("wajhul") ||
-    cleanDocName.includes("wazul");
+    cleanDocName.includes("wazul") ||
+    cleanDocName.includes("qumar") ||
+    cleanDocName.includes("qamar");
 
   const rawDoctor =
     doctors.find(
@@ -253,7 +326,9 @@ const DoctorProfile = () => {
     doctor.id === "dr-wajhul-qamar" ||
     doctor.slug === "dr-wajhul-qamar" ||
     doctor.name?.toLowerCase().includes("wajhul") ||
-    doctor.name?.toLowerCase().includes("wazul");
+    doctor.name?.toLowerCase().includes("wazul") ||
+    doctor.name?.toLowerCase().includes("qumar") ||
+    doctor.name?.toLowerCase().includes("qamar");
 
   const doctorPhoto =
     rawDoctor?.image ||
@@ -300,15 +375,32 @@ const DoctorProfile = () => {
           "Certified in Mulligan’s Mobilization with Movement (MWM)",
           "Certified in Basic Life Support (BLS) & Critical Care Management",
         ]
+      : isDrWajhul
+      ? [
+          "Certified in Cupping Therapy",
+          "Certified in Dry Needling Therapy",
+          "Certified in IASTM (Instrument Assisted Soft Tissue Mobilization)",
+          "Certified in Cardiopulmonary Rehabilitation",
+          "Certified in Neuro & Orthopedic Rehabilitation",
+          "Certified in Taping Therapy",
+          "Certified in Manual Therapy",
+        ]
       : [];
 
-  const specializationsList = (doctor.specialization || "")
+  const specializationsList = (
+    doctor.specialization ||
+    (isDrWajhul
+      ? "Cardiopulmonary Rehab, Cupping Therapy, Dry Needling, IASTM, Manual Therapy, Taping Therapy, Neuro-Rehab"
+      : "")
+  )
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean);
 
+  const doctorReviews = isDrRashid ? DR_RASHID_REVIEWS : isDrWajhul ? DR_WAJHUL_REVIEWS : [];
+
   return (
-    <div className="bg-slate-50 min-h-screen pb-12 sm:pb-16 overflow-x-hidden">
+    <div className="bg-slate-50 min-h-screen pb-12 sm:pb-16 overflow-x-clip">
       <SEO
         title={`${doctorLocalizedName} (${doctor.role || "Physiotherapist"})`}
         description={`Consult ${doctorLocalizedName} at Heal Stride Physiotherapy & Wellness Centre Bhopal. Specializing in ${doctor.specialization || "sports injuries, pain relief and musculoskeletal rehabilitation"}. Book consultation.`}
@@ -370,7 +462,7 @@ const DoctorProfile = () => {
 
                 <span className="inline-flex items-center gap-1 px-1.5 xs:px-2.5 py-0.5 xs:py-1 rounded-full bg-amber-400/20 border border-amber-400/40 text-amber-300 text-[10px] xs:text-xs font-semibold">
                   <Star size={11} className="fill-amber-400 text-amber-400 shrink-0" />
-                  <span>{isDrRashid ? "5.0 (43+ Reviews)" : "5.0 (Recommended)"}</span>
+                  <span>{isDrRashid ? "4.7 (43+ Reviews)" : "4.7 (Recommended)"}</span>
                 </span>
               </div>
 
@@ -394,17 +486,11 @@ const DoctorProfile = () => {
                   fallbackMatch?.description ||
                   (isDrRashid
                     ? "Senior Consultant Physiotherapist specializing in sports injury rehabilitation, Mulligan’s Mobilization with Movement (MWM), certified cupping, dry needling, and advanced kinesiology taping modalities."
-                    : "Physiotherapist focused on movement recovery, patient education, exercise therapy, and musculoskeletal rehabilitation.")}
+                    : "Certified Physiotherapist & Rehab Specialist (BPT) with 7 advanced clinical certifications in Cupping Therapy, Dry Needling, IASTM, Cardiopulmonary Rehabilitation, Neuro & Orthopedic Rehab, Taping, and Manual Therapy.")}
               </p>
 
               {/* Quick Summary Highlights Strip */}
-              <div
-                className={`grid ${
-                  isDrRashid
-                    ? "grid-cols-2 sm:grid-cols-4"
-                    : "grid-cols-2 sm:grid-cols-3"
-                } gap-1.5 xs:gap-2.5 mt-3.5 xs:mt-5 pt-3 xs:pt-4 border-t border-white/10`}
-              >
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 xs:gap-2.5 mt-3.5 xs:mt-5 pt-3 xs:pt-4 border-t border-white/10">
                 <div className="bg-white/5 border border-white/10 rounded-lg xs:rounded-xl p-1.5 xs:p-2.5 text-center">
                   <p className="text-[9px] xs:text-[11px] sm:text-xs text-slate-400 font-medium">Qualification</p>
                   <p
@@ -422,39 +508,28 @@ const DoctorProfile = () => {
                     title={
                       (doctor.specialization ? doctor.specialization.split(",")[0] : null) ||
                       fallbackMatch?.specialization?.split(",")?.[0] ||
-                      (isDrRashid ? "Sports Rehab" : "Movement Rehab")
+                      (isDrRashid ? "Sports Rehab" : "Cardiopulmonary Rehab")
                     }
                   >
                     {(doctor.specialization ? doctor.specialization.split(",")[0] : null) ||
                       fallbackMatch?.specialization?.split(",")?.[0] ||
-                      (isDrRashid ? "Sports Rehab" : "Movement Rehab")}
+                      (isDrRashid ? "Sports Rehab" : "Cardiopulmonary Rehab")}
                   </p>
                 </div>
 
-                {isDrRashid ? (
-                  <>
-                    <div className="bg-white/5 border border-white/10 rounded-lg xs:rounded-xl p-1.5 xs:p-2.5 text-center">
-                      <p className="text-[9px] xs:text-[11px] sm:text-xs text-slate-400 font-medium">Patients Treated</p>
-                      <p className="text-[11px] xs:text-xs sm:text-sm md:text-base font-bold text-white mt-0.5">
-                        2,500+
-                      </p>
-                    </div>
+                <div className="bg-white/5 border border-white/10 rounded-lg xs:rounded-xl p-1.5 xs:p-2.5 text-center">
+                  <p className="text-[9px] xs:text-[11px] sm:text-xs text-slate-400 font-medium">Patients Treated</p>
+                  <p className="text-[11px] xs:text-xs sm:text-sm md:text-base font-bold text-white mt-0.5">
+                    {isDrRashid ? "2,500+" : "1,500+"}
+                  </p>
+                </div>
 
-                    <div className="bg-white/5 border border-white/10 rounded-lg xs:rounded-xl p-1.5 xs:p-2.5 text-center">
-                      <p className="text-[9px] xs:text-[11px] sm:text-xs text-slate-400 font-medium">Certifications</p>
-                      <p className="text-[11px] xs:text-xs sm:text-sm md:text-base font-bold text-teal-300 mt-0.5">
-                        5 Certified
-                      </p>
-                    </div>
-                  </>
-                ) : (
-                  <div className="bg-white/5 border border-white/10 rounded-lg xs:rounded-xl p-1.5 xs:p-2.5 text-center col-span-2 sm:col-span-1">
-                    <p className="text-[9px] xs:text-[11px] sm:text-xs text-slate-400 font-medium">Clinical Practice</p>
-                    <p className="text-[11px] xs:text-xs sm:text-sm md:text-base font-bold text-teal-300 mt-0.5 truncate">
-                      Musculoskeletal Rehab
-                    </p>
-                  </div>
-                )}
+                <div className="bg-white/5 border border-white/10 rounded-lg xs:rounded-xl p-1.5 xs:p-2.5 text-center">
+                  <p className="text-[9px] xs:text-[11px] sm:text-xs text-slate-400 font-medium">Certifications</p>
+                  <p className="text-[11px] xs:text-xs sm:text-sm md:text-base font-bold text-teal-300 mt-0.5">
+                    {isDrRashid ? "5 Certified" : "7 Certified"}
+                  </p>
+                </div>
               </div>
 
               {/* Action Buttons Row - Full Width on Mobile (320-425px) and Inline on sm+ */}
@@ -642,10 +717,21 @@ const DoctorProfile = () => {
                   <div className="p-3 xs:p-4 rounded-xl xs:rounded-2xl border border-slate-200 bg-slate-50/50">
                     <div className="flex items-center gap-2 text-slate-800 font-bold text-xs xs:text-sm">
                       <BadgeCheck size={16} className="text-teal-600 shrink-0" />
-                      <span>{doctor.registration ? "Council Registration" : "Movement Recovery Specialist"}</span>
+                      <span>Cardiopulmonary & Rehabilitation Specialist</span>
                     </div>
                     <p className="text-[11px] xs:text-xs text-slate-600 mt-1 leading-relaxed">
-                      {doctor.registration || "Focused expertise in functional movement restoration, postural re-education, and mobility training."}
+                      Advanced clinical expertise in cardiopulmonary reconditioning, neuromotor recovery, and pulmonary expansion therapy.
+                    </p>
+                  </div>
+
+                  {/* 7x Certified Clinical Practitioner */}
+                  <div className="p-3 xs:p-4 rounded-xl xs:rounded-2xl border border-slate-200 bg-slate-50/50">
+                    <div className="flex items-center gap-2 text-slate-800 font-bold text-xs xs:text-sm">
+                      <Award size={16} className="text-teal-600 shrink-0" />
+                      <span>7 Certified Clinical Practitioner</span>
+                    </div>
+                    <p className="text-[11px] xs:text-xs text-slate-600 mt-1 leading-relaxed">
+                      Certified in Cupping, Dry Needling, IASTM, Cardiopulmonary Rehab, Neuro/Ortho Rehab, Taping & Manual Therapy.
                     </p>
                   </div>
 
@@ -656,18 +742,7 @@ const DoctorProfile = () => {
                       <span>Clinical Experience</span>
                     </div>
                     <p className="text-[11px] xs:text-xs text-slate-600 mt-1 leading-relaxed">
-                      {doctor.experience || "Musculoskeletal and orthopedic rehabilitation clinical practice."}
-                    </p>
-                  </div>
-
-                  {/* Exercise Therapy & Patient Care */}
-                  <div className="p-3 xs:p-4 rounded-xl xs:rounded-2xl border border-slate-200 bg-slate-50/50">
-                    <div className="flex items-center gap-2 text-slate-800 font-bold text-xs xs:text-sm">
-                      <HeartPulse size={16} className="text-teal-600 shrink-0" />
-                      <span>Exercise Therapy & Patient Care</span>
-                    </div>
-                    <p className="text-[11px] xs:text-xs text-slate-600 mt-1 leading-relaxed">
-                      Individualized therapeutic exercise prescription and patient education for long-term health.
+                      {doctor.experience ? (doctor.experience.toLowerCase().includes("year") ? doctor.experience : `${doctor.experience} Clinical Practice`) : "3+ Years of Dedicated Clinical Practice"}
                     </p>
                   </div>
                 </div>
@@ -725,14 +800,14 @@ const DoctorProfile = () => {
                       "Post-Fracture Stiffness & Neurological Rehabilitation",
                     ]
                   : [
-                      "Musculoskeletal Pain Relief & Postural Correction",
-                      "Back Pain & Lumbar Spine Mobility Care",
-                      "Neck Stiffness & Shoulder Mobility Therapy",
-                      "Knee Joint Stiffness & Therapeutic Exercises",
-                      "Muscle Weakness & Reconditioning Programs",
-                      "Post-Injury Functional Movement Training",
-                      "Joint Flexibility & Mobility Restoration",
-                      "Everyday Ergonomic & Activity Rehabilitation",
+                      "Cardiopulmonary & Respiratory Conditions (Post-COVID Stamina & Breathing)",
+                      "Myofascial Trigger Points, Deep Muscle Knots & Spasms (Dry Needling & Cupping)",
+                      "Chronic Fascial Adhesions & Soft Tissue Restrictions (IASTM Therapy)",
+                      "Spine & Peripheral Joint Stiffness (Manual Joint Mobilization)",
+                      "Sports Sprains, Strains & Joint Stability (Kinesiology Taping)",
+                      "Post-Surgical Orthopedic & Neurological Rehabilitation",
+                      "Chronic Lower Back Pain, Sciatica & Lumbar Spondylosis",
+                      "Cervical Neck Stiffness, Shoulder Immobility & Ergonomic Strain",
                     ]
                 ).map((condition, idx) => (
                   <div
@@ -746,8 +821,8 @@ const DoctorProfile = () => {
               </div>
             </div>
 
-            {/* 5. Patient Testimonials for Dr. Rashid */}
-            {isDrRashid && (
+            {/* 5. Patient Testimonials */}
+            {doctorReviews.length > 0 && (
               <div className="bg-white rounded-2xl xs:rounded-3xl p-3.5 xs:p-5 sm:p-8 shadow-sm border border-slate-200/80">
                 <div className="flex flex-wrap items-center justify-between gap-2.5 xs:gap-4 mb-4 xs:mb-6">
                   <div>
@@ -755,17 +830,17 @@ const DoctorProfile = () => {
                       Patient Feedback & Recovery Stories
                     </h2>
                     <p className="text-[11px] xs:text-xs sm:text-sm text-slate-500">
-                      Real feedback from patients treated by Dr. MD Rashid
+                      Real feedback from patients treated by {doctorLocalizedName}
                     </p>
                   </div>
                   <div className="flex items-center gap-1 bg-amber-50 border border-amber-200 px-2.5 xs:px-3 py-1 rounded-xl text-amber-800 text-[11px] xs:text-xs font-bold">
                     <Star size={13} className="fill-amber-400 text-amber-400" />
-                    <span>5.0 Rating</span>
+                    <span>4.7 Rating</span>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 xs:gap-4">
-                  {DR_RASHID_REVIEWS.map((rev, i) => (
+                  {doctorReviews.map((rev, i) => (
                     <div
                       key={i}
                       className="p-3 xs:p-4 rounded-xl xs:rounded-2xl bg-slate-50/70 border border-slate-200/80 flex flex-col justify-between"
@@ -794,7 +869,7 @@ const DoctorProfile = () => {
           </div>
 
           {/* Right Column: Appointment Booking & Consultation Card */}
-          <div className="lg:col-span-4 space-y-4 xs:space-y-6 lg:sticky lg:top-20">
+          <div className="lg:col-span-4 space-y-4 xs:space-y-6 lg:sticky lg:top-24 self-start">
             {/* Consultation Card */}
             <div className="bg-white rounded-2xl xs:rounded-3xl p-4 xs:p-5 sm:p-7 shadow-lg border border-teal-100 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-teal-50 rounded-bl-full pointer-events-none -z-0" />

@@ -36,7 +36,7 @@ const ServicesGrid = () => {
     fallback: [],
   });
 
-  // 15 official PainFlame services from ALL_SERVICES (canonical single source of truth)
+  // 15 official clinical services from ALL_SERVICES (canonical single source of truth)
   // Ensures brand new AI images with Indian doctors and verified clinical content are ALWAYS displayed
   const services = (() => {
     return ALL_SERVICES

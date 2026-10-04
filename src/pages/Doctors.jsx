@@ -25,7 +25,7 @@ const Doctors = () => {
       <SEO
         title="Meet Our Expert Physiotherapists in Bhopal"
         description="Meet Dr. MD Rashid (MPT Sports) and our certified physiotherapy team at Heal Stride Bhopal. Specialized in sports rehabilitation, dry needling, cupping, and non-invasive pain relief."
-        keywords="Physiotherapist in Bhopal, Dr MD Rashid, Dr Wajhul Qamar, Sports Physiotherapy Bhopal, Cupping Specialist Bhopal, Dry Needling Bhopal"
+        keywords="Physiotherapist in Bhopal, Dr MD Rashid, Dr. Md Wajhul Qumar (PT), Sports Physiotherapy Bhopal, Cupping Specialist Bhopal, Dry Needling Bhopal"
       />
       {/* Full-Width Background Banner with Dark Overlay */}
       <section className="relative w-full min-h-[calc(100vh-90px)] flex flex-col justify-center py-6 sm:py-8 lg:py-10 overflow-hidden border-b border-slate-800 bg-slate-950">
@@ -214,7 +214,9 @@ const Doctors = () => {
                 doctor.id === "dr-wajhul-qamar" ||
                 doctor.slug === "dr-wajhul-qamar" ||
                 doctor.name?.toLowerCase().includes("wajhul") ||
-                doctor.name?.toLowerCase().includes("wazul");
+                doctor.name?.toLowerCase().includes("wazul") ||
+                doctor.name?.toLowerCase().includes("qumar") ||
+                doctor.name?.toLowerCase().includes("qamar");
 
               const cardPhoto =
                 rawDoc.image ||
@@ -345,44 +347,6 @@ const Doctors = () => {
               );
             })
           )}
-        </div>
-
-        {/* Quick Consultation Help CTA Banner - Full Width Container */}
-        <div className="mt-10 sm:mt-14 w-full rounded-2xl xs:rounded-3xl bg-gradient-to-r from-teal-900 to-slate-900 p-5 xs:p-6 sm:p-8 lg:p-10 text-white shadow-lg border border-teal-800/40 flex flex-col md:flex-row items-center justify-between gap-5 sm:gap-6">
-          <div className="text-center md:text-left">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-teal-300 text-[10px] xs:text-xs font-semibold mb-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#d71920] animate-pulse" />
-              <span>Need Assistance?</span>
-            </div>
-            <h3 className="text-lg xs:text-xl sm:text-2xl lg:text-3xl font-bold">
-              Not Sure Which Specialist to Consult?
-            </h3>
-            <p className="text-[11px] xs:text-xs sm:text-sm text-slate-300 mt-1 max-w-xl">
-              Speak directly with our clinic helpdesk or chat on WhatsApp to get matched with the right specialist.
-            </p>
-          </div>
-
-          <div className="flex flex-col xs:flex-row items-stretch xs:items-center justify-center gap-2.5 xs:gap-3 shrink-0 w-full md:w-auto">
-            <a
-              href={`https://wa.me/${whatsappRaw}?text=${encodeURIComponent(
-                "Hello HealStride, I need assistance choosing the right physiotherapy specialist."
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white px-5 py-3 min-h-[44px] rounded-xl font-bold text-xs sm:text-sm shadow-md transition text-center"
-            >
-              <img src="/whatsapp.png" alt="WhatsApp" className="w-4 h-4 object-contain shrink-0" />
-              <span>WhatsApp Us</span>
-            </a>
-
-            <a
-              href={`tel:${phoneRaw}`}
-              className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white px-5 py-3 min-h-[44px] rounded-xl font-bold text-xs sm:text-sm backdrop-blur-sm shadow-md transition text-center"
-            >
-              <img src="/call.png" alt="Call" className="w-4 h-4 object-contain shrink-0" />
-              <span>Call Clinic</span>
-            </a>
-          </div>
         </div>
       </section>
     </div>

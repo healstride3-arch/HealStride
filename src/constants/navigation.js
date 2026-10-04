@@ -24,6 +24,12 @@ export const NAVIGATION = [
     path: "/doctors",
   },
   {
+    id: 5,
+    title: "Blogs",
+    key: "navbar.blogs",
+    path: "/blogs",
+  },
+  {
     id: 6,
     title: "Contact",
     key: "navbar.contact",

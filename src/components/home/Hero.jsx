@@ -187,7 +187,7 @@ const Hero = () => {
                 </span>
                 <span className="flex items-center gap-1">
                   <Star size={13} className="fill-amber-400 text-amber-400 shrink-0" />
-                  <span>5.0 Rated in Bhopal</span>
+                  <span>4.7 Rated on Google</span>
                 </span>
               </div>
 
@@ -237,7 +237,7 @@ const Hero = () => {
                 {/* Floating Top-Left Review Badge */}
                 <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full shadow-md border border-slate-200/80 flex items-center gap-1.5 text-[11px] font-bold text-slate-800">
                   <Star size={12} className="fill-amber-400 text-amber-400" />
-                  <span>5.0 (43+ Google Reviews)</span>
+                  <span>4.7 (43+ Google Reviews)</span>
                 </div>
 
                 {/* Floating Top-Right Experience Badge */}
