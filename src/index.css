@@ -242,3 +242,92 @@ label {
   animation-play-state: paused;
 }
 
+/* Treatment Article Dynamic Content Styling */
+.treatment-article-content h2,
+.treatment-article-content h3 {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #042f2e;
+  margin-top: 2.75rem;
+  margin-bottom: 0.85rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+@media (min-width: 640px) {
+  .treatment-article-content h2,
+  .treatment-article-content h3 {
+    font-size: 1.5rem;
+    margin-top: 3.25rem;
+    padding-top: 1.75rem;
+  }
+}
+
+.treatment-article-content h2:first-child,
+.treatment-article-content h3:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  border-top: none !important;
+}
+
+.treatment-article-content h2 b,
+.treatment-article-content h3 b,
+.treatment-article-content h2 strong,
+.treatment-article-content h3 strong {
+  font-weight: 800;
+  color: #042f2e;
+}
+
+.treatment-article-content p {
+  color: #334155;
+  font-size: 0.95rem;
+  line-height: 1.85;
+  margin-bottom: 1.35rem;
+}
+
+@media (min-width: 640px) {
+  .treatment-article-content p {
+    font-size: 1.025rem;
+    line-height: 1.9;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.treatment-article-content p b,
+.treatment-article-content p strong {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.treatment-article-content ul {
+  margin: 1.5rem 0;
+  padding-left: 1.75rem;
+  list-style-type: disc;
+}
+
+.treatment-article-content li {
+  color: #334155;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin-bottom: 0.65rem;
+}
+
+@media (min-width: 640px) {
+  .treatment-article-content li {
+    font-size: 1.025rem;
+  }
+}
+
+.treatment-article-content a {
+  color: #008272;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color 0.15s ease;
+}
+
+.treatment-article-content a:hover {
+  color: #d71920;
+}
+

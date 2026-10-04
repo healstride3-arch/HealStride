@@ -383,64 +383,148 @@ const Treatments = () => {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
             {filteredTreatments.map((treatment, idx) => (
               <motion.div
                 key={treatment.id}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: Math.min(idx * 0.02, 0.4) }}
-                className="bg-white rounded-2xl border border-slate-200/90 hover:border-teal-500/40 overflow-hidden shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between group"
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.4,
+                  delay: (idx % 6) * 0.05,
+                }}
+                viewport={{ once: true }}
+                className="
+                  group
+                  bg-white
+                  rounded-2xl
+                  border
+                  border-slate-200
+                  hover:border-teal-500
+                  shadow-sm
+                  hover:shadow-md
+                  transition-all
+                  duration-200
+                  overflow-hidden
+                  flex
+                  flex-col
+                  h-full
+                  justify-between
+                "
               >
-                <div>
-                  {/* Card Image */}
-                  <div className="relative w-full h-44 sm:h-48 overflow-hidden bg-slate-100">
-                    <img
-                      src={getTreatmentImage(treatment)}
-                      alt={treatment.name}
-                      loading="lazy"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent" />
-
-                    {/* Category Pill Floating on Image */}
-                    <span className="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-teal-800 shadow-sm border border-teal-100">
+                {/* Image & Badges */}
+                <Link
+                  to={`/treatments/${treatment.slug}`}
+                  className="relative overflow-hidden aspect-[4/3] w-full flex-shrink-0 bg-slate-100 block"
+                >
+                  <img
+                    src={getTreatmentImage(treatment)}
+                    alt={treatment.name}
+                    loading="lazy"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  {treatment.category && (
+                    <div className="absolute top-3 left-3 bg-teal-600/90 backdrop-blur-sm text-white px-2.5 py-1 rounded-md text-[11px] font-semibold tracking-wide uppercase shadow-sm">
                       {treatment.category}
-                    </span>
-
-                    {/* Star Rating Floating on Image */}
-                    <span className="absolute top-3 right-3 bg-slate-900/80 backdrop-blur-md px-2 py-0.5 rounded-full text-[11px] font-bold text-amber-400 border border-white/20 flex items-center gap-1 shadow-sm">
-                      <Star size={11} className="fill-amber-400 text-amber-400" />
-                      4.7
-                    </span>
+                    </div>
+                  )}
+                  <div className="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-sm text-slate-200 px-2 py-0.5 rounded text-[11px] font-medium flex items-center gap-1">
+                    <Clock className="w-3 h-3 text-slate-300" />
+                    <span>Non-Surgical</span>
                   </div>
+                </Link>
 
-                  {/* Card Body with proper spacing */}
-                  <div className="p-5">
-                    <h3 className="text-base font-bold text-slate-900 group-hover:text-[#008272] transition-colors leading-snug mb-2">
-                      <Link to={`/treatments/${treatment.slug}`}>
+                {/* Content */}
+                <div className="p-5 flex flex-col flex-1 justify-between">
+                  <div>
+                    {/* Title */}
+                    <Link to={`/treatments/${treatment.slug}`} className="hover:text-teal-700 transition-colors">
+                      <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-snug">
                         {treatment.name}
-                      </Link>
-                    </h3>
+                      </h3>
+                    </Link>
 
-                    <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed">
+                    {/* Description */}
+                    <p className="text-slate-600 mt-2 text-xs sm:text-sm leading-relaxed line-clamp-2 min-h-[38px]">
                       {treatment.summary}
                     </p>
-                  </div>
-                </div>
 
-                {/* Card Footer */}
-                <div className="px-5 pb-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span className="text-[11px] font-medium text-slate-400">
-                    Non-Surgical Protocol
-                  </span>
-                  <Link
-                    to={`/treatments/${treatment.slug}`}
-                    className="inline-flex items-center gap-1 font-bold text-[#008272] group-hover:text-[#d71920] transition-colors group-hover:translate-x-0.5"
-                  >
-                    <span>Read Guide</span>
-                    <ChevronRight size={14} />
-                  </Link>
+                    {/* Benefits / Highlights */}
+                    <div className="mt-3.5 pt-3 border-t border-slate-100">
+                      <ul className="text-xs text-slate-600 space-y-1.5">
+                        <li className="flex items-start gap-1.5">
+                          <Check className="w-3.5 h-3.5 text-teal-600 flex-shrink-0 mt-0.5" />
+                          <span className="line-clamp-1">100% Non-Surgical Pain Relief</span>
+                        </li>
+                        <li className="flex items-start gap-1.5">
+                          <Check className="w-3.5 h-3.5 text-teal-600 flex-shrink-0 mt-0.5" />
+                          <span className="line-clamp-1">Root-Cause Biomechanical Assessment</span>
+                        </li>
+                        <li className="flex items-start gap-1.5">
+                          <Check className="w-3.5 h-3.5 text-teal-600 flex-shrink-0 mt-0.5" />
+                          <span className="line-clamp-1">Personalized 1-on-1 Physiotherapy</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons: Details & Book Appointment */}
+                  <div className="mt-5 pt-3 border-t border-slate-100 flex items-center gap-2">
+                    <Link
+                      to={`/treatments/${treatment.slug}`}
+                      className="
+                        flex-1
+                        inline-flex
+                        items-center
+                        justify-center
+                        gap-1
+                        bg-teal-50
+                        hover:bg-teal-100
+                        text-teal-700
+                        font-semibold
+                        text-xs
+                        sm:text-sm
+                        py-2.5
+                        px-3
+                        rounded-xl
+                        transition-colors
+                        border
+                        border-teal-200
+                      "
+                    >
+                      <span>Details</span>
+                      <span>→</span>
+                    </Link>
+
+                    <Link
+                      to={`/booking?treatment=${encodeURIComponent(treatment.name)}`}
+                      className="
+                        flex-1
+                        inline-flex
+                        items-center
+                        justify-center
+                        gap-1.5
+                        bg-gradient-to-r
+                        from-[#d71920]
+                        to-[#008272]
+                        hover:from-[#b91c1c]
+                        hover:to-[#0f766e]
+                        active:scale-95
+                        text-white
+                        font-semibold
+                        text-xs
+                        sm:text-sm
+                        py-2.5
+                        px-3
+                        rounded-xl
+                        shadow-xs
+                        transition-all
+                      "
+                    >
+                      <Calendar className="w-3.5 h-3.5" />
+                      <span>Book Now</span>
+                    </Link>
+                  </div>
                 </div>
               </motion.div>
             ))}

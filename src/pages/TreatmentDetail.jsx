@@ -17,9 +17,8 @@ import {
   Sparkles,
   Stethoscope,
   HeartPulse,
-  BadgeCheck,
   Star,
-  MapPin,
+  Check,
 } from "lucide-react";
 import {
   ALL_TREATMENTS,
@@ -28,6 +27,7 @@ import {
   getTreatmentImage,
 } from "../data/treatmentsData";
 import SEO from "../components/common/SEO";
+import SectionHeader from "../components/common/SectionHeader";
 import drRashidImg from "../assets/images/Dr.MD.Rashid.png";
 import drWazulImg from "../assets/images/Dr Wazul Quamar.jpeg";
 
@@ -72,87 +72,119 @@ const TreatmentDetail = () => {
   const relatedTreatments = getRelatedTreatments(
     treatment.slug,
     treatment.category,
-    4
+    3
   );
+
+  const treatmentImageUrl = getTreatmentImage(treatment);
+
+  // Helper to sanitize any html entity encoding or external city references
+  const cleanClinicalText = (text) => {
+    if (!text) return "";
+    return text
+      .replace(/&amp;/g, "&")
+      .replace(/Delhi NCR/gi, "Bhopal")
+      .replace(/Delhi/gi, "Bhopal")
+      .replace(/Bhopal,\s*Bhopal/gi, "Bhopal")
+      .replace(/Bhopal\s*&\s*Bhopal/gi, "Bhopal")
+      .replace(/Bhopal\s*&amp;\s*Bhopal/gi, "Bhopal")
+      .trim();
+  };
+
+  // Helper to sanitize internal links & references in raw article HTML
+  const cleanHtmlContent = (html) => {
+    if (!html) return "";
+    return html
+      .replace(/https?:\/\/[^"'\s]*\/services\/[a-z0-9-]+/gi, "/services")
+      .replace(/Delhi NCR/gi, "Bhopal")
+      .replace(/Delhi/gi, "Bhopal")
+      .replace(/Bhopal,\s*Bhopal/gi, "Bhopal")
+      .replace(/Bhopal\s*&\s*Bhopal/gi, "Bhopal")
+      .replace(/Bhopal\s*&amp;\s*Bhopal/gi, "Bhopal");
+  };
+
+  const displaySubtitle = cleanClinicalText(treatment.subtitle || treatment.summary);
 
   return (
     <div className="bg-slate-50 min-h-screen text-slate-800">
       <SEO
         title={`${treatment.title} in Bhopal | Heal Stride Physiotherapy`}
-        description={treatment.subtitle || treatment.summary}
+        description={displaySubtitle}
         keywords={`${treatment.name}, ${treatment.name} treatment Bhopal, ${treatment.name} physiotherapy, pain relief Bhopal`}
       />
 
-      {/* Hero Section */}
-      <section className="relative bg-white border-b border-slate-200/80 pt-6 pb-10 sm:pt-10 sm:pb-14 overflow-hidden">
+      {/* Hero Section - Balanced Top Space & Gracefully Spread Left Content */}
+      <section className="relative bg-white border-b border-slate-200/80 pt-8 sm:pt-10 lg:pt-12 pb-4 sm:pb-5 overflow-hidden">
         {/* Subtle decorative glow */}
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-teal-50/70 blur-3xl rounded-full pointer-events-none" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          {/* Breadcrumb Navigation */}
-          <nav className="flex items-center gap-2 text-xs font-semibold text-slate-500 mb-5">
-            <Link to="/" className="hover:text-teal-700 transition">
-              Home
-            </Link>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-            <Link to="/treatments" className="hover:text-teal-700 transition">
-              Treatments
-            </Link>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-            <span className="text-slate-900 font-bold truncate max-w-[200px] sm:max-w-none">
-              {treatment.name}
-            </span>
-          </nav>
-
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Left Content */}
+            {/* Left Content - Gracefully Spread Out (Not Shrunk) */}
             <motion.div
-              initial={{ opacity: 0, y: 25 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="lg:col-span-8 space-y-4"
+              transition={{ duration: 0.4 }}
+              className="lg:col-span-7 flex flex-col justify-center space-y-4 sm:space-y-4.5 lg:space-y-5"
             >
-              {/* Badges */}
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-block px-3 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs font-semibold uppercase tracking-wider">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <span className="inline-block px-3.5 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs font-semibold uppercase tracking-wider">
                   {treatment.category}
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200">
-                  <ShieldCheck className="w-3.5 h-3.5 text-teal-600" />
-                  Non-Surgical Care
+                  <Award className="w-3.5 h-3.5 text-teal-600" />
+                  BPT &amp; MPT Certified Doctors
                 </span>
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold border border-amber-200">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold border border-amber-200">
                   <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                  4.7 (Google Verified)
+                  4.7 Google Rating
                 </span>
               </div>
 
-              {/* Title */}
-              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+              <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight text-slate-900 leading-[1.18]">
                 {treatment.title}
               </h1>
 
-              {/* Subtitle */}
-              <p className="text-sm sm:text-base lg:text-lg text-slate-600 leading-relaxed font-normal">
-                {treatment.subtitle}
+              <p className="text-teal-700 font-bold text-base sm:text-lg">
+                Evidence-Based Non-Surgical Rehabilitation &amp; Root-Cause Care
               </p>
+
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl">
+                {displaySubtitle}
+              </p>
+
+              {/* Badges Pill Row */}
+              <div className="pt-1 flex flex-wrap gap-3 text-xs sm:text-sm text-slate-700">
+                <div className="flex items-center gap-2 bg-slate-50 px-3.5 py-2 rounded-xl border border-slate-200">
+                  <Clock className="w-4 h-4 text-teal-600" />
+                  <span>Protocol: <strong>Non-Surgical</strong></span>
+                </div>
+                <div className="flex items-center gap-2 bg-slate-50 px-3.5 py-2 rounded-xl border border-slate-200">
+                  <Calendar className="w-4 h-4 text-teal-600" />
+                  <span>Assessment: <strong>1-on-1 Evaluation</strong></span>
+                </div>
+                <div className="flex items-center gap-2 bg-slate-50 px-3.5 py-2 rounded-xl border border-slate-200">
+                  <ShieldCheck className="w-4 h-4 text-teal-600" />
+                  <span><strong>100% Non-Invasive</strong></span>
+                </div>
+              </div>
 
               {/* Action Buttons */}
               <div className="pt-2 flex flex-wrap items-center gap-3">
                 <Link
                   to={`/booking?treatment=${encodeURIComponent(treatment.name)}`}
-                  className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] text-white font-bold text-xs sm:text-sm px-6 py-3.5 rounded-xl shadow-md hover:shadow-lg transition active:scale-95"
+                  className="bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] text-white px-6 sm:px-7 py-3 rounded-xl font-bold text-xs sm:text-sm shadow-md hover:shadow-teal-500/25 transition-all transform hover:-translate-y-0.5 inline-flex items-center gap-2"
                 >
-                  <Calendar size={16} />
-                  <span>Book Consultation</span>
+                  <Calendar className="w-4 h-4" />
+                  <span>Book Appointment Now</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
 
                 <a
-                  href="tel:8809491380"
-                  className="inline-flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm px-5 py-3.5 rounded-xl shadow-sm transition"
+                  href="tel:+918809491380"
+                  className="bg-slate-100 hover:bg-slate-200 text-slate-900 px-5 py-3 rounded-xl font-semibold text-xs sm:text-sm border border-slate-300 transition-all inline-flex items-center gap-2"
                 >
-                  <Phone size={15} />
-                  <span>Call +91 88094 91380</span>
+                  <Phone className="w-4 h-4 text-teal-600" />
+                  <span>+91 88094 91380</span>
                 </a>
 
                 <a
@@ -161,111 +193,132 @@ const TreatmentDetail = () => {
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-xs sm:text-sm px-5 py-3.5 rounded-xl shadow-sm transition"
+                  className="bg-[#25D366] hover:bg-[#20ba59] text-white px-5 py-3 rounded-xl font-semibold text-xs sm:text-sm shadow-sm transition-all inline-flex items-center gap-2"
                 >
-                  <MessageCircle size={16} />
-                  <span>WhatsApp Doctor</span>
+                  <MessageCircle className="w-4 h-4" />
+                  <span>WhatsApp</span>
                 </a>
               </div>
             </motion.div>
 
-            {/* Right Card / Clinical Highlights with Visual Image */}
-            <div className="lg:col-span-4">
-              <div className="bg-gradient-to-br from-slate-900 to-teal-950 text-white rounded-3xl overflow-hidden shadow-xl border border-teal-800/40">
-                {/* Condition Visual Photo Header */}
-                <div className="relative w-full h-44 overflow-hidden bg-slate-800">
-                  <img
-                    src={getTreatmentImage(treatment)}
-                    alt={`${treatment.name} clinical therapy`}
-                    className="w-full h-full object-cover opacity-90"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent" />
-                  <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-xs">
-                    <span className="bg-teal-500/90 text-white font-bold text-[10px] px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
-                      {treatment.category}
-                    </span>
-                    <span className="text-amber-400 font-bold flex items-center gap-1 text-xs bg-slate-900/70 px-2 py-0.5 rounded-full border border-white/20">
-                      <Star size={11} className="fill-amber-400 text-amber-400" />
-                      4.7 / 5.0
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-6 space-y-4">
+            {/* Right Image Card - Balanced Vertical Height */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.15 }}
+              className="lg:col-span-5"
+            >
+              <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-slate-200 bg-white group">
+                <img
+                  src={treatmentImageUrl}
+                  alt={treatment.name}
+                  className="w-full h-64 sm:h-80 lg:h-[380px] xl:h-[410px] object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute bottom-3 left-3 right-3 bg-white/95 backdrop-blur-md rounded-xl p-3 sm:p-3.5 border border-slate-200 text-left shadow-md">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center shrink-0">
-                      <Activity size={18} />
+                    <div className="w-9 h-9 rounded-lg bg-teal-50 text-teal-700 flex items-center justify-center shrink-0">
+                      <Sparkles className="w-4 h-4 text-teal-600" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-bold text-white leading-tight">
-                        Clinical Protocol
-                      </h3>
-                      <p className="text-[11px] text-teal-300">
-                        Heal Stride Bhopal
+                      <p className="text-[10px] text-teal-700 font-bold uppercase tracking-wider">
+                        Available at Heal Stride Bhopal
+                      </p>
+                      <p className="text-slate-900 text-xs sm:text-sm font-bold leading-tight">
+                        Personalized 1-on-1 Consultation
                       </p>
                     </div>
                   </div>
-
-                  <div className="space-y-3 pt-1 text-xs">
-                    <div className="flex items-start gap-2.5">
-                      <CheckCircle2 size={16} className="text-teal-400 shrink-0 mt-0.5" />
-                      <span>Comprehensive root-cause postural &amp; physical assessment</span>
-                    </div>
-                    <div className="flex items-start gap-2.5">
-                      <CheckCircle2 size={16} className="text-teal-400 shrink-0 mt-0.5" />
-                      <span>Targeted manual joint mobilization &amp; soft tissue release</span>
-                    </div>
-                    <div className="flex items-start gap-2.5">
-                      <CheckCircle2 size={16} className="text-teal-400 shrink-0 mt-0.5" />
-                      <span>Advanced modalities: Cupping, Dry Needling &amp; IASTM</span>
-                    </div>
-                    <div className="flex items-start gap-2.5">
-                      <CheckCircle2 size={16} className="text-teal-400 shrink-0 mt-0.5" />
-                      <span>Customized home exercises to prevent re-injury</span>
-                    </div>
-                  </div>
-
-                  <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs text-slate-300">
-                    <span>Consulting Physiotherapists:</span>
-                    <strong className="text-teal-300 font-semibold">2 Certified Doctors</strong>
-                  </div>
                 </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Bottom Highlights Strip (Anchors the full viewport fold without being cut off) */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-5 sm:pt-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 pt-3.5 sm:pt-4 border-t border-slate-200/80">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
+                <ShieldCheck className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-900">100% Non-Surgical</p>
+                <p className="text-[10px] text-slate-500 leading-tight">Natural pain relief care</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
+                <Award className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-900">Expert BPT/MPT Doctors</p>
+                <p className="text-[10px] text-slate-500 leading-tight">Dr. MD Rashid &amp; Dr. Md Wajhul Qumar</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
+                <Activity className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-900">Advanced Modalities</p>
+                <p className="text-[10px] text-slate-500 leading-tight">Cupping, Dry Needling, IASTM</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
+                <Clock className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-900">Personalized Plans</p>
+                <p className="text-[10px] text-slate-500 leading-tight">Tailored 1-on-1 recovery</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Main Body Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-          {/* Main Content Column */}
-          <div className="lg:col-span-8 space-y-8">
-            {/* Wide Featured Clinical Photo Banner */}
-            <div className="relative w-full h-64 sm:h-80 lg:h-96 rounded-3xl overflow-hidden shadow-md border border-slate-200 bg-slate-900 group">
-              <img
-                src={getTreatmentImage(treatment)}
-                alt={`${treatment.name} physical therapy in Bhopal`}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-95"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 text-white">
-                <span className="inline-block px-3 py-1 rounded-full bg-teal-600/90 text-white text-[11px] font-bold uppercase tracking-wider mb-2 backdrop-blur-md">
-                  {treatment.category} • Non-Surgical Protocol
-                </span>
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-white leading-tight">
-                  Clinical Assessment &amp; Rehabilitation: {treatment.name}
-                </h2>
-                <p className="text-xs sm:text-sm text-slate-300 mt-1.5 max-w-2xl line-clamp-2">
-                  Evidence-based rehabilitation targeting the root biomechanical dysfunctions without relying on surgery.
-                </p>
-              </div>
+      {/* Main Content Body - Spaced out cleanly */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-12 sm:space-y-16">
+        {/* Section 1: Clinical Overview */}
+        <section className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-slate-200 shadow-sm text-center">
+          <div className="w-full text-center">
+            <SectionHeader
+              badge="Clinical Overview"
+              title={`Understanding ${treatment.name} & Root Causes`}
+              className="mb-3 sm:mb-4"
+            />
+            <div className="space-y-4 text-slate-600 text-sm sm:text-base md:text-lg leading-relaxed text-center max-w-5xl mx-auto">
+              <p>
+                {displaySubtitle}
+              </p>
+              <p>
+                At Heal Stride Physiotherapy &amp; Wellness Centre in Bhopal, our goal is to eliminate pain and restore full functional mobility without relying on invasive surgeries or continuous painkiller reliance. Each patient undergoes a thorough clinical assessment to identify exact postural, muscular, and biomechanical trigger points.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Section 2: Detailed Evidence-Based Clinical Article (Clean Spacing, Nothing Cramped) */}
+        {treatment.contentHtml && (
+          <section className="bg-white rounded-3xl p-6 sm:p-10 lg:p-12 border border-slate-200 shadow-sm">
+            {/* Centered Section Header */}
+            <div className="mb-8 pb-5 border-b border-slate-100 text-center max-w-3xl mx-auto">
+              <span className="inline-block px-3.5 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs font-bold uppercase tracking-wider mb-2">
+                Evidence-Based Clinical Protocol
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 text-center">
+                Comprehensive Treatment &amp; Rehabilitation Guide
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1.5 text-center">
+                Formulated by Senior Physiotherapists at Heal Stride Physiotherapy &amp; Wellness Centre.
+              </p>
             </div>
 
-            {/* Individualized Care Callout Box */}
-            <div className="p-5 sm:p-6 rounded-2xl bg-teal-50/80 border border-teal-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+            {/* Individualized Evaluation Callout Box */}
+            <div className="my-8 p-5 sm:p-6 rounded-2xl bg-teal-50/80 border border-teal-200/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3.5 text-center sm:text-left">
+                <div className="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-sm mx-auto sm:mx-0">
                   <Stethoscope className="w-5 h-5" />
                 </div>
                 <div>
@@ -273,283 +326,375 @@ const TreatmentDetail = () => {
                     Individualized 1-on-1 Doctor Evaluation
                   </h4>
                   <p className="text-xs sm:text-sm text-teal-800/90 mt-0.5 leading-relaxed">
-                    Our clinical specialists assess joint range of motion, muscle imbalances, and nerve mobility before starting your rehabilitation.
+                    Our specialists assess joint range of motion, muscle imbalances, and nerve mobility before starting your rehabilitation.
                   </p>
                 </div>
               </div>
               <Link
                 to={`/booking?treatment=${encodeURIComponent(treatment.name)}`}
-                className="shrink-0 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#d71920] to-[#008272] text-white text-xs font-bold hover:shadow-md transition whitespace-nowrap"
+                className="shrink-0 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#d71920] to-[#008272] text-white text-xs font-bold hover:shadow-md transition whitespace-nowrap"
               >
                 Book Assessment
               </Link>
             </div>
 
-            {/* Rich Content Card with Generous Spacing */}
-            {treatment.contentHtml ? (
-              <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/90 shadow-xs">
-                <div
-                  className="prose prose-slate max-w-none
-                    prose-headings:font-black prose-headings:text-slate-900 prose-headings:tracking-tight
-                    prose-h2:text-xl sm:prose-h2:text-2xl prose-h2:mt-10 sm:prose-h2:mt-14 prose-h2:mb-4 prose-h2:pt-6 prose-h2:border-t prose-h2:border-slate-100 prose-h2:text-slate-900
-                    prose-h3:text-lg sm:prose-h3:text-2xl prose-h3:mt-10 sm:prose-h3:mt-12 prose-h3:mb-4 prose-h3:pt-6 sm:prose-h3:pt-8 prose-h3:border-t prose-h3:border-slate-100 prose-h3:first:mt-0 prose-h3:first:pt-0 prose-h3:first:border-0 prose-h3:text-teal-950
-                    prose-p:text-slate-700 prose-p:leading-relaxed sm:prose-p:leading-8 prose-p:text-sm sm:prose-p:text-base prose-p:mb-5
-                    prose-ul:my-5 prose-ul:space-y-3 prose-ul:pl-4
-                    prose-li:text-slate-700 prose-li:text-sm sm:prose-li:text-base prose-li:leading-relaxed
-                    prose-strong:text-slate-900 prose-strong:font-bold
-                    prose-a:text-[#008272] prose-a:font-semibold hover:prose-a:text-[#d71920] prose-a:underline prose-a:underline-offset-4
-                  "
-                  dangerouslySetInnerHTML={{ __html: treatment.contentHtml }}
-                />
-              </div>
-            ) : (
-              <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/90 shadow-xs">
-                <h2 className="text-xl sm:text-2xl font-black text-slate-900 mb-4">
-                  About {treatment.name} Treatment
-                </h2>
-                <p className="text-slate-700 text-sm sm:text-base leading-relaxed mb-4">
-                  {treatment.subtitle}
-                </p>
-                <p className="text-slate-700 text-sm sm:text-base leading-relaxed">
-                  At Heal Stride Physiotherapy &amp; Wellness Centre, we provide comprehensive evidence-based treatment for {treatment.name}. Our clinic combines manual therapy, electrotherapy, dry needling, cupping therapy, and progressive loading exercises to restore function without surgery.
-                </p>
-              </div>
-            )}
+            {/* Clearly Separated & Spaced Article Content */}
+            <div
+              className="treatment-article-content max-w-none"
+              dangerouslySetInnerHTML={{ __html: cleanHtmlContent(treatment.contentHtml) }}
+            />
+          </section>
+        )}
 
-            {/* Doctors Section */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-xs">
-              <div className="flex items-center gap-2 mb-4">
-                <Stethoscope className="w-5 h-5 text-teal-600" />
-                <h3 className="text-lg sm:text-xl font-black text-slate-900">
-                  Lead Physiotherapists for {treatment.name}
+        {/* Section 3: Treatment Procedure (Step by Step) - Matching ServiceDetail.jsx */}
+        <section>
+          <SectionHeader
+            badge="What To Expect"
+            title="Our 4-Stage Clinical Pathway"
+            subtitle="A structured, evidence-based recovery process ensuring safe, comfortable, and lasting relief."
+          />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm relative flex flex-col justify-between">
+              <div>
+                <span className="text-3xl font-black text-teal-600/30 block mb-2">01</span>
+                <h3 className="text-base font-bold text-slate-900 mb-2 leading-snug">
+                  Clinical Examination &amp; Testing
                 </h3>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                {/* Doctor 1 */}
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-4">
-                  <img
-                    src={drRashidImg}
-                    alt="Dr. MD Rashid (PT)"
-                    className="w-16 h-16 rounded-2xl object-cover object-top border border-teal-200 shrink-0"
-                  />
-                  <div>
-                    <h4 className="text-sm font-bold text-slate-900">
-                      Dr. MD Rashid (PT)
-                    </h4>
-                    <p className="text-xs text-teal-700 font-semibold">
-                      MPT (Sports) • Founder
-                    </p>
-                    <p className="text-[11px] text-slate-500 mt-1">
-                      Certified Cupping, Dry Needling & MWM
-                    </p>
-                  </div>
-                </div>
-
-                {/* Doctor 2 */}
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-4">
-                  <img
-                    src={drWazulImg}
-                    alt="Dr. Md Wajhul Qumar (PT)"
-                    className="w-16 h-16 rounded-2xl object-cover object-top border border-teal-200 shrink-0"
-                  />
-                  <div>
-                    <h4 className="text-sm font-bold text-slate-900">
-                      Dr. Md Wajhul Qumar (PT)
-                    </h4>
-                    <p className="text-xs text-teal-700 font-semibold">
-                      BPT • Rehab Specialist
-                    </p>
-                    <p className="text-[11px] text-slate-500 mt-1">
-                      7 Advanced Certifications (IASTM, Cardiopulmonary)
-                    </p>
-                  </div>
-                </div>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  Orthopedic joint tests, range of motion analysis, posture screening, and medical history evaluation.
+                </p>
               </div>
             </div>
 
-            {/* FAQs Section */}
-            {treatment.faqs && treatment.faqs.length > 0 && (
-              <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-xs">
-                <div className="flex items-center gap-2 mb-6">
-                  <HelpCircle className="w-5 h-5 text-teal-600" />
-                  <h3 className="text-lg sm:text-xl font-black text-slate-900">
-                    Frequently Asked Questions ({treatment.name})
-                  </h3>
-                </div>
-
-                <div className="space-y-3">
-                  {treatment.faqs.map((faq, idx) => {
-                    const isOpen = openFaq === idx;
-                    return (
-                      <div
-                        key={idx}
-                        className="rounded-2xl border border-slate-200/80 overflow-hidden transition-all duration-200"
-                      >
-                        <button
-                          type="button"
-                          onClick={() => setOpenFaq(isOpen ? -1 : idx)}
-                          className="w-full p-4 sm:p-5 text-left bg-white hover:bg-slate-50 flex items-center justify-between gap-3 cursor-pointer transition-colors"
-                        >
-                          <span className="text-sm font-bold text-slate-900 leading-snug">
-                            {faq.question}
-                          </span>
-                          <ChevronDown
-                            className={`w-4 h-4 text-teal-600 shrink-0 transition-transform duration-200 ${
-                              isOpen ? "rotate-180" : ""
-                            }`}
-                          />
-                        </button>
-                        <AnimatePresence>
-                          {isOpen && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: "auto" }}
-                              exit={{ opacity: 0, height: 0 }}
-                              transition={{ duration: 0.2 }}
-                              className="px-4 pb-4 sm:px-5 sm:pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 bg-slate-50/50"
-                            >
-                              <p>{faq.answer}</p>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-            {/* Related Treatments */}
-            {relatedTreatments.length > 0 && (
-              <div className="space-y-4">
-                <h3 className="text-lg sm:text-xl font-black text-slate-900">
-                  Related Conditions &amp; Treatments
+            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm relative flex flex-col justify-between">
+              <div>
+                <span className="text-3xl font-black text-teal-600/30 block mb-2">02</span>
+                <h3 className="text-base font-bold text-slate-900 mb-2 leading-snug">
+                  Targeted Pain &amp; Spasm Control
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {relatedTreatments.map((rel) => (
-                    <Link
-                      key={rel.slug}
-                      to={`/treatments/${rel.slug}`}
-                      className="rounded-2xl bg-white border border-slate-200/80 hover:border-teal-500/40 hover:shadow-md transition-all group flex overflow-hidden"
-                    >
-                      <div className="w-24 sm:w-28 h-auto shrink-0 bg-slate-100 overflow-hidden">
-                        <img
-                          src={getTreatmentImage(rel)}
-                          alt={rel.name}
-                          loading="lazy"
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-                      <div className="p-4 flex flex-col justify-between flex-1">
-                        <div>
-                          <span className="text-[10px] font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full">
-                            {rel.category}
-                          </span>
-                          <h4 className="text-sm font-bold text-slate-900 group-hover:text-[#008272] transition-colors mt-1.5 leading-snug line-clamp-1">
-                            {rel.name}
-                          </h4>
-                          <p className="text-xs text-slate-500 line-clamp-2 mt-1">
-                            {rel.summary}
-                          </p>
-                        </div>
-                        <div className="mt-2 flex items-center gap-1 text-xs font-bold text-[#008272] group-hover:translate-x-0.5 transition-transform">
-                          <span>View Protocol</span>
-                          <ChevronRight size={14} />
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Sticky Sidebar */}
-          <div className="lg:col-span-4">
-            <div className="sticky top-28 space-y-6">
-              {/* Consultation Booking Card */}
-              <div className="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-md">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 text-teal-700 text-xs font-semibold mb-3">
-                  <Sparkles size={13} />
-                  <span>Personalized Care</span>
-                </div>
-
-                <h3 className="text-lg font-black text-slate-900 leading-tight">
-                  Consult for {treatment.name}
-                </h3>
-                <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
-                  Get evaluated by senior physiotherapists with specialized certifications in pain relief.
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  Dry needling, cupping therapy, IFT / TENS, and manual trigger point release to calm acute flare-ups.
                 </p>
+              </div>
+            </div>
 
-                <div className="mt-5 space-y-2.5">
+            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm relative flex flex-col justify-between">
+              <div>
+                <span className="text-3xl font-black text-teal-600/30 block mb-2">03</span>
+                <h3 className="text-base font-bold text-slate-900 mb-2 leading-snug">
+                  Joint Mobilization &amp; Alignment
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  Gentle passive stretching, spinal decompression, and realignment to restore biomechanical symmetry.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm relative flex flex-col justify-between">
+              <div>
+                <span className="text-3xl font-black text-teal-600/30 block mb-2">04</span>
+                <h3 className="text-base font-bold text-slate-900 mb-2 leading-snug">
+                  Strengthening &amp; Prevention
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  Personalized resistance exercises, core stabilization, and ergonomic habits to stop pain from returning.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Section 4: Consulting Specialists */}
+        <section className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-slate-200 shadow-sm">
+          <SectionHeader
+            badge="Expert Medical Team"
+            title="Lead Specialists for Your Treatment"
+            subtitle="Your treatment is directly overseen by university-qualified, highly credentialed physiotherapists in Bhopal."
+            className="mb-8"
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 w-full">
+            {/* Doctor 1 */}
+            <div className="p-6 sm:p-7 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-5 hover:border-teal-400 transition-colors shadow-xs">
+              <img
+                src={drRashidImg}
+                alt="Dr. MD Rashid (PT)"
+                className="w-24 h-24 rounded-2xl object-cover object-top border-2 border-teal-200 shrink-0 shadow-sm"
+              />
+              <div className="flex-1">
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                  <h4 className="text-lg font-bold text-slate-900">
+                    Dr. MD Rashid (PT)
+                  </h4>
+                  <span className="text-[11px] font-semibold bg-teal-100 text-teal-800 px-2.5 py-0.5 rounded-full">
+                    Clinical Director
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm text-teal-700 font-semibold mt-1">
+                  MPT (Sports) • Founder &amp; Senior Consultant
+                </p>
+                <p className="text-xs sm:text-sm text-slate-600 mt-2.5 leading-relaxed">
+                  Specialized in sports injuries, dry needling, cupping therapy, spinal decompression, and advanced joint mobilization protocols.
+                </p>
+              </div>
+            </div>
+
+            {/* Doctor 2 */}
+            <div className="p-6 sm:p-7 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-5 hover:border-teal-400 transition-colors shadow-xs">
+              <img
+                src={drWazulImg}
+                alt="Dr. Md Wajhul Qumar (PT)"
+                className="w-24 h-24 rounded-2xl object-cover object-top border-2 border-teal-200 shrink-0 shadow-sm"
+              />
+              <div className="flex-1">
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                  <h4 className="text-lg font-bold text-slate-900">
+                    Dr. Md Wajhul Qumar (PT)
+                  </h4>
+                  <span className="text-[11px] font-semibold bg-teal-100 text-teal-800 px-2.5 py-0.5 rounded-full">
+                    Senior Specialist
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm text-teal-700 font-semibold mt-1">
+                  BPT • 7 Certified Clinical Specialities
+                </p>
+                <p className="text-xs sm:text-sm text-slate-600 mt-2.5 leading-relaxed">
+                  Certified in cupping therapy, dry needling, IASTM, cardiopulmonary rehabilitation, tapping therapy, manual therapy, and neuro-musculoskeletal care.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Section 5: Specialized Tools & Modalities - Matching ServiceDetail.jsx */}
+        <section className="bg-white rounded-3xl p-6 sm:p-10 lg:p-12 border border-slate-200 shadow-sm text-center">
+          <div className="w-full text-center">
+            <SectionHeader
+              badge="Technology &amp; Modalities"
+              title="Specialized Clinical Modalities Used"
+              subtitle="We combine advanced therapeutic equipment and hands-on clinical skills for faster recovery."
+              className="mb-6"
+            />
+            <div className="flex flex-wrap justify-center gap-3.5 sm:gap-4 w-full">
+              {[
+                "Dry Needling Therapy",
+                "Clinical Cupping (Hijama)",
+                "Therapeutic Ultrasound Unit",
+                "Digital TENS / IFT Machine",
+                "IASTM Soft Tissue Tools",
+                "Spinal Decompression Table",
+                "Joint Mobilization Wedges",
+                "TheraBands & Resistance Loops",
+                "Cryotherapy & Heat Modalities",
+                "Biomechanics Screening",
+              ].map((tool, i) => (
+                <span
+                  key={i}
+                  className="inline-flex items-center gap-2.5 bg-slate-50 border border-slate-200 text-slate-800 px-4.5 py-3 rounded-xl text-xs sm:text-sm font-semibold hover:border-teal-400 hover:bg-teal-50/50 transition-all shadow-xs"
+                >
+                  <Stethoscope className="w-4 h-4 text-teal-600" />
+                  {tool}
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Section 6: Frequently Asked Questions (FAQ) - Matching ServiceDetail.jsx */}
+        {treatment.faqs && treatment.faqs.length > 0 && (
+          <section className="bg-white rounded-3xl p-6 sm:p-10 lg:p-12 border border-slate-200 shadow-sm">
+            <div className="w-full">
+              <SectionHeader
+                badge="Got Questions?"
+                title="Frequently Asked Questions"
+                subtitle={`Everything you need to know about ${treatment.name} at Heal Stride.`}
+              />
+
+              <div className="space-y-3.5 w-full">
+                {treatment.faqs.map((faq, index) => {
+                  const isOpen = openFaq === index;
+                  return (
+                    <div
+                      key={index}
+                      className="border border-slate-200 rounded-2xl overflow-hidden transition-colors"
+                    >
+                      <button
+                        onClick={() => setOpenFaq(isOpen ? -1 : index)}
+                        className="w-full text-left p-4 sm:p-5 flex items-center justify-between gap-4 font-semibold text-sm sm:text-base text-slate-900 hover:text-teal-700 transition cursor-pointer"
+                      >
+                        <span className="flex items-center gap-3">
+                          <HelpCircle className="w-4 h-4 text-teal-600 shrink-0" />
+                          {faq.question}
+                        </span>
+                        <ChevronDown
+                          className={`w-5 h-5 text-slate-400 shrink-0 transition-transform duration-200 ${
+                            isOpen ? "rotate-180 text-teal-600" : ""
+                          }`}
+                        />
+                      </button>
+
+                      <AnimatePresence>
+                        {isOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.25 }}
+                            className="px-5 pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3"
+                          >
+                            {faq.answer}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Section 7: Related Treatments - Rendered with ServicesGrid card styling */}
+        {relatedTreatments.length > 0 && (
+          <section>
+            <SectionHeader
+              badge="Complementary Treatments"
+              title="Other Conditions You May Explore"
+              subtitle="Browse related non-surgical treatment programs available at Heal Stride Physiotherapy Bhopal."
+            />
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+              {relatedTreatments.map((rel, idx) => (
+                <div
+                  key={rel.slug}
+                  className="
+                    group
+                    bg-white
+                    rounded-2xl
+                    border
+                    border-slate-200
+                    hover:border-teal-500
+                    shadow-sm
+                    hover:shadow-md
+                    transition-all
+                    duration-200
+                    overflow-hidden
+                    flex
+                    flex-col
+                    h-full
+                    justify-between
+                  "
+                >
                   <Link
-                    to={`/booking?treatment=${encodeURIComponent(treatment.name)}`}
-                    className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] text-white font-bold text-xs sm:text-sm py-3.5 px-4 rounded-xl shadow-md transition active:scale-95 cursor-pointer"
+                    to={`/treatments/${rel.slug}`}
+                    className="relative overflow-hidden aspect-[4/3] w-full flex-shrink-0 bg-slate-100 block"
                   >
-                    <Calendar size={15} />
-                    <span>Book Clinic Appointment</span>
+                    <img
+                      src={getTreatmentImage(rel)}
+                      alt={rel.name}
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute top-3 left-3 bg-teal-600/90 backdrop-blur-sm text-white px-2.5 py-1 rounded-md text-[11px] font-semibold tracking-wide uppercase shadow-sm">
+                      {rel.category}
+                    </div>
+                    <div className="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-sm text-slate-200 px-2 py-0.5 rounded text-[11px] font-medium flex items-center gap-1">
+                      <Clock className="w-3 h-3 text-slate-300" />
+                      <span>Non-Surgical</span>
+                    </div>
                   </Link>
 
-                  <a
-                    href="tel:8809491380"
-                    className="w-full flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm py-3 px-4 rounded-xl transition"
-                  >
-                    <Phone size={14} />
-                    <span>Call: +91 88094 91380</span>
-                  </a>
+                  <div className="p-5 flex flex-col flex-1 justify-between">
+                    <div>
+                      <Link to={`/treatments/${rel.slug}`} className="hover:text-teal-700 transition-colors">
+                        <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-snug">
+                          {rel.name}
+                        </h3>
+                      </Link>
 
-                  <a
-                    href={`https://wa.me/918252580389?text=${encodeURIComponent(
-                      `Hello, I would like to book a consultation for ${treatment.name} at Heal Stride Clinic.`
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-xs sm:text-sm py-3 px-4 rounded-xl transition"
-                  >
-                    <MessageCircle size={15} />
-                    <span>WhatsApp Inquiry</span>
-                  </a>
-                </div>
+                      <p className="text-slate-600 mt-2 text-xs sm:text-sm leading-relaxed line-clamp-2 min-h-[38px]">
+                        {rel.summary}
+                      </p>
 
-                {/* Clinic Timing & Info */}
-                <div className="mt-5 pt-4 border-t border-slate-100 text-xs space-y-2 text-slate-600">
-                  <div className="flex items-center gap-2">
-                    <Clock size={14} className="text-teal-600 shrink-0" />
-                    <span>Mon - Sat: 9:00 AM - 9:00 PM</span>
+                      <div className="mt-3.5 pt-3 border-t border-slate-100">
+                        <ul className="text-xs text-slate-600 space-y-1.5">
+                          <li className="flex items-start gap-1.5">
+                            <Check className="w-3.5 h-3.5 text-teal-600 flex-shrink-0 mt-0.5" />
+                            <span className="line-clamp-1">100% Non-Surgical Protocol</span>
+                          </li>
+                          <li className="flex items-start gap-1.5">
+                            <Check className="w-3.5 h-3.5 text-teal-600 flex-shrink-0 mt-0.5" />
+                            <span className="line-clamp-1">Personalized 1-on-1 Evaluation</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div className="mt-5 pt-3 border-t border-slate-100 flex items-center gap-2">
+                      <Link
+                        to={`/treatments/${rel.slug}`}
+                        className="
+                          flex-1
+                          inline-flex
+                          items-center
+                          justify-center
+                          gap-1
+                          bg-teal-50
+                          hover:bg-teal-100
+                          text-teal-700
+                          font-semibold
+                          text-xs
+                          sm:text-sm
+                          py-2.5
+                          px-3
+                          rounded-xl
+                          transition-colors
+                          border
+                          border-teal-200
+                        "
+                      >
+                        <span>Details</span>
+                        <span>→</span>
+                      </Link>
+
+                      <Link
+                        to={`/booking?treatment=${encodeURIComponent(rel.name)}`}
+                        className="
+                          flex-1
+                          inline-flex
+                          items-center
+                          justify-center
+                          gap-1.5
+                          bg-gradient-to-r
+                          from-[#d71920]
+                          to-[#008272]
+                          hover:from-[#b91c1c]
+                          hover:to-[#0f766e]
+                          active:scale-95
+                          text-white
+                          font-semibold
+                          text-xs
+                          sm:text-sm
+                          py-2.5
+                          px-3
+                          rounded-xl
+                          shadow-xs
+                          transition-all
+                        "
+                      >
+                        <Calendar className="w-3.5 h-3.5" />
+                        <span>Book Now</span>
+                      </Link>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <MapPin size={14} className="text-teal-600 shrink-0" />
-                    <span>Raisen Road & Subhash Nagar, Bhopal</span>
-                  </div>
                 </div>
-              </div>
-
-              {/* Verified Trust Badge Card */}
-              <div className="bg-slate-900 text-white rounded-3xl p-6 border border-slate-800 shadow-md">
-                <div className="flex items-center gap-2 text-teal-300 text-xs font-bold uppercase tracking-wider mb-2">
-                  <ShieldCheck size={16} />
-                  <span>Why Heal Stride?</span>
-                </div>
-                <ul className="text-xs text-slate-300 space-y-2 mt-3">
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5 shrink-0" />
-                    <span>Zero surgery, 100% natural evidence-based recovery</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5 shrink-0" />
-                    <span>Certified in Cupping, Dry Needling & IASTM</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5 shrink-0" />
-                    <span>Modern electrotherapy & spinal traction modalities</span>
-                  </li>
-                </ul>
-              </div>
+              ))}
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
+        )}
+
+      </div>
     </div>
   );
 };
