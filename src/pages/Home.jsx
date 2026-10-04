@@ -29,8 +29,8 @@ const Home = () => {
       <TreatmentSlider />
       <WhyChooseUs />
       <OurServices />
-      <HomePhysiotherapySection />
       <ClinicIntro isHome={true} />
+      <HomePhysiotherapySection />
       <GalleryPreview />
       <Specialists showViewAllButton={true} />
       <BlogSection />

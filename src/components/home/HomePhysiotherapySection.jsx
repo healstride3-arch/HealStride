@@ -10,6 +10,7 @@ import {
   HeartPulse,
   MapPin,
   Sparkles,
+  ArrowRight,
 } from "lucide-react";
 import homePhysioImg from "../../assets/images/services/home-physiotherapy-main.jpg";
 import SectionHeader from "../common/SectionHeader";
@@ -134,9 +135,10 @@ const HomePhysiotherapySection = () => {
 
               <Link
                 to="/services/home-physiotherapy"
-                className="inline-flex items-center text-xs sm:text-sm font-bold text-[#008272] hover:text-[#d71920] underline transition-colors px-2 py-1"
+                className="inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 font-semibold px-4.5 sm:px-5 py-2.5 sm:py-3 min-h-[44px] rounded-xl text-xs sm:text-sm shadow-xs transition-all"
               >
-                <span>View Details →</span>
+                <span>View Details</span>
+                <ArrowRight size={15} className="shrink-0" />
               </Link>
             </div>
           </motion.div>
