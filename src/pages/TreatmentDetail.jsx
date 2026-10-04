@@ -201,18 +201,18 @@ const TreatmentDetail = () => {
               </div>
             </motion.div>
 
-            {/* Right Image Card - Balanced Vertical Height */}
+            {/* Right Image Card - Fixed Dimensions & Centered */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.15 }}
-              className="lg:col-span-5"
+              className="lg:col-span-5 flex items-center justify-center"
             >
-              <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-slate-200 bg-white group">
+              <div className="relative w-full max-w-[480px] h-72 sm:h-80 lg:h-[380px] xl:h-[400px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-slate-200 bg-slate-100 group flex items-center justify-center mx-auto">
                 <img
                   src={treatmentImageUrl}
                   alt={treatment.name}
-                  className="w-full h-64 sm:h-80 lg:h-[380px] xl:h-[410px] object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent pointer-events-none" />
                 <div className="absolute bottom-3 left-3 right-3 bg-white/95 backdrop-blur-md rounded-xl p-3 sm:p-3.5 border border-slate-200 text-left shadow-md">
@@ -588,13 +588,13 @@ const TreatmentDetail = () => {
                 >
                   <Link
                     to={`/treatments/${rel.slug}`}
-                    className="relative overflow-hidden aspect-[4/3] w-full flex-shrink-0 bg-slate-100 block"
+                    className="relative overflow-hidden w-full h-52 sm:h-56 flex-shrink-0 bg-slate-100 flex items-center justify-center"
                   >
                     <img
                       src={getTreatmentImage(rel)}
                       alt={rel.name}
                       loading="lazy"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute top-3 left-3 bg-teal-600/90 backdrop-blur-sm text-white px-2.5 py-1 rounded-md text-[11px] font-semibold tracking-wide uppercase shadow-sm">
                       {rel.category}

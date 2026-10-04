@@ -3478,13 +3478,113 @@ export const getTreatmentBySlug = (slug) => {
   );
 };
 
+export const TREATMENT_IMAGES_MAP = {
+  "achilles-tendinitis": "/treatments-assets/achilles-tendinitis.webp",
+  "acl-tear": "/treatments-assets/acl-tear.webp",
+  "ankle-pain": "/treatments-assets/ankle-pain.webp",
+  "ankylosing-spondylitis": "/treatments-assets/ankylosing-spondylitis.webp",
+  "back-pain": "/treatments-assets/back-pain.webp",
+  "balance-disorder": "/treatments-assets/balance-disorder.webp",
+  "bells-palsy": "/treatments-assets/bells-palsy.webp",
+  "biceps-tendinitis-treatment": "/treatments-assets/biceps-tendinitis-treatment.png",
+  "brain-injury-rehabilitation": "/treatments-assets/brain-injury-rehabilitation.webp",
+  "calf-muscle-strain": "/treatments-assets/calf-muscle-strain.webp",
+  "carpal-tunnel-syndrome": "/treatments-assets/carpal-tunnel-syndrome.webp",
+  "cerebral-palsy-physiotherapy": "/treatments-assets/cerebral-palsy-physiotherapy.webp",
+  "cervical-pain": "/treatments-assets/cervical-pain.png",
+  "cervical-spondylosis-treatment": "/treatments-assets/cervical-spondylosis-treatment.png",
+  "chondromalacia-patella": "/treatments-assets/chondromalacia-patella.webp",
+  "coccyx-pain-treatment": "/treatments-assets/coccyx-pain-treatment.png",
+  "cubital-tunnel-syndrome": "/treatments-assets/cubital-tunnel-syndrome.webp",
+  "degenerative-disc-treatment": "/treatments-assets/degenerative-disc-treatment.png",
+  "elbow-pain-treatment": "/treatments-assets/elbow-pain-treatment.webp",
+  "facet-joint-syndrome-treatment": "/treatments-assets/facet-joint-syndrome-treatment.png",
+  "facial-paralysis-rehabilitation": "/treatments-assets/facial-paralysis-rehabilitation.webp",
+  "fibromyalgia": "/treatments-assets/fibromyalgia.webp",
+  "flat-feet-treatment": "/treatments-assets/flat-feet-treatment.webp",
+  "foot-drop-treatment": "/treatments-assets/foot-drop-treatment.webp",
+  "frozen-shoulder": "/treatments-assets/frozen-shoulder.webp",
+  "gait-training-therapy": "/treatments-assets/gait-training-therapy.webp",
+  "groin-pain": "/treatments-assets/groin-pain.webp",
+  "guillain-barre-syndrome-rehabilitation": "/treatments-assets/guillain-barre-syndrome-rehabilitation.webp",
+  "gym-injury-rehabilitation": "/treatments-assets/gym-injury-rehabilitation.webp",
+  "hamstring-injury-rehabilitation": "/treatments-assets/hamstring-injury-rehabilitation.webp",
+  "hand-pain-treatment": "/treatments-assets/hand-pain-treatment.webp",
+  "headache": "/treatments-assets/headache.webp",
+  "heel-pain": "/treatments-assets/heel-pain.webp",
+  "herniated-disc-treatment": "/treatments-assets/herniated-disc-treatment.png",
+  "hip-pain": "/treatments-assets/hip-pain.webp",
+  "it-band-syndrome": "/treatments-assets/it-band-syndrome.webp",
+  "jumpers-knee": "/treatments-assets/jumpers-knee.webp",
+  "knee-pain": "/treatments-assets/knee-pain.webp",
+  "kyphosis-treatment": "/treatments-assets/kyphosis-treatment.png",
+  "labral-tear-rehabilitation": "/treatments-assets/labral-tear-rehabilitation.png",
+  "ligament-injury": "/treatments-assets/ligament-injury.webp",
+  "lordosis-treatment": "/treatments-assets/lordosis-treatment.png",
+  "lumbar-spondylosis-treatment": "/treatments-assets/lumbar-spondylosis-treatment.png",
+  "meniscus-tear-rehabilitation": "/treatments-assets/meniscus-tear-rehabilitation.webp",
+  "migraine": "/treatments-assets/migraine.webp",
+  "multiple-sclerosis-physiotherapy": "/treatments-assets/multiple-sclerosis-physiotherapy.webp",
+  "muscle-strain": "/treatments-assets/muscle-strain.webp",
+  "muscle-tear-rehabilitation": "/treatments-assets/muscle-tear-rehabilitation.webp",
+  "musele-muscular-dystrophy": "/treatments-assets/musele-muscular-dystrophy.webp",
+  "neck-pain": "/treatments-assets/neck-pain.webp",
+  "nerve-compression-syndrome-treatment": "/treatments-assets/nerve-compression-syndrome-treatment.png",
+  "neurological-physiotherapy": "/treatments-assets/neurological-physiotherapy.webp",
+  "neuropathy": "/treatments-assets/neuropathy.webp",
+  "osteoarthritis": "/treatments-assets/osteoarthritis.webp",
+  "paralysis": "/treatments-assets/paralysis.webp",
+  "parkinson-disease": "/treatments-assets/parkinson-disease.webp",
+  "pinched-nerve-treatment": "/treatments-assets/pinched-nerve-treatment.png",
+  "piriformis-syndrome-treatment": "/treatments-assets/piriformis-syndrome-treatment.png",
+  "planter-fasciatis": "/treatments-assets/planter-fasciatis.webp",
+  "post-tkr-thr-rehab-physiotherapy": "/treatments-assets/post-tkr-thr-rehab-physiotherapy.webp",
+  "posture-correction": "/treatments-assets/posture-correction.webp",
+  "radiculopathy-treatment": "/treatments-assets/radiculopathy-treatment.png",
+  "rhematoid-arthritis": "/treatments-assets/rhematoid-arthritis.webp",
+  "rotator-cuff-injury-treatment": "/treatments-assets/rotator-cuff-injury-treatment.png",
+  "rotator-cuff-tear-treatment": "/treatments-assets/rotator-cuff-tear-treatment.png",
+  "runners-knee": "/treatments-assets/runners-knee.webp",
+  "running-injury": "/treatments-assets/running-injury.webp",
+  "sciatica": "/treatments-assets/sciatica.webp",
+  "scoliosis-treatment": "/treatments-assets/scoliosis-treatment.png",
+  "shin-splints": "/treatments-assets/shin-splints.webp",
+  "shoulder-impingement": "/treatments-assets/shoulder-impingement.webp",
+  "shoulder-instability-treatment": "/treatments-assets/shoulder-instability-treatment.png",
+  "shoulder-pain": "/treatments-assets/shoulder-pain.webp",
+  "si-joint-dysfunction": "/treatments-assets/si-joint-dysfunction.webp",
+  "slip-disc": "/treatments-assets/slip-disc.webp",
+  "spinal-stenosis": "/treatments-assets/spinal-stenosis.webp",
+  "sports-injury": "/treatments-assets/sports-injury.webp",
+  "sports-physiotherapy": "/treatments-assets/sports-physiotherapy.webp",
+  "stroke": "/treatments-assets/stroke.webp",
+  "supraspinatus-tendinitis": "/treatments-assets/supraspinatus-tendinitis.webp",
+  "tennis-golfers-elbow": "/treatments-assets/tennis-golfers-elbow.webp",
+  "thoracic-outlet-syndrome-treatment": "/treatments-assets/thoracic-outlet-syndrome-treatment.png",
+  "tmj-pain": "/treatments-assets/tmj-pain.webp",
+  "trigger-finger-treatment": "/treatments-assets/trigger-finger-treatment.webp",
+  "trigger-point-pain-treatment": "/treatments-assets/trigger-point-pain-treatment.webp",
+  "vertigo": "/treatments-assets/vertigo.webp",
+  "wrist-pain": "/treatments-assets/wrist-pain.webp"
+};
+
 export const getTreatmentImage = (treatment) => {
-  if (!treatment) return "/firestore-assets/treatment1.jpg";
-  const slug = (treatment.slug || treatment.id || "").toLowerCase();
+  if (!treatment) return "/treatments-assets/back-pain.webp";
+  const slug = (treatment.slug || treatment.id || "").toLowerCase().trim();
+  const clean = slug.replace(/[^a-z0-9]+/g, "-");
+
+  // 1. Direct match with exact downloaded card images
+  if (TREATMENT_IMAGES_MAP[slug]) {
+    return TREATMENT_IMAGES_MAP[slug];
+  }
+  if (TREATMENT_IMAGES_MAP[clean]) {
+    return TREATMENT_IMAGES_MAP[clean];
+  }
+
   const name = (treatment.name || treatment.title || "").toLowerCase();
   const category = (treatment.category || "").toLowerCase();
 
-  // 1. Specific conditions mapping
+  // 2. Specific conditions mapping
   if (slug.includes("sciatica") || name.includes("sciatica") || slug.includes("piriformis")) {
     return "/firestore-assets/sciaticapain.jpg";
   }

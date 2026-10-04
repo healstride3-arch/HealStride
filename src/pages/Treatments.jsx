@@ -415,13 +415,13 @@ const Treatments = () => {
                 {/* Image & Badges */}
                 <Link
                   to={`/treatments/${treatment.slug}`}
-                  className="relative overflow-hidden aspect-[4/3] w-full flex-shrink-0 bg-slate-100 block"
+                  className="relative overflow-hidden w-full h-52 sm:h-56 flex-shrink-0 bg-slate-100 flex items-center justify-center"
                 >
                   <img
                     src={getTreatmentImage(treatment)}
                     alt={treatment.name}
                     loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
                   />
                   {treatment.category && (
                     <div className="absolute top-3 left-3 bg-teal-600/90 backdrop-blur-sm text-white px-2.5 py-1 rounded-md text-[11px] font-semibold tracking-wide uppercase shadow-sm">
