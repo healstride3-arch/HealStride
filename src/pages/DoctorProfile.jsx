@@ -212,11 +212,12 @@ const DoctorProfile = () => {
   });
   const doctors = rawDoctors.filter((d) => d.active !== false);
 
-  // Settings for clinic phone / whatsapp
+  // Settings for clinic phone / whatsapp / address
   const { data: clinicSettings } = useFirestoreDoc("settings", "clinic", {
     phone: "+91 88094 91380",
     whatsapp: "+91 82525 80389",
     hours: "Morning 9:00 AM - 12:00 PM\nEvening 5:00 PM - 9:00 PM",
+    address: "LIG 85 New Subhash Nagar Near Gurudwara-Raisen Road  Bhopal 462023",
   });
 
   const slugify = (str) =>
@@ -904,7 +905,7 @@ const DoctorProfile = () => {
                     <div>
                       <h4 className="text-xs font-bold text-slate-900">Clinic Location</h4>
                       <p className="text-[11px] xs:text-xs text-slate-600 mt-0.5">
-                        LIG 85, Raisen Rd, Near Gurudwara, New Subhash Nagar, Bhopal
+                        {clinicSettings?.address || "LIG 85 New Subhash Nagar Near Gurudwara-Raisen Road  Bhopal 462023"}
                       </p>
                     </div>
                   </div>

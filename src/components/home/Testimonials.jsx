@@ -16,7 +16,7 @@ import { FcGoogle } from "react-icons/fc";
 import { useClinicSettings } from "../../hooks/useClinicSettings";
 
 const GOOGLE_MAPS_REVIEW_URL =
-  "https://www.google.com/maps/search/?api=1&query=Heal+Stride+Physiotherapy+%26+Wellness+Centre+LIG+85+Raisen+Rd+near+gurudwara+New+Subhash+Nagar+Bhopal";
+  "https://www.google.com/maps/search/?api=1&query=Heal+Stride+Physiotherapy+%26+Wellness+Centre+LIG+85+New+Subhash+Nagar+Near+Gurudwara-Raisen+Road+Bhopal+462023";
 
 const Testimonials = () => {
   const { data: settings } = useClinicSettings();

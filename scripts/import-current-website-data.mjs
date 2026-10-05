@@ -93,7 +93,7 @@ const reviews = loadArray("src/data/googleReviews.js", "googleReviews");
 
 const settings = {
   address:
-    "LIG 85, Raisen Rd, Near Gurudwara, New Subhash Nagar, Ashoka Garden, Bhopal - 462023",
+    "LIG 85 New Subhash Nagar Near Gurudwara-Raisen Road  Bhopal 462023",
   hours: "Morning 9:00 AM - 12:00 PM\nEvening 5:00 PM - 9:00 PM",
   phone: "+91 88094 91380",
   whatsapp: "+91 82525 80389",

@@ -2,9 +2,11 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Phone, Calendar, Clock, MapPin, MessageSquare, CheckCircle2, ShieldCheck, Star } from "lucide-react";
+import { useClinicSettings } from "../../hooks/useClinicSettings";
 
 const ContactHero = () => {
   const { t } = useTranslation();
+  const { data: settings } = useClinicSettings();
 
   return (
     <section className="relative w-full min-h-[calc(100vh-90px)] flex flex-col justify-center py-6 sm:py-8 lg:py-10 overflow-hidden border-b border-slate-800 bg-slate-950">
@@ -143,7 +145,7 @@ const ContactHero = () => {
 
             {/* Card 4: Location */}
             <a
-              href="https://maps.google.com/?q=Heal+Stride+Physiotherapy+Bhopal"
+              href={`https://maps.google.com/?q=${encodeURIComponent(settings.address || "Heal Stride Physiotherapy LIG 85 New Subhash Nagar Near Gurudwara-Raisen Road Bhopal 462023")}`}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-slate-900/85 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-3.5 border border-white/15 shadow-xl hover:border-cyan-400/50 hover:bg-slate-800/90 transition-all flex flex-col items-center justify-center text-center h-full min-h-[92px] sm:min-h-[102px] group"
@@ -155,7 +157,7 @@ const ContactHero = () => {
                 Location
               </p>
               <p className="text-xs sm:text-sm font-black text-white mt-0.5 group-hover:text-cyan-300 transition-colors whitespace-nowrap">
-                Raisen Rd, Bhopal
+                New Subhash Nagar, Bhopal
               </p>
             </a>
           </div>

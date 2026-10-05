@@ -332,7 +332,7 @@ const AppointmentForm = () => {
               <div className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-600 pt-1">
                 <FaMapMarkerAlt className="text-red-600 mt-0.5 shrink-0 text-sm" />
                 <span>
-                  {settings.address || "LIG 85, Raisen Rd, New Subhash Nagar, Bhopal, MP 462023"}
+                  {settings.address || "LIG 85 New Subhash Nagar Near Gurudwara-Raisen Road  Bhopal 462023"}
                 </span>
               </div>
 

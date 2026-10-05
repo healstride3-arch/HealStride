@@ -184,7 +184,7 @@ const Navbar = () => {
                 <span className="text-white/40">•</span>
                 <span className="mx-4 flex items-center gap-1.5">
                   <MapPin size={13} className="text-amber-300 shrink-0" />
-                  <span>LIG 85, Raisen Rd, New Subhash Nagar, Bhopal</span>
+                  <span>LIG 85 New Subhash Nagar Near Gurudwara-Raisen Road Bhopal 462023</span>
                 </span>
                 <span className="text-white/40">•</span>
                 <span className="mx-4 flex items-center gap-1.5">

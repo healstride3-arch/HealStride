@@ -17,7 +17,7 @@ const sendEmailLead = async (payload) => {
       body: JSON.stringify({
         ...payload,
         clinicEmail: OWNER_EMAIL,
-        clinicLocation: "LIG 85, Raisen Rd, New Subhash Nagar, Bhopal",
+        clinicLocation: "LIG 85 New Subhash Nagar Near Gurudwara-Raisen Road  Bhopal 462023",
         submittedAt: new Date().toLocaleString("en-IN", {
           timeZone: "Asia/Kolkata",
         }),

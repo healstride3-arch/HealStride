@@ -8,7 +8,7 @@ const Contact = () => {
     <>
       <SEO
         title="Contact Heal Stride Physiotherapy | Location & Clinic Timings Bhopal"
-        description="Visit Heal Stride Physiotherapy & Wellness Centre at LIG 85, Raisen Rd, New Subhash Nagar, Bhopal. Call +91 88094 91380 or WhatsApp for immediate consultation."
+        description="Visit Heal Stride Physiotherapy & Wellness Centre at LIG 85 New Subhash Nagar Near Gurudwara-Raisen Road  Bhopal 462023. Call +91 88094 91380 or WhatsApp for immediate consultation."
         keywords="Contact Heal Stride Bhopal, Physiotherapy Clinic Raisen Road Bhopal, Physiotherapy Subhash Nagar, Physiotherapist Phone Number Bhopal"
       />
       <ContactHero />

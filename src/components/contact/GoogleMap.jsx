@@ -8,7 +8,7 @@ const GoogleMap = () => {
   const mapQuery = encodeURIComponent(
     settings.address
       ? `Heal Stride Physiotherapy ${settings.address}`
-      : "Heal Stride Physiotherapy LIG 85 Raisen Rd Bhopal"
+      : "Heal Stride Physiotherapy LIG 85 New Subhash Nagar Near Gurudwara-Raisen Road Bhopal 462023"
   );
 
   return (

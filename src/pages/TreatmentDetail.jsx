@@ -31,8 +31,10 @@ import SEO from "../components/common/SEO";
 import SectionHeader from "../components/common/SectionHeader";
 import drRashidImg from "../assets/images/Dr.MD.Rashid.png";
 import drWazulImg from "../assets/images/Dr Wazul Quamar.jpeg";
+import { useClinicSettings } from "../hooks/useClinicSettings";
 
 const TreatmentDetail = () => {
+  const { data: settings } = useClinicSettings();
   const { slug } = useParams();
   const navigate = useNavigate();
   const [openFaq, setOpenFaq] = useState(0);
@@ -210,7 +212,7 @@ const TreatmentDetail = () => {
       <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] text-slate-600">
         <div className="flex items-center gap-1.5">
           <MapPin className="w-3.5 h-3.5 text-teal-600 shrink-0" />
-          <span>Raisen Rd &amp; Subhash Nagar, Bhopal</span>
+          <span className="line-clamp-1">{settings.address || "LIG 85 New Subhash Nagar Near Gurudwara-Raisen Road  Bhopal 462023"}</span>
         </div>
         <div className="flex items-center gap-1.5 text-slate-500">
           <Clock className="w-3.5 h-3.5 text-teal-600 shrink-0" />
