@@ -134,15 +134,15 @@ const Services = () => {
                 </p>
               </div>
 
-              {/* Card 4: Certified Specialists */}
+              {/* Card 4: 80+ Treatments */}
               <div className="bg-slate-900/85 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-3.5 text-center border border-white/15 shadow-xl hover:border-cyan-400/50 hover:bg-slate-800/90 transition-all flex flex-col justify-center items-center h-full min-h-[92px] sm:min-h-[102px]">
                 <div className="h-8 sm:h-9 lg:h-10 flex items-center justify-center">
                   <p className="text-2xl sm:text-3xl lg:text-4xl font-black text-cyan-300 whitespace-nowrap">
-                    Expert
+                    <AnimatedCounter target={80} suffix="+" duration={1.2} />
                   </p>
                 </div>
                 <p className="text-[11px] sm:text-xs text-slate-300 mt-1 font-semibold leading-tight whitespace-nowrap">
-                  Certified Doctors
+                  Treatments
                 </p>
               </div>
             </div>

@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 
 import drRashidImage from "../../assets/images/Dr.MD.Rashid.png";
 import { saveAppointmentToFirestore } from "../../services/appointmentSubmissionService";
+import { sendCallbackNotification } from "../../services/bookingNotificationService";
 import AnimatedCounter from "../common/AnimatedCounter";
 
 const Hero = () => {
@@ -25,16 +26,25 @@ const Hero = () => {
 
     setSubmitting(true);
     try {
-      await saveAppointmentToFirestore({
+      const payload = {
         name: "Quick Callback Request",
         phone: cleanPhone,
-        service: "General Consultation & Pain Relief Callback",
+        service: "Urgent Callback Request",
         preferredDate: new Date().toISOString().split("T")[0],
-        preferredTime: "Urgent Callback",
+        preferredTime: "Immediate Callback",
         source: "Landing Page Hero Callback Box",
+        type: "callback",
+        isCallback: true,
         status: "pending",
         notes: `Immediate callback requested by user at phone +91 ${cleanPhone}`,
-      });
+      };
+
+      await saveAppointmentToFirestore(payload);
+
+      // Instant email notification to clinic admin
+      sendCallbackNotification(payload).catch((err) =>
+        console.warn("Callback email webhook notification non-fatal:", err)
+      );
 
       toast.success("Callback requested! Dr. Rashid's team will contact you shortly.", {
         duration: 4000,
@@ -130,13 +140,13 @@ const Hero = () => {
                 </p>
               </div>
 
-              {/* Card 4: Expert Physiotherapy Care */}
+              {/* Card 4: 80+ Treatments */}
               <div className="bg-white/95 backdrop-blur-sm rounded-xl sm:rounded-2xl p-2.5 sm:p-3 text-center border border-slate-200/90 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all">
                 <p className="text-2xl sm:text-3xl font-black text-teal-800">
-                  {t("aboutHero.expertTag", "Expert")}
+                  <AnimatedCounter target={80} suffix="+" duration={1.2} />
                 </p>
                 <p className="text-[11px] sm:text-xs text-slate-600 mt-1 font-semibold leading-tight">
-                  {t("aboutHero.expertCare", "Physiotherapy Care")}
+                  {t("aboutHero.treatments", "Treatments")}
                 </p>
               </div>
             </div>

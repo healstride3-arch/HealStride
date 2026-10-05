@@ -224,22 +224,45 @@ const AppointmentsTable = ({
       <div className="divide-y divide-slate-100 md:hidden">
         {appointments.map((app) => {
           const serviceName = app.service || app.condition || "General Consultation";
+          const isCallback =
+            app.type === "callback" ||
+            app.isCallback === true ||
+            app.name?.toLowerCase().includes("callback") ||
+            app.source?.toLowerCase().includes("callback") ||
+            app.service?.toLowerCase().includes("callback");
+
           return (
-            <div key={app.id} className="p-4 space-y-3 hover:bg-slate-50/70 transition">
+            <div
+              key={app.id}
+              className={`p-4 space-y-3 transition ${
+                isCallback ? "bg-amber-50/50 hover:bg-amber-50/80 border-l-4 border-amber-500" : "hover:bg-slate-50/70"
+              }`}
+            >
               {/* Patient Header */}
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-xl bg-teal-100 text-teal-800 font-bold text-xs flex items-center justify-center shrink-0">
-                    {(app.name || "P").slice(0, 2).toUpperCase()}
+                  <div
+                    className={`w-9 h-9 rounded-xl ${
+                      isCallback ? "bg-amber-100 text-amber-800" : "bg-teal-100 text-teal-800"
+                    } font-bold text-xs flex items-center justify-center shrink-0`}
+                  >
+                    {isCallback ? <Phone size={15} /> : (app.name || "P").slice(0, 2).toUpperCase()}
                   </div>
                   <div>
-                    <h3 className="font-bold text-sm text-slate-900 leading-snug">
-                      {app.name}
-                    </h3>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <h3 className="font-bold text-sm text-slate-900 leading-snug">
+                        {app.name}
+                      </h3>
+                      {isCallback && (
+                        <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-200 text-amber-950 uppercase tracking-wider animate-pulse">
+                          📞 Callback
+                        </span>
+                      )}
+                    </div>
                     <div className="flex items-center gap-2 mt-0.5">
                       <a
                         href={`tel:${app.phone}`}
-                        className="inline-flex items-center gap-1 text-xs font-semibold text-teal-700 hover:underline"
+                        className="inline-flex items-center gap-1 text-xs font-bold text-teal-700 hover:underline"
                       >
                         <Phone size={11} />
                         <span>{app.phone}</span>
@@ -359,16 +382,39 @@ const AppointmentsTable = ({
           <tbody className="divide-y divide-slate-100 text-xs sm:text-sm">
             {appointments.map((app) => {
               const serviceName = app.service || app.condition || "General Consultation";
+              const isCallback =
+                app.type === "callback" ||
+                app.isCallback === true ||
+                app.name?.toLowerCase().includes("callback") ||
+                app.source?.toLowerCase().includes("callback") ||
+                app.service?.toLowerCase().includes("callback");
+
               return (
-                <tr key={app.id} className="hover:bg-slate-50/80 transition-colors">
+                <tr
+                  key={app.id}
+                  className={`transition-colors ${
+                    isCallback ? "bg-amber-50/40 hover:bg-amber-50/80" : "hover:bg-slate-50/80"
+                  }`}
+                >
                   {/* Patient */}
                   <td className="py-3.5 px-4">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-xl bg-teal-100 text-teal-800 font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
-                        {(app.name || "P").slice(0, 2).toUpperCase()}
+                      <div
+                        className={`w-8 h-8 rounded-xl ${
+                          isCallback ? "bg-amber-100 text-amber-800" : "bg-teal-100 text-teal-800"
+                        } font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs`}
+                      >
+                        {isCallback ? <Phone size={14} /> : (app.name || "P").slice(0, 2).toUpperCase()}
                       </div>
                       <div>
-                        <p className="font-bold text-slate-900 leading-snug">{app.name}</p>
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <p className="font-bold text-slate-900 leading-snug">{app.name}</p>
+                          {isCallback && (
+                            <span className="text-[9px] font-black px-1.5 py-0.5 rounded-full bg-amber-200 text-amber-950 uppercase tracking-wider animate-pulse">
+                              📞 Callback
+                            </span>
+                          )}
+                        </div>
                         <span className="text-[10px] text-slate-400">ID: {app.id.slice(0, 6)}</span>
                       </div>
                     </div>
@@ -672,13 +718,13 @@ const AppointmentsTable = ({
               </div>
 
               {/* Patient / Admin Notes */}
-              {viewAppointment.message && (
+              {(viewAppointment.notes || viewAppointment.message) && (
                 <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
                   <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">
-                    Details / Notes
+                    Details / Callback Notes
                   </span>
                   <p className="text-slate-700 leading-relaxed bg-white p-2.5 rounded-lg border border-slate-100">
-                    {viewAppointment.message}
+                    {viewAppointment.notes || viewAppointment.message}
                   </p>
                 </div>
               )}

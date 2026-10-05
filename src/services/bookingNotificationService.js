@@ -68,3 +68,15 @@ export const sendQuestionNotification = (questionData) =>
     source: "website-faq-form",
     _subject: `New Website Question: ${questionData.name}`,
   });
+
+export const sendCallbackNotification = (callbackData) =>
+  sendEmailLead({
+    leadType: "Urgent Callback Request",
+    patientName: callbackData.name || "Quick Callback Request",
+    patientPhone: callbackData.phone,
+    service: callbackData.service || "Urgent Callback Request",
+    appointmentTime: callbackData.preferredTime || "Immediate Callback",
+    message: callbackData.notes || `Immediate callback requested by user at phone +91 ${callbackData.phone}`,
+    source: callbackData.source || "Landing Page Hero Callback Box",
+    _subject: `🚨 Urgent Callback Request: +91 ${callbackData.phone} (Heal Stride Website)`,
+  });

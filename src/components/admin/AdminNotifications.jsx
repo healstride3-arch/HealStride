@@ -97,17 +97,46 @@ const AdminNotifications = () => {
               setShowModal(true);
 
               // Show Toast Popup
-              const svcName = newDoc.service || newDoc.condition || "Physiotherapy Consultation";
-              toast.success(
-                `New Booking: ${newDoc.name || "Patient"} • ${svcName}`,
-                { duration: 6000, position: "top-right" }
-              );
+              const isCallback =
+                newDoc.type === "callback" ||
+                newDoc.isCallback === true ||
+                newDoc.name?.toLowerCase().includes("callback") ||
+                newDoc.source?.toLowerCase().includes("callback") ||
+                newDoc.service?.toLowerCase().includes("callback");
 
-              // Desktop Push Notification
-              triggerBrowserNotification("New Consultation Request!", {
-                body: `${newDoc.name || "Patient"} requested ${svcName} • Phone: ${newDoc.phone || "N/A"}`,
-                onClick: () => navigate("/admin/appointments"),
-              });
+              if (isCallback) {
+                toast.success(
+                  `📞 URGENT CALLBACK REQUEST: +91 ${newDoc.phone || "Patient"} requested a call!`,
+                  {
+                    duration: 9000,
+                    position: "top-right",
+                    icon: "📞",
+                    style: {
+                      background: "#fffbeb",
+                      border: "2px solid #f59e0b",
+                      color: "#92400e",
+                      fontWeight: "bold",
+                    },
+                  }
+                );
+
+                triggerBrowserNotification("📞 Urgent Callback Request!", {
+                  body: `Patient requested immediate callback • Phone: +91 ${newDoc.phone || "N/A"}`,
+                  onClick: () => navigate("/admin/appointments"),
+                });
+              } else {
+                const svcName = newDoc.service || newDoc.condition || "Physiotherapy Consultation";
+                toast.success(
+                  `New Booking: ${newDoc.name || "Patient"} • ${svcName}`,
+                  { duration: 6000, position: "top-right" }
+                );
+
+                // Desktop Push Notification
+                triggerBrowserNotification("New Consultation Request!", {
+                  body: `${newDoc.name || "Patient"} requested ${svcName} • Phone: ${newDoc.phone || "N/A"}`,
+                  onClick: () => navigate("/admin/appointments"),
+                });
+              }
             }
           }
         });
@@ -126,16 +155,27 @@ const AdminNotifications = () => {
 
   // Combined notifications
   const appointmentNotifications = appointments.map((item) => {
-    const svc = item.service || item.condition || "General Consultation";
+    const isCallback =
+      item.type === "callback" ||
+      item.isCallback === true ||
+      item.name?.toLowerCase().includes("callback") ||
+      item.source?.toLowerCase().includes("callback") ||
+      item.service?.toLowerCase().includes("callback");
+
+    const svc = item.service || item.condition || (isCallback ? "Urgent Callback Request" : "General Consultation");
+
     return {
       id: item.id,
-      type: "appointment",
-      title: "New Consultation Request",
-      patientName: item.name || "Patient",
+      type: isCallback ? "callback" : "appointment",
+      isCallback,
+      title: isCallback ? "📞 Urgent Callback Request" : "New Consultation Request",
+      patientName: isCallback ? `Callback Request (+91 ${item.phone})` : (item.name || "Patient"),
       phone: item.phone || "Not provided",
       service: svc,
       condition: svc,
-      message: `${item.name} requested ${svc} • Mobile: ${item.phone || "Not provided"}`,
+      message: isCallback
+        ? `Patient requested immediate callback at +91 ${item.phone}`
+        : `${item.name} requested ${svc} • Mobile: ${item.phone || "Not provided"}`,
       time: formatTime(item.createdAt),
       redirect: "/admin/appointments",
     };
@@ -146,10 +186,13 @@ const AdminNotifications = () => {
   // ---------------- Tab Title Flashing Alert (when admin is on another tab/website) ----------------
   useEffect(() => {
     if (notifications.length > 0) {
+      const hasCallback = notifications.some((n) => n.isCallback);
       let isAlt = false;
       const interval = setInterval(() => {
         document.title = isAlt
-          ? `(${notifications.length}) New Patient Booking!`
+          ? hasCallback
+            ? `(${notifications.length}) 📞 Urgent Callback Request!`
+            : `(${notifications.length}) New Patient Booking!`
           : `Heal Stride Admin Panel`;
         isAlt = !isAlt;
       }, 1500);
@@ -223,6 +266,12 @@ const AdminNotifications = () => {
   // Helper for notification type icon
   const getIcon = (type) => {
     switch (type) {
+      case "callback":
+        return (
+          <div className="w-8 h-8 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+            <Phone size={15} />
+          </div>
+        );
       case "appointment":
         return (
           <div className="w-8 h-8 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center shrink-0">
@@ -507,19 +556,33 @@ const AdminNotifications = () => {
                           <div
                             key={app.id}
                             onClick={() => handleView(app)}
-                            className="p-3.5 rounded-2xl bg-teal-50/50 hover:bg-teal-100/70 border border-teal-200/80 transition cursor-pointer flex flex-col xs:flex-row items-start justify-between gap-3 group"
+                            className={`p-3.5 rounded-2xl ${
+                              app.isCallback
+                                ? "bg-amber-50/90 border-amber-300 hover:bg-amber-100"
+                                : "bg-teal-50/50 hover:bg-teal-100/70 border-teal-200/80"
+                            } border transition cursor-pointer flex flex-col xs:flex-row items-start justify-between gap-3 group`}
                           >
                             <div className="flex items-start gap-2.5 min-w-0 flex-1">
-                              <div className="w-8 h-8 rounded-xl bg-teal-600 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
-                                <Calendar size={16} />
+                              <div
+                                className={`w-8 h-8 rounded-xl ${
+                                  app.isCallback ? "bg-amber-600 text-white" : "bg-teal-600 text-white"
+                                } flex items-center justify-center shrink-0 mt-0.5 shadow-sm`}
+                              >
+                                {app.isCallback ? <Phone size={15} /> : <Calendar size={16} />}
                               </div>
                               <div className="min-w-0 flex-1">
                                 <div className="flex items-center gap-2 flex-wrap">
                                   <h4 className="text-sm font-bold text-slate-900 group-hover:text-teal-700 transition">
                                     {app.patientName}
                                   </h4>
-                                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-teal-200/80 text-teal-900">
-                                    {app.timeSlot || "New Booking"}
+                                  <span
+                                    className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                      app.isCallback
+                                        ? "bg-amber-200 text-amber-950 font-black animate-pulse"
+                                        : "bg-teal-200/80 text-teal-900"
+                                    }`}
+                                  >
+                                    {app.isCallback ? "📞 URGENT CALLBACK" : (app.timeSlot || "New Booking")}
                                   </span>
                                 </div>
 
@@ -528,10 +591,14 @@ const AdminNotifications = () => {
                                     <a
                                       href={`tel:${app.phone}`}
                                       onClick={(e) => e.stopPropagation()}
-                                      className="inline-flex items-center gap-1 font-bold text-teal-700 bg-white hover:bg-teal-50 px-2 py-0.5 rounded-md border border-teal-200"
+                                      className={`inline-flex items-center gap-1 font-bold ${
+                                        app.isCallback
+                                          ? "text-amber-900 bg-amber-200/80 hover:bg-amber-300 border-amber-400"
+                                          : "text-teal-700 bg-white hover:bg-teal-50 border-teal-200"
+                                      } px-2.5 py-0.5 rounded-md border`}
                                     >
                                       <Phone size={11} />
-                                      <span>{app.phone}</span>
+                                      <span>Call: {app.phone}</span>
                                     </a>
                                   ) : (
                                     <span className="font-semibold text-slate-500">No phone</span>

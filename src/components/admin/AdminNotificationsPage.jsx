@@ -76,23 +76,34 @@ const AdminNotificationsPage = () => {
   // Real-time Firestore Listeners
   useEffect(() => {
     const unsubAppointments = onSnapshot(collection(db, "appointments"), (snap) => {
-      const data = snap.docs.map((d) => ({
-        id: d.id,
-        notifType: "appointment",
-        collectionName: "appointments",
-        title: "Consultation Request",
-        name: d.data().name || "Patient",
-        phone: d.data().phone || "",
-        service: d.data().service || d.data().condition || "General Consultation",
-        condition: d.data().service || d.data().condition || "General Consultation",
-        doctor: d.data().doctor || "Specialist",
-        date: d.data().date || "",
-        time: d.data().time || "",
-        message: d.data().message || "",
-        createdAt: d.data().createdAt,
-        isRead: d.data().notificationRead === true || d.data().read === true,
-        redirect: "/admin/appointments",
-      }));
+      const data = snap.docs.map((d) => {
+        const item = d.data();
+        const isCallback =
+          item.type === "callback" ||
+          item.isCallback === true ||
+          item.name?.toLowerCase().includes("callback") ||
+          item.source?.toLowerCase().includes("callback") ||
+          item.service?.toLowerCase().includes("callback");
+
+        return {
+          id: d.id,
+          notifType: isCallback ? "callback" : "appointment",
+          collectionName: "appointments",
+          title: isCallback ? "📞 Urgent Callback Request" : "Consultation Request",
+          name: isCallback ? `Callback Request (+91 ${item.phone})` : (item.name || "Patient"),
+          phone: item.phone || "",
+          service: item.service || item.condition || (isCallback ? "Urgent Callback" : "General Consultation"),
+          condition: item.service || item.condition || (isCallback ? "Urgent Callback" : "General Consultation"),
+          doctor: item.doctor || "Specialist",
+          date: item.date || item.preferredDate || "",
+          time: item.time || item.preferredTime || "",
+          message: item.notes || item.message || "",
+          createdAt: item.createdAt,
+          isRead: item.notificationRead === true || item.read === true,
+          redirect: "/admin/appointments",
+          isCallback,
+        };
+      });
       setAppointments(data);
       setLoading(false);
     });
@@ -114,6 +125,7 @@ const AdminNotificationsPage = () => {
     return allNotifications.filter((item) => {
       // Type filter
       if (filterType === "unread" && item.isRead) return false;
+      if (filterType === "callback" && !item.isCallback) return false;
 
       // Search query
       if (searchQuery.trim()) {
@@ -133,6 +145,7 @@ const AdminNotificationsPage = () => {
 
   // Counts
   const unreadCount = allNotifications.filter((n) => !n.isRead).length;
+  const callbackCount = allNotifications.filter((n) => n.isCallback).length;
   const appointmentCount = appointments.length;
 
   // Pagination calculation
@@ -300,6 +313,22 @@ const AdminNotificationsPage = () => {
               {unreadCount}
             </span>
           </button>
+
+          <button
+            type="button"
+            onClick={() => setFilterType("callback")}
+            className={`px-3 py-1.5 rounded-lg font-bold transition whitespace-nowrap flex items-center gap-1.5 ${
+              filterType === "callback"
+                ? "bg-amber-600 text-white shadow-2xs"
+                : "bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200"
+            }`}
+          >
+            <Phone size={12} />
+            <span>Callbacks</span>
+            <span className="px-1.5 py-0.2 rounded-full bg-amber-200 text-amber-900 font-bold text-[10px]">
+              {callbackCount}
+            </span>
+          </button>
         </div>
       </div>
 
@@ -325,14 +354,26 @@ const AdminNotificationsPage = () => {
               <div
                 key={item.id}
                 className={`p-4 sm:p-5 transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4 ${
-                  !item.isRead ? "bg-teal-50/40 hover:bg-teal-50/70" : "bg-white hover:bg-slate-50"
+                  item.isCallback
+                    ? !item.isRead
+                      ? "bg-amber-50/70 hover:bg-amber-100/60"
+                      : "bg-amber-50/20 hover:bg-amber-50/50"
+                    : !item.isRead
+                    ? "bg-teal-50/40 hover:bg-teal-50/70"
+                    : "bg-white hover:bg-slate-50"
                 }`}
               >
                 {/* Left: Icon & Details */}
                 <div className="flex items-start gap-3.5 min-w-0 flex-1">
                   {/* Avatar / Icon Badge */}
-                  <div className="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 mt-0.5 shadow-2xs bg-teal-100 text-teal-700 border border-teal-200">
-                    <Calendar size={18} />
+                  <div
+                    className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 mt-0.5 shadow-2xs ${
+                      item.isCallback
+                        ? "bg-amber-100 text-amber-800 border border-amber-300"
+                        : "bg-teal-100 text-teal-700 border border-teal-200"
+                    }`}
+                  >
+                    {item.isCallback ? <Phone size={18} /> : <Calendar size={18} />}
                   </div>
 
                   {/* Information */}
@@ -348,9 +389,15 @@ const AdminNotificationsPage = () => {
                         </span>
                       )}
 
-                      <span className="text-[11px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
-                        {item.title}
-                      </span>
+                      {item.isCallback ? (
+                        <span className="text-[10px] font-black text-amber-900 bg-amber-200/90 border border-amber-300 px-2 py-0.5 rounded-md uppercase tracking-wider animate-pulse">
+                          📞 Urgent Callback Request
+                        </span>
+                      ) : (
+                        <span className="text-[11px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
+                          {item.title}
+                        </span>
+                      )}
 
                       {item.time && (
                         <span className="text-[11px] font-semibold text-teal-800 bg-teal-100/80 px-2 py-0.5 rounded-md inline-flex items-center gap-1">

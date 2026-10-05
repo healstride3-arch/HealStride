@@ -320,8 +320,9 @@
     "subtitle": "Dedicated to helping patients recover faster, move better, and live pain-free lives through personalized physiotherapy, advanced rehabilitation techniques, and compassionate care.",
     "yearsExp": "Years Experience",
     "happyPatients": "Happy Patients",
-    "expertCare": "Physiotherapy Care",
-    "expertTag": "Expert"
+    "treatments": "Treatments",
+    "expertCare": "Treatments",
+    "expertTag": "80+"
   },
   "clinicIntro": {
     "badge": "Clinic Introduction",
