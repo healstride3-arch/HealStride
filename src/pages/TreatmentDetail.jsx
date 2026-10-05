@@ -19,6 +19,7 @@ import {
   HeartPulse,
   Star,
   Check,
+  MapPin,
 } from "lucide-react";
 import {
   ALL_TREATMENTS,
@@ -75,18 +76,27 @@ const TreatmentDetail = () => {
     3
   );
 
-  const treatmentImageUrl = getTreatmentImage(treatment);
-
-  // Helper to sanitize any html entity encoding or external city references
+  // Helper to sanitize any html entity encoding or external city/brand references
   const cleanClinicalText = (text) => {
     if (!text) return "";
     return text
       .replace(/&amp;/g, "&")
+      .replace(/&#8217;/g, "'")
+      .replace(/&#8220;/g, '"')
+      .replace(/&#8221;/g, '"')
+      .replace(/&nbsp;/g, " ")
       .replace(/Delhi NCR/gi, "Bhopal")
       .replace(/Delhi/gi, "Bhopal")
+      .replace(/Paschim Vihar/gi, "Raisen Road")
+      .replace(/Sector-38|Sector 38/gi, "New Subhash Nagar")
+      .replace(/painflame/gi, "Heal Stride")
       .replace(/Bhopal,\s*Bhopal/gi, "Bhopal")
       .replace(/Bhopal\s*&\s*Bhopal/gi, "Bhopal")
       .replace(/Bhopal\s*&amp;\s*Bhopal/gi, "Bhopal")
+      .replace(/Bhopal\s*and\s*Bhopal/gi, "Bhopal")
+      .replace(/⭐?\s*Trusted\s*by\s*[0-9.,]+\s*(Lakh\+?|k\+?)\s*Patients?/gi, "")
+      .replace(/3\.5\s*Lakh\+?/gi, "")
+      .replace(/350\+\s*Reviews?/gi, "43+ Reviews")
       .trim();
   };
 
@@ -95,11 +105,24 @@ const TreatmentDetail = () => {
     if (!html) return "";
     return html
       .replace(/https?:\/\/[^"'\s]*\/services\/[a-z0-9-]+/gi, "/services")
+      .replace(/https?:\/\/[^"'\s]*\/clinic\/[a-z0-9-]+/gi, "/contact")
+      .replace(/https?:\/\/[^"'\s]*\/treatments\/[a-z0-9-]+/gi, (match) => {
+        const parts = match.split("/treatments/");
+        return `/treatments/${parts[1] || ""}`;
+      })
+      .replace(/https?:\/\/www\.Heal Stride Physiotherapy\.com[^\s"']*/gi, "/booking")
       .replace(/Delhi NCR/gi, "Bhopal")
       .replace(/Delhi/gi, "Bhopal")
+      .replace(/Paschim Vihar/gi, "Raisen Road")
+      .replace(/Sector-38|Sector 38/gi, "New Subhash Nagar")
+      .replace(/painflame/gi, "Heal Stride")
       .replace(/Bhopal,\s*Bhopal/gi, "Bhopal")
       .replace(/Bhopal\s*&\s*Bhopal/gi, "Bhopal")
-      .replace(/Bhopal\s*&amp;\s*Bhopal/gi, "Bhopal");
+      .replace(/Bhopal\s*&amp;\s*Bhopal/gi, "Bhopal")
+      .replace(/Bhopal\s*and\s*Bhopal/gi, "Bhopal")
+      .replace(/⭐?\s*Trusted\s*by\s*[0-9.,]+\s*(Lakh\+?|k\+?)\s*Patients?/gi, "")
+      .replace(/3\.5\s*Lakh\+?/gi, "")
+      .replace(/350\+\s*Reviews?/gi, "43+ Reviews");
   };
 
   const displaySubtitle = cleanClinicalText(treatment.subtitle || treatment.summary);
@@ -109,70 +132,57 @@ const TreatmentDetail = () => {
       <SEO
         title={`${treatment.title} in Bhopal | Heal Stride Physiotherapy`}
         description={displaySubtitle}
+        canonical={`https://www.healstride-physiotherapy.in/treatments/${treatment.slug}`}
         keywords={`${treatment.name}, ${treatment.name} treatment Bhopal, ${treatment.name} physiotherapy, pain relief Bhopal`}
       />
 
-      {/* Hero Section - Balanced Top Space & Gracefully Spread Left Content */}
-      <section className="relative bg-white border-b border-slate-200/80 pt-8 sm:pt-10 lg:pt-12 pb-4 sm:pb-5 overflow-hidden">
+      {/* Hero Section - Pure Clinical UI Design (No Image, High-Conversion Consultation Card) */}
+      <section className="relative bg-gradient-to-b from-white via-slate-50/50 to-white border-b border-slate-200/80 pt-6 sm:pt-8 lg:pt-10 pb-8 sm:pb-12 overflow-hidden">
         {/* Subtle decorative glow */}
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-teal-50/70 blur-3xl rounded-full pointer-events-none" />
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-teal-50/60 blur-3xl rounded-full pointer-events-none" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Left Content - Gracefully Spread Out (Not Shrunk) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+            {/* Left Content Column - Compact & Cohesive (No excessive spacing) */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
-              className="lg:col-span-7 flex flex-col justify-center space-y-4 sm:space-y-4.5 lg:space-y-5"
+              className="lg:col-span-7 flex flex-col justify-center space-y-4 sm:space-y-5"
             >
-              <div className="flex flex-wrap items-center gap-2.5">
-                <span className="inline-block px-3.5 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs font-semibold uppercase tracking-wider">
-                  {treatment.category}
-                </span>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200">
-                  <Award className="w-3.5 h-3.5 text-teal-600" />
-                  BPT &amp; MPT Certified Doctors
-                </span>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold border border-amber-200">
-                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                  4.7 Google Rating
-                </span>
-              </div>
-
-              <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight text-slate-900 leading-[1.18]">
-                {treatment.title}
-              </h1>
-
-              <p className="text-teal-700 font-bold text-base sm:text-lg">
-                Evidence-Based Non-Surgical Rehabilitation &amp; Root-Cause Care
-              </p>
-
-              <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl">
-                {displaySubtitle}
-              </p>
-
-              {/* Badges Pill Row */}
-              <div className="pt-1 flex flex-wrap gap-3 text-xs sm:text-sm text-slate-700">
-                <div className="flex items-center gap-2 bg-slate-50 px-3.5 py-2 rounded-xl border border-slate-200">
-                  <Clock className="w-4 h-4 text-teal-600" />
-                  <span>Protocol: <strong>Non-Surgical</strong></span>
+              <div className="space-y-2.5 sm:space-y-3">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+                  <span className="inline-block px-3 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs font-semibold uppercase tracking-wider">
+                    {treatment.category}
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200">
+                    <Award className="w-3.5 h-3.5 text-teal-600" />
+                    BPT &amp; MPT Certified Doctors
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold border border-amber-200">
+                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                    {treatment.rating || "4.7"} Google Rating ({treatment.reviewsCount || "43+"} Reviews)
+                  </span>
                 </div>
-                <div className="flex items-center gap-2 bg-slate-50 px-3.5 py-2 rounded-xl border border-slate-200">
-                  <Calendar className="w-4 h-4 text-teal-600" />
-                  <span>Assessment: <strong>1-on-1 Evaluation</strong></span>
-                </div>
-                <div className="flex items-center gap-2 bg-slate-50 px-3.5 py-2 rounded-xl border border-slate-200">
-                  <ShieldCheck className="w-4 h-4 text-teal-600" />
-                  <span><strong>100% Non-Invasive</strong></span>
-                </div>
+
+                <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight text-slate-900 leading-[1.18]">
+                  {treatment.title}
+                </h1>
+
+                <p className="text-teal-700 font-bold text-sm sm:text-base">
+                  Evidence-Based Non-Surgical Rehabilitation &amp; Root-Cause Care
+                </p>
+
+                <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl">
+                  {displaySubtitle}
+                </p>
               </div>
 
               {/* Action Buttons */}
-              <div className="pt-2 flex flex-wrap items-center gap-3">
+              <div className="pt-1 flex flex-wrap items-center gap-3">
                 <Link
                   to={`/booking?treatment=${encodeURIComponent(treatment.name)}`}
-                  className="bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] text-white px-6 sm:px-7 py-3 rounded-xl font-bold text-xs sm:text-sm shadow-md hover:shadow-teal-500/25 transition-all transform hover:-translate-y-0.5 inline-flex items-center gap-2"
+                  className="bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] text-white px-6 sm:px-7 py-3.5 rounded-xl font-bold text-xs sm:text-sm shadow-md hover:shadow-teal-500/25 transition-all transform hover:-translate-y-0.5 inline-flex items-center gap-2"
                 >
                   <Calendar className="w-4 h-4" />
                   <span>Book Appointment Now</span>
@@ -181,7 +191,7 @@ const TreatmentDetail = () => {
 
                 <a
                   href="tel:+918809491380"
-                  className="bg-slate-100 hover:bg-slate-200 text-slate-900 px-5 py-3 rounded-xl font-semibold text-xs sm:text-sm border border-slate-300 transition-all inline-flex items-center gap-2"
+                  className="bg-slate-100 hover:bg-slate-200 text-slate-900 px-5 py-3.5 rounded-xl font-semibold text-xs sm:text-sm border border-slate-300 transition-all inline-flex items-center gap-2"
                 >
                   <Phone className="w-4 h-4 text-teal-600" />
                   <span>+91 88094 91380</span>
@@ -189,91 +199,168 @@ const TreatmentDetail = () => {
 
                 <a
                   href={`https://wa.me/918252580389?text=${encodeURIComponent(
-                    `Hello Heal Stride Clinic, I would like to consult about ${treatment.name} treatment.`
+                    `Hello Heal Stride Clinic Bhopal, I would like to consult about ${treatment.name} treatment.`
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-[#25D366] hover:bg-[#20ba59] text-white px-5 py-3 rounded-xl font-semibold text-xs sm:text-sm shadow-sm transition-all inline-flex items-center gap-2"
+                  className="bg-[#25D366] hover:bg-[#20ba59] text-white px-5 py-3.5 rounded-xl font-semibold text-xs sm:text-sm shadow-sm transition-all inline-flex items-center gap-2"
                 >
                   <MessageCircle className="w-4 h-4" />
                   <span>WhatsApp</span>
                 </a>
               </div>
-            </motion.div>
 
-            {/* Right Image Card - Fixed Dimensions & Centered */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.15 }}
-              className="lg:col-span-5 flex items-center justify-center"
-            >
-              <div className="relative w-full max-w-[480px] h-72 sm:h-80 lg:h-[380px] xl:h-[400px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-slate-200 bg-slate-100 group flex items-center justify-center mx-auto">
-                <img
-                  src={treatmentImageUrl}
-                  alt={treatment.name}
-                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent pointer-events-none" />
-                <div className="absolute bottom-3 left-3 right-3 bg-white/95 backdrop-blur-md rounded-xl p-3 sm:p-3.5 border border-slate-200 text-left shadow-md">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-9 h-9 rounded-lg bg-teal-50 text-teal-700 flex items-center justify-center shrink-0">
-                      <Sparkles className="w-4 h-4 text-teal-600" />
-                    </div>
-                    <div>
-                      <p className="text-[10px] text-teal-700 font-bold uppercase tracking-wider">
-                        Available at Heal Stride Bhopal
-                      </p>
-                      <p className="text-slate-900 text-xs sm:text-sm font-bold leading-tight">
-                        Personalized 1-on-1 Consultation
-                      </p>
-                    </div>
+              {/* Trust Highlights - Positioned directly below Booking & Call buttons */}
+              <div className="pt-4 border-t border-slate-200/80 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5">
+                <div className="flex items-center gap-2.5 bg-white/70 p-2.5 rounded-xl border border-slate-200/70 shadow-2xs">
+                  <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
+                    <ShieldCheck className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-slate-900">100% Non-Surgical</p>
+                    <p className="text-[10px] text-slate-500 leading-tight">Natural pain relief care</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2.5 bg-white/70 p-2.5 rounded-xl border border-slate-200/70 shadow-2xs">
+                  <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
+                    <Award className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-slate-900">Expert BPT/MPT Doctors</p>
+                    <p className="text-[10px] text-slate-500 leading-tight">Dr. MD Rashid &amp; Dr. Md Wajhul Qumar</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2.5 bg-white/70 p-2.5 rounded-xl border border-slate-200/70 shadow-2xs">
+                  <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
+                    <Activity className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-slate-900">Advanced Modalities</p>
+                    <p className="text-[10px] text-slate-500 leading-tight">Cupping, Dry Needling, IASTM</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2.5 bg-white/70 p-2.5 rounded-xl border border-slate-200/70 shadow-2xs">
+                  <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
+                    <Clock className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-slate-900">Personalized Plans</p>
+                    <p className="text-[10px] text-slate-500 leading-tight">Tailored 1-on-1 recovery</p>
                   </div>
                 </div>
               </div>
             </motion.div>
-          </div>
-        </div>
 
-        {/* Bottom Highlights Strip (Anchors the full viewport fold without being cut off) */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-5 sm:pt-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 pt-3.5 sm:pt-4 border-t border-slate-200/80">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
-                <ShieldCheck className="w-4 h-4" />
+            {/* Right Column: Branded Clinical Consultation Card (Image Removed) */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.15 }}
+              className="lg:col-span-5 flex flex-col justify-center"
+            >
+              <div className="bg-white rounded-3xl p-5 sm:p-6 shadow-xl border border-slate-200/90 relative overflow-hidden flex flex-col space-y-4">
+                {/* Top Badge & Header */}
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 text-teal-700 text-[11px] font-bold uppercase tracking-wider border border-teal-200/70">
+                      <Sparkles className="w-3.5 h-3.5 text-teal-600" />
+                      Heal Stride Bhopal Clinic
+                    </span>
+                    <span className="text-[11px] font-semibold text-emerald-600 flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      Doctors Available Today
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-snug">
+                    Consultation &amp; Recovery Plan
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
+                    Personalized physical evaluation with senior certified physiotherapists in Bhopal.
+                  </p>
+                </div>
+
+                {/* Senior Doctors Showcase */}
+                <div className="bg-slate-50/90 rounded-2xl p-3.5 sm:p-4 border border-slate-200/80 space-y-3">
+                  <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                    Consulting Specialists at Heal Stride
+                  </p>
+
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={drRashidImg}
+                      alt="Dr. MD Rashid"
+                      className="w-11 h-11 rounded-full object-cover border-2 border-teal-600 shrink-0"
+                    />
+                    <div className="min-w-0">
+                      <h4 className="text-xs sm:text-sm font-bold text-slate-900 leading-tight truncate">
+                        Dr. MD Rashid (PT)
+                      </h4>
+                      <p className="text-[11px] text-teal-700 font-medium">
+                        MPT • Senior Consultant &amp; Sports Rehab
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 pt-2.5 border-t border-slate-200/60">
+                    <img
+                      src={drWazulImg}
+                      alt="Dr. Md Wajhul Qumar"
+                      className="w-11 h-11 rounded-full object-cover border-2 border-teal-600 shrink-0"
+                    />
+                    <div className="min-w-0">
+                      <h4 className="text-xs sm:text-sm font-bold text-slate-900 leading-tight truncate">
+                        Dr. Md Wajhul Qumar (PT)
+                      </h4>
+                      <p className="text-[11px] text-teal-700 font-medium">
+                        BPT • Spine &amp; Neuro Rehabilitation
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Key Benefits Checklist */}
+                <div className="space-y-2 text-xs sm:text-sm text-slate-700">
+                  <div className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+                    <span>Detailed postural &amp; biomechanical root-cause analysis</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+                    <span>Targeted therapy with Dry Needling, Cupping &amp; IASTM</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+                    <span>Non-surgical recovery plan customized to your lifestyle</span>
+                  </div>
+                </div>
+
+                {/* Clinic Location & Hours */}
+                <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] text-slate-600">
+                  <div className="flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+                    <span>Raisen Rd &amp; Subhash Nagar, Bhopal</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-slate-500">
+                    <Clock className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+                    <span>9:00 AM – 9:00 PM</span>
+                  </div>
+                </div>
+
+                {/* Direct Card CTA */}
+                <Link
+                  to={`/booking?treatment=${encodeURIComponent(treatment.name)}`}
+                  className="w-full text-center bg-gradient-to-r from-[#008272] to-[#0f766e] hover:from-[#0d9488] hover:to-[#115e59] text-white font-bold text-xs sm:text-sm py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 group"
+                >
+                  <Calendar className="w-4 h-4" />
+                  <span>Book Consultation for {treatment.name}</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </Link>
               </div>
-              <div>
-                <p className="text-xs font-bold text-slate-900">100% Non-Surgical</p>
-                <p className="text-[10px] text-slate-500 leading-tight">Natural pain relief care</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
-                <Award className="w-4 h-4" />
-              </div>
-              <div>
-                <p className="text-xs font-bold text-slate-900">Expert BPT/MPT Doctors</p>
-                <p className="text-[10px] text-slate-500 leading-tight">Dr. MD Rashid &amp; Dr. Md Wajhul Qumar</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
-                <Activity className="w-4 h-4" />
-              </div>
-              <div>
-                <p className="text-xs font-bold text-slate-900">Advanced Modalities</p>
-                <p className="text-[10px] text-slate-500 leading-tight">Cupping, Dry Needling, IASTM</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
-                <Clock className="w-4 h-4" />
-              </div>
-              <div>
-                <p className="text-xs font-bold text-slate-900">Personalized Plans</p>
-                <p className="text-[10px] text-slate-500 leading-tight">Tailored 1-on-1 recovery</p>
-              </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -588,18 +675,18 @@ const TreatmentDetail = () => {
                 >
                   <Link
                     to={`/treatments/${rel.slug}`}
-                    className="relative overflow-hidden w-full h-52 sm:h-56 flex-shrink-0 bg-slate-100 flex items-center justify-center"
+                    className="relative overflow-hidden w-full h-52 sm:h-56 flex-shrink-0 bg-slate-100 block"
                   >
                     <img
                       src={getTreatmentImage(rel)}
                       alt={rel.name}
                       loading="lazy"
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                      className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute top-3 left-3 bg-teal-600/90 backdrop-blur-sm text-white px-2.5 py-1 rounded-md text-[11px] font-semibold tracking-wide uppercase shadow-sm">
+                    <div className="absolute top-3 left-3 bg-teal-600/90 backdrop-blur-sm text-white px-2.5 py-1 rounded-md text-[11px] font-semibold tracking-wide uppercase shadow-sm z-10">
                       {rel.category}
                     </div>
-                    <div className="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-sm text-slate-200 px-2 py-0.5 rounded text-[11px] font-medium flex items-center gap-1">
+                    <div className="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-sm text-slate-200 px-2 py-0.5 rounded text-[11px] font-medium flex items-center gap-1 z-10">
                       <Clock className="w-3 h-3 text-slate-300" />
                       <span>Non-Surgical</span>
                     </div>

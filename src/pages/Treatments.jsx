@@ -415,20 +415,20 @@ const Treatments = () => {
                 {/* Image & Badges */}
                 <Link
                   to={`/treatments/${treatment.slug}`}
-                  className="relative overflow-hidden w-full h-52 sm:h-56 flex-shrink-0 bg-slate-100 flex items-center justify-center"
+                  className="relative overflow-hidden w-full h-52 sm:h-56 flex-shrink-0 bg-slate-100 block"
                 >
                   <img
                     src={getTreatmentImage(treatment)}
                     alt={treatment.name}
                     loading="lazy"
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                    className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
                   />
                   {treatment.category && (
-                    <div className="absolute top-3 left-3 bg-teal-600/90 backdrop-blur-sm text-white px-2.5 py-1 rounded-md text-[11px] font-semibold tracking-wide uppercase shadow-sm">
+                    <div className="absolute top-3 left-3 bg-teal-600/90 backdrop-blur-sm text-white px-2.5 py-1 rounded-md text-[11px] font-semibold tracking-wide uppercase shadow-sm z-10">
                       {treatment.category}
                     </div>
                   )}
-                  <div className="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-sm text-slate-200 px-2 py-0.5 rounded text-[11px] font-medium flex items-center gap-1">
+                  <div className="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-sm text-slate-200 px-2 py-0.5 rounded text-[11px] font-medium flex items-center gap-1 z-10">
                     <Clock className="w-3 h-3 text-slate-300" />
                     <span>Non-Surgical</span>
                   </div>

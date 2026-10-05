@@ -17,6 +17,7 @@ import {
   Sparkles,
   Stethoscope,
   HeartPulse,
+  Star,
 } from "lucide-react";
 import { ALL_SERVICES, getServiceBySlug } from "../data/servicesData";
 import SEO from "../components/common/SEO";
@@ -94,7 +95,11 @@ const ServiceDetail = () => {
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200">
                   <Award className="w-3.5 h-3.5 text-teal-600" />
-                  BPT Certified Doctors
+                  BPT &amp; MPT Certified Doctors
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold border border-amber-200">
+                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                  4.7 Google Rating (43+ Reviews)
                 </span>
               </div>
 
