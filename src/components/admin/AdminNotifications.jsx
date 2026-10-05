@@ -356,7 +356,7 @@ const AdminNotifications = () => {
 
         {/* Dropdown Menu */}
         {open && (
-          <div className="absolute right-0 mt-3 w-[340px] xs:w-[380px] bg-white rounded-2xl shadow-2xl border border-slate-200 z-50 overflow-hidden">
+          <div className="absolute right-0 mt-3 w-[calc(100vw-1.5rem)] xs:w-[380px] max-w-[380px] bg-white rounded-2xl shadow-2xl border border-slate-200 z-50 overflow-hidden">
             {/* Header */}
             <div className="p-4 bg-slate-900 text-white flex items-center justify-between">
               <div className="flex items-center gap-2">

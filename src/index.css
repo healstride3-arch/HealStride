@@ -97,6 +97,18 @@ textarea {
   max-width: 100%;
 }
 
+.hs-safe-row {
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.hs-safe-action {
+  min-width: 0;
+  white-space: normal;
+  text-align: center;
+}
+
 p,
 h1,
 h2,
@@ -166,8 +178,30 @@ label {
     font-size: 16px;
   }
 
+  .whitespace-nowrap {
+    white-space: normal !important;
+  }
+
+  .truncate {
+    white-space: normal !important;
+  }
+
+  .hs-safe-row {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .hs-safe-action {
+    width: 100%;
+    justify-content: center;
+  }
+
   [class*="w-96"] {
     width: min(24rem, calc(100vw - 2rem)) !important;
+  }
+
+  [class*="max-w-["] {
+    max-width: calc(100vw - 1.5rem) !important;
   }
 
   [class*="rounded-3xl"] {
@@ -346,4 +380,3 @@ label {
   object-position: center;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
-

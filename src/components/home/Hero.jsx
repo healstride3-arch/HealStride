@@ -68,9 +68,9 @@ const Hero = () => {
   return (
     <section className="relative w-full pt-6 sm:pt-8 lg:pt-10 pb-8 sm:pb-10 lg:pb-14 bg-gradient-to-b from-white via-slate-50/70 to-teal-50/20 border-b border-slate-200/80 overflow-hidden">
       {/* Decorative ambient background glows */}
-      <div className="absolute top-0 left-10 w-[500px] h-[500px] bg-red-100/35 blur-3xl rounded-full pointer-events-none -z-10" />
-      <div className="absolute bottom-0 right-10 w-[550px] h-[550px] bg-teal-100/40 blur-3xl rounded-full pointer-events-none -z-10" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-cyan-50/40 blur-3xl rounded-full pointer-events-none -z-10" />
+      <div className="hidden sm:block absolute top-0 left-10 w-[500px] h-[500px] bg-red-100/35 blur-3xl rounded-full pointer-events-none -z-10" />
+      <div className="hidden sm:block absolute bottom-0 right-10 w-[550px] h-[550px] bg-teal-100/40 blur-3xl rounded-full pointer-events-none -z-10" />
+      <div className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-cyan-50/40 blur-3xl rounded-full pointer-events-none -z-10" />
 
       {/* Main Container with generous professional padding */}
       <div className="w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 xl:px-14">
@@ -170,7 +170,7 @@ const Hero = () => {
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ""))}
                   placeholder="Enter Your Mobile Number"
-                  className="flex-1 px-3.5 sm:px-4 py-2.5 sm:py-3 text-slate-900 placeholder:text-slate-400 font-medium text-xs sm:text-sm outline-none bg-transparent"
+                  className="flex-1 min-w-0 px-3.5 sm:px-4 py-2.5 sm:py-3 text-slate-900 placeholder:text-slate-400 font-medium text-xs sm:text-sm outline-none bg-transparent"
                   required
                 />
 
@@ -178,7 +178,7 @@ const Hero = () => {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-[0.98] text-white font-bold text-xs sm:text-sm px-5 sm:px-6 py-3 rounded-xl shadow-md hover:shadow-lg transition-all shrink-0 cursor-pointer"
+                  className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-[0.98] text-white font-bold text-xs sm:text-sm px-5 sm:px-6 py-3 rounded-xl shadow-md hover:shadow-lg transition-all sm:shrink-0 cursor-pointer hs-safe-action"
                 >
                   <Phone size={15} className="fill-white text-white shrink-0" />
                   <span>{submitting ? "Requesting..." : "Request A Callback"}</span>
@@ -203,7 +203,7 @@ const Hero = () => {
 
               {/* Direct Booking & Phone Links */}
               <div className="mt-4 pt-3 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2 min-w-0">
                   <span className="text-slate-500 font-medium">Direct connect:</span>
                   <a
                     href="tel:+918809491380"
@@ -215,7 +215,7 @@ const Hero = () => {
 
                 <Link
                   to="/booking"
-                  className="inline-flex items-center gap-1.5 font-bold text-[#008272] hover:text-[#0f766e] transition-colors"
+                  className="inline-flex items-center gap-1.5 font-bold text-[#008272] hover:text-[#0f766e] transition-colors hs-safe-action"
                 >
                   <Calendar size={13} />
                   <span>Book Appointment Online</span>
@@ -237,7 +237,7 @@ const Hero = () => {
 
             <div className="relative w-full max-w-[380px] sm:max-w-[400px] lg:max-w-[420px] rounded-[2rem] overflow-hidden border-4 border-white shadow-2xl bg-white group ring-1 ring-slate-200/60">
               {/* Doctor's Photo */}
-              <div className="relative h-[360px] xs:h-[400px] sm:h-[440px] lg:h-[460px] w-full overflow-hidden bg-slate-100">
+              <div className="relative h-[320px] xs:h-[400px] sm:h-[440px] lg:h-[460px] w-full overflow-hidden bg-slate-100">
                 <img
                   src={drRashidImage}
                   alt="Dr. MD Rashid (PT) - Lead Physiotherapist and Founder of Heal Stride"
@@ -245,13 +245,13 @@ const Hero = () => {
                 />
 
                 {/* Floating Top-Left Review Badge */}
-                <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full shadow-md border border-slate-200/80 flex items-center gap-1.5 text-[11px] font-bold text-slate-800">
+                <div className="absolute top-3 left-3 right-3 xs:right-auto bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full shadow-md border border-slate-200/80 flex items-center justify-center xs:justify-start gap-1.5 text-[11px] font-bold text-slate-800">
                   <Star size={12} className="fill-amber-400 text-amber-400" />
                   <span>4.7 (43+ Google Reviews)</span>
                 </div>
 
                 {/* Floating Top-Right Experience Badge */}
-                <div className="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded-full shadow-md border border-white/10 flex items-center gap-1 text-[10px] font-bold text-teal-300">
+                <div className="absolute top-12 xs:top-3 right-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded-full shadow-md border border-white/10 flex items-center gap-1 text-[10px] font-bold text-teal-300">
                   <Award size={12} className="text-teal-300" />
                   <span>5+ Yrs Exp</span>
                 </div>

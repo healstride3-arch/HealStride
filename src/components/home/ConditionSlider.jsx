@@ -70,7 +70,7 @@ const ConditionSlider = () => {
               spaceBetween: 18,
             },
           }}
-          className="w-full h-[220px] xs:h-[250px] sm:h-[280px]"
+          className="w-full h-[200px] xs:h-[250px] sm:h-[280px]"
         >
           {sliderImages.map((item, index) => (
             <SwiperSlide key={index}>
@@ -104,11 +104,11 @@ const ConditionSlider = () => {
             pauseOnMouseEnter: true,
           }}
           modules={[Autoplay]}
-          className="h-[800px]"
+          className="h-[720px] xl:h-[800px]"
         >
           {sliderImages.map((item, index) => (
             <SwiperSlide key={index}>
-              <div className="relative h-[245px] rounded-3xl overflow-hidden shadow-xl group">
+              <div className="relative h-[220px] xl:h-[245px] rounded-3xl overflow-hidden shadow-xl group">
                 <img
                   src={item.image}
                   alt={t(item.titleKey)}

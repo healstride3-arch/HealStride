@@ -331,12 +331,12 @@ function App() {
 
               {/* Buttons */}
 
-              <div className="flex items-center gap-3 sm:gap-4 mt-8">
+              <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-3 sm:gap-4 mt-8">
                 <button
                   onClick={() =>
                     setShowAppointmentPopup(false)
                   }
-                  className="w-28 sm:w-32 shrink-0 border border-slate-300 py-3 rounded-xl font-medium text-slate-700 hover:bg-slate-100 transition cursor-pointer text-sm sm:text-base"
+                  className="w-full xs:w-28 sm:w-32 xs:shrink-0 border border-slate-300 py-3 rounded-xl font-medium text-slate-700 hover:bg-slate-100 transition cursor-pointer text-sm sm:text-base"
                 >
                   Later
                 </button>
@@ -346,7 +346,7 @@ function App() {
                   onClick={() =>
                     setShowAppointmentPopup(false)
                   }
-                  className="flex-1 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] text-white px-5 sm:px-6 py-3 rounded-xl font-bold shadow-lg transition flex items-center justify-center gap-2 text-sm sm:text-base cursor-pointer whitespace-nowrap"
+                  className="flex-1 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] text-white px-5 sm:px-6 py-3 rounded-xl font-bold shadow-lg transition flex items-center justify-center gap-2 text-sm sm:text-base cursor-pointer hs-safe-action"
                 >
                   <CalendarCheck size={17} className="shrink-0" />
                   <span>Book Appointment</span>

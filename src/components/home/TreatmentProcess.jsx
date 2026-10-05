@@ -33,36 +33,36 @@ const TreatmentProcess = () => {
   const { t } = useTranslation();
 
   return (
-    <section className="py-24 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="py-14 sm:py-18 lg:py-24 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <SectionHeader
           badge={t("treatmentProcess.badge")}
           title={t("treatmentProcess.title")}
           subtitle={t("treatmentProcess.subtitle")}
         />
 
-        <div className="grid md:grid-cols-4 gap-10 mt-20">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 lg:gap-8 mt-10 sm:mt-14 lg:mt-20">
           {stepsData.map((step) => {
             const Icon = step.icon;
 
             return (
               <div
                 key={step.number}
-                className="relative group bg-white rounded-3xl shadow-lg p-8 hover:-translate-y-3 transition duration-300"
+                className="relative group bg-white rounded-3xl shadow-lg p-5 sm:p-6 lg:p-8 hover:-translate-y-1 lg:hover:-translate-y-3 transition duration-300"
               >
                 <div className="w-16 h-16 rounded-full bg-teal-600 text-white flex items-center justify-center text-2xl mx-auto">
                   <Icon />
                 </div>
 
-                <h3 className="mt-6 text-center text-2xl font-bold text-slate-900">
+                <h3 className="mt-5 sm:mt-6 text-center text-lg sm:text-xl lg:text-2xl font-bold text-slate-900">
                   {t(step.titleKey)}
                 </h3>
 
-                <p className="text-center mt-4 text-gray-600 leading-7">
+                <p className="text-center mt-3 sm:mt-4 text-sm sm:text-base text-gray-600 leading-6 sm:leading-7">
                   {t(step.descKey)}
                 </p>
 
-                <div className="mt-8 text-center text-5xl font-bold text-teal-100 group-hover:text-teal-200 transition">
+                <div className="mt-6 sm:mt-8 text-center text-4xl sm:text-5xl font-bold text-teal-100 group-hover:text-teal-200 transition">
                   {step.number}
                 </div>
               </div>

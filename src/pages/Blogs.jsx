@@ -225,8 +225,8 @@ const Blogs = () => {
         {/* Filter Bar & Count Indicator */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-200">
           {/* Category Dropdown */}
-          <div className="relative inline-block text-left" ref={dropdownRef}>
-            <div className="flex items-center gap-2.5">
+          <div className="relative w-full sm:w-auto text-left" ref={dropdownRef}>
+            <div className="flex flex-col xs:flex-row xs:items-center gap-2.5">
               <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5 shrink-0">
                 <Filter className="w-3.5 h-3.5 text-[#008272]" />
                 <span>फ़िल्टर:</span>
@@ -235,7 +235,7 @@ const Blogs = () => {
               <button
                 type="button"
                 onClick={() => setIsDropdownOpen((prev) => !prev)}
-                className="inline-flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:border-[#008272] text-slate-800 text-xs sm:text-sm font-semibold shadow-xs hover:shadow-sm transition-all min-w-[240px] cursor-pointer"
+                className="inline-flex w-full xs:w-auto items-center justify-between gap-3 px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:border-[#008272] text-slate-800 text-xs sm:text-sm font-semibold shadow-xs hover:shadow-sm transition-all xs:min-w-[240px] cursor-pointer"
               >
                 <span className="truncate">
                   {selectedCategory === "All" ? "सभी लेख (All Categories)" : selectedCategory}
@@ -250,7 +250,7 @@ const Blogs = () => {
 
             {/* Dropdown Menu */}
             {isDropdownOpen && (
-              <div className="absolute left-0 mt-2 w-72 sm:w-80 max-h-80 overflow-y-auto rounded-2xl bg-white border border-slate-200 shadow-xl z-50 p-1.5 scrollbar-thin">
+              <div className="absolute left-0 mt-2 w-full xs:w-72 sm:w-80 max-h-80 overflow-y-auto rounded-2xl bg-white border border-slate-200 shadow-xl z-50 p-1.5 scrollbar-thin">
                 {categories.map((cat) => {
                   const isSelected = selectedCategory === cat;
                   const count = getCategoryCount(cat);
@@ -290,7 +290,7 @@ const Blogs = () => {
           </div>
 
           {/* Count indicator & Reset */}
-          <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-500 font-medium">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-slate-500 font-medium">
             <p>
               कुल <span className="font-bold text-slate-800">{filteredBlogs.length}</span> लेख प्रदर्शित हैं
             </p>
