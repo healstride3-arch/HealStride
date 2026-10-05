@@ -4,6 +4,11 @@ import { ALL_SERVICES } from "../data/servicesData";
 import { blogs } from "../data/blogs";
 import { doctors } from "../data/team";
 import { galleryItems } from "../data/galleryItems";
+import {
+  ALL_TREATMENTS,
+  getTreatmentImage,
+} from "../data/treatmentsData";
+import { toolsData } from "../data/toolsData";
 
 const services = ALL_SERVICES;
 
@@ -82,6 +87,20 @@ export const importWebsiteData = async () => {
     writeDocs("doctors", doctors, normalizeProfile),
     writeDocs("gallery", galleryItems, normalizeProfile),
     writeDocs("faqs", faqs),
+    writeDocs("treatments", ALL_TREATMENTS, (treatment) => ({
+      ...treatment,
+      id: undefined,
+      imageUrl: getTreatmentImage(treatment),
+      active: true,
+      updatedAt: serverTimestamp(),
+    })),
+    writeDocs("tools", toolsData, (tool) => ({
+      ...tool,
+      id: undefined,
+      imageUrl: tool.image,
+      active: true,
+      updatedAt: serverTimestamp(),
+    })),
     setDoc(doc(db, "settings", "clinic"), settings, { merge: true }),
   ]);
 };

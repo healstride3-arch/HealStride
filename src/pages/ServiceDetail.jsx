@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ShieldCheck,
@@ -19,18 +19,18 @@ import {
   HeartPulse,
   Star,
 } from "lucide-react";
-import { ALL_SERVICES, getServiceBySlug } from "../data/servicesData";
 import SEO from "../components/common/SEO";
 import SectionHeader from "../components/common/SectionHeader";
 import defaultImg from "../assets/images/treatment1.jpg";
+import { findServiceBySlug, useServices } from "../hooks/useServices";
 
 const ServiceDetail = () => {
   const { slug } = useParams();
-  const navigate = useNavigate();
   const [openFaq, setOpenFaq] = useState(0);
+  const { services } = useServices();
 
   // Normalize slug and look up service (defaulting to physiotherapy if on /services/physiotherapy)
-  const service = getServiceBySlug(slug || "physiotherapy");
+  const service = findServiceBySlug(services, slug || "physiotherapy");
 
   // Scroll to top when slug changes
   useEffect(() => {
@@ -62,7 +62,7 @@ const ServiceDetail = () => {
   }
 
   // Related services (exclude current)
-  const relatedServices = ALL_SERVICES.filter(
+  const relatedServices = services.filter(
     (s) => s.slug !== service.slug && (s.category === service.category || true)
   ).slice(0, 3);
 

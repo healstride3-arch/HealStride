@@ -3570,6 +3570,10 @@ export const TREATMENT_IMAGES_MAP = {
 
 export const getTreatmentImage = (treatment) => {
   if (!treatment) return "/treatments-assets/back-pain.webp";
+
+  if (treatment.imageUrl) return treatment.imageUrl;
+  if (treatment.image && !treatment.image.startsWith("/assets/")) return treatment.image;
+
   const slug = (treatment.slug || treatment.id || "").toLowerCase().trim();
   const clean = slug.replace(/[^a-z0-9]+/g, "-");
 
@@ -3586,7 +3590,7 @@ export const getTreatmentImage = (treatment) => {
 
   // 2. Specific conditions mapping
   if (slug.includes("sciatica") || name.includes("sciatica") || slug.includes("piriformis")) {
-    return "/firestore-assets/sciaticapain.jpg";
+    return "/treatments-assets/sciatica.webp";
   }
   if (
     slug.includes("neck") ||
@@ -3596,7 +3600,7 @@ export const getTreatmentImage = (treatment) => {
     slug.includes("torticollis") ||
     slug.includes("whiplash")
   ) {
-    return "/firestore-assets/neckpain.jpg";
+    return "/treatments-assets/cervical-pain.png";
   }
   if (
     slug.includes("shoulder") ||
@@ -3605,7 +3609,7 @@ export const getTreatmentImage = (treatment) => {
     slug.includes("biceps-tendin") ||
     slug.includes("adhesive-capsulitis")
   ) {
-    return "/firestore-assets/frozenshoulder.jpg";
+    return "/treatments-assets/frozen-shoulder.webp";
   }
   if (
     slug.includes("elbow") ||
@@ -3618,7 +3622,7 @@ export const getTreatmentImage = (treatment) => {
     slug.includes("de-quervain") ||
     slug.includes("trigger-finger")
   ) {
-    return "/firestore-assets/tenniselbow.jpg";
+    return "/treatments-assets/tennis-golfers-elbow.webp";
   }
   if (
     slug.includes("knee") ||
@@ -3632,7 +3636,7 @@ export const getTreatmentImage = (treatment) => {
     slug.includes("mcl") ||
     slug.includes("pcl")
   ) {
-    return "/firestore-assets/kneepain.jpg";
+    return "/treatments-assets/knee-pain.webp";
   }
   if (
     slug.includes("foot") ||
@@ -3644,7 +3648,7 @@ export const getTreatmentImage = (treatment) => {
     slug.includes("foot-drop") ||
     slug.includes("calcaneal")
   ) {
-    return "/firestore-assets/plantarfasciitis.jpg";
+    return "/treatments-assets/planter-fasciatis.webp";
   }
   if (
     slug.includes("stroke") ||
@@ -3656,7 +3660,7 @@ export const getTreatmentImage = (treatment) => {
     slug.includes("neuro") ||
     slug.includes("facial-paralysis")
   ) {
-    return "/firestore-assets/strokerehab.jpg";
+    return "/treatments-assets/stroke.webp";
   }
   if (
     slug.includes("arthriti") ||
@@ -3666,7 +3670,7 @@ export const getTreatmentImage = (treatment) => {
     slug.includes("joint-pain") ||
     slug.includes("rheumatoid")
   ) {
-    return "/firestore-assets/Osteoarthritis.jpg";
+    return "/treatments-assets/osteoarthritis.webp";
   }
   if (
     slug.includes("sport") ||
@@ -3678,7 +3682,7 @@ export const getTreatmentImage = (treatment) => {
     slug.includes("strain") ||
     slug.includes("sprain")
   ) {
-    return "/firestore-assets/sportsinjury.jpg";
+    return "/treatments-assets/sports-injury.webp";
   }
   if (
     slug.includes("post-surgery") ||
@@ -3686,7 +3690,7 @@ export const getTreatmentImage = (treatment) => {
     slug.includes("rehab") ||
     slug.includes("post-op")
   ) {
-    return "/firestore-assets/postsurgeryrehab.jpg";
+    return "/treatments-assets/post-tkr-thr-rehab-physiotherapy.webp";
   }
   if (
     slug.includes("back") ||
@@ -3700,27 +3704,27 @@ export const getTreatmentImage = (treatment) => {
     slug.includes("stenosis") ||
     slug.includes("coccyx")
   ) {
-    return "/firestore-assets/backpain.jpg";
+    return "/treatments-assets/back-pain.webp";
   }
 
   // 2. Fallbacks based on category
   if (category.includes("spine") || category.includes("back")) {
-    return "/firestore-assets/backpain.jpg";
+    return "/treatments-assets/back-pain.webp";
   }
   if (category.includes("lower limb") || category.includes("joint")) {
-    return "/firestore-assets/kneepain.jpg";
+    return "/treatments-assets/knee-pain.webp";
   }
   if (category.includes("upper limb") || category.includes("shoulder")) {
-    return "/firestore-assets/frozenshoulder.jpg";
+    return "/treatments-assets/frozen-shoulder.webp";
   }
   if (category.includes("neuro") || category.includes("rehab")) {
-    return "/firestore-assets/strokerehab.jpg";
+    return "/treatments-assets/stroke.webp";
   }
   if (category.includes("sport")) {
-    return "/firestore-assets/sportsinjury.jpg";
+    return "/treatments-assets/sports-injury.webp";
   }
 
-  return "/firestore-assets/treatment1.jpg";
+  return "/treatments-assets/back-pain.webp";
 };
 
 export const getRelatedTreatments = (currentSlug, category, limit = 4) => {

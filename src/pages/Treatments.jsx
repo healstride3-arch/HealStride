@@ -28,13 +28,15 @@ import SEO from "../components/common/SEO";
 import AnimatedCounter from "../components/common/AnimatedCounter";
 import SectionHeader from "../components/common/SectionHeader";
 import Specialists from "../components/home/Specialists";
-import { ALL_TREATMENTS, TREATMENTS_CATEGORIES, getTreatmentImage } from "../data/treatmentsData";
+import { getTreatmentImage } from "../data/treatmentsData";
+import { useTreatments } from "../hooks/useTreatments";
 
 const Treatments = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Conditions");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const { treatments, categories } = useTreatments();
 
   // Close category dropdown when clicking outside
   useEffect(() => {
@@ -49,7 +51,7 @@ const Treatments = () => {
 
   // Filtered treatments
   const filteredTreatments = useMemo(() => {
-    return ALL_TREATMENTS.filter((t) => {
+    return treatments.filter((t) => {
       const matchesCategory =
         selectedCategory === "All Conditions" || t.category === selectedCategory;
       const matchesSearch =
@@ -60,7 +62,7 @@ const Treatments = () => {
         t.category.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesCategory && matchesSearch;
     });
-  }, [searchQuery, selectedCategory]);
+  }, [searchQuery, selectedCategory, treatments]);
 
   const scrollToDirectory = () => {
     const el = document.getElementById("treatments-directory");
@@ -301,12 +303,12 @@ const Treatments = () => {
             {/* Dropdown Menu */}
             {isDropdownOpen && (
               <div className="absolute left-0 sm:right-0 sm:left-auto mt-2 w-full sm:w-80 max-h-80 overflow-y-auto rounded-2xl bg-white border border-slate-200 shadow-xl z-50 p-2 scrollbar-thin">
-                {TREATMENTS_CATEGORIES.map((cat) => {
+                {categories.map((cat) => {
                   const isSelected = selectedCategory === cat;
                   const count =
                     cat === "All Conditions"
-                      ? ALL_TREATMENTS.length
-                      : ALL_TREATMENTS.filter((t) => t.category === cat).length;
+                      ? treatments.length
+                      : treatments.filter((t) => t.category === cat).length;
                   return (
                     <button
                       key={cat}

@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -30,14 +30,12 @@ import BlogDetails from "./pages/BlogDetails";
 
 import Doctors from "./pages/Doctors";
 import DoctorProfile from "./pages/DoctorProfile";
-import Specialists from "./components/home/Specialists";
 
 import GalleryPage from "./pages/GalleryPage";
 import ClinicGallery from "./pages/ClinicGallery";
 import MachineGallery from "./pages/MachineGallery";
 import TreatmentGallery from "./pages/TreatmentGallery";
 
-import PhysiotherapyServices from "./pages/PhysiotherapyServices";
 import ToolsEquipment from "./pages/ToolsEquipment";
 import ReviewForm from "./pages/ReviewForm";
 
@@ -58,6 +56,7 @@ import AdminGallery from "./components/admin/AdminGallery";
 import AdminFAQ from "./components/admin/AdminFAQ";
 import AdminBlogs from "./components/admin/AdminBlogs";
 import AdminNotificationsPage from "./components/admin/AdminNotificationsPage";
+import AdminTreatments from "./components/admin/AdminTreatments";
 
 import AnimatedBackground from "./components/AnimatedBackground";
 
@@ -110,8 +109,6 @@ function App() {
 
         <Route path="/treatments" element={<Treatments />} />
         <Route path="/treatments/:slug" element={<TreatmentDetail />} />
-
-        <Route path="/staff" element={<Navigate to="/doctors" replace />} />
 
         <Route path="/services" element={<Services />} />
 
@@ -239,11 +236,6 @@ function App() {
           />
 
           <Route
-            path="staff"
-            element={<Navigate to="/admin/doctor-profile" replace />}
-          />
-
-          <Route
             path="blogs"
             element={<AdminBlogs />}
           />
@@ -251,6 +243,11 @@ function App() {
           <Route
             path="services"
             element={<AdminServices />}
+          />
+
+          <Route
+            path="treatments"
+            element={<AdminTreatments />}
           />
 
           <Route

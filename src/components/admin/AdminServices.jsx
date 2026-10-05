@@ -23,19 +23,110 @@ import {
 
 import { db } from "../../firebase/firebase";
 import { uploadImage } from "../../utils/imageUpload";
+import { ALL_SERVICES } from "../../data/servicesData";
 import Pagination from "./Pagination";
 
 const emptyForm = {
   title: "",
   slug: "",
   category: "therapies",
+  tagline: "",
   description: "",
   benefits: [""],
   duration: "",
+  sessions: "",
+  overviewText: "",
+  conditionsText: "",
+  toolsText: "",
+  faqsText: "",
   imageUrl: "",
   icon: "activity",
   showOnHome: true,
   active: true,
+};
+
+const splitLines = (value) =>
+  String(value || "")
+    .split(/\r?\n/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+
+const splitParagraphs = (value) =>
+  String(value || "")
+    .split(/\n\s*\n/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+
+const formatList = (items = []) =>
+  (items || [])
+    .map((item) => {
+      if (typeof item === "string") return item;
+      return item?.title || item?.desc || "";
+    })
+    .filter(Boolean)
+    .join("\n");
+
+const formatParagraphs = (items = []) =>
+  Array.isArray(items) ? items.filter(Boolean).join("\n\n") : String(items || "");
+
+const parseFaqs = (value) =>
+  String(value || "")
+    .split(/\n\s*\n/)
+    .map((block) => {
+      const lines = block.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+      const question = lines
+        .find((line) => /^q(uestion)?:/i.test(line))
+        ?.replace(/^q(uestion)?:/i, "")
+        .trim();
+      const answer = lines
+        .find((line) => /^a(nswer)?:/i.test(line))
+        ?.replace(/^a(nswer)?:/i, "")
+        .trim();
+
+      return question && answer ? { question, answer } : null;
+    })
+    .filter(Boolean);
+
+const formatFaqs = (faqs = []) =>
+  (faqs || [])
+    .map((faq) => `Q: ${faq.question || ""}\nA: ${faq.answer || ""}`)
+    .join("\n\n");
+
+const getPreviewText = (value) => {
+  if (Array.isArray(value)) {
+    return value.find(Boolean) || "";
+  }
+
+  return String(value || "");
+};
+
+const normalizeKey = (value = "") =>
+  String(value)
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+const mergeWebsiteServices = (firestoreServices) => {
+  const firestoreMap = new Map(
+    firestoreServices.map((service) => [
+      normalizeKey(service.slug || service.id || service.title),
+      service,
+    ])
+  );
+
+  return ALL_SERVICES.map((websiteService) => {
+    const key = normalizeKey(
+      websiteService.slug || websiteService.id || websiteService.title
+    );
+    const firestoreService = firestoreMap.get(key);
+
+    return {
+      ...websiteService,
+      ...(firestoreService || {}),
+      id: firestoreService?.id || websiteService.id || websiteService.slug,
+    };
+  });
 };
 
 const AdminServices = () => {
@@ -71,7 +162,7 @@ const AdminServices = () => {
           ...serviceDoc.data(),
         }));
 
-        setServices(data);
+        setServices(mergeWebsiteServices(data));
         setFetching(false);
       },
       (error) => {
@@ -218,9 +309,15 @@ const AdminServices = () => {
             .replace(/^-+|-+$/g, ""),
         category: form.category || "therapies",
         categoryLabel: categoryMap[form.category] || "Specialized Therapy",
+        tagline: form.tagline.trim(),
         description: form.description.trim(),
         benefits: cleanedBenefits,
         duration: form.duration.trim(),
+        sessions: form.sessions.trim(),
+        overview: splitParagraphs(form.overviewText),
+        conditionsTreated: splitLines(form.conditionsText),
+        toolsUsed: splitLines(form.toolsText),
+        faqs: parseFaqs(form.faqsText),
         imageUrl: form.imageUrl,
         icon: form.icon,
         showOnHome: form.showOnHome,
@@ -272,12 +369,18 @@ const confirmEdit = () => {
     title: service.title || "",
     slug: service.slug || "",
     category: service.category || "therapies",
+    tagline: service.tagline || "",
     description: service.description || "",
     benefits:
       service.benefits?.length > 0
         ? service.benefits
         : [""],
     duration: service.duration || "",
+    sessions: service.sessions || "",
+    overviewText: formatParagraphs(service.overview),
+    conditionsText: formatList(service.conditionsTreated || service.detailedConditions),
+    toolsText: formatList(service.toolsUsed),
+    faqsText: formatFaqs(service.faqs),
     imageUrl: service.imageUrl || "",
     icon: service.icon || "activity",
     showOnHome:
@@ -533,6 +636,32 @@ const confirmEdit = () => {
               />
             </div>
 
+            <div>
+              <label htmlFor="service-sessions" className="block text-sm font-medium text-slate-700 mb-1">
+                Recommended Plan
+              </label>
+
+              <input
+                id="service-sessions"
+                type="text"
+                name="sessions"
+                autoComplete="off"
+                value={form.sessions}
+                onChange={handleChange}
+                placeholder="4-8 Sessions recommended based on evaluation"
+                className="
+                  w-full
+                  border
+                  rounded-xl
+                  px-4
+                  py-3
+                  outline-none
+                  focus:ring-2
+                  focus:ring-teal-500
+                "
+              />
+            </div>
+
             {/* CATEGORY */}
             <div>
               <label htmlFor="service-category" className="block text-sm font-medium text-slate-700 mb-1">
@@ -615,6 +744,32 @@ const confirmEdit = () => {
 
             {/* DESCRIPTION */}
             <div className="md:col-span-2">
+              <label htmlFor="service-tagline" className="block text-sm font-medium text-slate-700 mb-1">
+                Detail Page Tagline
+              </label>
+
+              <input
+                id="service-tagline"
+                type="text"
+                name="tagline"
+                autoComplete="off"
+                value={form.tagline}
+                onChange={handleChange}
+                placeholder="Expert care for pain relief, mobility restoration and long-term rehabilitation."
+                className="
+                  w-full
+                  border
+                  rounded-xl
+                  px-4
+                  py-3
+                  outline-none
+                  focus:ring-2
+                  focus:ring-teal-500
+                "
+              />
+            </div>
+
+            <div className="md:col-span-2">
               <label htmlFor="service-description" className="block text-sm font-medium text-slate-700 mb-1">
                 Service Description *
               </label>
@@ -638,6 +793,77 @@ const confirmEdit = () => {
                   focus:ring-teal-500
                 "
               />
+            </div>
+          </div>
+
+          <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50/70 p-4 md:p-5">
+            <h3 className="text-lg font-bold text-slate-900">
+              Detail Page Content
+            </h3>
+            <p className="text-sm text-slate-500 mt-1">
+              These fields update the public service detail page.
+            </p>
+
+            <div className="mt-4 grid md:grid-cols-2 gap-4">
+              <div className="md:col-span-2">
+                <label htmlFor="service-overview" className="block text-sm font-medium text-slate-700 mb-1">
+                  Clinical Overview
+                </label>
+                <textarea
+                  id="service-overview"
+                  name="overviewText"
+                  value={form.overviewText}
+                  onChange={handleChange}
+                  rows="6"
+                  placeholder="Write one paragraph, leave a blank line, then write the next paragraph."
+                  className="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-teal-500 bg-white"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="service-conditions" className="block text-sm font-medium text-slate-700 mb-1">
+                  Conditions Treated
+                </label>
+                <textarea
+                  id="service-conditions"
+                  name="conditionsText"
+                  value={form.conditionsText}
+                  onChange={handleChange}
+                  rows="6"
+                  placeholder="One condition per line"
+                  className="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-teal-500 bg-white"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="service-tools" className="block text-sm font-medium text-slate-700 mb-1">
+                  Tools Used
+                </label>
+                <textarea
+                  id="service-tools"
+                  name="toolsText"
+                  value={form.toolsText}
+                  onChange={handleChange}
+                  rows="6"
+                  placeholder="One tool or modality per line"
+                  className="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-teal-500 bg-white"
+                />
+              </div>
+
+              <div className="md:col-span-2">
+                <label htmlFor="service-faqs" className="block text-sm font-medium text-slate-700 mb-1">
+                  Detail Page FAQs
+                </label>
+                <textarea
+                  id="service-faqs"
+                  name="faqsText"
+                  value={form.faqsText}
+                  onChange={handleChange}
+                  rows="8"
+                  placeholder={"Q: First question?\nA: First answer.\n\nQ: Second question?\nA: Second answer."}
+                  className="w-full border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-teal-500 bg-white"
+                />
+              </div>
             </div>
           </div>
 
@@ -1012,6 +1238,12 @@ const confirmEdit = () => {
                   <p className="text-sm text-slate-500 mt-2 line-clamp-3">
                     {service.description}
                   </p>
+
+                  {getPreviewText(service.overview) && (
+                    <p className="text-xs text-slate-500 mt-2 line-clamp-2">
+                      Detail: {getPreviewText(service.overview)}
+                    </p>
+                  )}
 
                   {service.duration && (
                     <p className="text-sm mt-3">

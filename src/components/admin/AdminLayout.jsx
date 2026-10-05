@@ -26,6 +26,7 @@ import {
   UserRound,
   FileText,
   BriefcaseBusiness,
+  Activity,
   ExternalLink,
   ShieldCheck,
   ChevronRight,
@@ -93,9 +94,14 @@ const AdminLayout = () => {
           path: "/admin/doctor-profile",
         },
         {
-          name: "Services & Treatments",
+          name: "Services",
           icon: BriefcaseBusiness,
           path: "/admin/services",
+        },
+        {
+          name: "Treatments",
+          icon: Activity,
+          path: "/admin/treatments",
         },
       ],
     },

@@ -3,6 +3,7 @@ import path from "node:path";
 import vm from "node:vm";
 
 const root = process.cwd();
+const pruneStaleDocs = process.argv.includes("--prune-stale");
 
 const readEnv = () => {
   const envPath = path.join(root, ".env");
@@ -41,12 +42,21 @@ const extractConstExpression = (source, constName) => {
   }
 
   const equals = source.indexOf("=", start);
-  const expressionStart = source.indexOf("[", equals);
+  const arrayStart = source.indexOf("[", equals);
+  const objectStart = source.indexOf("{", equals);
+  const expressionStart =
+    arrayStart === -1
+      ? objectStart
+      : objectStart === -1
+        ? arrayStart
+        : Math.min(arrayStart, objectStart);
+  const opener = source[expressionStart];
+  const closer = opener === "[" ? "]" : "}";
   let depth = 0;
 
   for (let i = expressionStart; i < source.length; i += 1) {
-    if (source[i] === "[") depth += 1;
-    if (source[i] === "]") depth -= 1;
+    if (source[i] === opener) depth += 1;
+    if (source[i] === closer) depth -= 1;
 
     if (depth === 0) {
       return source.slice(equals + 1, i + 1);
@@ -77,19 +87,21 @@ const apiKey = env.VITE_FIREBASE_API_KEY;
 const firestoreBaseUrl =
   `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents`;
 
-const services = loadArray(
-  "src/components/service/ServicesGrid.jsx",
-  "defaultServices"
-);
+const services = loadArray("src/data/servicesData.js", "ALL_SERVICES");
 const blogs = loadArray("src/data/blogs.js", "blogs");
 const doctors = loadArray("src/data/team.js", "doctors");
-const staff = loadArray("src/data/team.js", "staff");
 const galleryItems = loadArray("src/data/galleryItems.js", "galleryItems");
 const faqs = loadArray(
   "src/components/about/FAQSection.jsx",
   "defaultFaqs"
 );
 const reviews = loadArray("src/data/googleReviews.js", "googleReviews");
+const treatments = loadArray("src/data/treatmentsData.js", "ALL_TREATMENTS");
+const treatmentImagesMap = loadArray(
+  "src/data/treatmentsData.js",
+  "TREATMENT_IMAGES_MAP"
+);
+const tools = loadArray("src/data/toolsData.js", "toolsData");
 
 const settings = {
   address:
@@ -106,6 +118,7 @@ const settings = {
 const clean = (value) => JSON.parse(JSON.stringify(value));
 
 const publicAssetDir = path.join(root, "public", "firestore-assets");
+fs.rmSync(publicAssetDir, { recursive: true, force: true });
 fs.mkdirSync(publicAssetDir, { recursive: true });
 
 const copyAssetToPublic = (assetPath) => {
@@ -143,6 +156,18 @@ const normalizeAssets = (value) => {
   }
 
   return value;
+};
+
+const normalizeSlug = (value = "") =>
+  String(value)
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+const getTreatmentImageForImport = (treatment) => {
+  const slug = normalizeSlug(treatment.slug || treatment.id || treatment.name);
+  return treatmentImagesMap[slug] || treatment.image || "";
 };
 
 const toFirestoreValue = (value) => {
@@ -217,6 +242,24 @@ const getAuthToken = async () => {
 
 const authToken = await getAuthToken();
 
+const listDocIds = async (collectionName) => {
+  const url = `${firestoreBaseUrl}/${collectionName}?key=${apiKey}`;
+  const headers = {};
+  if (authToken) {
+    headers.Authorization = `Bearer ${authToken}`;
+  }
+
+  const response = await fetch(url, { headers });
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(`${collectionName}: list failed ${response.status} ${body}`);
+  }
+
+  const data = await response.json();
+  return (data.documents || []).map((doc) => doc.name.split("/").pop());
+};
+
 const writeDoc = async (collectionName, id, payload) => {
   const url =
     `${firestoreBaseUrl}/${collectionName}/${encodeURIComponent(id)}?key=${apiKey}`;
@@ -242,9 +285,37 @@ const writeDoc = async (collectionName, id, payload) => {
   }
 };
 
-const writeDocs = async (collectionName, items, mapper = (item) => item) => {
+const deleteDoc = async (collectionName, id) => {
+  const url =
+    `${firestoreBaseUrl}/${collectionName}/${encodeURIComponent(id)}?key=${apiKey}`;
+
+  const headers = {};
+  if (authToken) {
+    headers.Authorization = `Bearer ${authToken}`;
+  }
+
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers,
+  });
+
+  if (!response.ok && response.status !== 404) {
+    const body = await response.text();
+    throw new Error(`${collectionName}/${id}: delete failed ${response.status} ${body}`);
+  }
+};
+
+const writeDocs = async (
+  collectionName,
+  items,
+  mapper = (item) => item,
+  { pruneMissing = pruneStaleDocs } = {}
+) => {
+  const currentIds = new Set();
+
   for (const item of items) {
     const id = String(item.id || item.slug || item.title);
+    currentIds.add(id);
     const payload = normalizeAssets(clean(mapper(item)));
     delete payload.id;
 
@@ -253,6 +324,19 @@ const writeDocs = async (collectionName, items, mapper = (item) => item) => {
       active: payload.active !== false,
       updatedAt: new Date().toISOString(),
     });
+  }
+
+  if (pruneMissing) {
+    const remoteIds = await listDocIds(collectionName);
+    const staleIds = remoteIds.filter((id) => !currentIds.has(id));
+
+    for (const staleId of staleIds) {
+      await deleteDoc(collectionName, staleId);
+    }
+
+    if (staleIds.length > 0) {
+      console.log(`${collectionName}: ${staleIds.length} stale documents deleted`);
+    }
   }
 
   console.log(`${collectionName}: ${items.length} documents imported`);
@@ -286,7 +370,6 @@ await writeDocs("doctors", doctors, (doctor) => ({
   imageUrl: doctor.imageUrl || doctor.image || "",
   active: true,
 }));
-await writeDocs("staff", staff);
 await writeDocs("gallery", galleryItems);
 await writeDocs("faqs", faqs);
 await writeDocs("testimonials", reviews, (review) => ({
@@ -294,6 +377,20 @@ await writeDocs("testimonials", reviews, (review) => ({
   review: review.review || review.text || "",
   status: "approved",
 }));
+await writeDocs("treatments", treatments, (treatment) => ({
+  ...treatment,
+  slug: treatment.slug || normalizeSlug(treatment.name || treatment.id),
+  imageUrl: getTreatmentImageForImport(treatment),
+  active: true,
+}));
+await writeDocs("tools", tools, (tool) => ({
+  ...tool,
+  imageUrl: tool.image,
+  active: true,
+}));
 await writeDoc("settings", "clinic", settings);
 console.log("settings/clinic: imported");
+if (!pruneStaleDocs) {
+  console.log("Stale Firestore document pruning skipped. Re-run with --prune-stale only after confirming deletions.");
+}
 console.log("Website data import complete.");

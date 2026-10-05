@@ -16,7 +16,8 @@ import {
 } from "lucide-react";
 
 import SectionHeader from "../common/SectionHeader";
-import { ALL_TREATMENTS, getTreatmentImage } from "../../data/treatmentsData";
+import { getTreatmentImage } from "../../data/treatmentsData";
+import { useTreatments } from "../../hooks/useTreatments";
 import "swiper/css";
 
 // 14 Most Requested Conditions at Heal Stride Bhopal
@@ -52,6 +53,7 @@ const TreatmentSlider = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const swiperRef = useRef(null);
+  const { treatments } = useTreatments();
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -68,12 +70,12 @@ const TreatmentSlider = () => {
   const displayedTreatments = useMemo(() => {
     if (activeTab === "all") {
       const popularItems = POPULAR_SLUGS.map((slug) =>
-        ALL_TREATMENTS.find((item) => item.slug === slug)
+        treatments.find((item) => item.slug === slug)
       ).filter(Boolean);
-      return popularItems.length > 0 ? popularItems : ALL_TREATMENTS.slice(0, 14);
+      return popularItems.length > 0 ? popularItems : treatments.slice(0, 14);
     }
-    return ALL_TREATMENTS.filter((item) => item.category === activeTab);
-  }, [activeTab]);
+    return treatments.filter((item) => item.category === activeTab);
+  }, [activeTab, treatments]);
 
   const selectedOption = CATEGORY_OPTIONS.find((opt) => opt.value === activeTab);
 
@@ -135,7 +137,7 @@ const TreatmentSlider = () => {
                     const count =
                       opt.value === "all"
                         ? POPULAR_SLUGS.length
-                        : ALL_TREATMENTS.filter((t) => t.category === opt.value).length;
+                        : treatments.filter((t) => t.category === opt.value).length;
 
                     return (
                       <button

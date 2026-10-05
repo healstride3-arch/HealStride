@@ -21,25 +21,26 @@ import {
   Check,
   MapPin,
 } from "lucide-react";
-import {
-  ALL_TREATMENTS,
-  getTreatmentBySlug,
-  getRelatedTreatments,
-  getTreatmentImage,
-} from "../data/treatmentsData";
+import { getTreatmentImage } from "../data/treatmentsData";
 import SEO from "../components/common/SEO";
 import SectionHeader from "../components/common/SectionHeader";
 import drRashidImg from "../assets/images/Dr.MD.Rashid.png";
 import drWazulImg from "../assets/images/Dr Wazul Quamar.jpeg";
 import { useClinicSettings } from "../hooks/useClinicSettings";
+import {
+  findTreatmentBySlug,
+  getRelatedTreatmentItems,
+  useTreatments,
+} from "../hooks/useTreatments";
 
 const TreatmentDetail = () => {
   const { data: settings } = useClinicSettings();
   const { slug } = useParams();
   const navigate = useNavigate();
   const [openFaq, setOpenFaq] = useState(0);
+  const { treatments } = useTreatments();
 
-  const treatment = getTreatmentBySlug(slug);
+  const treatment = findTreatmentBySlug(treatments, slug);
 
   // Scroll to top when slug changes
   useEffect(() => {
@@ -72,7 +73,8 @@ const TreatmentDetail = () => {
     );
   }
 
-  const relatedTreatments = getRelatedTreatments(
+  const relatedTreatments = getRelatedTreatmentItems(
+    treatments,
     treatment.slug,
     treatment.category,
     3
