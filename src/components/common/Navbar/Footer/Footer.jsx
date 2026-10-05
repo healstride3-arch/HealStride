@@ -180,11 +180,6 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/treatments" className="text-teal-400 font-bold hover:underline transition-colors">
-                  View All 80+ Treatments →
-                </Link>
-              </li>
-              <li>
                 <Link to="/services/cupping-therapy" className="hover:text-teal-400 transition-colors">
                   Cupping Therapy
                 </Link>

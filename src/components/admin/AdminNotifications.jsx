@@ -97,14 +97,15 @@ const AdminNotifications = () => {
               setShowModal(true);
 
               // Show Toast Popup
+              const svcName = newDoc.service || newDoc.condition || "Physiotherapy Consultation";
               toast.success(
-                `New Appointment: ${newDoc.name || "Patient"} (${newDoc.date || "Upcoming"} at ${newDoc.time || "Clinic"})`,
+                `New Booking: ${newDoc.name || "Patient"} • ${svcName}`,
                 { duration: 6000, position: "top-right" }
               );
 
               // Desktop Push Notification
-              triggerBrowserNotification("New Appointment Booked!", {
-                body: `${newDoc.name || "A patient"} booked an appointment with ${newDoc.doctor || "Specialist"} for ${newDoc.date || ""} ${newDoc.time || ""}`,
+              triggerBrowserNotification("New Consultation Request!", {
+                body: `${newDoc.name || "Patient"} requested ${svcName} • Phone: ${newDoc.phone || "N/A"}`,
                 onClick: () => navigate("/admin/appointments"),
               });
             }
@@ -124,20 +125,21 @@ const AdminNotifications = () => {
 
 
   // Combined notifications
-  const appointmentNotifications = appointments.map((item) => ({
-    id: item.id,
-    type: "appointment",
-    title: "New Appointment Booked",
-    patientName: item.name || "Patient",
-    phone: item.phone || "Not provided",
-    doctor: item.doctor || "Any Specialist",
-    condition: item.condition || "General Consultation",
-    date: item.date || "Upcoming",
-    timeSlot: item.time || "",
-    message: `${item.condition || "Consultation"} with ${item.doctor || "Specialist"} on ${item.date || "Upcoming"} at ${item.time || ""}`,
-    time: formatTime(item.createdAt),
-    redirect: "/admin/appointments",
-  }));
+  const appointmentNotifications = appointments.map((item) => {
+    const svc = item.service || item.condition || "General Consultation";
+    return {
+      id: item.id,
+      type: "appointment",
+      title: "New Consultation Request",
+      patientName: item.name || "Patient",
+      phone: item.phone || "Not provided",
+      service: svc,
+      condition: svc,
+      message: `${item.name} requested ${svc} • Mobile: ${item.phone || "Not provided"}`,
+      time: formatTime(item.createdAt),
+      redirect: "/admin/appointments",
+    };
+  });
 
   const notifications = appointmentNotifications;
 
@@ -542,8 +544,8 @@ const AdminNotifications = () => {
                                   )}
                                 </div>
 
-                                <p className="text-xs text-slate-500 mt-1 truncate">
-                                  <strong>Doctor:</strong> {app.doctor} • <strong>Condition:</strong> {app.condition}
+                                <p className="text-xs text-slate-600 mt-1 truncate font-medium">
+                                  <strong>Service:</strong> <span className="text-teal-800">{app.service || app.condition || "General Consultation"}</span>
                                 </p>
                               </div>
                             </div>

@@ -11,14 +11,74 @@ import {
   Stethoscope,
   Activity,
   FileText,
+  MessageCircle,
 } from "lucide-react";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { toast } from "react-hot-toast";
 import { db } from "../../firebase/firebase";
 
+// Official Heal Stride Services List
+const CLINIC_SERVICES_OPTIONS = [
+  "Chiropractic Treatment",
+  "Spinal Decompression Therapy",
+  "Posture Correction Therapy",
+  "Ultrasound Therapy",
+  "Cupping Therapy (Hijama)",
+  "Cranio Sacral Therapy",
+  "Cryo Therapy",
+  "Laser Therapy",
+  "Clinical Physiotherapy",
+  "Home Physiotherapy",
+  "Sports Injury Rehabilitation",
+  "Stroke / Paralysis Rehabilitation",
+  "Interferential Therapy (IFT)",
+  "Shockwave Therapy",
+  "Red Light Therapy",
+  "General Physical Assessment & Consultation",
+  "Other Consultation",
+];
+
+const formatDateTime = (timestamp, fallbackDate) => {
+  if (timestamp?.toDate) {
+    return timestamp.toDate().toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
+  if (typeof timestamp === "string") {
+    try {
+      const d = new Date(timestamp);
+      if (!isNaN(d.getTime())) {
+        return d.toLocaleDateString("en-IN", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      }
+    } catch {
+      // fallback
+    }
+  }
+  return fallbackDate || "Recent";
+};
+
+const getWhatsAppUrl = (phone, name, service) => {
+  const cleanPhone = (phone || "").replace(/\D/g, "");
+  const pNum = cleanPhone.startsWith("91") ? cleanPhone : `91${cleanPhone}`;
+  const text = encodeURIComponent(
+    `Hello ${name || "Patient"}, this is Heal Stride Physiotherapy Bhopal regarding your consultation request for ${service || "Physiotherapy"}.`
+  );
+  return `https://wa.me/${pNum}?text=${text}`;
+};
+
 /**
  * Reusable Appointment Table & Mobile Card component.
- * Used on both Appointments Page and Admin Dashboard for complete design consistency.
+ * Displays real-time 3-field booking data: Name, Mobile, Service + Status & Actions.
  */
 const AppointmentsTable = ({
   appointments = [],
@@ -53,7 +113,10 @@ const AppointmentsTable = ({
 
   // Edit appointment modal
   const handleEdit = (appointment) => {
-    setEditingAppointment({ ...appointment });
+    setEditingAppointment({
+      ...appointment,
+      service: appointment.service || appointment.condition || "General Physical Assessment & Consultation",
+    });
     setIsEditOpen(true);
   };
 
@@ -61,15 +124,19 @@ const AppointmentsTable = ({
     if (!editingAppointment) return;
 
     try {
+      const selectedService =
+        editingAppointment.service ||
+        editingAppointment.condition ||
+        "General Physical Assessment & Consultation";
+
       await updateDoc(doc(db, "appointments", editingAppointment.id), {
-        name: editingAppointment.name || "",
-        phone: editingAppointment.phone || "",
-        doctor: editingAppointment.doctor || "Any Available Specialist",
-        condition: editingAppointment.condition || "",
-        date: editingAppointment.date || "",
-        time: editingAppointment.time || "",
+        name: editingAppointment.name?.trim() || "",
+        phone: editingAppointment.phone?.trim() || "",
+        service: selectedService,
+        condition: selectedService, // maintains backward compatibility
         status: editingAppointment.status || "pending",
         message: editingAppointment.message || "",
+        updatedAt: new Date().toISOString(),
       });
 
       toast.success("Appointment updated successfully");
@@ -155,207 +222,82 @@ const AppointmentsTable = ({
     <>
       {/* ================= MOBILE CARDS (320px - 768px) ================= */}
       <div className="divide-y divide-slate-100 md:hidden">
-        {appointments.map((app) => (
-          <div key={app.id} className="p-4 space-y-3 hover:bg-slate-50/70 transition">
-            {/* Patient Header */}
-            <div className="flex items-start justify-between gap-2">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-teal-100 text-teal-800 font-bold text-xs flex items-center justify-center shrink-0">
-                  {(app.name || "P").slice(0, 2).toUpperCase()}
+        {appointments.map((app) => {
+          const serviceName = app.service || app.condition || "General Consultation";
+          return (
+            <div key={app.id} className="p-4 space-y-3 hover:bg-slate-50/70 transition">
+              {/* Patient Header */}
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-xl bg-teal-100 text-teal-800 font-bold text-xs flex items-center justify-center shrink-0">
+                    {(app.name || "P").slice(0, 2).toUpperCase()}
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-sm text-slate-900 leading-snug">
+                      {app.name}
+                    </h3>
+                    <div className="flex items-center gap-2 mt-0.5">
+                      <a
+                        href={`tel:${app.phone}`}
+                        className="inline-flex items-center gap-1 text-xs font-semibold text-teal-700 hover:underline"
+                      >
+                        <Phone size={11} />
+                        <span>{app.phone}</span>
+                      </a>
+                      {app.phone && (
+                        <a
+                          href={getWhatsAppUrl(app.phone, app.name, serviceName)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-emerald-600 hover:text-emerald-700 p-0.5"
+                          title="WhatsApp Patient"
+                        >
+                          <MessageCircle size={13} />
+                        </a>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-bold text-sm text-slate-900 leading-snug">
-                    {app.name}
-                  </h3>
-                  <a
-                    href={`tel:${app.phone}`}
-                    className="inline-flex items-center gap-1 text-xs font-semibold text-teal-700 hover:underline mt-0.5"
-                  >
-                    <Phone size={11} />
-                    <span>{app.phone}</span>
-                  </a>
-                </div>
-              </div>
 
-              {/* Status Pill */}
-              <span
-                className={`text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider border ${getStatusBadgeStyle(
-                  app.status
-                )}`}
-              >
-                {normalizeStatus(app.status)}
-              </span>
-            </div>
-
-            {/* Details Grid */}
-            <div className="grid grid-cols-2 gap-2 text-xs bg-slate-50 p-2.5 rounded-xl border border-slate-100">
-              <div>
-                <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                  Doctor
-                </span>
-                <span className="font-semibold text-slate-700 truncate block">
-                  {app.doctor || "Specialist"}
-                </span>
-              </div>
-
-              <div>
-                <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                  Condition
-                </span>
-                <span className="font-semibold text-slate-700 truncate block">
-                  {app.condition || "General"}
-                </span>
-              </div>
-
-              <div>
-                <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                  Date
-                </span>
-                <span className="font-semibold text-slate-700 truncate flex items-center gap-1">
-                  <Calendar size={13} className="text-slate-400 shrink-0" />
-                  <span>{app.date || "Upcoming"}</span>
-                </span>
-              </div>
-
-              <div>
-                <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                  Slot
-                </span>
-                <span className="font-semibold text-slate-700 truncate flex items-center gap-1">
-                  <Clock size={13} className="text-slate-400 shrink-0" />
-                  <span>{app.time || "Clinic Hours"}</span>
-                </span>
-              </div>
-            </div>
-
-            {/* Actions Row */}
-            <div className="flex items-center justify-between pt-1">
-              <div className="flex items-center gap-1 text-xs">
-                <select
-                  value={normalizeStatus(app.status)}
-                  onChange={(e) => handleQuickStatusChange(app.id, e.target.value)}
-                  className={`border rounded-lg px-2 py-1 text-[11px] font-bold outline-none cursor-pointer ${getStatusSelectStyle(
+                {/* Status Pill */}
+                <span
+                  className={`text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider border ${getStatusBadgeStyle(
                     app.status
                   )}`}
                 >
-                  <option value="pending">Pending</option>
-                  <option value="confirmed">Confirmed</option>
-                  <option value="completed">Completed</option>
-                  <option value="cancelled">Cancelled</option>
-                </select>
+                  {normalizeStatus(app.status)}
+                </span>
               </div>
 
-              <div className="flex items-center gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => handleView(app)}
-                  className="p-2 rounded-lg bg-teal-50 text-teal-700 hover:bg-teal-100 transition"
-                  title="View Details"
-                >
-                  <Eye size={15} />
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => handleEdit(app)}
-                  className="p-2 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 transition"
-                  title="Edit Appointment"
-                >
-                  <Pencil size={15} />
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => handleDelete(app.id)}
-                  className="p-2 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 transition"
-                  title="Delete"
-                >
-                  <Trash2 size={15} />
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* ================= DESKTOP TABLE (>= 768px) ================= */}
-      <div className="hidden md:block overflow-x-auto">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-slate-50/90 border-b border-slate-200/80 text-[11px] font-black uppercase tracking-wider text-slate-500">
-              <th className="py-3.5 px-4">Patient</th>
-              <th className="py-3.5 px-4">Phone</th>
-              <th className="py-3.5 px-4">Doctor</th>
-              <th className="py-3.5 px-4">Condition</th>
-              <th className="py-3.5 px-4">Schedule</th>
-              <th className="py-3.5 px-4">Status</th>
-              <th className="py-3.5 px-4 text-right">Actions</th>
-            </tr>
-          </thead>
-
-          <tbody className="divide-y divide-slate-100 text-xs sm:text-sm">
-            {appointments.map((app) => (
-              <tr key={app.id} className="hover:bg-slate-50/80 transition-colors">
-                {/* Patient */}
-                <td className="py-3.5 px-4">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-teal-100 text-teal-800 font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
-                      {(app.name || "P").slice(0, 2).toUpperCase()}
-                    </div>
-                    <div>
-                      <p className="font-bold text-slate-900 leading-snug">{app.name}</p>
-                      <span className="text-[10px] text-slate-400">ID: {app.id.slice(0, 6)}</span>
-                    </div>
-                  </div>
-                </td>
-
-                {/* Phone */}
-                <td className="py-3.5 px-4">
-                  {app.phone ? (
-                    <a
-                      href={`tel:${app.phone}`}
-                      className="inline-flex items-center gap-1 font-bold text-teal-700 hover:text-teal-900 hover:underline"
-                    >
-                      <Phone size={12} />
-                      <span>{app.phone}</span>
-                    </a>
-                  ) : (
-                    <span className="text-slate-400 italic">No phone</span>
-                  )}
-                </td>
-
-                {/* Doctor */}
-                <td className="py-3.5 px-4">
-                  <span className="font-semibold text-slate-800 block">{app.doctor || "Any Available"}</span>
-                </td>
-
-                {/* Condition */}
-                <td className="py-3.5 px-4">
-                  <span className="inline-block px-2.5 py-0.5 rounded-lg bg-slate-100 text-slate-700 font-medium text-xs">
-                    {app.condition || "General"}
+              {/* Details Grid */}
+              <div className="grid grid-cols-2 gap-2 text-xs bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block">
+                    Service Requested
                   </span>
-                </td>
+                  <span className="font-semibold text-teal-800 truncate block">
+                    {serviceName}
+                  </span>
+                </div>
 
-                {/* Schedule */}
-                <td className="py-3.5 px-4">
-                  <div className="space-y-0.5 text-xs">
-                    <p className="font-semibold text-slate-800 flex items-center gap-1">
-                      <Calendar size={13} className="text-slate-400 shrink-0" />
-                      <span>{app.date || "Upcoming"}</span>
-                    </p>
-                    <p className="text-slate-500 flex items-center gap-1">
-                      <Clock size={13} className="text-slate-400 shrink-0" />
-                      <span>{app.time || "Clinic Hours"}</span>
-                    </p>
-                  </div>
-                </td>
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block">
+                    Received At
+                  </span>
+                  <span className="font-semibold text-slate-700 truncate flex items-center gap-1">
+                    <Clock size={12} className="text-slate-400 shrink-0" />
+                    <span>{formatDateTime(app.createdAt, app.date)}</span>
+                  </span>
+                </div>
+              </div>
 
-                {/* Status */}
-                <td className="py-3.5 px-4">
+              {/* Actions Row */}
+              <div className="flex items-center justify-between pt-1">
+                <div className="flex items-center gap-1 text-xs">
                   <select
                     value={normalizeStatus(app.status)}
                     onChange={(e) => handleQuickStatusChange(app.id, e.target.value)}
-                    className={`text-xs font-bold px-2.5 py-1.5 rounded-lg border outline-none cursor-pointer transition ${getStatusSelectStyle(
+                    className={`border rounded-lg px-2 py-1 text-[11px] font-bold outline-none cursor-pointer ${getStatusSelectStyle(
                       app.status
                     )}`}
                   >
@@ -364,41 +306,165 @@ const AppointmentsTable = ({
                     <option value="completed">Completed</option>
                     <option value="cancelled">Cancelled</option>
                   </select>
-                </td>
+                </div>
 
-                {/* Action buttons */}
-                <td className="py-3.5 px-4 text-right">
-                  <div className="flex items-center justify-end gap-1.5">
-                    <button
-                      type="button"
-                      onClick={() => handleView(app)}
-                      className="p-2 rounded-xl text-teal-600 hover:bg-teal-50 border border-transparent hover:border-teal-200 transition"
-                      title="View Full Details"
-                    >
-                      <Eye size={16} />
-                    </button>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => handleView(app)}
+                    className="p-2 rounded-lg bg-teal-50 text-teal-700 hover:bg-teal-100 transition cursor-pointer"
+                    title="View Details"
+                  >
+                    <Eye size={15} />
+                  </button>
 
-                    <button
-                      type="button"
-                      onClick={() => handleEdit(app)}
-                      className="p-2 rounded-xl text-blue-600 hover:bg-blue-50 border border-transparent hover:border-blue-200 transition"
-                      title="Edit Appointment"
-                    >
-                      <Pencil size={16} />
-                    </button>
+                  <button
+                    type="button"
+                    onClick={() => handleEdit(app)}
+                    className="p-2 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 transition cursor-pointer"
+                    title="Edit Appointment"
+                  >
+                    <Pencil size={15} />
+                  </button>
 
-                    <button
-                      type="button"
-                      onClick={() => handleDelete(app.id)}
-                      className="p-2 rounded-xl text-rose-600 hover:bg-rose-50 border border-transparent hover:border-rose-200 transition"
-                      title="Delete"
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(app.id)}
+                    className="p-2 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 transition cursor-pointer"
+                    title="Delete"
+                  >
+                    <Trash2 size={15} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* ================= DESKTOP TABLE (>= 768px) ================= */}
+      <div className="hidden md:block overflow-x-auto">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="bg-slate-50/90 border-b border-slate-200/80 text-[11px] font-black uppercase tracking-wider text-slate-500">
+              <th className="py-3.5 px-4">Patient</th>
+              <th className="py-3.5 px-4">Phone Number</th>
+              <th className="py-3.5 px-4">Service Requested</th>
+              <th className="py-3.5 px-4">Received Date &amp; Time</th>
+              <th className="py-3.5 px-4">Status</th>
+              <th className="py-3.5 px-4 text-right">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody className="divide-y divide-slate-100 text-xs sm:text-sm">
+            {appointments.map((app) => {
+              const serviceName = app.service || app.condition || "General Consultation";
+              return (
+                <tr key={app.id} className="hover:bg-slate-50/80 transition-colors">
+                  {/* Patient */}
+                  <td className="py-3.5 px-4">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-xl bg-teal-100 text-teal-800 font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
+                        {(app.name || "P").slice(0, 2).toUpperCase()}
+                      </div>
+                      <div>
+                        <p className="font-bold text-slate-900 leading-snug">{app.name}</p>
+                        <span className="text-[10px] text-slate-400">ID: {app.id.slice(0, 6)}</span>
+                      </div>
+                    </div>
+                  </td>
+
+                  {/* Phone with Call & WhatsApp quick triggers */}
+                  <td className="py-3.5 px-4">
+                    {app.phone ? (
+                      <div className="flex items-center gap-2">
+                        <a
+                          href={`tel:${app.phone}`}
+                          className="inline-flex items-center gap-1 font-bold text-teal-700 hover:text-teal-900 hover:underline"
+                        >
+                          <Phone size={12} />
+                          <span>{app.phone}</span>
+                        </a>
+                        <a
+                          href={getWhatsAppUrl(app.phone, app.name, serviceName)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-1 rounded-md text-emerald-600 hover:bg-emerald-50 transition"
+                          title="Message on WhatsApp"
+                        >
+                          <MessageCircle size={14} />
+                        </a>
+                      </div>
+                    ) : (
+                      <span className="text-slate-400 italic">No phone</span>
+                    )}
+                  </td>
+
+                  {/* Service Requested */}
+                  <td className="py-3.5 px-4">
+                    <span className="inline-block px-2.5 py-1 rounded-lg bg-teal-50 text-teal-800 font-semibold text-xs border border-teal-200/80">
+                      {serviceName}
+                    </span>
+                  </td>
+
+                  {/* Received Time */}
+                  <td className="py-3.5 px-4">
+                    <span className="text-slate-600 flex items-center gap-1.5 text-xs font-medium">
+                      <Clock size={13} className="text-slate-400 shrink-0" />
+                      <span>{formatDateTime(app.createdAt, app.date)}</span>
+                    </span>
+                  </td>
+
+                  {/* Status */}
+                  <td className="py-3.5 px-4">
+                    <select
+                      value={normalizeStatus(app.status)}
+                      onChange={(e) => handleQuickStatusChange(app.id, e.target.value)}
+                      className={`text-xs font-bold px-2.5 py-1.5 rounded-lg border outline-none cursor-pointer transition ${getStatusSelectStyle(
+                        app.status
+                      )}`}
                     >
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                      <option value="pending">Pending</option>
+                      <option value="confirmed">Confirmed</option>
+                      <option value="completed">Completed</option>
+                      <option value="cancelled">Cancelled</option>
+                    </select>
+                  </td>
+
+                  {/* Action buttons */}
+                  <td className="py-3.5 px-4 text-right">
+                    <div className="flex items-center justify-end gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => handleView(app)}
+                        className="p-2 rounded-xl text-teal-600 hover:bg-teal-50 border border-transparent hover:border-teal-200 transition cursor-pointer"
+                        title="View Full Details"
+                      >
+                        <Eye size={16} />
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleEdit(app)}
+                        className="p-2 rounded-xl text-blue-600 hover:bg-blue-50 border border-transparent hover:border-blue-200 transition cursor-pointer"
+                        title="Edit Appointment"
+                      >
+                        <Pencil size={16} />
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(app.id)}
+                        className="p-2 rounded-xl text-rose-600 hover:bg-rose-50 border border-transparent hover:border-rose-200 transition cursor-pointer"
+                        title="Delete"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -409,7 +475,7 @@ const AppointmentsTable = ({
           <div className="bg-white rounded-3xl p-5 sm:p-6 w-full max-w-lg shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <h2 className="text-lg sm:text-xl font-black text-slate-900">
-                Edit Appointment
+                Edit Consultation Request
               </h2>
               <button
                 type="button"
@@ -417,7 +483,7 @@ const AppointmentsTable = ({
                   setIsEditOpen(false);
                   setEditingAppointment(null);
                 }}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
               >
                 <X size={18} />
               </button>
@@ -425,7 +491,7 @@ const AppointmentsTable = ({
 
             <div className="space-y-4 mt-4 text-xs sm:text-sm">
               <div>
-                <label className="font-bold text-slate-700 block mb-1">Patient Name</label>
+                <label className="font-bold text-slate-700 block mb-1">Patient Full Name</label>
                 <input
                   className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
                   value={editingAppointment.name || ""}
@@ -441,7 +507,7 @@ const AppointmentsTable = ({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="font-bold text-slate-700 block mb-1">Phone Number</label>
+                  <label className="font-bold text-slate-700 block mb-1">Mobile Number</label>
                   <input
                     className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
                     value={editingAppointment.phone || ""}
@@ -451,6 +517,7 @@ const AppointmentsTable = ({
                         phone: e.target.value,
                       })
                     }
+                    placeholder="Mobile Number"
                   />
                 </div>
 
@@ -464,7 +531,7 @@ const AppointmentsTable = ({
                         status: e.target.value,
                       })
                     }
-                    className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 bg-white"
+                    className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 bg-white cursor-pointer"
                   >
                     <option value="pending">Pending</option>
                     <option value="confirmed">Confirmed</option>
@@ -474,72 +541,37 @@ const AppointmentsTable = ({
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="font-bold text-slate-700 block mb-1">Doctor Assigned</label>
-                  <input
-                    className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
-                    value={editingAppointment.doctor || ""}
-                    onChange={(e) =>
-                      setEditingAppointment({
-                        ...editingAppointment,
-                        doctor: e.target.value,
-                      })
-                    }
-                    placeholder="Doctor Name"
-                  />
-                </div>
-
-                <div>
-                  <label className="font-bold text-slate-700 block mb-1">Condition / Pain</label>
-                  <input
-                    className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
-                    value={editingAppointment.condition || ""}
-                    onChange={(e) =>
-                      setEditingAppointment({
-                        ...editingAppointment,
-                        condition: e.target.value,
-                      })
-                    }
-                    placeholder="Condition"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="font-bold text-slate-700 block mb-1">Date</label>
-                  <input
-                    type="date"
-                    className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
-                    value={editingAppointment.date || ""}
-                    onChange={(e) =>
-                      setEditingAppointment({
-                        ...editingAppointment,
-                        date: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                <div>
-                  <label className="font-bold text-slate-700 block mb-1">Time Slot</label>
-                  <input
-                    className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
-                    value={editingAppointment.time || ""}
-                    onChange={(e) =>
-                      setEditingAppointment({
-                        ...editingAppointment,
-                        time: e.target.value,
-                      })
-                    }
-                    placeholder="e.g. 10:30 AM"
-                  />
-                </div>
+              <div>
+                <label className="font-bold text-slate-700 block mb-1">Choose Service</label>
+                <select
+                  value={editingAppointment.service || editingAppointment.condition || ""}
+                  onChange={(e) =>
+                    setEditingAppointment({
+                      ...editingAppointment,
+                      service: e.target.value,
+                      condition: e.target.value,
+                    })
+                  }
+                  className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 bg-white cursor-pointer"
+                >
+                  <option value="" disabled>Select Service</option>
+                  {CLINIC_SERVICES_OPTIONS.map((svc) => (
+                    <option key={svc} value={svc}>
+                      {svc}
+                    </option>
+                  ))}
+                  {/* If custom condition exists outside the list, keep it visible */}
+                  {editingAppointment.condition &&
+                    !CLINIC_SERVICES_OPTIONS.includes(editingAppointment.condition) && (
+                      <option value={editingAppointment.condition}>
+                        {editingAppointment.condition}
+                      </option>
+                    )}
+                </select>
               </div>
 
               <div>
-                <label className="font-bold text-slate-700 block mb-1">Patient Notes</label>
+                <label className="font-bold text-slate-700 block mb-1">Admin Notes / Remarks</label>
                 <textarea
                   rows={3}
                   className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
@@ -550,7 +582,7 @@ const AppointmentsTable = ({
                       message: e.target.value,
                     })
                   }
-                  placeholder="Patient medical notes or symptom details"
+                  placeholder="Clinic notes, callback status, or patient response..."
                 />
               </div>
 
@@ -561,7 +593,7 @@ const AppointmentsTable = ({
                     setIsEditOpen(false);
                     setEditingAppointment(null);
                   }}
-                  className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 font-bold transition"
+                  className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 font-bold transition cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -569,7 +601,7 @@ const AppointmentsTable = ({
                 <button
                   type="button"
                   onClick={handleUpdateAppointment}
-                  className="px-5 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold transition shadow-xs"
+                  className="px-5 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold transition shadow-xs cursor-pointer"
                 >
                   Save Changes
                 </button>
@@ -585,7 +617,7 @@ const AppointmentsTable = ({
           <div className="bg-white rounded-3xl p-5 sm:p-6 w-full max-w-lg shadow-2xl border border-slate-100">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <h2 className="text-lg sm:text-xl font-black text-slate-900">
-                Appointment Summary
+                Consultation Lead Summary
               </h2>
               <button
                 type="button"
@@ -593,14 +625,15 @@ const AppointmentsTable = ({
                   setIsViewOpen(false);
                   setViewAppointment(null);
                 }}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
               >
                 <X size={18} />
               </button>
             </div>
 
-            <div className="space-y-3 mt-4 text-xs sm:text-sm text-slate-700">
-              <div className="p-3 bg-teal-50/60 rounded-2xl border border-teal-100 flex items-center justify-between">
+            <div className="space-y-3.5 mt-4 text-xs sm:text-sm text-slate-700">
+              {/* Patient Banner */}
+              <div className="p-3.5 bg-teal-50/60 rounded-2xl border border-teal-100 flex items-center justify-between">
                 <div>
                   <h3 className="font-black text-base text-slate-900">{viewAppointment.name}</h3>
                   <a
@@ -620,62 +653,77 @@ const AppointmentsTable = ({
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 gap-2.5">
+              {/* Service & Received Date */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase block">Doctor</span>
-                  <strong className="text-slate-800">{viewAppointment.doctor || "Any Available"}</strong>
-                </div>
-
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase block">Condition</span>
-                  <strong className="text-slate-800">{viewAppointment.condition || "General Consultation"}</strong>
-                </div>
-
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase block">Date</span>
-                  <strong className="text-slate-800 flex items-center gap-1.5 mt-0.5">
-                    <Calendar size={14} className="text-slate-400 shrink-0" />
-                    <span>{viewAppointment.date || "Upcoming"}</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase block">Requested Service</span>
+                  <strong className="text-teal-800 text-sm mt-0.5 block">
+                    {viewAppointment.service || viewAppointment.condition || "General Consultation"}
                   </strong>
                 </div>
 
                 <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase block">Time Slot</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase block">Received At</span>
                   <strong className="text-slate-800 flex items-center gap-1.5 mt-0.5">
                     <Clock size={14} className="text-slate-400 shrink-0" />
-                    <span>{viewAppointment.time || "Clinic Hours"}</span>
+                    <span>{formatDateTime(viewAppointment.createdAt, viewAppointment.date)}</span>
                   </strong>
                 </div>
               </div>
 
+              {/* Patient / Admin Notes */}
               {viewAppointment.message && (
                 <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
                   <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">
-                    Patient Note
+                    Details / Notes
                   </span>
-                  <p className="text-slate-600 leading-relaxed italic bg-white p-2.5 rounded-lg border border-slate-100">
-                    &ldquo;{viewAppointment.message}&rdquo;
+                  <p className="text-slate-700 leading-relaxed bg-white p-2.5 rounded-lg border border-slate-100">
+                    {viewAppointment.message}
                   </p>
                 </div>
               )}
 
+              {/* Fast Action Buttons: Call & WhatsApp */}
+              <div className="grid grid-cols-2 gap-2 pt-2">
+                <a
+                  href={`tel:${viewAppointment.phone}`}
+                  className="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-2.5 px-3 rounded-xl transition border border-slate-200 text-xs"
+                >
+                  <Phone size={14} className="text-teal-700" />
+                  <span>Call Patient</span>
+                </a>
+
+                <a
+                  href={getWhatsAppUrl(
+                    viewAppointment.phone,
+                    viewAppointment.name,
+                    viewAppointment.service || viewAppointment.condition
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white font-bold py-2.5 px-3 rounded-xl transition shadow-xs text-xs"
+                >
+                  <MessageCircle size={15} />
+                  <span>WhatsApp</span>
+                </a>
+              </div>
+
+              {/* Bottom Edit Trigger */}
               <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                 <span className="text-slate-400">
                   Status: <strong className="text-slate-700 capitalize">{viewAppointment.status}</strong>
                 </span>
 
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsViewOpen(false);
-                      handleEdit(viewAppointment);
-                    }}
-                    className="px-3.5 py-1.5 rounded-xl bg-teal-600 text-white font-bold hover:bg-teal-700 transition"
-                  >
-                    Edit Details
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsViewOpen(false);
+                    handleEdit(viewAppointment);
+                  }}
+                  className="px-3.5 py-1.5 rounded-xl bg-teal-600 text-white font-bold hover:bg-teal-700 transition cursor-pointer"
+                >
+                  Edit Details
+                </button>
               </div>
             </div>
           </div>

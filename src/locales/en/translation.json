@@ -112,11 +112,12 @@
     "physiotherapyDesc": "Personalized rehabilitation programs to restore movement and reduce pain."
   },
   "treatmentSlider": {
-    "badge": "Specialized Care",
-    "title": "Treatments We Offer",
-    "subtitle": "Advanced physiotherapy treatments designed to relieve pain, restore movement and improve your quality of life.",
-    "learnMore": "Learn More →",
-    "viewAll": "View All Services"
+    "badge": "EVIDENCE-BASED CARE",
+    "title": "Clinical Treatments We Offer",
+    "subtitle": "Targeted, 100% non-surgical recovery protocols for spine, joint, muscle, and sports injuries in Bhopal.",
+    "learnMore": "Details →",
+    "bookNow": "Book Now",
+    "viewAll": "Explore All 80+ Treatments"
   },
   "conditions": {
     "badge": "CONDITIONS WE TREAT",
@@ -470,9 +471,12 @@
     "doctorAny": "Any Available Specialist (Recommended)",
     "doctorRashid": "Dr. MD Rashid (PT) - Senior Consultant Physiotherapist | MPT (Sports)",
     "doctorWazul": "Dr. Md Wajhul Qumar (PT) - Physiotherapist & Rehab Specialist (7 Certified)",
-    "conditionLabel": "Select Condition / Treatment",
-    "conditionPlaceholder": "Choose condition or therapy",
-    "conditionError": "Please select a condition or therapy.",
+    "serviceLabel": "Choose Service",
+    "servicePlaceholder": "Select a Service / Therapy",
+    "serviceError": "Please select a service.",
+    "conditionLabel": "Choose Service",
+    "conditionPlaceholder": "Select a Service / Therapy",
+    "conditionError": "Please select a service.",
     "condBackPain": "Back Pain / Lower Back Stiffness",
     "condNeckPain": "Neck Pain / Cervical Spondylosis",
     "condKneePain": "Knee Pain / Osteoarthritis",

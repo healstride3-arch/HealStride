@@ -81,8 +81,9 @@ const Appointments = () => {
         const matchesSearch =
           item.name?.toLowerCase().includes(search) ||
           item.phone?.toLowerCase().includes(search) ||
-          item.doctor?.toLowerCase().includes(search) ||
+          item.service?.toLowerCase().includes(search) ||
           item.condition?.toLowerCase().includes(search) ||
+          item.doctor?.toLowerCase().includes(search) ||
           item.date?.toLowerCase().includes(search);
         if (!matchesSearch) return false;
       }

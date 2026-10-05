@@ -127,6 +127,109 @@ const TreatmentDetail = () => {
 
   const displaySubtitle = cleanClinicalText(treatment.subtitle || treatment.summary);
 
+  // Reusable Consultation Card Component
+  const renderConsultationCard = () => (
+    <div className="bg-white rounded-3xl p-5 sm:p-6 shadow-xl border border-slate-200/90 relative overflow-hidden flex flex-col space-y-4">
+      {/* Top Badge & Header */}
+      <div>
+        <div className="flex items-center justify-between gap-2 mb-3">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 text-teal-700 text-[11px] font-bold uppercase tracking-wider border border-teal-200/70">
+            <Sparkles className="w-3.5 h-3.5 text-teal-600" />
+            Heal Stride Bhopal Clinic
+          </span>
+          <span className="text-[11px] font-semibold text-emerald-600 flex items-center gap-1">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            Doctors Available Today
+          </span>
+        </div>
+
+        <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-snug">
+          Consultation &amp; Recovery Plan
+        </h3>
+        <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
+          Personalized physical evaluation with senior certified physiotherapists in Bhopal.
+        </p>
+      </div>
+
+      {/* Senior Doctors Showcase */}
+      <div className="bg-slate-50/90 rounded-2xl p-3.5 sm:p-4 border border-slate-200/80 space-y-3">
+        <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+          Consulting Specialists at Heal Stride
+        </p>
+
+        <div className="flex items-center gap-3">
+          <img
+            src={drRashidImg}
+            alt="Dr. MD Rashid"
+            className="w-11 h-11 rounded-full object-cover border-2 border-teal-600 shrink-0"
+          />
+          <div className="min-w-0">
+            <h4 className="text-xs sm:text-sm font-bold text-slate-900 leading-tight truncate">
+              Dr. MD Rashid (PT)
+            </h4>
+            <p className="text-[11px] text-teal-700 font-medium">
+              MPT • Senior Consultant &amp; Sports Rehab
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 pt-2.5 border-t border-slate-200/60">
+          <img
+            src={drWazulImg}
+            alt="Dr. Md Wajhul Qumar"
+            className="w-11 h-11 rounded-full object-cover border-2 border-teal-600 shrink-0"
+          />
+          <div className="min-w-0">
+            <h4 className="text-xs sm:text-sm font-bold text-slate-900 leading-tight truncate">
+              Dr. Md Wajhul Qumar (PT)
+            </h4>
+            <p className="text-[11px] text-teal-700 font-medium">
+              BPT • Spine &amp; Neuro Rehabilitation
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Key Benefits Checklist */}
+      <div className="space-y-2 text-xs sm:text-sm text-slate-700">
+        <div className="flex items-start gap-2.5">
+          <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+          <span>Detailed postural &amp; biomechanical root-cause analysis</span>
+        </div>
+        <div className="flex items-start gap-2.5">
+          <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+          <span>Targeted therapy with Dry Needling, Cupping &amp; IASTM</span>
+        </div>
+        <div className="flex items-start gap-2.5">
+          <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+          <span>Non-surgical recovery plan customized to your lifestyle</span>
+        </div>
+      </div>
+
+      {/* Clinic Location & Hours */}
+      <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] text-slate-600">
+        <div className="flex items-center gap-1.5">
+          <MapPin className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+          <span>Raisen Rd &amp; Subhash Nagar, Bhopal</span>
+        </div>
+        <div className="flex items-center gap-1.5 text-slate-500">
+          <Clock className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+          <span>9:00 AM – 9:00 PM</span>
+        </div>
+      </div>
+
+      {/* Direct Card CTA */}
+      <Link
+        to={`/booking?treatment=${encodeURIComponent(treatment.name)}`}
+        className="w-full text-center bg-gradient-to-r from-[#008272] to-[#0f766e] hover:from-[#0d9488] hover:to-[#115e59] text-white font-bold text-xs sm:text-sm py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 group"
+      >
+        <Calendar className="w-4 h-4" />
+        <span>Book Consultation for {treatment.name}</span>
+        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+      </Link>
+    </div>
+  );
+
   return (
     <div className="bg-slate-50 min-h-screen text-slate-800">
       <SEO
@@ -136,364 +239,278 @@ const TreatmentDetail = () => {
         keywords={`${treatment.name}, ${treatment.name} treatment Bhopal, ${treatment.name} physiotherapy, pain relief Bhopal`}
       />
 
-      {/* Hero Section - Pure Clinical UI Design (No Image, High-Conversion Consultation Card) */}
-      <section className="relative bg-gradient-to-b from-white via-slate-50/50 to-white border-b border-slate-200/80 pt-6 sm:pt-8 lg:pt-10 pb-8 sm:pb-12 overflow-hidden">
+      <div className="relative">
         {/* Subtle decorative glow */}
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-teal-50/60 blur-3xl rounded-full pointer-events-none" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-            {/* Left Content Column - Compact & Cohesive (No excessive spacing) */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              className="lg:col-span-7 flex flex-col justify-center space-y-4 sm:space-y-5"
-            >
-              <div className="space-y-2.5 sm:space-y-3">
-                <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
-                  <span className="inline-block px-3 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs font-semibold uppercase tracking-wider">
-                    {treatment.category}
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200">
-                    <Award className="w-3.5 h-3.5 text-teal-600" />
-                    BPT &amp; MPT Certified Doctors
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold border border-amber-200">
-                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                    {treatment.rating || "4.7"} Google Rating ({treatment.reviewsCount || "43+"} Reviews)
-                  </span>
-                </div>
-
-                <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight text-slate-900 leading-[1.18]">
-                  {treatment.title}
-                </h1>
-
-                <p className="text-teal-700 font-bold text-sm sm:text-base">
-                  Evidence-Based Non-Surgical Rehabilitation &amp; Root-Cause Care
-                </p>
-
-                <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl">
-                  {displaySubtitle}
-                </p>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="pt-1 flex flex-wrap items-center gap-3">
-                <Link
-                  to={`/booking?treatment=${encodeURIComponent(treatment.name)}`}
-                  className="bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] text-white px-6 sm:px-7 py-3.5 rounded-xl font-bold text-xs sm:text-sm shadow-md hover:shadow-teal-500/25 transition-all transform hover:-translate-y-0.5 inline-flex items-center gap-2"
-                >
-                  <Calendar className="w-4 h-4" />
-                  <span>Book Appointment Now</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-
-                <a
-                  href="tel:+918809491380"
-                  className="bg-slate-100 hover:bg-slate-200 text-slate-900 px-5 py-3.5 rounded-xl font-semibold text-xs sm:text-sm border border-slate-300 transition-all inline-flex items-center gap-2"
-                >
-                  <Phone className="w-4 h-4 text-teal-600" />
-                  <span>+91 88094 91380</span>
-                </a>
-
-                <a
-                  href={`https://wa.me/918252580389?text=${encodeURIComponent(
-                    `Hello Heal Stride Clinic Bhopal, I would like to consult about ${treatment.name} treatment.`
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-[#25D366] hover:bg-[#20ba59] text-white px-5 py-3.5 rounded-xl font-semibold text-xs sm:text-sm shadow-sm transition-all inline-flex items-center gap-2"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>WhatsApp</span>
-                </a>
-              </div>
-
-              {/* Trust Highlights - Positioned directly below Booking & Call buttons */}
-              <div className="pt-4 border-t border-slate-200/80 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5">
-                <div className="flex items-center gap-2.5 bg-white/70 p-2.5 rounded-xl border border-slate-200/70 shadow-2xs">
-                  <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
-                    <ShieldCheck className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-slate-900">100% Non-Surgical</p>
-                    <p className="text-[10px] text-slate-500 leading-tight">Natural pain relief care</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2.5 bg-white/70 p-2.5 rounded-xl border border-slate-200/70 shadow-2xs">
-                  <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
-                    <Award className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-slate-900">Expert BPT/MPT Doctors</p>
-                    <p className="text-[10px] text-slate-500 leading-tight">Dr. MD Rashid &amp; Dr. Md Wajhul Qumar</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2.5 bg-white/70 p-2.5 rounded-xl border border-slate-200/70 shadow-2xs">
-                  <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
-                    <Activity className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-slate-900">Advanced Modalities</p>
-                    <p className="text-[10px] text-slate-500 leading-tight">Cupping, Dry Needling, IASTM</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2.5 bg-white/70 p-2.5 rounded-xl border border-slate-200/70 shadow-2xs">
-                  <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
-                    <Clock className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-slate-900">Personalized Plans</p>
-                    <p className="text-[10px] text-slate-500 leading-tight">Tailored 1-on-1 recovery</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Right Column: Branded Clinical Consultation Card (Image Removed) */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.15 }}
-              className="lg:col-span-5 flex flex-col justify-center"
-            >
-              <div className="bg-white rounded-3xl p-5 sm:p-6 shadow-xl border border-slate-200/90 relative overflow-hidden flex flex-col space-y-4">
-                {/* Top Badge & Header */}
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 text-teal-700 text-[11px] font-bold uppercase tracking-wider border border-teal-200/70">
-                      <Sparkles className="w-3.5 h-3.5 text-teal-600" />
-                      Heal Stride Bhopal Clinic
+        {/* Cohesive 2-Column Responsive Layout with Sticky Consultation Card */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 lg:pt-10 pb-12 sm:pb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+            
+            {/* Left Content Column (Hero + Clinical Overview + Article + Pathway + Modalities + FAQs) */}
+            <div className="lg:col-span-7 space-y-8 sm:space-y-10">
+              
+              {/* Hero Header Block (Fills Page 1 Fold Cleanly) */}
+              <div className="space-y-4 sm:space-y-5 lg:min-h-[calc(100vh-7.5rem)] lg:flex lg:flex-col lg:justify-center">
+                <div className="space-y-2.5 sm:space-y-3">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+                    <span className="inline-block px-3 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs font-semibold uppercase tracking-wider">
+                      {treatment.category}
                     </span>
-                    <span className="text-[11px] font-semibold text-emerald-600 flex items-center gap-1">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                      Doctors Available Today
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200">
+                      <Award className="w-3.5 h-3.5 text-teal-600" />
+                      BPT &amp; MPT Certified Doctors
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold border border-amber-200">
+                      <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                      {treatment.rating || "4.7"} Google Rating ({treatment.reviewsCount || "43+"} Reviews)
                     </span>
                   </div>
 
-                  <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-snug">
-                    Consultation &amp; Recovery Plan
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                    Personalized physical evaluation with senior certified physiotherapists in Bhopal.
+                  <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight text-slate-900 leading-[1.18]">
+                    {treatment.title}
+                  </h1>
+
+                  <p className="text-teal-700 font-bold text-sm sm:text-base">
+                    Evidence-Based Non-Surgical Rehabilitation &amp; Root-Cause Care
+                  </p>
+
+                  <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl">
+                    {displaySubtitle}
                   </p>
                 </div>
 
-                {/* Senior Doctors Showcase */}
-                <div className="bg-slate-50/90 rounded-2xl p-3.5 sm:p-4 border border-slate-200/80 space-y-3">
-                  <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                    Consulting Specialists at Heal Stride
-                  </p>
+                {/* Action Buttons */}
+                <div className="pt-1 flex flex-wrap items-center gap-3">
+                  <Link
+                    to={`/booking?treatment=${encodeURIComponent(treatment.name)}`}
+                    className="bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] text-white px-6 sm:px-7 py-3.5 rounded-xl font-bold text-xs sm:text-sm shadow-md hover:shadow-teal-500/25 transition-all transform hover:-translate-y-0.5 inline-flex items-center gap-2"
+                  >
+                    <Calendar className="w-4 h-4" />
+                    <span>Book Appointment Now</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
 
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={drRashidImg}
-                      alt="Dr. MD Rashid"
-                      className="w-11 h-11 rounded-full object-cover border-2 border-teal-600 shrink-0"
-                    />
-                    <div className="min-w-0">
-                      <h4 className="text-xs sm:text-sm font-bold text-slate-900 leading-tight truncate">
-                        Dr. MD Rashid (PT)
-                      </h4>
-                      <p className="text-[11px] text-teal-700 font-medium">
-                        MPT • Senior Consultant &amp; Sports Rehab
+                  <a
+                    href="tel:+918809491380"
+                    className="bg-slate-100 hover:bg-slate-200 text-slate-900 px-5 py-3.5 rounded-xl font-semibold text-xs sm:text-sm border border-slate-300 transition-all inline-flex items-center gap-2"
+                  >
+                    <Phone className="w-4 h-4 text-teal-600" />
+                    <span>+91 88094 91380</span>
+                  </a>
+
+                  <a
+                    href={`https://wa.me/918252580389?text=${encodeURIComponent(
+                      `Hello Heal Stride Clinic Bhopal, I would like to consult about ${treatment.name} treatment.`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-[#25D366] hover:bg-[#20ba59] text-white px-5 py-3.5 rounded-xl font-semibold text-xs sm:text-sm shadow-sm transition-all inline-flex items-center gap-2"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>WhatsApp</span>
+                  </a>
+                </div>
+
+                {/* Trust Highlights - Positioned directly below Booking & Call buttons */}
+                <div className="pt-4 border-t border-slate-200/80 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5">
+                  <div className="flex items-center gap-2.5 bg-white/70 p-2.5 rounded-xl border border-slate-200/70 shadow-2xs">
+                    <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
+                      <ShieldCheck className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-slate-900">100% Non-Surgical</p>
+                      <p className="text-[10px] text-slate-500 leading-tight">Natural pain relief care</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2.5 bg-white/70 p-2.5 rounded-xl border border-slate-200/70 shadow-2xs">
+                    <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
+                      <Award className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-slate-900">Expert BPT/MPT Doctors</p>
+                      <p className="text-[10px] text-slate-500 leading-tight">Dr. MD Rashid &amp; Dr. Md Wajhul Qumar</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2.5 bg-white/70 p-2.5 rounded-xl border border-slate-200/70 shadow-2xs">
+                    <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
+                      <Activity className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-slate-900">Advanced Modalities</p>
+                      <p className="text-[10px] text-slate-500 leading-tight">Cupping, Dry Needling, IASTM</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2.5 bg-white/70 p-2.5 rounded-xl border border-slate-200/70 shadow-2xs">
+                    <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
+                      <Clock className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-slate-900">Personalized Plans</p>
+                      <p className="text-[10px] text-slate-500 leading-tight">Tailored 1-on-1 recovery</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Mobile View: Consultation Card displayed directly below hero block */}
+              <div className="lg:hidden">
+                {renderConsultationCard()}
+              </div>
+
+              {/* Detailed Evidence-Based Clinical Article */}
+              {treatment.contentHtml && (
+                <section className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-slate-200 shadow-sm">
+                  <div className="mb-6 pb-4 border-b border-slate-100 text-center max-w-3xl mx-auto">
+                    <span className="inline-block px-3.5 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs font-bold uppercase tracking-wider mb-2">
+                      Evidence-Based Clinical Protocol
+                    </span>
+                    <h2 className="text-2xl sm:text-3xl font-black text-slate-900 text-center">
+                      Comprehensive Treatment &amp; Rehabilitation Guide
+                    </h2>
+                    <p className="text-xs sm:text-sm text-slate-500 mt-1.5 text-center">
+                      Formulated by Senior Physiotherapists at Heal Stride Physiotherapy &amp; Wellness Centre.
+                    </p>
+                  </div>
+
+                  <div className="my-6 p-4 sm:p-5 rounded-2xl bg-teal-50/80 border border-teal-200/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+                    <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 text-center sm:text-left">
+                      <div className="w-9 h-9 rounded-xl bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-sm mx-auto sm:mx-0">
+                        <Stethoscope className="w-4.5 h-4.5" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm sm:text-base font-bold text-teal-950">
+                          Individualized 1-on-1 Doctor Evaluation
+                        </h4>
+                        <p className="text-xs sm:text-sm text-teal-800/90 mt-0.5 leading-relaxed">
+                          Our specialists assess joint range of motion, muscle imbalances, and nerve mobility before starting your rehabilitation.
+                        </p>
+                      </div>
+                    </div>
+                    <Link
+                      to={`/booking?treatment=${encodeURIComponent(treatment.name)}`}
+                      className="shrink-0 px-4 py-2 rounded-xl bg-gradient-to-r from-[#d71920] to-[#008272] text-white text-xs font-bold hover:shadow-md transition whitespace-nowrap"
+                    >
+                      Book Assessment
+                    </Link>
+                  </div>
+
+                  <div
+                    className="treatment-article-content max-w-none"
+                    dangerouslySetInnerHTML={{ __html: cleanHtmlContent(treatment.contentHtml) }}
+                  />
+                </section>
+              )}
+
+              {/* Section 3: Treatment Procedure (Step by Step) */}
+              <section className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+                <SectionHeader
+                  badge="What To Expect"
+                  title="Our 4-Stage Clinical Pathway"
+                  subtitle="A structured, evidence-based recovery process ensuring safe, comfortable, and lasting relief."
+                  className="mb-6"
+                />
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="bg-slate-50/80 rounded-2xl p-5 border border-slate-200 shadow-2xs flex flex-col justify-between">
+                    <div>
+                      <span className="text-2xl font-black text-teal-600/40 block mb-1">01</span>
+                      <h3 className="text-sm sm:text-base font-bold text-slate-900 mb-1.5 leading-snug">
+                        Clinical Examination &amp; Testing
+                      </h3>
+                      <p className="text-xs text-slate-600 leading-relaxed">
+                        Orthopedic joint tests, range of motion analysis, posture screening, and medical history evaluation.
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3 pt-2.5 border-t border-slate-200/60">
-                    <img
-                      src={drWazulImg}
-                      alt="Dr. Md Wajhul Qumar"
-                      className="w-11 h-11 rounded-full object-cover border-2 border-teal-600 shrink-0"
-                    />
-                    <div className="min-w-0">
-                      <h4 className="text-xs sm:text-sm font-bold text-slate-900 leading-tight truncate">
-                        Dr. Md Wajhul Qumar (PT)
-                      </h4>
-                      <p className="text-[11px] text-teal-700 font-medium">
-                        BPT • Spine &amp; Neuro Rehabilitation
+                  <div className="bg-slate-50/80 rounded-2xl p-5 border border-slate-200 shadow-2xs flex flex-col justify-between">
+                    <div>
+                      <span className="text-2xl font-black text-teal-600/40 block mb-1">02</span>
+                      <h3 className="text-sm sm:text-base font-bold text-slate-900 mb-1.5 leading-snug">
+                        Targeted Pain &amp; Spasm Control
+                      </h3>
+                      <p className="text-xs text-slate-600 leading-relaxed">
+                        Dry needling, cupping therapy, IFT / TENS, and manual trigger point release to calm acute flare-ups.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-50/80 rounded-2xl p-5 border border-slate-200 shadow-2xs flex flex-col justify-between">
+                    <div>
+                      <span className="text-2xl font-black text-teal-600/40 block mb-1">03</span>
+                      <h3 className="text-sm sm:text-base font-bold text-slate-900 mb-1.5 leading-snug">
+                        Joint Mobilization &amp; Alignment
+                      </h3>
+                      <p className="text-xs text-slate-600 leading-relaxed">
+                        Gentle passive stretching, spinal decompression, and realignment to restore biomechanical symmetry.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-50/80 rounded-2xl p-5 border border-slate-200 shadow-2xs flex flex-col justify-between">
+                    <div>
+                      <span className="text-2xl font-black text-teal-600/40 block mb-1">04</span>
+                      <h3 className="text-sm sm:text-base font-bold text-slate-900 mb-1.5 leading-snug">
+                        Strengthening &amp; Prevention
+                      </h3>
+                      <p className="text-xs text-slate-600 leading-relaxed">
+                        Personalized resistance exercises, core stabilization, and ergonomic habits to stop pain from returning.
                       </p>
                     </div>
                   </div>
                 </div>
+              </section>
 
-                {/* Key Benefits Checklist */}
-                <div className="space-y-2 text-xs sm:text-sm text-slate-700">
-                  <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
-                    <span>Detailed postural &amp; biomechanical root-cause analysis</span>
-                  </div>
-                  <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
-                    <span>Targeted therapy with Dry Needling, Cupping &amp; IASTM</span>
-                  </div>
-                  <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
-                    <span>Non-surgical recovery plan customized to your lifestyle</span>
+              {/* Section 4: Specialized Tools & Modalities */}
+              <section className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm text-center">
+                <div className="w-full text-center">
+                  <SectionHeader
+                    badge="Technology &amp; Modalities"
+                    title="Specialized Clinical Modalities Used"
+                    subtitle="We combine advanced therapeutic equipment and hands-on clinical skills for faster recovery."
+                    className="mb-6"
+                  />
+                  <div className="flex flex-wrap justify-center gap-2.5 sm:gap-3 w-full">
+                    {[
+                      "Dry Needling Therapy",
+                      "Clinical Cupping (Hijama)",
+                      "Therapeutic Ultrasound Unit",
+                      "Digital TENS / IFT Machine",
+                      "IASTM Soft Tissue Tools",
+                      "Spinal Decompression Table",
+                      "Joint Mobilization Wedges",
+                      "TheraBands & Resistance Loops",
+                      "Cryotherapy & Heat Modalities",
+                      "Biomechanics Screening",
+                    ].map((tool, i) => (
+                      <span
+                        key={i}
+                        className="inline-flex items-center gap-2 bg-slate-50 border border-slate-200 text-slate-800 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold hover:border-teal-400 hover:bg-teal-50/50 transition-all shadow-xs"
+                      >
+                        <Stethoscope className="w-3.5 h-3.5 text-teal-600" />
+                        {tool}
+                      </span>
+                    ))}
                   </div>
                 </div>
+              </section>
+            </div>
 
-                {/* Clinic Location & Hours */}
-                <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] text-slate-600">
-                  <div className="flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-teal-600 shrink-0" />
-                    <span>Raisen Rd &amp; Subhash Nagar, Bhopal</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-slate-500">
-                    <Clock className="w-3.5 h-3.5 text-teal-600 shrink-0" />
-                    <span>9:00 AM – 9:00 PM</span>
-                  </div>
-                </div>
+            {/* Right Column: Sticky Consultation & Recovery Plan Card (Desktop - Fixed on scroll, scrolls at end) */}
+            <div className="hidden lg:block lg:col-span-5 lg:sticky lg:top-24 z-20">
+              {renderConsultationCard()}
+            </div>
 
-                {/* Direct Card CTA */}
-                <Link
-                  to={`/booking?treatment=${encodeURIComponent(treatment.name)}`}
-                  className="w-full text-center bg-gradient-to-r from-[#008272] to-[#0f766e] hover:from-[#0d9488] hover:to-[#115e59] text-white font-bold text-xs sm:text-sm py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 group"
-                >
-                  <Calendar className="w-4 h-4" />
-                  <span>Book Consultation for {treatment.name}</span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-            </motion.div>
           </div>
-        </div>
-      </section>
 
-      {/* Main Content Body - Spaced out cleanly */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-12 sm:space-y-16">
-        {/* Section 1: Clinical Overview */}
-        <section className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-slate-200 shadow-sm text-center">
-          <div className="w-full text-center">
-            <SectionHeader
-              badge="Clinical Overview"
-              title={`Understanding ${treatment.name} & Root Causes`}
-              className="mb-3 sm:mb-4"
-            />
-            <div className="space-y-4 text-slate-600 text-sm sm:text-base md:text-lg leading-relaxed text-center max-w-5xl mx-auto">
-              <p>
-                {displaySubtitle}
-              </p>
-              <p>
-                At Heal Stride Physiotherapy &amp; Wellness Centre in Bhopal, our goal is to eliminate pain and restore full functional mobility without relying on invasive surgeries or continuous painkiller reliance. Each patient undergoes a thorough clinical assessment to identify exact postural, muscular, and biomechanical trigger points.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Section 2: Detailed Evidence-Based Clinical Article (Clean Spacing, Nothing Cramped) */}
-        {treatment.contentHtml && (
-          <section className="bg-white rounded-3xl p-6 sm:p-10 lg:p-12 border border-slate-200 shadow-sm">
-            {/* Centered Section Header */}
-            <div className="mb-8 pb-5 border-b border-slate-100 text-center max-w-3xl mx-auto">
-              <span className="inline-block px-3.5 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs font-bold uppercase tracking-wider mb-2">
-                Evidence-Based Clinical Protocol
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 text-center">
-                Comprehensive Treatment &amp; Rehabilitation Guide
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-500 mt-1.5 text-center">
-                Formulated by Senior Physiotherapists at Heal Stride Physiotherapy &amp; Wellness Centre.
-              </p>
-            </div>
-
-            {/* Individualized Evaluation Callout Box */}
-            <div className="my-8 p-5 sm:p-6 rounded-2xl bg-teal-50/80 border border-teal-200/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3.5 text-center sm:text-left">
-                <div className="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-sm mx-auto sm:mx-0">
-                  <Stethoscope className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="text-sm sm:text-base font-bold text-teal-950">
-                    Individualized 1-on-1 Doctor Evaluation
-                  </h4>
-                  <p className="text-xs sm:text-sm text-teal-800/90 mt-0.5 leading-relaxed">
-                    Our specialists assess joint range of motion, muscle imbalances, and nerve mobility before starting your rehabilitation.
-                  </p>
-                </div>
-              </div>
-              <Link
-                to={`/booking?treatment=${encodeURIComponent(treatment.name)}`}
-                className="shrink-0 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#d71920] to-[#008272] text-white text-xs font-bold hover:shadow-md transition whitespace-nowrap"
-              >
-                Book Assessment
-              </Link>
-            </div>
-
-            {/* Clearly Separated & Spaced Article Content */}
-            <div
-              className="treatment-article-content max-w-none"
-              dangerouslySetInnerHTML={{ __html: cleanHtmlContent(treatment.contentHtml) }}
-            />
-          </section>
-        )}
-
-        {/* Section 3: Treatment Procedure (Step by Step) - Matching ServiceDetail.jsx */}
-        <section>
-          <SectionHeader
-            badge="What To Expect"
-            title="Our 4-Stage Clinical Pathway"
-            subtitle="A structured, evidence-based recovery process ensuring safe, comfortable, and lasting relief."
-          />
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm relative flex flex-col justify-between">
-              <div>
-                <span className="text-3xl font-black text-teal-600/30 block mb-2">01</span>
-                <h3 className="text-base font-bold text-slate-900 mb-2 leading-snug">
-                  Clinical Examination &amp; Testing
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Orthopedic joint tests, range of motion analysis, posture screening, and medical history evaluation.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm relative flex flex-col justify-between">
-              <div>
-                <span className="text-3xl font-black text-teal-600/30 block mb-2">02</span>
-                <h3 className="text-base font-bold text-slate-900 mb-2 leading-snug">
-                  Targeted Pain &amp; Spasm Control
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Dry needling, cupping therapy, IFT / TENS, and manual trigger point release to calm acute flare-ups.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm relative flex flex-col justify-between">
-              <div>
-                <span className="text-3xl font-black text-teal-600/30 block mb-2">03</span>
-                <h3 className="text-base font-bold text-slate-900 mb-2 leading-snug">
-                  Joint Mobilization &amp; Alignment
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Gentle passive stretching, spinal decompression, and realignment to restore biomechanical symmetry.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm relative flex flex-col justify-between">
-              <div>
-                <span className="text-3xl font-black text-teal-600/30 block mb-2">04</span>
-                <h3 className="text-base font-bold text-slate-900 mb-2 leading-snug">
-                  Strengthening &amp; Prevention
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Personalized resistance exercises, core stabilization, and ergonomic habits to stop pain from returning.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Section 4: Consulting Specialists */}
-        <section className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-slate-200 shadow-sm">
+          {/* Full Width Bottom Sections (Sticky card releases before reaching here) */}
+          <div className="mt-12 sm:mt-16 space-y-12 sm:space-y-16">
+            {/* Section: Consulting Specialists Detailed Profiles */}
+            <section className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-slate-200 shadow-sm">
           <SectionHeader
             badge="Expert Medical Team"
             title="Lead Specialists for Your Treatment"
@@ -781,8 +798,10 @@ const TreatmentDetail = () => {
           </section>
         )}
 
+        </div>
       </div>
     </div>
+  </div>
   );
 };
 

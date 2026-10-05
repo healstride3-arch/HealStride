@@ -13,30 +13,30 @@ export const NAVIGATION = [
   },
   {
     id: 3,
-    title: "Treatments",
-    key: "navbar.treatments",
-    path: "/treatments",
-  },
-  {
-    id: 3,
     title: "Services",
     key: "navbar.services",
     path: "/services",
   },
   {
     id: 4,
+    title: "Treatments",
+    key: "navbar.treatments",
+    path: "/treatments",
+  },
+  {
+    id: 5,
     title: "Doctors",
     key: "navbar.doctors",
     path: "/doctors",
   },
   {
-    id: 5,
+    id: 6,
     title: "Blogs",
     key: "navbar.blogs",
     path: "/blogs",
   },
   {
-    id: 6,
+    id: 7,
     title: "Contact",
     key: "navbar.contact",
     path: "/contact",

@@ -80,11 +80,12 @@ const AdminNotificationsPage = () => {
         id: d.id,
         notifType: "appointment",
         collectionName: "appointments",
-        title: "Appointment Booking",
+        title: "Consultation Request",
         name: d.data().name || "Patient",
         phone: d.data().phone || "",
+        service: d.data().service || d.data().condition || "General Consultation",
+        condition: d.data().service || d.data().condition || "General Consultation",
         doctor: d.data().doctor || "Specialist",
-        condition: d.data().condition || "Consultation",
         date: d.data().date || "",
         time: d.data().time || "",
         message: d.data().message || "",
@@ -371,17 +372,9 @@ const AdminNotificationsPage = () => {
                         </a>
                       )}
 
-                      {item.date && (
-                        <span className="inline-flex items-center gap-1">
-                          <Calendar size={12} className="text-slate-400" />
-                          <span>Date: <strong>{item.date}</strong></span>
-                        </span>
-                      )}
-                      {item.doctor && (
-                        <span className="text-slate-500">
-                          Dr: <strong>{item.doctor}</strong>
-                        </span>
-                      )}
+                      <span className="inline-flex items-center gap-1 font-semibold text-teal-800 bg-teal-50 px-2 py-0.5 rounded-md border border-teal-200/60">
+                        Service: <strong>{item.service || item.condition || "General Consultation"}</strong>
+                      </span>
                     </div>
 
                     {/* Message / Condition preview */}
