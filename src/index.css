@@ -109,6 +109,10 @@ textarea {
   text-align: center;
 }
 
+.hs-section-header {
+  text-align: center;
+}
+
 p,
 h1,
 h2,
@@ -161,14 +165,18 @@ label {
   max-width: 100%;
 }
 
-@media (max-width: 424px) {
+@media (max-width: 425px) {
+  :root {
+    --site-page-x: 0.75rem;
+  }
+
   html,
   body,
   #root {
     overflow-x: hidden;
   }
 
-  section {
+  #root :where(section, main, article, footer, nav) {
     max-width: 100vw;
   }
 
@@ -178,12 +186,70 @@ label {
     font-size: 16px;
   }
 
-  .whitespace-nowrap {
-    white-space: normal !important;
+  #root section > :where([class*="max-w-"][class*="mx-auto"]),
+  #root section[class*="max-w-"][class*="mx-auto"],
+  #root main > :where([class*="max-w-"][class*="mx-auto"]),
+  #root main[class*="max-w-"][class*="mx-auto"],
+  #root article > :where([class*="max-w-"][class*="mx-auto"]),
+  #root footer > :where([class*="max-w-"][class*="mx-auto"]),
+  #root nav > :where([class*="max-w-"][class*="mx-auto"]),
+  #root > div > :where([class*="max-w-"][class*="mx-auto"]),
+  #root > div > section > :where([class*="max-w-"][class*="mx-auto"]),
+  #root > article > :where([class*="max-w-"][class*="mx-auto"]) {
+    padding-left: var(--site-page-x) !important;
+    padding-right: var(--site-page-x) !important;
   }
 
+  #root > :where(section:not([class*="min-h-screen"]):not([class*="min-h-[calc]"]):not([class*="-mt-"])),
+  #root > div > :where(section:not([class*="min-h-screen"]):not([class*="min-h-[calc]"]):not([class*="-mt-"])),
+  #root main > :where(section:not([class*="min-h-screen"]):not([class*="min-h-[calc]"]):not([class*="-mt-"])),
+  #root article {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  #root :where(h1) {
+    font-size: clamp(1.9rem, 9vw, 2.35rem) !important;
+    line-height: 1.12 !important;
+    text-align: center !important;
+  }
+
+  #root :where(h2) {
+    font-size: clamp(1.55rem, 7.2vw, 2rem) !important;
+    line-height: 1.16 !important;
+    text-align: center !important;
+  }
+
+  #root :where(h3) {
+    font-size: clamp(1rem, 4.8vw, 1.2rem) !important;
+    line-height: 1.25 !important;
+  }
+
+  #root :where(p) {
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  #root :where(.hs-section-header, .hs-section-header *) {
+    text-align: center !important;
+  }
+
+  #root .hs-section-header {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  #root .hs-section-header :where(p) {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-width: 42rem;
+  }
+
+  .whitespace-nowrap,
   .truncate {
-    white-space: normal !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
   }
 
   .hs-safe-row {
@@ -194,6 +260,48 @@ label {
   .hs-safe-action {
     width: 100%;
     justify-content: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #root :where(
+    button,
+    a[role="button"],
+    a[class*="inline-flex"],
+    [role="button"],
+    .inline-flex[class*="rounded-full"],
+    .inline-flex[class*="rounded-xl"],
+    .inline-flex[class*="rounded-2xl"]
+  ) {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  #root :where(
+    button,
+    a[role="button"],
+    a[class*="inline-flex"],
+    [role="button"],
+    .inline-flex[class*="rounded-full"],
+    .inline-flex[class*="rounded-xl"],
+    .inline-flex[class*="rounded-2xl"]
+  ) > :where(span, strong, b) {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #root :where(button, a, [role="button"], .inline-flex) > :where(svg, img) {
+    flex-shrink: 0;
+  }
+
+  #root :where(.rounded-2xl, .rounded-3xl, [class*="rounded-2xl"], [class*="rounded-3xl"]) {
+    max-width: 100%;
   }
 
   [class*="w-96"] {
@@ -201,11 +309,61 @@ label {
   }
 
   [class*="max-w-["] {
-    max-width: calc(100vw - 1.5rem) !important;
+    max-width: calc(100vw - 1.25rem) !important;
   }
 
   [class*="rounded-3xl"] {
     border-radius: 1rem !important;
+  }
+
+  #root :where(.grid.grid-cols-2:not(.grid-cols-2-preserve)) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  #root .grid-cols-2-preserve {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  #root :where([class*="px-8"], [class*="p-8"], [class*="px-7"], [class*="p-7"]) {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  #root :where([class*="py-8"], [class*="p-8"], [class*="py-7"], [class*="p-7"]) {
+    padding-top: 1.25rem !important;
+    padding-bottom: 1.25rem !important;
+  }
+
+  #root :where([class*="h-80"], [class*="h-96"], [class*="h-[460px]"], [class*="h-[500px]"]) {
+    height: min(72vw, 19rem) !important;
+  }
+
+  #root :where([class*="absolute"][class*="bg-white"][class*="rounded"]) {
+    max-width: calc(100vw - 1.5rem) !important;
+  }
+
+  .hs-hero-doctor-card {
+    max-width: min(22rem, calc(100vw - 1.5rem)) !important;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hs-hero-doctor-media {
+    aspect-ratio: 3 / 4;
+    height: auto !important;
+    background: #f8fafc;
+  }
+
+  .hs-hero-doctor-img {
+    object-position: center 28% !important;
+  }
+
+  .treatment-article-content table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 

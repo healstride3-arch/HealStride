@@ -235,13 +235,13 @@ const Hero = () => {
             {/* Ambient behind-glow specifically framing the doctor photo */}
             <div className="absolute -inset-4 bg-gradient-to-tr from-teal-400/25 via-red-400/15 to-amber-300/20 blur-2xl rounded-[3rem] pointer-events-none" />
 
-            <div className="relative w-full max-w-[380px] sm:max-w-[400px] lg:max-w-[420px] rounded-[2rem] overflow-hidden border-4 border-white shadow-2xl bg-white group ring-1 ring-slate-200/60">
+            <div className="hs-hero-doctor-card relative w-full max-w-[380px] sm:max-w-[400px] lg:max-w-[420px] rounded-[2rem] overflow-hidden border-4 border-white shadow-2xl bg-white group ring-1 ring-slate-200/60">
               {/* Doctor's Photo */}
-              <div className="relative h-[320px] xs:h-[400px] sm:h-[440px] lg:h-[460px] w-full overflow-hidden bg-slate-100">
+              <div className="hs-hero-doctor-media relative h-[320px] xs:h-[400px] sm:h-[440px] lg:h-[460px] w-full overflow-hidden bg-slate-100">
                 <img
                   src={drRashidImage}
                   alt="Dr. MD Rashid (PT) - Lead Physiotherapist and Founder of Heal Stride"
-                  className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                  className="hs-hero-doctor-img w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                 />
 
                 {/* Floating Top-Left Review Badge */}
