@@ -71,7 +71,9 @@
     "toolsTitle": "Advanced Tools & Equipment",
     "toolsDesc": "State-of-the-art rehabilitation technology and physical therapy equipment.",
     "learnMore": "Learn More",
-    "viewAll": "View All Services"
+    "viewAll": "View All Services",
+    "showMore": "Show More Services",
+    "showLess": "Show Less"
   },
   "servicesList": {
     "cervicalPainTitle": "Cervical Pain Treatment",
@@ -282,36 +284,52 @@
   },
   "blogsList": {
     "blog1": {
-      "title": "5 Exercises to Reduce Lower Back Pain",
-      "desc": "Simple home exercises recommended by our physiotherapists to ease spinal tension."
+      "title": "Neck Stiffness: Causes, Symptoms & 5-Minute Physiotherapy Relief Exercises",
+      "desc": "Understand cervical tension and tech neck biomechanics with 5-minute daily stretches for quick relief."
     },
     "blog2": {
-      "title": "Correct Sitting Posture for Office & Remote Workers",
-      "desc": "Learn how proper workstation ergonomics can eliminate chronic neck and shoulder stiffness."
+      "title": "Navel Displacement (Dharan): Symptoms, Clinical Diagnosis & Core Therapy",
+      "desc": "Scientific evaluation of abdominal core imbalance, pelvic torsion, and restorative visceral exercises."
     },
     "blog3": {
-      "title": "How Cupping (Hijama) Therapy Relieves Deep Muscle Tension",
-      "desc": "Understand how negative pressure suction releases myofascial adhesions and speeds cellular repair."
+      "title": "Core Strengthening Exercises: 6 Proven Moves to Permanently Relieve Back Pain",
+      "desc": "Activate deep stabilizers like transversus abdominis and multifidus to safeguard your lumbar spine."
     },
     "blog4": {
-      "title": "Dry Needling vs Acupuncture: Understanding the Difference",
-      "desc": "Explore how targeted western dry needling deactivates painful myofascial trigger knots."
+      "title": "Cervical Spondylosis: Symptoms, Root Causes & Physiotherapy Recovery Guide",
+      "desc": "Relieve neck nerve compression and arm numbness with safe isometric strengthening and posture care."
     },
     "blog5": {
-      "title": "Relieving Cervical Neck Pain & 'Tech Neck'",
-      "desc": "Effective physiotherapy techniques to relieve neck spasms, headache, and cervical strain."
+      "title": "Therapeutic Ultrasound: Deep Tissue Healing & Joint Pain Relief",
+      "desc": "How high-frequency sound waves accelerate cellular healing in frozen shoulder, tendinitis, and muscle spasms."
     },
     "blog6": {
-      "title": "Knee Pain & Osteoarthritis: Mobility & Strengthening Guide",
-      "desc": "How targeted physiotherapy preserves cartilage, reduces joint friction, and improves walking stability."
+      "title": "Class IV Laser Therapy: Advanced, Painless & Fast Pain Relief",
+      "desc": "High-intensity photobiomodulation for deep-seated knee osteoarthritis, sciatica, and disc herniation."
     },
     "blog7": {
-      "title": "Understanding Sciatica Pain & Effective Relief Exercises",
-      "desc": "Learn how nerve gliding and core stabilization relieve shooting pain."
+      "title": "Arthritis: 7 Proven Benefits of Physiotherapy for Joint Mobility & Pain",
+      "desc": "Why movement is medicine for cartilage health, joint lubrication, and preventing knee surgery."
     },
     "blog8": {
-      "title": "Essential Rehabilitation Tips After a Sports Injury",
-      "desc": "Guided recovery protocols to heal ligaments, rebuild agility, and prevent re-injury."
+      "title": "Sports Injury Rehabilitation: Safe Return-to-Play & Prevention Protocol",
+      "desc": "5-phase sports physiotherapy protocol for ACL sprains, hamstring strains, and athletic agility."
+    },
+    "blog9": {
+      "title": "Home Physiotherapy vs Clinic Visits: Complete Comparison Guide",
+      "desc": "When in-home clinical care is ideal for post-surgery, stroke recovery, and elderly mobility."
+    },
+    "blog10": {
+      "title": "Preventing Back & Neck Pain While Working at a Desk: Ergonomics Guide",
+      "desc": "Master the 90-90-90 ergonomic workstation rule and 5 desk micro-stretches to keep your spine healthy."
+    },
+    "blog11": {
+      "title": "Pain Caused by Poor Posture & 5 Scientific Correction Steps",
+      "desc": "Overcome text neck, rounded shoulders, and anterior pelvic tilt with targeted corrective exercises."
+    },
+    "blog12": {
+      "title": "Osteopathy vs Physiotherapy: Key Differences & How to Choose",
+      "desc": "Comparing active biomechanical rehabilitation with holistic hands-on somatic manipulation."
     }
   },
   "aboutHero": {
@@ -443,7 +461,7 @@
     "titleLine1": "Book Your",
     "titleHighlight": "Physiotherapy",
     "titleLine2": "Session",
-    "subtitle": "Consult our expert physiotherapists Dr. MD Rashid (PT) and Dr. Md Wajhul Qumar (PT) for personalized pain relief and rehabilitation.",
+    "subtitle": "Consult our expert physiotherapists Dr. MD Rashid (PT) and Dr. Md Wajhul Quamar (PT) for personalized pain relief and rehabilitation.",
     "specialistTitle": "Our Specialist Physiotherapists",
     "reviewsRating": "4.7 (43+ Reviews)",
     "drRashidTitle": "Senior Consultant Physiotherapist | MPT (Sports)",
@@ -471,7 +489,7 @@
     "doctorOptional": "(Optional)",
     "doctorAny": "Any Available Specialist (Recommended)",
     "doctorRashid": "Dr. MD Rashid (PT) - Senior Consultant Physiotherapist | MPT (Sports)",
-    "doctorWazul": "Dr. Md Wajhul Qumar (PT) - Physiotherapist & Rehab Specialist (7 Certified)",
+    "doctorWazul": "Dr. Md Wajhul Quamar (PT) - Physiotherapist & Rehab Specialist (7 Certified)",
     "serviceLabel": "Choose Service",
     "servicePlaceholder": "Select a Service / Therapy",
     "serviceError": "Please select a service.",
@@ -691,6 +709,7 @@
     "catJoints": "Joint & Muscle",
     "catTherapies": "Specialized Therapies",
     "catRehab": "Rehabilitation",
+    "catElectro": "Electro & Modern Tech",
     "searchPlaceholder": "Search treatments...",
     "noServices": "No services found",
     "noServicesDesc": "Try adjusting your search query or filter category.",

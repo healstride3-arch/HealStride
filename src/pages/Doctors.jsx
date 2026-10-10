@@ -25,7 +25,7 @@ const Doctors = () => {
       <SEO
         title="Meet Our Expert Physiotherapists in Bhopal"
         description="Meet Dr. MD Rashid (MPT Sports) and our certified physiotherapy team at Heal Stride Bhopal. Specialized in sports rehabilitation, dry needling, cupping, and non-invasive pain relief."
-        keywords="Physiotherapist in Bhopal, Dr MD Rashid, Dr. Md Wajhul Qumar (PT), Sports Physiotherapy Bhopal, Cupping Specialist Bhopal, Dry Needling Bhopal"
+        keywords="Physiotherapist in Bhopal, Dr MD Rashid, Dr. Md Wajhul Quamar (PT), Sports Physiotherapy Bhopal, Cupping Specialist Bhopal, Dry Needling Bhopal"
       />
       {/* Full-Width Background Banner with Dark Overlay */}
       <section className="relative w-full min-h-[calc(100vh-90px)] flex flex-col justify-center py-6 sm:py-8 lg:py-10 overflow-hidden border-b border-slate-800 bg-slate-950">
@@ -216,6 +216,7 @@ const Doctors = () => {
                 doctor.name?.toLowerCase().includes("wajhul") ||
                 doctor.name?.toLowerCase().includes("wazul") ||
                 doctor.name?.toLowerCase().includes("qumar") ||
+                doctor.name?.toLowerCase().includes("quamar") ||
                 doctor.name?.toLowerCase().includes("qamar");
 
               const cardPhoto =

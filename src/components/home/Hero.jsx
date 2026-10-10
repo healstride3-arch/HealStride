@@ -109,84 +109,86 @@ const Hero = () => {
             </p>
 
             {/* 4 Stats Cards with Bidirectional Animated Counters */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 mt-5 sm:mt-6 max-w-xl sm:max-w-2xl">
+            <div className="grid grid-cols-2 grid-cols-2-preserve sm:grid-cols-4 gap-2 xs:gap-2.5 sm:gap-3 mt-4 sm:mt-6 max-w-xl sm:max-w-2xl">
               {/* Card 1: 5+ Years Experience */}
-              <div className="bg-white/95 backdrop-blur-sm rounded-xl sm:rounded-2xl p-2.5 sm:p-3 text-center border border-slate-200/90 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all">
-                <p className="text-2xl sm:text-3xl font-black text-[#d71920]">
+              <div className="bg-white/95 backdrop-blur-sm rounded-xl sm:rounded-2xl p-2 xs:p-2.5 sm:p-3 text-center border border-slate-200/90 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all">
+                <p className="text-xl xs:text-2xl sm:text-3xl font-black text-[#d71920]">
                   <AnimatedCounter target={5} suffix="+" duration={1.2} />
                 </p>
-                <p className="text-[11px] sm:text-xs text-slate-600 mt-1 font-semibold leading-tight">
+                <p className="text-[10px] xs:text-[11px] sm:text-xs text-slate-600 mt-0.5 xs:mt-1 font-semibold leading-tight">
                   {t("aboutHero.yearsExp", "Years Experience")}
                 </p>
               </div>
 
               {/* Card 2: 2500+ Happy Patients */}
-              <div className="bg-white/95 backdrop-blur-sm rounded-xl sm:rounded-2xl p-2.5 sm:p-3 text-center border border-slate-200/90 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all">
-                <p className="text-2xl sm:text-3xl font-black text-[#008272]">
+              <div className="bg-white/95 backdrop-blur-sm rounded-xl sm:rounded-2xl p-2 xs:p-2.5 sm:p-3 text-center border border-slate-200/90 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all">
+                <p className="text-xl xs:text-2xl sm:text-3xl font-black text-[#008272]">
                   <AnimatedCounter target={2500} suffix="+" duration={1.6} />
                 </p>
-                <p className="text-[11px] sm:text-xs text-slate-600 mt-1 font-semibold leading-tight">
+                <p className="text-[10px] xs:text-[11px] sm:text-xs text-slate-600 mt-0.5 xs:mt-1 font-semibold leading-tight">
                   {t("aboutHero.happyPatients", "Happy Patients")}
                 </p>
               </div>
 
               {/* Card 3: 98% Success Rate */}
-              <div className="bg-white/95 backdrop-blur-sm rounded-xl sm:rounded-2xl p-2.5 sm:p-3 text-center border border-slate-200/90 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all">
-                <p className="text-2xl sm:text-3xl font-black text-[#D97706]">
+              <div className="bg-white/95 backdrop-blur-sm rounded-xl sm:rounded-2xl p-2 xs:p-2.5 sm:p-3 text-center border border-slate-200/90 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all">
+                <p className="text-xl xs:text-2xl sm:text-3xl font-black text-[#D97706]">
                   <AnimatedCounter target={98} suffix="%" duration={1.4} />
                 </p>
-                <p className="text-[11px] sm:text-xs text-slate-600 mt-1 font-semibold leading-tight">
+                <p className="text-[10px] xs:text-[11px] sm:text-xs text-slate-600 mt-0.5 xs:mt-1 font-semibold leading-tight">
                   {t("hero.statSuccessRate", "Success Rate")}
                 </p>
               </div>
 
               {/* Card 4: 80+ Treatments */}
-              <div className="bg-white/95 backdrop-blur-sm rounded-xl sm:rounded-2xl p-2.5 sm:p-3 text-center border border-slate-200/90 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all">
-                <p className="text-2xl sm:text-3xl font-black text-teal-800">
+              <div className="bg-white/95 backdrop-blur-sm rounded-xl sm:rounded-2xl p-2 xs:p-2.5 sm:p-3 text-center border border-slate-200/90 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all">
+                <p className="text-xl xs:text-2xl sm:text-3xl font-black text-teal-800">
                   <AnimatedCounter target={80} suffix="+" duration={1.2} />
                 </p>
-                <p className="text-[11px] sm:text-xs text-slate-600 mt-1 font-semibold leading-tight">
+                <p className="text-[10px] xs:text-[11px] sm:text-xs text-slate-600 mt-0.5 xs:mt-1 font-semibold leading-tight">
                   {t("aboutHero.treatments", "Treatments")}
                 </p>
               </div>
             </div>
 
-            {/* Quick Callback Box (High-Converting Yellow Button) */}
+            {/* Quick Callback Box (High-Converting Button) */}
             <div className="mt-5 sm:mt-7 max-w-xl">
               <form
                 onSubmit={handleCallbackSubmit}
-                className="flex flex-col sm:flex-row items-stretch gap-2 sm:gap-0 bg-white p-1 sm:p-1.5 rounded-2xl border border-slate-300 shadow-sm focus-within:border-teal-500 focus-within:ring-2 focus-within:ring-teal-500/20 transition-all"
+                className="flex flex-col sm:flex-row items-stretch gap-1.5 sm:gap-0 bg-white p-1 sm:p-1.5 rounded-2xl border border-slate-300 shadow-sm focus-within:border-teal-500 focus-within:ring-2 focus-within:ring-teal-500/20 transition-all"
               >
-                {/* +91 Country Badge */}
-                <div className="flex items-center justify-center px-4 py-2 sm:py-0 border-b sm:border-b-0 sm:border-r border-slate-200 text-slate-800 font-extrabold text-sm sm:text-base shrink-0 bg-slate-50/80 sm:bg-transparent rounded-t-xl sm:rounded-none">
-                  <span>+91</span>
-                </div>
+                {/* Input with +91 Badge */}
+                <div className="flex items-center flex-1 min-w-0">
+                  <div className="flex items-center justify-center px-3 sm:px-4 py-2 sm:py-0 border-r border-slate-200 text-slate-800 font-extrabold text-xs sm:text-base shrink-0 bg-slate-50/80 sm:bg-transparent rounded-l-xl sm:rounded-none">
+                    <span>+91</span>
+                  </div>
 
-                {/* Mobile Input */}
-                <input
-                  type="tel"
-                  inputMode="numeric"
-                  maxLength={10}
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ""))}
-                  placeholder="Enter Your Mobile Number"
-                  className="flex-1 min-w-0 px-3.5 sm:px-4 py-2.5 sm:py-3 text-slate-900 placeholder:text-slate-400 font-medium text-xs sm:text-sm outline-none bg-transparent"
-                  required
-                />
+                  {/* Mobile Input */}
+                  <input
+                    type="tel"
+                    inputMode="numeric"
+                    maxLength={10}
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ""))}
+                    placeholder="Enter Your Mobile Number"
+                    className="flex-1 min-w-0 px-3 sm:px-4 py-2.5 sm:py-3 text-slate-900 placeholder:text-slate-400 font-medium text-xs sm:text-sm outline-none bg-transparent"
+                    required
+                  />
+                </div>
 
                 {/* Logo Gradient Button */}
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-[0.98] text-white font-bold text-xs sm:text-sm px-5 sm:px-6 py-3 rounded-xl shadow-md hover:shadow-lg transition-all sm:shrink-0 cursor-pointer hs-safe-action"
+                  className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#d71920] to-[#008272] hover:from-[#b91c1c] hover:to-[#0f766e] active:scale-[0.98] text-white font-bold text-xs sm:text-sm px-4.5 sm:px-6 py-2.5 sm:py-3 rounded-xl shadow-md hover:shadow-lg transition-all sm:shrink-0 cursor-pointer hs-safe-action"
                 >
-                  <Phone size={15} className="fill-white text-white shrink-0" />
+                  <Phone size={14} className="fill-white text-white shrink-0" />
                   <span>{submitting ? "Requesting..." : "Request A Callback"}</span>
                 </button>
               </form>
 
               {/* Trust badges */}
-              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] sm:text-xs text-slate-600 font-medium">
+              <div className="mt-2.5 sm:mt-3 flex flex-wrap items-center gap-x-3 xs:gap-x-4 gap-y-1.5 text-[10.5px] xs:text-[11px] sm:text-xs text-slate-600 font-medium">
                 <span className="flex items-center gap-1">
                   <CheckCircle2 size={13} className="text-emerald-600 shrink-0" />
                   <span>Instant Doctor Response</span>
@@ -202,8 +204,8 @@ const Hero = () => {
               </div>
 
               {/* Direct Booking & Phone Links */}
-              <div className="mt-4 pt-3 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
-                <div className="flex flex-wrap items-center gap-2 min-w-0">
+              <div className="mt-3.5 sm:mt-4 pt-3 border-t border-slate-200/80 flex flex-col xs:flex-row items-center justify-between gap-2.5 text-xs sm:text-sm">
+                <div className="flex items-center gap-2 min-w-0">
                   <span className="text-slate-500 font-medium">Direct connect:</span>
                   <a
                     href="tel:+918809491380"
@@ -230,14 +232,14 @@ const Hero = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.15 }}
-            className="lg:col-span-5 flex flex-col items-center lg:items-end justify-center relative"
+            className="lg:col-span-5 flex flex-col items-center lg:items-end justify-center relative mt-4 lg:mt-0"
           >
             {/* Ambient behind-glow specifically framing the doctor photo */}
             <div className="absolute -inset-4 bg-gradient-to-tr from-teal-400/25 via-red-400/15 to-amber-300/20 blur-2xl rounded-[3rem] pointer-events-none" />
 
-            <div className="hs-hero-doctor-card relative w-full max-w-[380px] sm:max-w-[400px] lg:max-w-[420px] rounded-[2rem] overflow-hidden border-4 border-white shadow-2xl bg-white group ring-1 ring-slate-200/60">
+            <div className="hs-hero-doctor-card relative w-full max-w-[340px] xs:max-w-[380px] sm:max-w-[400px] lg:max-w-[420px] rounded-[1.75rem] sm:rounded-[2rem] overflow-hidden border-3 sm:border-4 border-white shadow-xl sm:shadow-2xl bg-white group ring-1 ring-slate-200/60 mx-auto">
               {/* Doctor's Photo */}
-              <div className="hs-hero-doctor-media relative h-[320px] xs:h-[400px] sm:h-[440px] lg:h-[460px] w-full overflow-hidden bg-slate-100">
+              <div className="hs-hero-doctor-media relative h-[300px] xs:h-[380px] sm:h-[440px] lg:h-[460px] w-full overflow-hidden bg-slate-100">
                 <img
                   src={drRashidImage}
                   alt="Dr. MD Rashid (PT) - Lead Physiotherapist and Founder of Heal Stride"
@@ -245,22 +247,22 @@ const Hero = () => {
                 />
 
                 {/* Floating Top-Left Review Badge */}
-                <div className="absolute top-3 left-3 right-3 xs:right-auto bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full shadow-md border border-slate-200/80 flex items-center justify-center xs:justify-start gap-1.5 text-[11px] font-bold text-slate-800">
-                  <Star size={12} className="fill-amber-400 text-amber-400" />
-                  <span>4.7 (43+ Google Reviews)</span>
+                <div className="absolute top-2.5 left-2.5 xs:top-3 xs:left-3 bg-white/95 backdrop-blur-md px-2.5 xs:px-3 py-1 xs:py-1.5 rounded-full shadow-md border border-slate-200/80 flex items-center gap-1.5 text-[10px] xs:text-[11px] font-bold text-slate-800">
+                  <Star size={11} className="fill-amber-400 text-amber-400 shrink-0" />
+                  <span>4.7 (43+ Reviews)</span>
                 </div>
 
                 {/* Floating Top-Right Experience Badge */}
-                <div className="absolute top-12 xs:top-3 right-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded-full shadow-md border border-white/10 flex items-center gap-1 text-[10px] font-bold text-teal-300">
-                  <Award size={12} className="text-teal-300" />
+                <div className="absolute top-2.5 right-2.5 xs:top-3 xs:right-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded-full shadow-md border border-white/10 flex items-center gap-1 text-[9.5px] xs:text-[10px] font-bold text-teal-300">
+                  <Award size={11} className="text-teal-300 shrink-0" />
                   <span>5+ Yrs Exp</span>
                 </div>
               </div>
 
               {/* Bottom Credential Bar */}
-              <div className="p-3.5 sm:p-4 bg-white border-t border-slate-100 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center text-[#008272] font-black text-sm shrink-0 shadow-2xs">
+              <div className="p-3 xs:p-3.5 sm:p-4 bg-white border-t border-slate-100 flex items-center justify-between gap-2.5">
+                <div className="flex items-center gap-2 xs:gap-2.5 min-w-0">
+                  <div className="w-9 h-9 xs:w-10 xs:h-10 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center text-[#008272] font-black text-xs xs:text-sm shrink-0 shadow-2xs">
                     PT
                   </div>
                   <div className="min-w-0">
@@ -268,17 +270,17 @@ const Hero = () => {
                       <h3 className="text-xs sm:text-sm font-bold text-slate-900 truncate">
                         Dr. MD Rashid (PT)
                       </h3>
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                      <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
                     </div>
                     <p className="text-[10px] sm:text-xs text-teal-700 font-semibold truncate">
-                      MPT (Sports) • Founder &amp; Chief Specialist
+                      MPT (Sports) • Founder
                     </p>
                   </div>
                 </div>
 
                 <Link
                   to="/doctors/dr-md-rashid"
-                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-teal-50 hover:bg-teal-100 text-teal-800 text-xs font-bold transition shrink-0 border border-teal-200/70"
+                  className="inline-flex items-center gap-1 px-2.5 xs:px-3 py-1.5 rounded-lg bg-teal-50 hover:bg-teal-100 text-teal-800 text-[11px] xs:text-xs font-bold transition shrink-0 border border-teal-200/70"
                 >
                   <span>Profile</span>
                   <ArrowRight size={12} />

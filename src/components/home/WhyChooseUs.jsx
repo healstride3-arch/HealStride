@@ -47,23 +47,24 @@ const WhyChooseUs = () => {
   const { t } = useTranslation();
 
   return (
-    <section className="py-6 sm:py-8 lg:py-10 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-5 sm:py-8 lg:py-10 bg-white">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         {/* Section Header */}
         <SectionHeader
           badge={t("whyChooseUs.badge")}
           title={t("whyChooseUs.title")}
           subtitle={t("whyChooseUs.subtitle")}
+          className="mb-5 sm:mb-10"
         />
 
-        {/* Feature Benefit Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 items-stretch">
+        {/* Feature Benefit Cards - 2 cols on mobile, 3 cols on large screens */}
+        <div className="grid grid-cols-2 grid-cols-2-preserve lg:grid-cols-3 gap-2.5 sm:gap-5 lg:gap-6 items-stretch">
           {featuresData.map((item, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 25 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.06 }}
+              transition={{ duration: 0.35, delay: index * 0.05 }}
               viewport={{ once: true }}
               whileHover={{ y: -3 }}
               className="
@@ -71,8 +72,8 @@ const WhyChooseUs = () => {
                 flex
                 flex-col
                 bg-white
-                rounded-2xl
-                p-5
+                rounded-xl sm:rounded-2xl
+                p-3 sm:p-5
                 border
                 border-slate-100
                 shadow-sm
@@ -83,17 +84,17 @@ const WhyChooseUs = () => {
               "
             >
               {/* Icon Badge */}
-              <div className="w-11 h-11 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-lg mb-3 group-hover:bg-teal-600 group-hover:text-white transition-colors duration-250 flex-shrink-0">
+              <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-sm sm:text-lg mb-2 sm:mb-3 group-hover:bg-teal-600 group-hover:text-white transition-colors duration-250 flex-shrink-0">
                 {item.icon}
               </div>
 
               {/* Title */}
-              <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1.5 leading-snug">
+              <h3 className="text-xs! sm:text-base! lg:text-lg! font-bold text-slate-900 mb-1 sm:mb-1.5 leading-snug">
                 {t(item.titleKey)}
               </h3>
 
               {/* Description */}
-              <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              <p className="text-slate-600 text-[11px] sm:text-sm leading-snug sm:leading-relaxed">
                 {t(item.descKey)}
               </p>
             </motion.div>

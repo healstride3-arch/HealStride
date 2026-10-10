@@ -5,24 +5,12 @@ import BlogCard from "./BlogCard";
 import SectionHeader from "../common/SectionHeader";
 import { blogs as staticBlogs } from "../../data/blogs";
 import { ArrowRight } from "lucide-react";
-import { useFirestoreCollection, where } from "../../hooks/useFirestoreCollection";
 
 const BlogSection = ({
   blogsToShow = [],
 }) => {
   const { t } = useTranslation();
-
-  const { items: dynamicBlogs } = useFirestoreCollection("blogs", {
-    constraints: [where("active", "!=", false)],
-    fallback: blogsToShow.length > 0 ? blogsToShow : staticBlogs,
-  });
-  const blogs = (
-    dynamicBlogs.some(
-      (b) => b.slug === "neck-stiffness-karan-aur-exercise-se-rahat" || (b.title && b.title.includes("Neck Stiffness"))
-    )
-      ? dynamicBlogs
-      : (blogsToShow.length > 0 ? blogsToShow : staticBlogs)
-  );
+  const blogs = blogsToShow.length > 0 ? blogsToShow : staticBlogs;
 
   return (
     <section

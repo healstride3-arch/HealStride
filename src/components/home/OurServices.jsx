@@ -1,9 +1,10 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useFirestoreCollection, where } from "../../hooks/useFirestoreCollection";
 import SectionHeader from "../common/SectionHeader";
-import { CalendarCheck } from "lucide-react";
+import { CalendarCheck, ChevronDown } from "lucide-react";
 
 import {
   FaHandsHelping,
@@ -34,6 +35,7 @@ const categoryIconMap = {
   spine: FaBone,
   therapies: FaBolt,
   rehab: FaHandsHelping,
+  electro: FaBolt,
 };
 
 const isExcluded = (s) => {
@@ -51,6 +53,7 @@ const isExcluded = (s) => {
 
 const OurServices = () => {
   const { t, i18n } = useTranslation();
+  const [showAllMobile, setShowAllMobile] = useState(false);
 
   const { items: rawFirestoreServices } = useFirestoreCollection("services", {
     fallback: [],
@@ -112,7 +115,7 @@ const OurServices = () => {
             viewport={{ once: true }}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch"
           >
-            {services.slice(0, 6).map((service) => {
+            {services.slice(0, 6).map((service, index) => {
               const Icon =
                 (service.icon && iconMap[service.icon]) || categoryIconMap[service.category] || FaHeartbeat;
               const slug = (service.slug || service.id || "").toLowerCase().trim();
@@ -134,10 +137,10 @@ const OurServices = () => {
               return (
                 <motion.div
                   key={service.id}
-                  className="
+                  className={`
+                    ${index >= 3 && !showAllMobile ? "hidden sm:flex" : "flex"}
                     group
                     h-full
-                    flex
                     flex-col
                     justify-between
                     bg-white
@@ -147,12 +150,12 @@ const OurServices = () => {
                     border-teal-500
                     transition-all
                     duration-200
-                  "
+                  `}
                 >
                   {/* Image */}
                   <Link
                     to={`/services/${service.slug}`}
-                    className="relative overflow-hidden aspect-[4/3] w-full flex-shrink-0 bg-slate-100 block"
+                    className="relative overflow-hidden aspect-[16/10] sm:aspect-[4/3] w-full flex-shrink-0 bg-slate-100 block"
                   >
                     <img
                       src={service.imageUrl || service.image}
@@ -177,15 +180,15 @@ const OurServices = () => {
                         left-3.5
                         bg-teal-600
                         text-white
-                        w-10
-                        h-10
+                        w-9
+                        h-9
                         sm:w-11
                         sm:h-11
                         rounded-xl
                         flex
                         items-center
                         justify-center
-                        text-base
+                        text-sm
                         sm:text-lg
                         shadow-md
                       "
@@ -197,9 +200,9 @@ const OurServices = () => {
                     <h3
                       className="
                         absolute
-                        bottom-3.5
-                        left-4
-                        right-4
+                        bottom-3
+                        left-3.5
+                        right-3.5
                         text-white
                         text-base
                         sm:text-lg
@@ -214,7 +217,7 @@ const OurServices = () => {
                   </Link>
 
                   {/* Content Container */}
-                  <div className="p-4 sm:p-5 flex flex-col flex-1 justify-between">
+                  <div className="p-3.5 sm:p-5 flex flex-col flex-1 justify-between">
                     <p
                       className="
                         text-slate-600
@@ -222,18 +225,19 @@ const OurServices = () => {
                         sm:text-sm
                         leading-relaxed
                         line-clamp-2
-                        min-h-[38px]
+                        min-h-0 sm:min-h-[38px]
                       "
                     >
                       {localizedDesc}
                     </p>
 
-                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                    <div className="mt-3.5 sm:mt-4 pt-3 border-t border-slate-100 flex flex-col xs:flex-row items-stretch xs:items-center justify-between gap-2">
                       <Link
                         to={`/services/${service.slug}`}
                         className="
                           inline-flex
                           items-center
+                          justify-center xs:justify-start
                           gap-1.5
                           text-teal-600
                           font-semibold
@@ -242,6 +246,7 @@ const OurServices = () => {
                           text-xs
                           sm:text-sm
                           group/link
+                          py-1 xs:py-0
                         "
                       >
                         <span>{t("ourServices.learnMore", "Learn More")}</span>
@@ -261,16 +266,16 @@ const OurServices = () => {
                           hover:from-[#b91c1c] hover:to-[#0f766e]
                           active:scale-95
                           text-white
-                          px-3.5
-                          py-2.5
-                          min-h-[38px]
+                          px-3 xs:px-3.5
+                          py-2 sm:py-2.5
+                          min-h-[36px] sm:min-h-[38px]
                           rounded-xl
                           text-xs
                           font-bold
                           shadow-sm
                           hover:shadow-md
                           transition-all
-                          whitespace-nowrap
+                          text-center
                         "
                       >
                         <CalendarCheck size={14} className="shrink-0" />
@@ -284,45 +289,80 @@ const OurServices = () => {
           </motion.div>
         )}
 
-        {/* View All Services / Show More Button */}
-        {services.length > 6 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center mt-8 sm:mt-10"
-          >
-            <Link
-              to="/services"
+        {/* Action Buttons: Mobile Show More Toggle + View All Services Link */}
+        <div className="mt-6 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
+          {/* Mobile Only: Show More / Show Less Toggle (when more than 3 cards) */}
+          {services.slice(0, 6).length > 3 && (
+            <button
+              type="button"
+              onClick={() => setShowAllMobile((prev) => !prev)}
               className="
+                sm:hidden
+                w-full
                 inline-flex
                 items-center
+                justify-center
                 gap-2
-                bg-gradient-to-r from-[#d71920] to-[#008272]
-                hover:from-[#b91c1c] hover:to-[#0f766e]
-                active:scale-[0.98]
-                text-white
-                px-8
-                py-3.5
-                rounded-xl
+                bg-teal-50
+                hover:bg-teal-100
+                text-teal-700
+                border
+                border-teal-200
                 font-bold
-                text-sm
-                sm:text-base
-                shadow-md
-                hover:shadow-lg
+                text-xs
+                px-5
+                py-3
+                rounded-xl
                 transition-all
-                duration-200
-                group
+                active:scale-[0.98]
+                cursor-pointer
               "
             >
-              <span>{t("ourServices.viewAll")}</span>
-              <span className="group-hover:translate-x-1 transition-transform duration-200 inline-block">
-                →
+              <span>
+                {showAllMobile
+                  ? t("ourServices.showLess", "Show Less")
+                  : `${t("ourServices.showMore", "Show More Services")} (${services.slice(0, 6).length - 3})`}
               </span>
-            </Link>
-          </motion.div>
-        )}
+              <ChevronDown
+                size={16}
+                className={`transition-transform duration-300 ${
+                  showAllMobile ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+          )}
+
+          {/* View All Services Link */}
+          <Link
+            to="/services"
+            className="
+              inline-flex
+              items-center
+              justify-center
+              gap-2
+              bg-gradient-to-r from-[#d71920] to-[#008272]
+              hover:from-[#b91c1c] hover:to-[#0f766e]
+              active:scale-[0.98]
+              text-white
+              px-6 sm:px-8
+              py-3 sm:py-3.5
+              rounded-xl
+              font-bold
+              text-xs sm:text-sm md:text-base
+              shadow-md
+              hover:shadow-lg
+              transition-all
+              duration-200
+              group
+              w-full sm:w-auto
+            "
+          >
+            <span>{t("ourServices.viewAll")}</span>
+            <span className="group-hover:translate-x-1 transition-transform duration-200 inline-block">
+              →
+            </span>
+          </Link>
+        </div>
       </div>
     </section>
   );

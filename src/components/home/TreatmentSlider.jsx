@@ -178,13 +178,13 @@ const TreatmentSlider = () => {
           </div>
 
           {/* Right Controls: Explore All Button (Placed at top) & Navigation Arrows */}
-          <div className="flex items-center gap-2.5 w-full sm:w-auto justify-between sm:justify-end">
+          <div className="flex flex-wrap items-center gap-2 xs:gap-2.5 w-full sm:w-auto justify-between sm:justify-end">
             <Link
               to="/treatments"
-              className="inline-flex items-center gap-2 bg-teal-700 hover:bg-teal-800 active:scale-[0.98] text-white font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-xs hover:shadow transition-all shrink-0"
+              className="inline-flex items-center gap-1.5 xs:gap-2 bg-teal-700 hover:bg-teal-800 active:scale-[0.98] text-white font-bold text-[11px] xs:text-xs sm:text-sm px-3 xs:px-4 py-2 xs:py-2.5 rounded-xl shadow-xs hover:shadow transition-all shrink-0"
             >
               <span>{t("treatmentSlider.viewAll", "Explore All 80+ Treatments")}</span>
-              <ArrowRight size={14} />
+              <ArrowRight size={13} className="shrink-0" />
             </Link>
 
             <div className="flex items-center gap-1.5 shrink-0">
@@ -192,17 +192,17 @@ const TreatmentSlider = () => {
                 type="button"
                 onClick={() => swiperRef.current?.slidePrev()}
                 aria-label="Previous Slide"
-                className="w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-700 hover:text-teal-700 hover:border-teal-500 hover:bg-teal-50 shadow-xs flex items-center justify-center transition-all cursor-pointer"
+                className="w-9 h-9 xs:w-10 xs:h-10 rounded-xl bg-white border border-slate-200 text-slate-700 hover:text-teal-700 hover:border-teal-500 hover:bg-teal-50 shadow-xs flex items-center justify-center transition-all cursor-pointer"
               >
-                <ChevronLeft size={18} />
+                <ChevronLeft size={16} />
               </button>
               <button
                 type="button"
                 onClick={() => swiperRef.current?.slideNext()}
                 aria-label="Next Slide"
-                className="w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-700 hover:text-teal-700 hover:border-teal-500 hover:bg-teal-50 shadow-xs flex items-center justify-center transition-all cursor-pointer"
+                className="w-9 h-9 xs:w-10 xs:h-10 rounded-xl bg-white border border-slate-200 text-slate-700 hover:text-teal-700 hover:border-teal-500 hover:bg-teal-50 shadow-xs flex items-center justify-center transition-all cursor-pointer"
               >
-                <ChevronRight size={18} />
+                <ChevronRight size={16} />
               </button>
             </div>
           </div>
@@ -216,7 +216,7 @@ const TreatmentSlider = () => {
             onBeforeInit={(swiper) => {
               swiperRef.current = swiper;
             }}
-            spaceBetween={18}
+            spaceBetween={14}
             loop={displayedTreatments.length > 3}
             speed={650}
             autoplay={{
@@ -226,7 +226,11 @@ const TreatmentSlider = () => {
             }}
             breakpoints={{
               0: {
-                slidesPerView: 1.1,
+                slidesPerView: 1.06,
+                spaceBetween: 12,
+              },
+              420: {
+                slidesPerView: 1.25,
                 spaceBetween: 14,
               },
               520: {
@@ -330,7 +334,7 @@ const TreatmentSlider = () => {
                     </div>
 
                     {/* Action Buttons: Details & Book Appointment */}
-                    <div className="mt-5 pt-3 border-t border-slate-100 flex items-center gap-2">
+                    <div className="mt-4 sm:mt-5 pt-3 border-t border-slate-100 flex items-center gap-1.5 xs:gap-2">
                       <Link
                         to={`/treatments/${treatment.slug}`}
                         className="
@@ -343,10 +347,13 @@ const TreatmentSlider = () => {
                           hover:bg-teal-100
                           text-teal-700
                           font-semibold
-                          text-xs
+                          text-[11px]
+                          xs:text-xs
                           sm:text-sm
-                          py-2.5
-                          px-3
+                          py-2
+                          xs:py-2.5
+                          px-2
+                          xs:px-3
                           rounded-xl
                           transition-colors
                           border
@@ -372,10 +379,13 @@ const TreatmentSlider = () => {
                           active:scale-95
                           text-white
                           font-semibold
-                          text-xs
+                          text-[11px]
+                          xs:text-xs
                           sm:text-sm
-                          py-2.5
-                          px-3
+                          py-2
+                          xs:py-2.5
+                          px-2
+                          xs:px-3
                           rounded-xl
                           shadow-xs
                           transition-all

@@ -10,22 +10,32 @@ export const useFirestoreDoc = (collectionName, documentId, fallback = {}) => {
   useEffect(() => {
     setLoading(true);
 
-    const unsubscribe = onSnapshot(
-      doc(db, collectionName, documentId),
-      (snapshot) => {
-        setData(snapshot.exists() ? { ...fallback, ...snapshot.data() } : fallback);
-        setError(null);
-        setLoading(false);
-      },
-      (err) => {
-        console.error(`Failed to load ${collectionName}/${documentId}:`, err);
-        setData(fallback);
-        setError(err);
-        setLoading(false);
-      }
-    );
+    if (!db) {
+      setData(fallback);
+      setLoading(false);
+      return;
+    }
 
-    return () => unsubscribe();
+    try {
+      const unsubscribe = onSnapshot(
+        doc(db, collectionName, documentId),
+        (snapshot) => {
+          setData(snapshot.exists() ? { ...fallback, ...snapshot.data() } : fallback);
+          setError(null);
+          setLoading(false);
+        },
+        (err) => {
+          setData(fallback);
+          setError(err);
+          setLoading(false);
+        }
+      );
+
+      return () => unsubscribe();
+    } catch (docErr) {
+      setData(fallback);
+      setLoading(false);
+    }
   }, [collectionName, documentId]);
 
   return { data, loading, error };

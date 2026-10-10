@@ -27,6 +27,7 @@ const categories = [
   { id: "spine", labelKey: "servicesGrid.catSpine", fallback: "Spine & Posture" },
   { id: "therapies", labelKey: "servicesGrid.catTherapies", fallback: "Advanced Therapies" },
   { id: "rehab", labelKey: "servicesGrid.catRehab", fallback: "Rehabilitation & Care" },
+  { id: "electro", labelKey: "servicesGrid.catElectro", fallback: "Electro & Modern Tech" },
 ];
 
 const ServicesGrid = () => {

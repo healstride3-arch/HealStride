@@ -180,12 +180,12 @@ const TreatmentDetail = () => {
         <div className="flex items-center gap-3 pt-2.5 border-t border-slate-200/60">
           <img
             src={drWazulImg}
-            alt="Dr. Md Wajhul Qumar"
+            alt="Dr. Md Wajhul Quamar (PT)"
             className="w-11 h-11 rounded-full object-cover border-2 border-teal-600 shrink-0"
           />
           <div className="min-w-0">
             <h4 className="text-xs sm:text-sm font-bold text-slate-900 leading-tight truncate">
-              Dr. Md Wajhul Qumar (PT)
+              Dr. Md Wajhul Quamar (PT)
             </h4>
             <p className="text-[11px] text-teal-700 font-medium">
               BPT • Spine &amp; Neuro Rehabilitation
@@ -334,7 +334,7 @@ const TreatmentDetail = () => {
                     </div>
                     <div>
                       <p className="text-xs font-bold text-slate-900">Expert BPT/MPT Doctors</p>
-                      <p className="text-[10px] text-slate-500 leading-tight">Dr. MD Rashid &amp; Dr. Md Wajhul Qumar</p>
+                      <p className="text-[10px] text-slate-500 leading-tight">Dr. MD Rashid &amp; Dr. Md Wajhul Quamar (PT)</p>
                     </div>
                   </div>
 
@@ -552,13 +552,13 @@ const TreatmentDetail = () => {
             <div className="p-6 sm:p-7 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-5 hover:border-teal-400 transition-colors shadow-xs">
               <img
                 src={drWazulImg}
-                alt="Dr. Md Wajhul Qumar (PT)"
+                alt="Dr. Md Wajhul Quamar (PT)"
                 className="w-24 h-24 rounded-2xl object-cover object-top border-2 border-teal-200 shrink-0 shadow-sm"
               />
               <div className="flex-1">
                 <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
                   <h4 className="text-lg font-bold text-slate-900">
-                    Dr. Md Wajhul Qumar (PT)
+                    Dr. Md Wajhul Quamar (PT)
                   </h4>
                   <span className="text-[11px] font-semibold bg-teal-100 text-teal-800 px-2.5 py-0.5 rounded-full">
                     Senior Specialist

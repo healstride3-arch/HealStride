@@ -23,16 +23,32 @@ export const AuthProvider = ({ children }) => {
     useState(true);
 
   useEffect(() => {
-    const unsubscribe =
-      onAuthStateChanged(
+    if (!auth) {
+      setUser(null);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const unsubscribe = onAuthStateChanged(
         auth,
         (currentUser) => {
           setUser(currentUser);
           setLoading(false);
+        },
+        (authErr) => {
+          console.warn("[AuthContext] onAuthStateChanged warning:", authErr?.message);
+          setUser(null);
+          setLoading(false);
         }
       );
 
-    return unsubscribe;
+      return unsubscribe;
+    } catch (err) {
+      console.warn("[AuthContext] Auth listener initialization warning:", err?.message);
+      setUser(null);
+      setLoading(false);
+    }
   }, []);
 
   return (

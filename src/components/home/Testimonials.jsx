@@ -119,11 +119,11 @@ const Testimonials = () => {
 
               return (
                 <SwiperSlide key={item.id} className="h-auto flex mb-2">
-                  <div className="w-full h-[225px] sm:h-[235px] bg-white rounded-2xl border border-teal-500 p-4 sm:p-5 flex flex-col justify-between transition-all duration-200 shadow-sm">
+                  <div className="w-full min-h-[225px] sm:min-h-[235px] h-full bg-white rounded-2xl border border-teal-500 p-3.5 xs:p-4 sm:p-5 flex flex-col justify-between transition-all duration-200 shadow-sm">
                     {/* Header with Google icon & Stars */}
                     <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-slate-100 flex-shrink-0">
                       <div className="flex items-center gap-1.5">
-                        <FcGoogle className="text-lg" />
+                        <FcGoogle className="text-base sm:text-lg shrink-0" />
                         <span className="text-xs font-semibold text-slate-800">
                           Google Review
                         </span>
@@ -160,22 +160,22 @@ const Testimonials = () => {
 
                     {/* Patient Info Footer */}
                     <div className="flex items-center justify-between pt-2.5 border-t border-slate-100 flex-shrink-0">
-                      <div className="flex items-center gap-2.5">
+                      <div className="flex items-center gap-2 xs:gap-2.5 min-w-0">
                         <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-teal-600 text-white font-bold flex items-center justify-center text-xs shadow-sm flex-shrink-0">
                           {item.name ? item.name.charAt(0).toUpperCase() : "P"}
                         </div>
-                        <div>
-                          <h4 className="font-bold text-xs sm:text-[13px] text-slate-900 line-clamp-1">
+                        <div className="min-w-0">
+                          <h4 className="font-bold text-xs sm:text-[13px] text-slate-900 truncate">
                             {item.name}
                           </h4>
-                          <p className="text-[11px] text-teal-600 font-semibold flex items-center gap-1">
+                          <p className="text-[10px] xs:text-[11px] text-teal-600 font-semibold flex items-center gap-1 truncate">
                             <span>Google Verified</span>
-                            <FaCheckCircle className="text-[10px] text-teal-600" />
+                            <FaCheckCircle className="text-[10px] text-teal-600 shrink-0" />
                           </p>
                         </div>
                       </div>
 
-                      <span className="text-[11px] text-slate-400 font-medium flex-shrink-0 ml-2">
+                      <span className="text-[10px] xs:text-[11px] text-slate-400 font-medium flex-shrink-0 ml-1.5 xs:ml-2">
                         {item.date || "Verified"}
                       </span>
                     </div>
@@ -187,16 +187,16 @@ const Testimonials = () => {
         </motion.div>
 
         {/* Action Link to View Google Page */}
-        <div className="flex justify-center items-center gap-3 mt-3 text-center">
+        <div className="flex justify-center items-center gap-3 mt-3 text-center px-2">
           <a
             href={GOOGLE_MAPS_REVIEW_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-6 py-3 rounded-xl font-semibold text-xs sm:text-sm shadow-sm transition-colors"
+            className="inline-flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 xs:px-6 py-2.5 sm:py-3 rounded-xl font-semibold text-xs sm:text-sm shadow-sm transition-colors text-center w-full xs:w-auto"
           >
-            <FcGoogle className="text-base" />
+            <FcGoogle className="text-base shrink-0" />
             <span>Read All Google Reviews on Maps</span>
-            <FaExternalLinkAlt className="text-[10px]" />
+            <FaExternalLinkAlt className="text-[10px] shrink-0" />
           </a>
         </div>
       </div>

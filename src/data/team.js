@@ -38,7 +38,7 @@ export const doctors = [
   {
     id: "dr-wajhul-qamar",
     slug: "dr-wajhul-qamar",
-    name: "Dr. Md Wajhul Qumar (PT)",
+    name: "Dr. Md Wajhul Quamar (PT)",
     role: "Physiotherapist & Rehab Specialist (BPT)",
     designation: "Physiotherapist & Rehab Specialist",
     specialization:
@@ -79,8 +79,8 @@ export const getDoctorLocalizedName = (member, i18n) => {
   if (identifier.includes("rashid")) {
     return isHi ? "डॉ. एमडी राशिद (पीटी)" : "Dr. MD Rashid (PT)";
   }
-  if (identifier.includes("wajhul") || identifier.includes("wazul") || identifier.includes("qamar") || identifier.includes("qumar")) {
-    return isHi ? "डॉ. एमडी वजहुल क़मर (पीटी)" : "Dr. Md Wajhul Qumar (PT)";
+  if (identifier.includes("wajhul") || identifier.includes("wazul") || identifier.includes("qamar") || identifier.includes("qumar") || identifier.includes("quamar")) {
+    return isHi ? "डॉ. एमडी वजहुल क़मर (पीटी)" : "Dr. Md Wajhul Quamar (PT)";
   }
   return member?.name || "";
 };

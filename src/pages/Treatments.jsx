@@ -123,7 +123,7 @@ const Treatments = () => {
 
             {/* Subtitle */}
             <p className="mt-3 text-sm sm:text-base lg:text-lg text-slate-200 max-w-2xl leading-relaxed font-normal">
-              Specialized non-surgical care, root-cause biomechanical assessment, and personalized recovery protocols led by Dr. MD Rashid (PT) and Dr. Md Wajhul Qumar (PT).
+              Specialized non-surgical care, root-cause biomechanical assessment, and personalized recovery protocols led by Dr. MD Rashid (PT) and Dr. Md Wajhul Quamar (PT).
             </p>
 
             {/* Action Buttons: Direct Booking to /booking + Scroll to Directory */}

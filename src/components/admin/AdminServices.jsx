@@ -689,6 +689,7 @@ const confirmEdit = () => {
                 <option value="joints">Joint & Muscle (joints)</option>
                 <option value="therapies">Specialized Therapy (therapies)</option>
                 <option value="rehab">Rehabilitation (rehab)</option>
+                <option value="electro">Electro & Modern Tech (electro)</option>
               </select>
             </div>
 

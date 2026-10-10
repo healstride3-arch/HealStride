@@ -280,7 +280,7 @@ function App() {
               transition={{
                 duration: 0.4,
               }}
-              className="bg-white rounded-[32px] p-6 sm:p-8 max-w-[480px] w-full text-center relative shadow-[0_20px_60px_rgba(0,0,0,0.15)]"
+              className="bg-white rounded-[24px] xs:rounded-[32px] p-5 xs:p-6 sm:p-8 max-w-[480px] w-full text-center relative shadow-[0_20px_60px_rgba(0,0,0,0.15)] mx-3"
             >
               {/* Close Button */}
 
@@ -288,7 +288,7 @@ function App() {
                 onClick={() =>
                   setShowAppointmentPopup(false)
                 }
-                className="absolute top-5 right-5 text-gray-500 hover:text-black text-2xl"
+                className="absolute top-4 right-4 xs:top-5 xs:right-5 text-gray-500 hover:text-black text-2xl"
               >
                 ×
               </button>
@@ -298,9 +298,9 @@ function App() {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.4, delay: 0.2 }}
-                className="flex flex-col items-center mb-5"
+                className="flex flex-col items-center mb-4 xs:mb-5"
               >
-                <div className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl bg-teal-50 border border-teal-100/80 flex items-center justify-center p-3 shadow-sm mb-3">
+                <div className="w-16 h-16 xs:w-18 xs:h-18 sm:w-20 sm:h-20 rounded-2xl bg-teal-50 border border-teal-100/80 flex items-center justify-center p-2.5 xs:p-3 shadow-sm mb-2.5 xs:mb-3">
                   <img
                     src={logo}
                     alt="Heal Stride Logo"
@@ -318,7 +318,7 @@ function App() {
 
               {/* Heading */}
 
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 text-center mx-auto">
+              <h2 className="text-2xl xs:text-3xl md:text-4xl font-bold text-slate-900 text-center mx-auto">
                 Book Your Appointment
               </h2>
 

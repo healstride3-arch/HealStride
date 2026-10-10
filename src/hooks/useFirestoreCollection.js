@@ -17,32 +17,42 @@ export const useFirestoreCollection = (
   useEffect(() => {
     setLoading(true);
 
-    const ref = collection(db, collectionName);
-    const q = constraints.length > 0 ? query(ref, ...constraints) : ref;
+    if (!db) {
+      setItems(fallback);
+      setLoading(false);
+      return;
+    }
 
-    const unsubscribe = onSnapshot(
-      q,
-      (snapshot) => {
-        const data = snapshot.docs.map((docSnap) =>
-          mapItem({
-            id: docSnap.id,
-            ...docSnap.data(),
-          })
-        );
+    try {
+      const ref = collection(db, collectionName);
+      const q = constraints.length > 0 ? query(ref, ...constraints) : ref;
 
-        setItems(data.length > 0 ? data : fallback);
-        setError(null);
-        setLoading(false);
-      },
-      (err) => {
-        console.error(`Failed to load ${collectionName}:`, err);
-        setItems(fallback);
-        setError(err);
-        setLoading(false);
-      }
-    );
+      const unsubscribe = onSnapshot(
+        q,
+        (snapshot) => {
+          const data = snapshot.docs.map((docSnap) =>
+            mapItem({
+              id: docSnap.id,
+              ...docSnap.data(),
+            })
+          );
 
-    return () => unsubscribe();
+          setItems(data.length > 0 ? data : fallback);
+          setError(null);
+          setLoading(false);
+        },
+        (err) => {
+          setItems(fallback);
+          setError(err);
+          setLoading(false);
+        }
+      );
+
+      return () => unsubscribe();
+    } catch (syncErr) {
+      setItems(fallback);
+      setLoading(false);
+    }
   }, [collectionName]);
 
   return { items, loading, error };

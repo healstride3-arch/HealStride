@@ -220,21 +220,21 @@ const GalleryPreview = () => {
               className="relative max-w-4xl w-full bg-slate-900 rounded-2xl overflow-hidden border border-teal-500/50 shadow-2xl flex flex-col"
             >
               {/* Modal Header */}
-              <div className="flex items-center justify-between p-4 bg-slate-900/90 border-b border-slate-800 text-white">
-                <div>
-                  <h3 className="font-bold text-sm sm:text-lg text-white">
+              <div className="flex items-center justify-between p-3.5 xs:p-4 bg-slate-900/90 border-b border-slate-800 text-white gap-2">
+                <div className="min-w-0 pr-2">
+                  <h3 className="font-bold text-sm sm:text-lg text-white truncate">
                     {t(`galleryPreview.items.${selectedImage.id}.title`, { defaultValue: selectedImage.title })}
                   </h3>
-                  <p className="text-xs text-teal-400">
+                  <p className="text-xs text-teal-400 truncate">
                     {t(`galleryPreview.items.${selectedImage.id}.subtitle`, { defaultValue: selectedImage.subtitle })}
                   </p>
                 </div>
 
                 <button
                   onClick={() => setSelectedImage(null)}
-                  className="w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center transition-colors"
+                  className="w-8 h-8 xs:w-9 xs:h-9 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center transition-colors shrink-0"
                 >
-                  <FaTimes className="text-base" />
+                  <FaTimes className="text-sm xs:text-base" />
                 </button>
               </div>
 

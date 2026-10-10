@@ -96,7 +96,7 @@ const GoogleRating = () => {
         />
 
         {/* Equal Height Grid Cards */}
-        <div className="grid grid-cols-1 mobile:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 items-stretch">
+        <div className="grid grid-cols-2 grid-cols-2-preserve md:grid-cols-4 gap-2.5 xs:gap-3 sm:gap-4 lg:gap-6 items-stretch">
           {statsData.map((item, index) => (
             <motion.div
               key={index}
@@ -110,8 +110,9 @@ const GoogleRating = () => {
               whileHover={{ y: -3 }}
               className="
                 bg-white
-                rounded-2xl
-                p-3
+                rounded-xl
+                xs:rounded-2xl
+                p-2.5
                 xs:p-3.5
                 sm:p-5
                 lg:p-6
@@ -128,34 +129,34 @@ const GoogleRating = () => {
                 justify-center
                 text-center
                 h-full
-                min-h-[118px]
+                min-h-[110px]
                 xs:min-h-[135px]
                 sm:min-h-[160px]
               "
             >
-              {/* Icon Container (40-44px) */}
+              {/* Icon Container (36-44px) */}
               <div
-                className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl ${
+                className={`w-9 h-9 xs:w-10 xs:h-10 sm:w-11 sm:h-11 rounded-xl ${
                   index % 2 === 0
                     ? "bg-red-50 text-[#d71920]"
                     : "bg-teal-50 text-[#008272]"
-                } flex items-center justify-center mb-2 sm:mb-2.5 flex-shrink-0 text-base sm:text-xl transition-colors`}
+                } flex items-center justify-center mb-1.5 xs:mb-2 sm:mb-2.5 flex-shrink-0 text-sm xs:text-base sm:text-xl transition-colors`}
               >
                 {item.icon}
               </div>
 
               {/* Stat Number (Strongest Element) */}
               <h3
-                className={`text-xl xs:text-2xl sm:text-3xl lg:text-4xl font-extrabold ${
+                className={`text-lg xs:text-2xl sm:text-3xl lg:text-4xl font-extrabold ${
                   index % 2 === 0 ? "text-[#b91c1c]" : "text-[#0f766e]"
                 } tracking-tight flex items-center gap-0.5 sm:gap-1`}
               >
                 <AnimatedCounter value={item.number} />
-                {(item.number === "4.9" || item.number === "4.7") && <FaStar className="text-amber-400 text-sm sm:text-xl ml-1 shrink-0" />}
+                {(item.number === "4.9" || item.number === "4.7") && <FaStar className="text-amber-400 text-xs xs:text-sm sm:text-xl ml-0.5 xs:ml-1 shrink-0" />}
               </h3>
 
-              {/* Stat Label (13-14px) */}
-              <p className="mt-1 text-[13px] sm:text-sm font-semibold text-slate-600 leading-snug">
+              {/* Stat Label (12-14px) */}
+              <p className="mt-0.5 xs:mt-1 text-[11px] xs:text-[13px] sm:text-sm font-semibold text-slate-600 leading-snug">
                 {t(item.titleKey)}
               </p>
             </motion.div>

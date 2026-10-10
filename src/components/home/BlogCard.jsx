@@ -18,20 +18,20 @@ const BlogCard = ({ blog }) => {
           className="w-full h-full object-cover object-center block group-hover:scale-105 transition-transform duration-300"
           loading="lazy"
         />
-        <div className="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-medium text-teal-300 border border-white/10 flex items-center gap-1.5 shadow-sm">
-          <User className="w-3 h-3 text-teal-400" />
-          <span>{blog.author || t("blogSection.authorBadge", "Dr. MD Rashid (PT)")}</span>
+        <div className="absolute top-2.5 xs:top-3 left-2.5 xs:left-3 bg-slate-900/80 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] xs:text-[11px] font-medium text-teal-300 border border-white/10 flex items-center gap-1.5 shadow-sm max-w-[55%] truncate">
+          <User className="w-3 h-3 text-teal-400 shrink-0" />
+          <span className="truncate">{blog.author || t("blogSection.authorBadge", "Dr. MD Rashid (PT)")}</span>
         </div>
 
         {blog.category && (
-          <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-bold text-slate-800 border border-slate-200 shadow-xs flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#d71920]" />
-            <span>{blog.category}</span>
+          <div className="absolute top-2.5 xs:top-3 right-2.5 xs:right-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[9.5px] xs:text-[10px] font-bold text-slate-800 border border-slate-200 shadow-xs flex items-center gap-1 max-w-[40%] truncate">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#d71920] shrink-0" />
+            <span className="truncate">{blog.category}</span>
           </div>
         )}
       </div>
 
-      <div className="p-5 sm:p-6 flex flex-col flex-1">
+      <div className="p-4 sm:p-6 flex flex-col flex-1">
         <div className="flex items-center gap-1.5 text-xs text-slate-500 mb-2">
           <Calendar className="w-3.5 h-3.5 text-[#008272]" />
           <span>
@@ -55,7 +55,7 @@ const BlogCard = ({ blog }) => {
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-200" />
           </span>
           <span className="text-[11px] font-semibold text-slate-400">
-            5 min read
+            {blog.readTime || "6 min read"}
           </span>
         </div>
       </div>

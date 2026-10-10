@@ -26,7 +26,6 @@ const CLINIC_SERVICES_OPTIONS = [
   "Cupping Therapy (Hijama)",
   "Cranio Sacral Therapy",
   "Cryo Therapy",
-  "Laser Therapy",
   "Clinical Physiotherapy",
   "Home Physiotherapy",
   "Sports Injury Rehabilitation",
@@ -34,6 +33,7 @@ const CLINIC_SERVICES_OPTIONS = [
   "Interferential Therapy (IFT)",
   "Shockwave Therapy",
   "Red Light Therapy",
+  "Laser Therapy",
   "General Physical Assessment & Consultation",
   "Other Consultation",
 ];

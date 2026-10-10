@@ -69,7 +69,7 @@ export const googleReviews = [
     verified: true,
     likes: 1,
     review:
-      "I was suffering from back pain since 2 years. When I came to the clinic and continued the physio sessions, in few days I felt relief and after some days complete pain went away. Thank you physio team, specially Dr. Md Wajhul Qumar (PT) and Dr. MD Rashid (PT)!"
+      "I was suffering from back pain since 2 years. When I came to the clinic and continued the physio sessions, in few days I felt relief and after some days complete pain went away. Thank you physio team, specially Dr. Md Wajhul Quamar (PT) and Dr. MD Rashid (PT)!"
   },
   {
     id: "gmb-7",

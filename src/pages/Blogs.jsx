@@ -7,21 +7,10 @@ import { motion } from "framer-motion";
 import AnimatedCounter from "../components/common/AnimatedCounter";
 import SEO from "../components/common/SEO";
 import { blogs as staticBlogs } from "../data/blogs";
-import { useFirestoreCollection, where } from "../hooks/useFirestoreCollection";
 
 const Blogs = () => {
   const { t } = useTranslation();
-  const { items: firestoreBlogs } = useFirestoreCollection("blogs", {
-    constraints: [where("active", "!=", false)],
-    fallback: staticBlogs,
-  });
-
-  const blogs = useMemo(() => {
-    const hasClinicalBlogs = firestoreBlogs.some(
-      (b) => b.slug === "neck-stiffness-karan-aur-exercise-se-rahat" || (b.title && b.title.includes("Neck Stiffness"))
-    );
-    return hasClinicalBlogs ? firestoreBlogs : staticBlogs;
-  }, [firestoreBlogs]);
+  const blogs = staticBlogs;
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");

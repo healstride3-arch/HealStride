@@ -179,7 +179,7 @@ const DR_WAJHUL_REVIEWS = [
     name: "Vikramaditya Singh",
     condition: "Cardiopulmonary Rehab & Breathing Stamina",
     comment:
-      "Dr. Md Wajhul Qumar (PT) is an exceptional physiotherapist. His cardiopulmonary rehabilitation and targeted breathing exercise protocols helped me regain full stamina and lung function. Very encouraging and attentive doctor.",
+      "Dr. Md Wajhul Quamar (PT) is an exceptional physiotherapist. His cardiopulmonary rehabilitation and targeted breathing exercise protocols helped me regain full stamina and lung function. Very encouraging and attentive doctor.",
     rating: 5,
     date: "Verified Google Review",
   },
@@ -187,7 +187,7 @@ const DR_WAJHUL_REVIEWS = [
     name: "Anjali Saxena",
     condition: "Chronic Muscle Spasm & Fascial Tightness",
     comment:
-      "Dr. Md Wajhul Qumar (PT) treated my severe shoulder stiffness with IASTM blade therapy and cupping. The relief in movement was immediate. Truly a master in dry needling and manual therapy techniques!",
+      "Dr. Md Wajhul Quamar (PT) treated my severe shoulder stiffness with IASTM blade therapy and cupping. The relief in movement was immediate. Truly a master in dry needling and manual therapy techniques!",
     rating: 5,
     date: "Verified Google Review",
   },
@@ -195,7 +195,7 @@ const DR_WAJHUL_REVIEWS = [
     name: "Sunil Patidar",
     condition: "Post-Fracture Knee Stiffness & Gait Rehab",
     comment:
-      "After surgery my knee joint was very stiff. Dr. Md Wajhul Qumar (PT) carefully planned my daily manual joint mobilization and taping sessions. Within 4 weeks I was able to walk without any limp. Highly recommended!",
+      "After surgery my knee joint was very stiff. Dr. Md Wajhul Quamar (PT) carefully planned my daily manual joint mobilization and taping sessions. Within 4 weeks I was able to walk without any limp. Highly recommended!",
     rating: 5,
     date: "Verified Google Review",
   },
@@ -233,6 +233,7 @@ const DoctorProfile = () => {
     cleanDocName.includes("wajhul") ||
     cleanDocName.includes("wazul") ||
     cleanDocName.includes("qumar") ||
+    cleanDocName.includes("quamar") ||
     cleanDocName.includes("qamar");
 
   const rawDoctor =
@@ -329,6 +330,7 @@ const DoctorProfile = () => {
     doctor.name?.toLowerCase().includes("wajhul") ||
     doctor.name?.toLowerCase().includes("wazul") ||
     doctor.name?.toLowerCase().includes("qumar") ||
+    doctor.name?.toLowerCase().includes("quamar") ||
     doctor.name?.toLowerCase().includes("qamar");
 
   const doctorPhoto =

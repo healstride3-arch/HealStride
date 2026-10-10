@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   CalendarCheck,
   ArrowLeft,
@@ -7,35 +7,36 @@ import {
   Clock,
   Tag,
   Phone,
+  Share2,
+  Check,
+  Sparkles,
+  CheckCircle2,
+  MessageCircle,
 } from "lucide-react";
 import drRashidImg from "../assets/images/Dr.MD.Rashid.png";
 import { blogs as staticBlogs } from "../data/blogs";
 import { useTranslation } from "react-i18next";
-import { useFirestoreCollection, where } from "../hooks/useFirestoreCollection";
 import SEO from "../components/common/SEO";
 import BlogCard from "../components/home/BlogCard";
 
 const BlogDetails = () => {
   const { id } = useParams();
   const { t } = useTranslation();
-  const { items: firestoreBlogs } = useFirestoreCollection("blogs", {
-    constraints: [where("active", "!=", false)],
-    fallback: staticBlogs,
-  });
-
-  const blogs = useMemo(() => {
-    const hasClinicalBlogs = firestoreBlogs.some(
-      (b) => b.slug === "neck-stiffness-karan-aur-exercise-se-rahat" || (b.title && b.title.includes("Neck Stiffness"))
-    );
-    return hasClinicalBlogs ? firestoreBlogs : staticBlogs;
-  }, [firestoreBlogs]);
-
+  const blogs = staticBlogs;
   const blog = useMemo(() => {
-    return (
-      blogs.find((item) => String(item.id) === String(id) || item.slug === id) ||
-      staticBlogs.find((item) => String(item.id) === String(id) || item.slug === id)
-    );
-  }, [blogs, id]);
+    if (!id) return null;
+    return staticBlogs.find((item) => String(item.id) === String(id) || item.slug === id);
+  }, [id]);
+
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyLink = () => {
+    if (navigator?.clipboard?.writeText) {
+      navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    }
+  };
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -140,7 +141,7 @@ const BlogDetails = () => {
 
               <div className="flex items-center gap-1.5">
                 <Clock size={13} className="text-[#d71920]" />
-                <span className="text-xs">5 min read</span>
+                <span className="text-xs">{blog.readTime || "6 min read"}</span>
               </div>
             </div>
 
@@ -202,6 +203,98 @@ const BlogDetails = () => {
                   )}
                 </div>
               ))}
+            </div>
+
+            {/* Clinical Takeaways & Doctor's Advice Box Under Each Blog */}
+            <div className="mt-12 bg-gradient-to-br from-emerald-50 via-teal-50 to-slate-50 rounded-3xl p-6 sm:p-8 border border-teal-200/90 shadow-xs space-y-5">
+              <div className="flex items-center gap-3">
+                <span className="w-9 h-9 rounded-xl bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-sm">
+                  <Sparkles size={18} />
+                </span>
+                <div>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-teal-800">
+                    क्लिनिकल टेकअवे • Doctor's Clinical Takeaways
+                  </span>
+                  <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
+                    दर्द से स्थायी मुक्ति और सुरक्षित स्वास्थ्य के 3 सुनहरे नियम
+                  </h3>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 pt-1">
+                <div className="bg-white/95 backdrop-blur-xs p-4 rounded-2xl border border-teal-100/90 flex flex-col justify-between shadow-xs">
+                  <div className="flex items-start gap-2.5">
+                    <CheckCircle2 size={16} className="text-teal-600 shrink-0 mt-0.5" />
+                    <p className="text-xs sm:text-sm text-slate-900 font-bold leading-snug">
+                      एक्टिव पोस्चर व नियमित स्ट्रेचिंग
+                    </p>
+                  </div>
+                  <p className="text-[11px] text-slate-600 mt-2 leading-relaxed">
+                    लंबे समय तक एक ही मुद्रा में बैठने से बचें; हर 45 मिनट में सूक्ष्म स्ट्रेचिंग करें।
+                  </p>
+                </div>
+
+                <div className="bg-white/95 backdrop-blur-xs p-4 rounded-2xl border border-teal-100/90 flex flex-col justify-between shadow-xs">
+                  <div className="flex items-start gap-2.5">
+                    <CheckCircle2 size={16} className="text-teal-600 shrink-0 mt-0.5" />
+                    <p className="text-xs sm:text-sm text-slate-900 font-bold leading-snug">
+                      अनावश्यक झटकों व मालिश से बचें
+                    </p>
+                  </div>
+                  <p className="text-[11px] text-slate-600 mt-2 leading-relaxed">
+                    बिना विशेषज्ञ सलाह के रीढ़ या गर्दन को बलपूर्वक कभी न चटकाएं।
+                  </p>
+                </div>
+
+                <div className="bg-white/95 backdrop-blur-xs p-4 rounded-2xl border border-teal-100/90 flex flex-col justify-between shadow-xs">
+                  <div className="flex items-start gap-2.5">
+                    <CheckCircle2 size={16} className="text-teal-600 shrink-0 mt-0.5" />
+                    <p className="text-xs sm:text-sm text-slate-900 font-bold leading-snug">
+                      जड़ से समाधान, केवल पेनकिलर नहीं
+                    </p>
+                  </div>
+                  <p className="text-[11px] text-slate-600 mt-2 leading-relaxed">
+                    शुरुआती अवस्था में फिजियोथेरेपी से 90% मामलों में सर्जरी व भारी दवाओं से बचा जा सकता है।
+                  </p>
+                </div>
+              </div>
+
+              {/* Share & WhatsApp Action Bar */}
+              <div className="pt-4 border-t border-teal-200/70 flex flex-wrap items-center justify-between gap-3">
+                <span className="text-xs font-semibold text-slate-700">
+                  इस स्वास्थ्य गाइड को अपनों के साथ साझा करें:
+                </span>
+                <div className="flex items-center gap-2">
+                  <a
+                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
+                      `${blog.title} - पढ़ें Heal Stride Physiotherapy भोपाल की संपूर्ण क्लिनिकल गाइड: `
+                    )}${encodeURIComponent(window.location.href)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-xs"
+                  >
+                    <MessageCircle size={14} />
+                    <span>WhatsApp पर भेजें</span>
+                  </a>
+
+                  <button
+                    onClick={handleCopyLink}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 text-xs font-bold transition-all shadow-xs cursor-pointer"
+                  >
+                    {copied ? (
+                      <>
+                        <Check size={14} className="text-emerald-600" />
+                        <span className="text-emerald-700 font-bold">लिंक कॉपी हो गया!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Share2 size={14} />
+                        <span>लिंक कॉपी करें</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
             </div>
 
             {/* Author Bio Box */}

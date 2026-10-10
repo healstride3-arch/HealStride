@@ -29,14 +29,13 @@ const CLINIC_SERVICES_GROUPS = [
       "Chiropractic Treatment",
       "Spinal Decompression Therapy",
       "Posture Correction Therapy",
-      "Ultrasound Therapy",
+      "Cranio Sacral Therapy",
     ],
   },
   {
     category: "Advanced Therapies",
     services: [
       "Cupping Therapy (Hijama)",
-      "Cranio Sacral Therapy",
       "Cryo Therapy",
       "Laser Therapy",
     ],
@@ -56,6 +55,7 @@ const CLINIC_SERVICES_GROUPS = [
       "Interferential Therapy (IFT)",
       "Shockwave Therapy",
       "Red Light Therapy",
+      "Ultrasound Therapy",
     ],
   },
   {
@@ -223,7 +223,7 @@ const AppointmentForm = () => {
           </h1>
 
           <p className="mt-2.5 sm:mt-3 text-sm sm:text-base lg:text-lg leading-relaxed text-slate-600 max-w-2xl sm:max-w-3xl mx-auto">
-            {t("appointmentForm.subtitle", "Consult our expert physiotherapists Dr. MD Rashid (PT) and Dr. Md Wajhul Qumar (PT) for personalized pain relief and rehabilitation.")}
+            {t("appointmentForm.subtitle", "Consult our expert physiotherapists Dr. MD Rashid (PT) and Dr. Md Wajhul Quamar (PT) for personalized pain relief and rehabilitation.")}
           </p>
         </motion.div>
 
@@ -277,16 +277,16 @@ const AppointmentForm = () => {
                 </div>
               </div>
 
-              {/* Doctor 2: Dr. Md Wajhul Qumar (PT) */}
+              {/* Doctor 2: Dr. Md Wajhul Quamar (PT) */}
               <div className="flex flex-col mobile:flex-row mobile:items-center gap-3 bg-slate-50/80 hover:bg-teal-50/40 transition-colors p-3 rounded-xl border border-slate-200/80 text-center mobile:text-left">
                 <img
                   src={drWazulImage}
-                  alt="Dr. Md Wajhul Qumar (PT)"
+                  alt="Dr. Md Wajhul Quamar (PT)"
                   className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-cover border border-teal-200 shadow-sm shrink-0 mx-auto mobile:mx-0"
                 />
                 <div className="w-full">
                   <h4 className="text-sm sm:text-base font-bold text-slate-900">
-                    Dr. Md Wajhul Qumar (PT)
+                    Dr. Md Wajhul Quamar (PT)
                   </h4>
                   <p className="text-teal-700 text-xs font-semibold">
                     {t("appointmentForm.drWazulTitle", "Physiotherapist & Rehab Specialist (BPT) • 7 Certified")}

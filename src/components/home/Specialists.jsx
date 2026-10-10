@@ -61,6 +61,7 @@ const Specialists = ({ limit = 3 }) => {
               doctor.name?.toLowerCase().includes("wajhul") ||
               doctor.name?.toLowerCase().includes("wazul") ||
               doctor.name?.toLowerCase().includes("qumar") ||
+              doctor.name?.toLowerCase().includes("quamar") ||
               doctor.name?.toLowerCase().includes("qamar");
 
             const cardPhoto =
@@ -135,7 +136,7 @@ const Specialists = ({ limit = 3 }) => {
                     </p>
                   </div>
 
-                    <div className="mt-3.5 xs:mt-4 pt-2.5 xs:pt-3 border-t border-slate-100 flex items-center justify-center gap-1.5 xs:gap-2">
+                    <div className="mt-3.5 xs:mt-4 pt-2.5 xs:pt-3 border-t border-slate-100 flex flex-col xs:flex-row items-stretch xs:items-center justify-center gap-1.5 xs:gap-2">
                       <Link
                         to={`/doctors/${docSlug}`}
                         className="
@@ -144,8 +145,8 @@ const Specialists = ({ limit = 3 }) => {
                           justify-center
                           gap-1 xs:gap-1.5
                           px-3 xs:px-3.5
-                          py-2.5
-                          min-h-[40px]
+                          py-2 xs:py-2.5
+                          min-h-[38px]
                           rounded-xl
                           bg-teal-50
                           hover:bg-teal-100
@@ -168,8 +169,8 @@ const Specialists = ({ limit = 3 }) => {
                           justify-center
                           gap-1.5
                           px-3 xs:px-3.5
-                          py-2.5
-                          min-h-[40px]
+                          py-2 xs:py-2.5
+                          min-h-[38px]
                           rounded-xl
                           bg-gradient-to-r from-[#d71920] to-[#008272]
                           hover:from-[#b91c1c] hover:to-[#0f766e]
@@ -180,7 +181,7 @@ const Specialists = ({ limit = 3 }) => {
                           shadow-sm
                           hover:shadow-md
                           transition-all
-                          whitespace-nowrap
+                          text-center
                         "
                       >
                         <CalendarCheck size={14} className="shrink-0" />

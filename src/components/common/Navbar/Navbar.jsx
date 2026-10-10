@@ -22,7 +22,7 @@ const SERVICES_DROPDOWN_COLUMNS = [
       { name: "Chiropractic Treatment", slug: "chiropractic-treatment" },
       { name: "Spinal Decompression", slug: "spinal-decompression-therapy" },
       { name: "Posture Correction", slug: "posture-correction-therapy" },
-      { name: "Ultrasound Therapy", slug: "ultrasound-therapy" },
+      { name: "Cranio Sacral Therapy", slug: "cranio-sacral-therapy" },
     ],
   },
   {
@@ -32,7 +32,6 @@ const SERVICES_DROPDOWN_COLUMNS = [
     iconColor: "text-[#008272] bg-teal-50",
     items: [
       { name: "Cupping Therapy", slug: "cupping-therapy" },
-      { name: "Cranio Sacral Therapy", slug: "cranio-sacral-therapy" },
       { name: "Cryo Therapy", slug: "cryo-therapy" },
       { name: "Laser Therapy", slug: "laser-therapy" },
     ],
@@ -58,6 +57,7 @@ const SERVICES_DROPDOWN_COLUMNS = [
       { name: "Interferential Therapy", slug: "interferential-therapy" },
       { name: "Shockwave Therapy", slug: "shockwave-therapy" },
       { name: "Red Light Therapy", slug: "red-light-therapy" },
+      { name: "Ultrasound Therapy", slug: "ultrasound-therapy" },
     ],
   },
 ];

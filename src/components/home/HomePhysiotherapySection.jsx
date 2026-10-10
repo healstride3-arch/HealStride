@@ -116,10 +116,10 @@ const HomePhysiotherapySection = () => {
             </div>
 
             {/* Action Buttons & Quick Call */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4 mt-7 sm:mt-8">
+            <div className="flex flex-col xs:flex-row flex-wrap items-stretch xs:items-center justify-center lg:justify-start gap-2.5 sm:gap-4 mt-6 sm:mt-8">
               <Link
                 to="/booking?service=home-physiotherapy"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-[#d71920] to-[#008272] hover:opacity-95 text-white font-bold px-5 sm:px-6 py-2.5 sm:py-3 min-h-[44px] rounded-xl text-xs sm:text-sm shadow-sm transition-all"
+                className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#d71920] to-[#008272] hover:opacity-95 text-white font-bold px-4 xs:px-5 sm:px-6 py-2.5 sm:py-3 min-h-[44px] rounded-xl text-xs sm:text-sm shadow-sm transition-all text-center"
               >
                 <CalendarCheck size={16} className="shrink-0" />
                 <span>{t("homePhysioSection.bookVisit", "Book Your Home Visit")}</span>
@@ -127,7 +127,7 @@ const HomePhysiotherapySection = () => {
 
               <a
                 href="tel:+918809491380"
-                className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold px-4.5 sm:px-5 py-2.5 sm:py-3 min-h-[44px] rounded-xl text-xs sm:text-sm shadow-sm transition-all"
+                className="inline-flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold px-4 xs:px-5 py-2.5 sm:py-3 min-h-[44px] rounded-xl text-xs sm:text-sm shadow-sm transition-all text-center"
               >
                 <Phone size={15} className="shrink-0 text-emerald-400" />
                 <span>+91 88094 91380</span>
@@ -135,7 +135,7 @@ const HomePhysiotherapySection = () => {
 
               <Link
                 to="/services/home-physiotherapy"
-                className="inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 font-semibold px-4.5 sm:px-5 py-2.5 sm:py-3 min-h-[44px] rounded-xl text-xs sm:text-sm shadow-xs transition-all"
+                className="inline-flex items-center justify-center gap-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 font-semibold px-4 xs:px-5 py-2.5 sm:py-3 min-h-[44px] rounded-xl text-xs sm:text-sm shadow-xs transition-all text-center"
               >
                 <span>View Details</span>
                 <ArrowRight size={15} className="shrink-0" />
@@ -151,7 +151,7 @@ const HomePhysiotherapySection = () => {
             transition={{ duration: 0.6 }}
             className="lg:col-span-5 w-full flex flex-col items-center lg:items-end justify-center order-1 lg:order-2"
           >
-            <div className="relative w-full max-w-[460px]">
+            <div className="relative w-full max-w-[340px] xs:max-w-[420px] sm:max-w-[460px] mx-auto lg:mx-0">
               {/* Decorative aura */}
               <div className="absolute -inset-3 bg-gradient-to-tr from-teal-500/15 via-rose-500/10 to-teal-500/15 rounded-3xl blur-xl opacity-80" />
 
@@ -159,34 +159,34 @@ const HomePhysiotherapySection = () => {
                 <img
                   src={homePhysioImg}
                   alt="Best Home Physiotherapy in Bhopal by Heal Stride"
-                  className="w-full h-[320px] sm:h-[400px] lg:h-[460px] object-cover object-center group-hover:scale-102 transition-transform duration-300"
+                  className="w-full h-[280px] xs:h-[360px] sm:h-[400px] lg:h-[460px] object-cover object-center group-hover:scale-102 transition-transform duration-300"
                 />
 
                 {/* Top Badge overlay */}
-                <div className="absolute top-3.5 left-3.5 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full border border-teal-200 shadow-sm flex items-center gap-1.5">
+                <div className="absolute top-2.5 xs:top-3.5 left-2.5 xs:left-3.5 bg-white/95 backdrop-blur-md px-2.5 xs:px-3 py-1 xs:py-1.5 rounded-full border border-teal-200 shadow-sm flex items-center gap-1.5 max-w-[calc(100%-1.5rem)]">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                  <span className="text-[11px] font-bold text-slate-800">
+                  <span className="text-[10px] xs:text-[11px] font-bold text-slate-800 truncate">
                     Doorstep Physiotherapy in Bhopal
                   </span>
                 </div>
 
                 {/* Bottom Overlaid feature banner */}
-                <div className="absolute bottom-3 left-3 right-3 bg-slate-900/90 backdrop-blur-md text-white p-3.5 rounded-2xl border border-white/10 shadow-lg flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-lg bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0 border border-teal-400/30">
-                      <Sparkles size={16} />
+                <div className="absolute bottom-2.5 xs:bottom-3 left-2.5 xs:left-3 right-2.5 xs:right-3 bg-slate-900/90 backdrop-blur-md text-white p-2.5 xs:p-3.5 rounded-2xl border border-white/10 shadow-lg flex items-center justify-between gap-2.5">
+                  <div className="flex items-center gap-2 xs:gap-2.5 min-w-0">
+                    <div className="w-7 h-7 xs:w-8 xs:h-8 rounded-lg bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0 border border-teal-400/30">
+                      <Sparkles size={15} />
                     </div>
-                    <div>
-                      <p className="text-xs font-bold leading-tight">
+                    <div className="min-w-0">
+                      <p className="text-xs font-bold leading-tight truncate">
                         Certified Therapists &amp; Equipment
                       </p>
-                      <p className="text-[10px] text-slate-300 leading-tight mt-0.5">
-                        Portable TENS, IFT, ultrasound &amp; exercise kit
+                      <p className="text-[9.5px] xs:text-[10px] text-slate-300 leading-tight mt-0.5 truncate">
+                        Portable TENS, IFT, ultrasound &amp; kit
                       </p>
                     </div>
                   </div>
                   <div className="shrink-0 text-right">
-                    <span className="text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-md">
+                    <span className="text-[9.5px] xs:text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-1.5 xs:px-2 py-0.5 rounded-md">
                       Verified
                     </span>
                   </div>
