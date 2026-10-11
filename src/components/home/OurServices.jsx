@@ -60,7 +60,8 @@ const OurServices = () => {
   });
 
   const services = (() => {
-    return ALL_SERVICES
+    const matchedKeys = new Set();
+    const staticMerged = ALL_SERVICES
       .filter((s) => !isExcluded(s))
       .map((s) => {
         const sKey = (s.slug || s.id).toLowerCase();
@@ -70,6 +71,7 @@ const OurServices = () => {
         });
 
         if (!fs) return s;
+        matchedKeys.add(sKey);
 
         const isUploadedStorageImg = fs.imageUrl && (
           fs.imageUrl.startsWith("https://firebasestorage") ||
@@ -84,6 +86,18 @@ const OurServices = () => {
         };
       })
       .filter((s) => s.active !== false && s.showOnHome !== false && !isExcluded(s));
+
+    const customServices = (rawFirestoreServices || [])
+      .filter((fs) => {
+        const key = (fs.slug || fs.id || fs.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+        return !matchedKeys.has(key) && !isExcluded(fs) && fs.active !== false && fs.showOnHome !== false;
+      })
+      .map((fs) => ({
+        ...fs,
+        slug: fs.slug || (fs.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+      }));
+
+    return [...staticMerged, ...customServices];
   })();
 
   return (

@@ -40,7 +40,8 @@ const ServicesGrid = () => {
   // 15 official clinical services from ALL_SERVICES (canonical single source of truth)
   // Ensures brand new AI images with Indian doctors and verified clinical content are ALWAYS displayed
   const services = (() => {
-    return ALL_SERVICES
+    const matchedKeys = new Set();
+    const staticMerged = ALL_SERVICES
       .filter((s) => !isExcluded(s))
       .map((s) => {
         const sKey = (s.slug || s.id).toLowerCase();
@@ -50,6 +51,7 @@ const ServicesGrid = () => {
         });
 
         if (!fs) return s;
+        matchedKeys.add(sKey);
 
         // Only accept custom uploaded images from Firebase Storage
         const isUploadedStorageImg = fs.imageUrl && (
@@ -65,6 +67,18 @@ const ServicesGrid = () => {
         };
       })
       .filter((s) => s.active !== false && !isExcluded(s));
+
+    const customServices = (rawFirestoreServices || [])
+      .filter((fs) => {
+        const key = (fs.slug || fs.id || fs.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+        return !matchedKeys.has(key) && !isExcluded(fs) && fs.active !== false;
+      })
+      .map((fs) => ({
+        ...fs,
+        slug: fs.slug || (fs.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+      }));
+
+    return [...staticMerged, ...customServices];
   })();
 
   const [selectedCategory, setSelectedCategory] = useState("all");

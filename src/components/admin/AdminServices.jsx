@@ -108,6 +108,7 @@ const normalizeKey = (value = "") =>
     .replace(/^-+|-+$/g, "");
 
 const mergeWebsiteServices = (firestoreServices) => {
+  const matchedKeys = new Set();
   const firestoreMap = new Map(
     firestoreServices.map((service) => [
       normalizeKey(service.slug || service.id || service.title),
@@ -115,11 +116,14 @@ const mergeWebsiteServices = (firestoreServices) => {
     ])
   );
 
-  return ALL_SERVICES.map((websiteService) => {
+  const staticMerged = ALL_SERVICES.map((websiteService) => {
     const key = normalizeKey(
       websiteService.slug || websiteService.id || websiteService.title
     );
     const firestoreService = firestoreMap.get(key);
+    if (firestoreService) {
+      matchedKeys.add(key);
+    }
 
     return {
       ...websiteService,
@@ -127,6 +131,13 @@ const mergeWebsiteServices = (firestoreServices) => {
       id: firestoreService?.id || websiteService.id || websiteService.slug,
     };
   });
+
+  const customServices = firestoreServices.filter((service) => {
+    const key = normalizeKey(service.slug || service.id || service.title);
+    return !matchedKeys.has(key);
+  });
+
+  return [...staticMerged, ...customServices];
 };
 
 const AdminServices = () => {
@@ -296,6 +307,7 @@ const AdminServices = () => {
         joints: "Joint & Muscle",
         therapies: "Specialized Therapy",
         rehab: "Rehabilitation",
+        electro: "Electro & Modern Tech",
       };
 
       const payload = {
