@@ -1,6 +1,3 @@
-// Generated Treatments Data for Heal Stride Physiotherapy & Wellness Centre
-// Total conditions covered: 87
-
 export const TREATMENTS_CATEGORIES = [
   "All Conditions",
   "Spine & Back Care",
@@ -10,192 +7,156 @@ export const TREATMENTS_CATEGORIES = [
   "Sports & Performance Care",
 ];
 
-export const NAVBAR_TREATMENTS_COLUMNS = [
+export const NAVBAR_CATEGORY_DEFINITIONS = [
   {
-    "title": "Lower Limb & Joint",
-    "category": "Lower Limb & Joint Care",
-    "items": [
-      {
-        "name": "Achilles Tendinitis",
-        "slug": "achilles-tendinitis"
-      },
-      {
-        "name": "Acl Tear",
-        "slug": "acl-tear"
-      },
-      {
-        "name": "Ankle Pain",
-        "slug": "ankle-pain"
-      },
-      {
-        "name": "Calf Muscle Strain",
-        "slug": "calf-muscle-strain"
-      },
-      {
-        "name": "Chondromalacia Patella",
-        "slug": "chondromalacia-patella"
-      },
-      {
-        "name": "Flat Feet Treatment",
-        "slug": "flat-feet-treatment"
-      },
-      {
-        "name": "Foot Drop Treatment",
-        "slug": "foot-drop-treatment"
-      },
-      {
-        "name": "Gait Training Therapy",
-        "slug": "gait-training-therapy"
-      },
-      {
-        "name": "Groin Pain",
-        "slug": "groin-pain"
-      },
-      {
-        "name": "Hamstring Injury Rehabilitation",
-        "slug": "hamstring-injury-rehabilitation"
-      }
-    ]
+    title: "Lower Limb & Joint",
+    category: "Lower Limb & Joint Care",
+    match: (cat = "") => {
+      const c = String(cat).toLowerCase().trim();
+      return (
+        c === "lower limb & joint care" ||
+        c === "lower limb & joint" ||
+        c.includes("lower") ||
+        c.includes("knee") ||
+        c.includes("ankle") ||
+        c.includes("foot") ||
+        c.includes("feet") ||
+        c.includes("hip") ||
+        c.includes("calf") ||
+        c.includes("groin") ||
+        c.includes("hamstring") ||
+        c.includes("achilles") ||
+        c.includes("patella")
+      );
+    },
   },
   {
-    "title": "Spine & Back Care",
-    "category": "Spine & Back Care",
-    "items": [
-      {
-        "name": "Ankylosing Spondylitis",
-        "slug": "ankylosing-spondylitis"
-      },
-      {
-        "name": "Back Pain",
-        "slug": "back-pain"
-      },
-      {
-        "name": "Cervical Pain",
-        "slug": "cervical-pain"
-      },
-      {
-        "name": "Cervical Spondylosis",
-        "slug": "cervical-spondylosis-treatment"
-      },
-      {
-        "name": "Coccyx Pain",
-        "slug": "coccyx-pain-treatment"
-      },
-      {
-        "name": "Degenerative Disc",
-        "slug": "degenerative-disc-treatment"
-      },
-      {
-        "name": "Facet Joint Syndrome",
-        "slug": "facet-joint-syndrome-treatment"
-      },
-      {
-        "name": "Fibromyalgia",
-        "slug": "fibromyalgia"
-      },
-      {
-        "name": "Guillain-Barre Syndrome Rehabilitation",
-        "slug": "guillain-barre-syndrome-rehabilitation"
-      },
-      {
-        "name": "Herniated Disc",
-        "slug": "herniated-disc-treatment"
-      }
-    ]
+    title: "Spine & Back Care",
+    category: "Spine & Back Care",
+    match: (cat = "") => {
+      const c = String(cat).toLowerCase().trim();
+      return (
+        c === "spine & back care" ||
+        c === "spine & back" ||
+        c.includes("spine") ||
+        c.includes("back") ||
+        c.includes("cervical") ||
+        c.includes("neck") ||
+        c.includes("coccyx") ||
+        c.includes("lumbar") ||
+        c.includes("sciatica") ||
+        c.includes("disc") ||
+        c.includes("spondyl")
+      );
+    },
   },
   {
-    "title": "Upper Limb & Joint",
-    "category": "Upper Limb & Shoulder Care",
-    "items": [
-      {
-        "name": "Biceps Tendinitis",
-        "slug": "biceps-tendinitis-treatment"
-      },
-      {
-        "name": "Carpal Tunnel Syndrome",
-        "slug": "carpal-tunnel-syndrome"
-      },
-      {
-        "name": "Cubital Tunnel Syndrome",
-        "slug": "cubital-tunnel-syndrome"
-      },
-      {
-        "name": "Elbow Pain Treatment",
-        "slug": "elbow-pain-treatment"
-      },
-      {
-        "name": "Frozen Shoulder",
-        "slug": "frozen-shoulder"
-      },
-      {
-        "name": "Hand Pain Treatment",
-        "slug": "hand-pain-treatment"
-      },
-      {
-        "name": "Rotator Cuff",
-        "slug": "rotator-cuff-injury-treatment"
-      },
-      {
-        "name": "Rotator Cuff Tear",
-        "slug": "rotator-cuff-tear-treatment"
-      },
-      {
-        "name": "Shoulder Impingement",
-        "slug": "shoulder-impingement"
-      },
-      {
-        "name": "Shoulder Instability",
-        "slug": "shoulder-instability-treatment"
-      }
-    ]
+    title: "Upper Limb & Joint",
+    category: "Upper Limb & Shoulder Care",
+    match: (cat = "") => {
+      const c = String(cat).toLowerCase().trim();
+      return (
+        c === "upper limb & shoulder care" ||
+        c === "upper limb & joint" ||
+        c.includes("upper") ||
+        c.includes("shoulder") ||
+        c.includes("arm") ||
+        c.includes("elbow") ||
+        c.includes("hand") ||
+        c.includes("wrist") ||
+        c.includes("carpal") ||
+        c.includes("biceps") ||
+        c.includes("rotator")
+      );
+    },
   },
   {
-    "title": "Neuro & Sports Rehab",
-    "category": "Neurological & Rehabilitation",
-    "items": [
-      {
-        "name": "Balance Disorder",
-        "slug": "balance-disorder"
-      },
-      {
-        "name": "Bell's Palsy",
-        "slug": "bells-palsy"
-      },
-      {
-        "name": "Brain Injury Rehabilitation",
-        "slug": "brain-injury-rehabilitation"
-      },
-      {
-        "name": "Cerebral Palsy Physiotherapy",
-        "slug": "cerebral-palsy-physiotherapy"
-      },
-      {
-        "name": "Facial Paralysis Rehabilitation",
-        "slug": "facial-paralysis-rehabilitation"
-      },
-      {
-        "name": "Gym Injury Rehabilitation",
-        "slug": "gym-injury-rehabilitation"
-      },
-      {
-        "name": "Headache",
-        "slug": "headache"
-      },
-      {
-        "name": "Labral Tear",
-        "slug": "labral-tear-rehabilitation"
-      },
-      {
-        "name": "Ligament Injury",
-        "slug": "ligament-injury"
-      },
-      {
-        "name": "Migraine",
-        "slug": "migraine"
-      }
-    ]
-  }
+    title: "Neuro & Sports Rehab",
+    category: "Neurological & Rehabilitation",
+    match: (cat = "") => {
+      const c = String(cat).toLowerCase().trim();
+      return (
+        c === "neurological & rehabilitation" ||
+        c === "sports & performance care" ||
+        c.includes("neuro") ||
+        c.includes("rehab") ||
+        c.includes("sport") ||
+        c.includes("performance") ||
+        c.includes("brain") ||
+        c.includes("stroke") ||
+        c.includes("palsy") ||
+        c.includes("paralysis") ||
+        c.includes("balance")
+      );
+    },
+  },
 ];
+
+export function buildNavbarTreatmentsColumns(treatmentsList) {
+  const source =
+    Array.isArray(treatmentsList) && treatmentsList.length > 0
+      ? treatmentsList
+      : ALL_TREATMENTS;
+
+  const activeTreatments = (source || []).filter(
+    (item) => item && item.active !== false
+  );
+
+  const columnItems = [[], [], [], []];
+
+  activeTreatments.forEach((treatment) => {
+    const cat = String(treatment.category || "").trim().toLowerCase();
+
+    let colIdx = -1;
+    for (let i = 0; i < NAVBAR_CATEGORY_DEFINITIONS.length; i++) {
+      const def = NAVBAR_CATEGORY_DEFINITIONS[i];
+      if (
+        cat === def.category.toLowerCase() ||
+        cat === def.title.toLowerCase() ||
+        def.match(cat)
+      ) {
+        colIdx = i;
+        break;
+      }
+    }
+
+    if (colIdx === -1) {
+      colIdx = 3;
+    }
+
+    let displayName = (treatment.name || treatment.title || treatment.slug || "").trim();
+    let displayTitle = (treatment.title || treatment.name || treatment.slug || "").trim();
+
+    if (
+      (treatment.slug === "flat-feet-treatment" || treatment.id === "flat-feet-treatment") &&
+      (displayName === "Flat Feet Treatment" || displayName === "Flat Feet Treatments")
+    ) {
+      displayName = "Flat Foot Treatment";
+    }
+    if (
+      (treatment.slug === "flat-feet-treatment" || treatment.id === "flat-feet-treatment") &&
+      (displayTitle === "Flat Feet Treatment" || displayTitle === "Flat Feet Treatments")
+    ) {
+      displayTitle = "Flat Foot Treatment";
+    }
+
+    columnItems[colIdx].push({
+      name: displayName,
+      title: displayTitle,
+      slug: treatment.slug || treatment.id,
+      category: treatment.category || NAVBAR_CATEGORY_DEFINITIONS[colIdx].category,
+      id: treatment.id || treatment.slug,
+    });
+  });
+
+  return NAVBAR_CATEGORY_DEFINITIONS.map((def, idx) => ({
+    title: def.title,
+    category: def.category,
+    items: columnItems[idx].sort((a, b) =>
+      String(a.name).localeCompare(String(b.name))
+    ),
+  }));
+}
 
 export const ALL_TREATMENTS = [
   {
@@ -1033,8 +994,8 @@ export const ALL_TREATMENTS = [
   {
     "id": "flat-feet-treatment",
     "slug": "flat-feet-treatment",
-    "name": "Flat Feet Treatment",
-    "title": "Flat Feet Treatment",
+    "name": "Flat Foot Treatment",
+    "title": "Flat Foot Treatment",
     "subtitle": "Non-surgical care with personalised rehabilitation and specialist-led treatment at Heal Stride Physiotherapy & Wellness Centre.",
     "summary": "Have you ever noticed your feet are flat while standing barefoot on tiles? Some people start wondering whether they need a doctor’s visit, special insoles, or all-new footwear. But...",
     "category": "Lower Limb & Joint Care",
@@ -3732,3 +3693,5 @@ export const getRelatedTreatments = (currentSlug, category, limit = 4) => {
     .filter((t) => t.slug !== currentSlug && (!category || t.category === category))
     .slice(0, limit);
 };
+
+export const NAVBAR_TREATMENTS_COLUMNS = buildNavbarTreatmentsColumns(ALL_TREATMENTS);

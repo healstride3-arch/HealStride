@@ -10,6 +10,7 @@ import logo from "../../../assets/images/logo.png";
 import LanguageSwitcher from "../../LanguageSwitcher";
 import BrandName from "../BrandName";
 import { NAVBAR_TREATMENTS_COLUMNS } from "../../../data/treatmentsData";
+import { useTreatments } from "../../../hooks/useTreatments";
 
 // Exact 15 Services categorized with Heal Stride Logo Theme
 const SERVICES_DROPDOWN_COLUMNS = [
@@ -73,6 +74,9 @@ const Navbar = () => {
   const [treatmentsHovered, setTreatmentsHovered] = useState(false);
   const [mobileTreatmentsOpen, setMobileTreatmentsOpen] = useState(false);
   const treatmentsHoverTimeoutRef = useRef(null);
+
+  const { navbarColumns } = useTreatments();
+  const treatmentColumns = navbarColumns || NAVBAR_TREATMENTS_COLUMNS;
 
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -295,7 +299,7 @@ const Navbar = () => {
                         >
                           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-white" style={{ backgroundColor: "#ffffff" }}>
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 py-6 gap-6 sm:gap-8 bg-white">
-                              {NAVBAR_TREATMENTS_COLUMNS.map((col, colIdx) => (
+                              {treatmentColumns.map((col, colIdx) => (
                                 <div
                                   key={colIdx}
                                   className={`flex flex-col ${
@@ -307,9 +311,12 @@ const Navbar = () => {
                                     <h4 className="text-xs font-bold text-slate-900 leading-tight uppercase tracking-wider truncate">
                                       {col.title}
                                     </h4>
+                                    <span className="text-[10px] font-semibold text-slate-400 ml-auto bg-slate-100 px-1.5 py-0.5 rounded-full">
+                                      {col.items.length}
+                                    </span>
                                   </div>
 
-                                  <div className="flex flex-col space-y-0.5">
+                                  <div className="flex flex-col space-y-0.5 max-h-[360px] overflow-y-auto pr-1 custom-scrollbar">
                                     {col.items.map((subItem) => (
                                       <Link
                                         key={subItem.slug}
@@ -712,8 +719,8 @@ const Navbar = () => {
                             transition={{ duration: 0.2 }}
                             className="overflow-hidden pl-2 pr-1 py-2 bg-slate-50 rounded-xl my-1 border border-slate-100"
                           >
-                            <div className="max-h-64 overflow-y-auto pr-1 divide-y divide-slate-100 text-xs">
-                              {NAVBAR_TREATMENTS_COLUMNS.flatMap(col => col.items).map((tItem) => (
+                            <div className="max-h-64 overflow-y-auto pr-1 divide-y divide-slate-100 text-xs custom-scrollbar">
+                              {treatmentColumns.flatMap(col => col.items).map((tItem) => (
                                 <Link
                                   key={tItem.slug}
                                   to={`/treatments/${tItem.slug}`}

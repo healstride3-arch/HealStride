@@ -4,10 +4,8 @@ import {
   collection,
   doc,
   onSnapshot,
-  orderBy,
-  query,
+  setDoc,
   Timestamp,
-  updateDoc,
 } from "firebase/firestore";
 import {
   Edit,
@@ -127,26 +125,57 @@ const normalizeKey = (value = "") =>
     .replace(/^-+|-+$/g, "");
 
 const mergeWebsiteTreatments = (firestoreTreatments) => {
-  const firestoreMap = new Map(
-    firestoreTreatments.map((treatment) => [
-      normalizeKey(treatment.slug || treatment.id || treatment.name),
-      treatment,
-    ])
-  );
+  const aliasMap = new Map();
+  const firestoreMap = new Map();
 
-  return ALL_TREATMENTS.map((websiteTreatment) => {
+  (firestoreTreatments || []).forEach((treatment) => {
+    const key = normalizeKey(treatment.slug || treatment.id || treatment.name);
+    firestoreMap.set(key, treatment);
+    if (treatment.id) aliasMap.set(normalizeKey(treatment.id), key);
+    if (treatment.slug) aliasMap.set(normalizeKey(treatment.slug), key);
+    if (treatment.name) aliasMap.set(normalizeKey(treatment.name), key);
+  });
+
+  const matchedKeys = new Set();
+
+  const staticMerged = ALL_TREATMENTS.map((websiteTreatment) => {
     const key = normalizeKey(
       websiteTreatment.slug || websiteTreatment.id || websiteTreatment.name
     );
-    const firestoreTreatment = firestoreMap.get(key);
+    const firestoreKey =
+      aliasMap.get(normalizeKey(websiteTreatment.id)) ||
+      aliasMap.get(normalizeKey(websiteTreatment.slug)) ||
+      aliasMap.get(normalizeKey(websiteTreatment.name)) ||
+      key;
 
-    return {
+    const firestoreTreatment = firestoreMap.get(firestoreKey);
+    if (firestoreTreatment) {
+      matchedKeys.add(firestoreKey);
+    }
+
+    const merged = {
       ...websiteTreatment,
-      imageUrl: getTreatmentImage(websiteTreatment),
+      imageUrl: firestoreTreatment?.imageUrl || getTreatmentImage(websiteTreatment),
       ...(firestoreTreatment || {}),
       id: firestoreTreatment?.id || websiteTreatment.id || websiteTreatment.slug,
     };
-  }).sort((a, b) =>
+
+    if (
+      (merged.slug === "flat-feet-treatment" || merged.id === "flat-feet-treatment") &&
+      (merged.name === "Flat Feet Treatment" || merged.name === "Flat Feet Treatments")
+    ) {
+      merged.name = "Flat Foot Treatment";
+    }
+
+    return merged;
+  });
+
+  const customTreatments = (firestoreTreatments || []).filter((treatment) => {
+    const key = normalizeKey(treatment.slug || treatment.id || treatment.name);
+    return !matchedKeys.has(key);
+  });
+
+  return [...staticMerged, ...customTreatments].sort((a, b) =>
     String(a.name || a.title || "").localeCompare(String(b.name || b.title || ""))
   );
 };
@@ -163,22 +192,26 @@ const AdminTreatments = () => {
   const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
-    const q = query(collection(db, "treatments"), orderBy("name", "asc"));
+    if (!db) {
+      setTreatments(mergeWebsiteTreatments([]));
+      setFetching(false);
+      return;
+    }
 
     const unsubscribe = onSnapshot(
-      q,
+      collection(db, "treatments"),
       (snapshot) => {
         const data = snapshot.docs.map((item) => ({
-            id: item.id,
-            ...item.data(),
-          }));
+          id: item.id,
+          ...item.data(),
+        }));
 
         setTreatments(mergeWebsiteTreatments(data));
         setFetching(false);
       },
       (error) => {
         console.error("Failed to load treatments:", error);
-        alert("Failed to load treatments.");
+        setTreatments(mergeWebsiteTreatments([]));
         setFetching(false);
       }
     );
@@ -279,27 +312,34 @@ const AdminTreatments = () => {
       return;
     }
 
-    if (!form.name.trim() || !form.title.trim() || !form.summary.trim()) {
-      alert("Please fill name, title and summary.");
+    const nameVal = (form.name?.trim() || form.title?.trim() || "").trim();
+    const titleVal = (form.title?.trim() || form.name?.trim() || "").trim();
+
+    if (!nameVal || !form.summary?.trim()) {
+      alert("Please fill Display Name / Page Title and summary.");
       return;
     }
 
     try {
       setLoading(true);
 
-      await updateDoc(doc(db, "treatments", editingId), {
-        name: form.name.trim(),
-        title: form.title.trim(),
-        slug: form.slug.trim(),
-        category: form.category.trim(),
-        subtitle: form.subtitle.trim(),
-        summary: form.summary.trim(),
-        imageUrl: form.imageUrl.trim(),
-        contentHtml: editableTextToHtml(form.contentText),
-        faqs: parseFaqs(form.faqsText),
-        active: form.active,
-        updatedAt: Timestamp.now(),
-      });
+      await setDoc(
+        doc(db, "treatments", editingId),
+        {
+          name: nameVal,
+          title: titleVal,
+          slug: (form.slug?.trim() || editingId).trim(),
+          category: (form.category?.trim() || "Lower Limb & Joint Care").trim(),
+          subtitle: (form.subtitle?.trim() || "").trim(),
+          summary: (form.summary?.trim() || "").trim(),
+          imageUrl: (form.imageUrl?.trim() || "").trim(),
+          contentHtml: editableTextToHtml(form.contentText),
+          faqs: parseFaqs(form.faqsText),
+          active: form.active,
+          updatedAt: Timestamp.now(),
+        },
+        { merge: true }
+      );
 
       alert("Treatment detail page updated successfully.");
       resetForm();
@@ -313,10 +353,14 @@ const AdminTreatments = () => {
 
   const toggleActive = async (treatment) => {
     try {
-      await updateDoc(doc(db, "treatments", treatment.id), {
-        active: treatment.active === false,
-        updatedAt: Timestamp.now(),
-      });
+      await setDoc(
+        doc(db, "treatments", treatment.id),
+        {
+          active: treatment.active === false,
+          updatedAt: Timestamp.now(),
+        },
+        { merge: true }
+      );
     } catch (error) {
       console.error("Failed to update treatment status:", error);
       alert("Failed to update treatment status.");
@@ -403,8 +447,17 @@ const AdminTreatments = () => {
                 name="category"
                 value={form.category}
                 onChange={handleChange}
+                list="treatmentCategoryDatalist"
+                placeholder="e.g. Lower Limb & Joint Care"
                 className="w-full rounded-xl border px-4 py-3 outline-none focus:ring-2 focus:ring-teal-500"
               />
+              <datalist id="treatmentCategoryDatalist">
+                <option value="Lower Limb & Joint Care" />
+                <option value="Spine & Back Care" />
+                <option value="Upper Limb & Shoulder Care" />
+                <option value="Neurological & Rehabilitation" />
+                <option value="Sports & Performance Care" />
+              </datalist>
             </div>
 
             <div className="md:col-span-2">
