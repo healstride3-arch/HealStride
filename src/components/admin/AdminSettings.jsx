@@ -26,6 +26,7 @@ import {
 } from "firebase/firestore";
 
 import { db } from "../../firebase/firebase";
+import { DEFAULT_CLINIC_SETTINGS } from "../../hooks/useClinicSettings";
 
 const SECTIONS = [
   {
@@ -36,8 +37,16 @@ const SECTIONS = [
     fields: [
       {
         key: "address",
-        label: "Clinic Address",
-        placeholder: "Clinic address",
+        label: "Clinic Address 1 (Subhash Nagar)",
+        placeholder: "LIG 85 New Subhash Nagar Near Gurudwara-Raisen Road  Bhopal 462023",
+        type: "text",
+        icon: Building2,
+        full: true,
+      },
+      {
+        key: "address2",
+        label: "Clinic Address 2 (Charbatti Chouraha)",
+        placeholder: "Charbatti Chouraha, Aakas biryani, Shareef Complex, Building No 02, Chataipura Street 01, wali gali, near Sharif Complex, Bhopal, Madhya Pradesh 462001",
         type: "text",
         icon: Building2,
         full: true,
@@ -123,7 +132,7 @@ const ALL_FIELDS = SECTIONS.flatMap(
 const INITIAL = ALL_FIELDS.reduce(
   (acc, field) => ({
     ...acc,
-    [field.key]: "",
+    [field.key]: DEFAULT_CLINIC_SETTINGS[field.key] || "",
   }),
   {}
 );
@@ -143,6 +152,8 @@ function AdminSettings() {
           setValues({
             ...INITIAL,
             ...snap.data(),
+            address: snap.data().address || DEFAULT_CLINIC_SETTINGS.address,
+            address2: snap.data().address2 || DEFAULT_CLINIC_SETTINGS.address2,
           });
         }
 

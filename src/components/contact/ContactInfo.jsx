@@ -6,7 +6,7 @@ import {
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { useClinicSettings } from "../../hooks/useClinicSettings";
+import { useClinicSettings, DEFAULT_CLINIC_SETTINGS } from "../../hooks/useClinicSettings";
 import SectionHeader from "../common/SectionHeader";
 
 const ContactInfo = () => {
@@ -46,9 +46,47 @@ const ContactInfo = () => {
       icon: <FaMapMarkerAlt />,
       titleKey: "contactInfo.address",
       content: (
-        <p className="text-gray-600 text-sm sm:text-base leading-7">
-          {settings.address}
-        </p>
+        <div className="space-y-3 text-left w-full mt-1">
+          <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-teal-300 transition-colors">
+            <div className="flex items-center gap-1.5 mb-1">
+              <span className="w-2 h-2 rounded-full bg-teal-600 shrink-0" />
+              <span className="text-[11px] font-bold text-teal-800 uppercase tracking-wider">
+                {t("contactInfo.clinic1Title", "Clinic 1 • Subhash Nagar")}
+              </span>
+            </div>
+            <p className="text-gray-600 text-xs sm:text-[13px] leading-relaxed">
+              {settings.address || DEFAULT_CLINIC_SETTINGS.address}
+            </p>
+            <a
+              href={`https://maps.google.com/?q=${encodeURIComponent(settings.address || DEFAULT_CLINIC_SETTINGS.address)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-[11px] font-semibold text-teal-600 hover:text-teal-700 hover:underline mt-1.5"
+            >
+              <span>Get Directions</span> →
+            </a>
+          </div>
+
+          <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-red-300 transition-colors">
+            <div className="flex items-center gap-1.5 mb-1">
+              <span className="w-2 h-2 rounded-full bg-red-600 shrink-0" />
+              <span className="text-[11px] font-bold text-red-800 uppercase tracking-wider">
+                {t("contactInfo.clinic2Title", "Clinic 2 • Charbatti Chouraha")}
+              </span>
+            </div>
+            <p className="text-gray-600 text-xs sm:text-[13px] leading-relaxed">
+              {settings.address2 || DEFAULT_CLINIC_SETTINGS.address2}
+            </p>
+            <a
+              href={`https://maps.google.com/?q=${encodeURIComponent(settings.address2 || DEFAULT_CLINIC_SETTINGS.address2)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-[11px] font-semibold text-red-600 hover:text-red-700 hover:underline mt-1.5"
+            >
+              <span>Get Directions</span> →
+            </a>
+          </div>
+        </div>
       ),
     },
     {

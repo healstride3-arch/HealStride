@@ -29,6 +29,7 @@ import {
 import { doctors as defaultDoctors, getDoctorLocalizedName } from "../data/team";
 import { useFirestoreCollection, where } from "../hooks/useFirestoreCollection";
 import { useFirestoreDoc } from "../hooks/useFirestoreDoc";
+import { DEFAULT_CLINIC_SETTINGS } from "../hooks/useClinicSettings";
 import SEO from "../components/common/SEO";
 
 const CERTIFICATION_METADATA = {
@@ -213,12 +214,7 @@ const DoctorProfile = () => {
   const doctors = rawDoctors.filter((d) => d.active !== false);
 
   // Settings for clinic phone / whatsapp / address
-  const { data: clinicSettings } = useFirestoreDoc("settings", "clinic", {
-    phone: "+91 88094 91380",
-    whatsapp: "+91 82525 80389",
-    hours: "Morning 9:00 AM - 12:00 PM\nEvening 5:00 PM - 9:00 PM",
-    address: "LIG 85 New Subhash Nagar Near Gurudwara-Raisen Road  Bhopal 462023",
-  });
+  const { data: clinicSettings } = useFirestoreDoc("settings", "clinic", DEFAULT_CLINIC_SETTINGS);
 
   const slugify = (str) =>
     (str || "")
@@ -905,10 +901,11 @@ const DoctorProfile = () => {
                   <div className="flex items-start gap-2.5 p-2.5 xs:p-3 rounded-xl bg-slate-50 border border-slate-100">
                     <MapPin size={16} className="text-teal-600 shrink-0 mt-0.5" />
                     <div>
-                      <h4 className="text-xs font-bold text-slate-900">Clinic Location</h4>
-                      <p className="text-[11px] xs:text-xs text-slate-600 mt-0.5">
-                        {clinicSettings?.address || "LIG 85 New Subhash Nagar Near Gurudwara-Raisen Road  Bhopal 462023"}
-                      </p>
+                      <h4 className="text-xs font-bold text-slate-900">Clinic Locations (Bhopal)</h4>
+                      <div className="text-[11px] xs:text-xs text-slate-600 mt-1 space-y-1">
+                        <p><strong className="text-slate-800">Clinic 1:</strong> {clinicSettings?.address || DEFAULT_CLINIC_SETTINGS.address}</p>
+                        <p><strong className="text-slate-800">Clinic 2:</strong> {clinicSettings?.address2 || DEFAULT_CLINIC_SETTINGS.address2}</p>
+                      </div>
                     </div>
                   </div>
 

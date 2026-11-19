@@ -17,7 +17,7 @@ import {
 import { auth } from "../../firebase/firebase";
 import { saveAppointmentToFirestore } from "../../services/appointmentSubmissionService";
 import { sendBookingNotification } from "../../services/bookingNotificationService";
-import { useClinicSettings } from "../../hooks/useClinicSettings";
+import { useClinicSettings, DEFAULT_CLINIC_SETTINGS } from "../../hooks/useClinicSettings";
 import drRashidImage from "../../assets/images/Dr.MD.Rashid.png";
 import drWazulImage from "../../assets/images/Dr Wazul Quamar.jpeg";
 
@@ -79,17 +79,31 @@ const AppointmentForm = () => {
   const [loading, setLoading] = useState(false);
   const [touched, setTouched] = useState({});
 
-  // Query parameter support: ?service=... or ?treatment=...
+  // Query parameter support: ?service=... or ?treatment=... or ?clinic=...
   const queryParamService =
     searchParams.get("service") ||
     searchParams.get("treatment") ||
     searchParams.get("condition") ||
     "";
 
+  const queryParamClinic =
+    searchParams.get("clinic") ||
+    searchParams.get("branch") ||
+    "";
+
+  const getInitialClinic = () => {
+    const q = (queryParamClinic || "").toLowerCase();
+    if (q.includes("2") || q.includes("charbatti") || q.includes("chataipura")) {
+      return "Clinic 2 • Charbatti Chouraha";
+    }
+    return "Clinic 1 • Subhash Nagar";
+  };
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
     service: "",
+    clinic: getInitialClinic(),
   });
 
   // Pre-fill service from URL if provided
@@ -105,6 +119,18 @@ const AppointmentForm = () => {
       }));
     }
   }, [queryParamService]);
+
+  // Pre-fill clinic from URL if provided
+  useEffect(() => {
+    if (queryParamClinic) {
+      const q = queryParamClinic.toLowerCase();
+      if (q.includes("2") || q.includes("charbatti") || q.includes("chataipura")) {
+        setFormData((prev) => ({ ...prev, clinic: "Clinic 2 • Charbatti Chouraha" }));
+      } else if (q.includes("1") || q.includes("subhash") || q.includes("raisen")) {
+        setFormData((prev) => ({ ...prev, clinic: "Clinic 1 • Subhash Nagar" }));
+      }
+    }
+  }, [queryParamClinic]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -132,6 +158,7 @@ const AppointmentForm = () => {
       name: true,
       phone: true,
       service: true,
+      clinic: true,
     });
 
     if (!isNameValid || !isPhoneValid || !isServiceValid) {
@@ -147,16 +174,23 @@ const AppointmentForm = () => {
 
       const currentUser = auth?.currentUser;
 
+      const clinicAddress = formData.clinic.includes("Charbatti")
+        ? (settings.address2 || DEFAULT_CLINIC_SETTINGS.address2)
+        : (settings.address || DEFAULT_CLINIC_SETTINGS.address);
+
       const bookingPayload = {
         userId: currentUser?.uid || "guest-patient",
         name: formData.name.trim(),
         phone: formattedPhone,
         service: formData.service,
         condition: formData.service, // backward compatibility with admin table
+        clinic: formData.clinic,
+        clinicBranch: formData.clinic,
+        clinicAddress: clinicAddress,
         doctor: "Specialist Doctor",
         date: new Date().toISOString().split("T")[0],
         time: "Priority Callback / Immediate Slot",
-        message: `Service Consultation Requested: ${formData.service}`,
+        message: `Service Consultation Requested: ${formData.service} | Branch: ${formData.clinic}`,
         email: currentUser?.email || "",
         profileImage: currentUser?.photoURL || "",
         googleName: currentUser?.displayName || "",
@@ -182,6 +216,7 @@ const AppointmentForm = () => {
         name: "",
         phone: "",
         service: "",
+        clinic: getInitialClinic(),
       });
       setTouched({});
     } catch (error) {
@@ -328,12 +363,31 @@ const AppointmentForm = () => {
                 </div>
               </div>
 
-              {/* Address */}
-              <div className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-600 pt-1">
-                <FaMapMarkerAlt className="text-red-600 mt-0.5 shrink-0 text-sm" />
-                <span>
-                  {settings.address || "LIG 85 New Subhash Nagar Near Gurudwara-Raisen Road  Bhopal 462023"}
-                </span>
+              {/* Addresses - Both Clinic Branches */}
+              <div className="space-y-2.5 pt-1 text-xs text-slate-600">
+                <div className="flex items-start gap-2.5">
+                  <FaMapMarkerAlt className="text-teal-600 mt-0.5 shrink-0 text-xs" />
+                  <div>
+                    <span className="font-bold text-slate-900 block text-[11px] uppercase tracking-wider mb-0.5">
+                      {t("appointmentForm.clinic1", "Clinic 1 • Subhash Nagar")}
+                    </span>
+                    <span className="leading-relaxed">
+                      {settings.address || DEFAULT_CLINIC_SETTINGS.address}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2.5">
+                  <FaMapMarkerAlt className="text-rose-600 mt-0.5 shrink-0 text-xs" />
+                  <div>
+                    <span className="font-bold text-slate-900 block text-[11px] uppercase tracking-wider mb-0.5">
+                      {t("appointmentForm.clinic2", "Clinic 2 • Charbatti Chouraha")}
+                    </span>
+                    <span className="leading-relaxed">
+                      {settings.address2 || DEFAULT_CLINIC_SETTINGS.address2}
+                    </span>
+                  </div>
+                </div>
               </div>
 
               {/* Fast Direct Action Buttons */}
@@ -533,6 +587,83 @@ const AppointmentForm = () => {
                   )}
                 </div>
 
+                {/* 4. Choose Clinic Branch */}
+                <div>
+                  <label className="block text-slate-800 font-semibold text-xs sm:text-sm mb-2">
+                    {t("appointmentForm.clinicSelectLabel", "Choose Clinic for Appointment")} <span className="text-red-500">*</span>
+                  </label>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {/* Clinic 1 Option */}
+                    <div
+                      onClick={() => setFormData((prev) => ({ ...prev, clinic: "Clinic 1 • Subhash Nagar" }))}
+                      className={`cursor-pointer rounded-xl p-3 border-2 transition-all duration-200 text-left flex items-start gap-2.5 ${
+                        formData.clinic.includes("Subhash")
+                          ? "border-teal-600 bg-teal-50/70 shadow-xs ring-2 ring-teal-500/20"
+                          : "border-slate-200 bg-slate-50/60 hover:bg-white hover:border-slate-300"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        id="formBranch1"
+                        name="clinic"
+                        value="Clinic 1 • Subhash Nagar"
+                        checked={formData.clinic.includes("Subhash")}
+                        onChange={handleChange}
+                        className="mt-1 text-teal-600 focus:ring-teal-500 cursor-pointer"
+                      />
+                      <label htmlFor="formBranch1" className="cursor-pointer flex-1">
+                        <div className="flex items-center justify-between gap-1 mb-1">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-teal-800 bg-teal-100 px-2 py-0.5 rounded-full">
+                            Clinic 1
+                          </span>
+                          <span className="text-[10px] text-slate-500 font-semibold">Subhash Nagar</span>
+                        </div>
+                        <strong className="block text-slate-900 text-xs font-bold leading-tight">
+                          Heal Stride Clinic 1
+                        </strong>
+                        <p className="text-[11px] text-slate-500 line-clamp-2 mt-0.5 leading-snug">
+                          {settings.address || DEFAULT_CLINIC_SETTINGS.address}
+                        </p>
+                      </label>
+                    </div>
+
+                    {/* Clinic 2 Option */}
+                    <div
+                      onClick={() => setFormData((prev) => ({ ...prev, clinic: "Clinic 2 • Charbatti Chouraha" }))}
+                      className={`cursor-pointer rounded-xl p-3 border-2 transition-all duration-200 text-left flex items-start gap-2.5 ${
+                        formData.clinic.includes("Charbatti")
+                          ? "border-rose-600 bg-rose-50/70 shadow-xs ring-2 ring-rose-500/20"
+                          : "border-slate-200 bg-slate-50/60 hover:bg-white hover:border-slate-300"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        id="formBranch2"
+                        name="clinic"
+                        value="Clinic 2 • Charbatti Chouraha"
+                        checked={formData.clinic.includes("Charbatti")}
+                        onChange={handleChange}
+                        className="mt-1 text-rose-600 focus:ring-rose-500 cursor-pointer"
+                      />
+                      <label htmlFor="formBranch2" className="cursor-pointer flex-1">
+                        <div className="flex items-center justify-between gap-1 mb-1">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-rose-800 bg-rose-100 px-2 py-0.5 rounded-full">
+                            Clinic 2
+                          </span>
+                          <span className="text-[10px] text-slate-500 font-semibold">Charbatti Chouraha</span>
+                        </div>
+                        <strong className="block text-slate-900 text-xs font-bold leading-tight">
+                          Heal Stride Clinic 2
+                        </strong>
+                        <p className="text-[11px] text-slate-500 line-clamp-2 mt-0.5 leading-snug">
+                          {settings.address2 || DEFAULT_CLINIC_SETTINGS.address2}
+                        </p>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
                 {/* Submit Button */}
                 <div className="pt-2">
                   <button
@@ -654,6 +785,15 @@ const AppointmentForm = () => {
                     <span className="text-slate-500 font-medium shrink-0">Selected Service:</span>
                     <span className="text-emerald-700 font-bold text-right break-words">{lastBooking.service}</span>
                   </div>
+                  <div className="flex items-start justify-between gap-2.5 pb-2 border-b border-slate-200/60">
+                    <span className="text-slate-500 font-medium shrink-0">Selected Clinic:</span>
+                    <div className="text-right">
+                      <strong className="text-slate-900 block font-bold">{lastBooking.clinic}</strong>
+                      <span className="text-[11px] text-slate-500 block leading-tight mt-0.5 max-w-[220px]">
+                        {lastBooking.clinicAddress}
+                      </span>
+                    </div>
+                  </div>
                   <div className="flex items-start justify-between gap-2.5">
                     <span className="text-slate-500 font-medium shrink-0">Status:</span>
                     <span className="text-teal-700 font-bold text-right flex items-center gap-1">
@@ -662,6 +802,19 @@ const AppointmentForm = () => {
                     </span>
                   </div>
                 </div>
+
+                {/* Direct Directions Link for Confirmed Clinic */}
+                {lastBooking.clinicAddress && (
+                  <a
+                    href={`https://maps.google.com/?q=${encodeURIComponent(lastBooking.clinicAddress)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-teal-50 hover:bg-teal-100 text-teal-800 text-xs font-semibold border border-teal-200 transition"
+                  >
+                    <FaMapMarkerAlt className="text-teal-600 shrink-0 text-xs" />
+                    <span>Get Directions to {lastBooking.clinic.includes("2") ? "Clinic 2 (Charbatti)" : "Clinic 1 (Subhash Nagar)"}</span>
+                  </a>
+                )}
 
                 {/* Action Buttons */}
                 <div className="mt-4 mobile:mt-5 grid grid-cols-1 mobile:grid-cols-2 gap-2 xs:gap-2.5">

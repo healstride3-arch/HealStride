@@ -25,18 +25,24 @@ export const NAVIGATION = [
   },
   {
     id: 5,
+    title: "Branches",
+    key: "navbar.branches",
+    path: "/branches",
+  },
+  {
+    id: 6,
     title: "Doctors",
     key: "navbar.doctors",
     path: "/doctors",
   },
   {
-    id: 6,
+    id: 7,
     title: "Blogs",
     key: "navbar.blogs",
     path: "/blogs",
   },
   {
-    id: 7,
+    id: 8,
     title: "Contact",
     key: "navbar.contact",
     path: "/contact",

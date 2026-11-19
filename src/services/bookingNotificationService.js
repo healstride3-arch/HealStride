@@ -17,7 +17,7 @@ const sendEmailLead = async (payload) => {
       body: JSON.stringify({
         ...payload,
         clinicEmail: OWNER_EMAIL,
-        clinicLocation: "LIG 85 New Subhash Nagar Near Gurudwara-Raisen Road  Bhopal 462023",
+        clinicLocation: "Clinic 1: LIG 85 New Subhash Nagar Near Gurudwara-Raisen Road, Bhopal 462023 | Clinic 2: Charbatti Chouraha, Aakas biryani, Shareef Complex, Building No 02, Chataipura Street 01, wali gali, near Sharif Complex, Bhopal 462001",
         submittedAt: new Date().toLocaleString("en-IN", {
           timeZone: "Asia/Kolkata",
         }),
@@ -41,11 +41,13 @@ export const sendBookingNotification = (bookingData) =>
     patientPhone: bookingData.phone,
     selectedDoctor: bookingData.doctor,
     condition: bookingData.condition,
+    preferredClinic: bookingData.clinic || "Clinic 1 • Subhash Nagar",
+    clinicLocation: bookingData.clinicAddress || bookingData.clinicLocation || "Heal Stride Clinic",
     appointmentDate: bookingData.date,
     appointmentTime: bookingData.time,
     message: bookingData.message || "Consultation Requested",
     source: "website-booking-form",
-    _subject: `New Appointment Lead: ${bookingData.name} (${bookingData.condition})`,
+    _subject: `New Appointment Lead: ${bookingData.name} (${bookingData.clinic || "Clinic"} - ${bookingData.condition})`,
   });
 
 export const sendReviewNotification = (reviewData) =>

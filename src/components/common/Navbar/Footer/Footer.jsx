@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import logo from "../../../../assets/images/logo.png";
 import BrandName from "../../BrandName";
-import { useClinicSettings } from "../../../../hooks/useClinicSettings";
+import { useClinicSettings, DEFAULT_CLINIC_SETTINGS } from "../../../../hooks/useClinicSettings";
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -47,7 +47,7 @@ const Footer = () => {
             {/* Social Links with Authentic Brand Colors on Hover */}
             <div className="flex items-center gap-2.5 sm:gap-3 pt-1">
               <a
-                href={settings.instagram || DEFAULT_SETTINGS.instagram}
+                href={settings.instagram || DEFAULT_CLINIC_SETTINGS.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-icon-btn social-icon-instagram"
@@ -67,7 +67,7 @@ const Footer = () => {
               </a>
 
               <a
-                href={settings.facebook || DEFAULT_SETTINGS.facebook}
+                href={settings.facebook || DEFAULT_CLINIC_SETTINGS.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-icon-btn social-icon-facebook"
@@ -77,7 +77,7 @@ const Footer = () => {
               </a>
 
               <a
-                href={settings.linkedin || DEFAULT_SETTINGS.linkedin}
+                href={settings.linkedin || DEFAULT_CLINIC_SETTINGS.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-icon-btn social-icon-linkedin"
@@ -230,12 +230,30 @@ const Footer = () => {
                 </a>
               </div>
 
-              {/* Address */}
+              {/* Clinic 1 Address */}
               <div className="flex items-start gap-3">
                 <FaMapMarkerAlt className="text-teal-400 mt-1 shrink-0 text-xs" />
-                <span className="text-slate-400 leading-relaxed">
-                  {settings.address}
-                </span>
+                <div className="text-xs leading-relaxed">
+                  <span className="block text-teal-300 font-semibold text-[11px] uppercase tracking-wider mb-0.5">
+                    {t("footer.clinic1Label", "Clinic 1 • Subhash Nagar")}
+                  </span>
+                  <span className="text-slate-400">
+                    {settings.address || DEFAULT_CLINIC_SETTINGS.address}
+                  </span>
+                </div>
+              </div>
+
+              {/* Clinic 2 Address */}
+              <div className="flex items-start gap-3">
+                <FaMapMarkerAlt className="text-rose-400 mt-1 shrink-0 text-xs" />
+                <div className="text-xs leading-relaxed">
+                  <span className="block text-rose-300 font-semibold text-[11px] uppercase tracking-wider mb-0.5">
+                    {t("footer.clinic2Label", "Clinic 2 • Charbatti Chouraha")}
+                  </span>
+                  <span className="text-slate-400">
+                    {settings.address2 || DEFAULT_CLINIC_SETTINGS.address2}
+                  </span>
+                </div>
               </div>
             </div>
           </div>

@@ -214,7 +214,9 @@ const TreatmentDetail = () => {
       <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] text-slate-600">
         <div className="flex items-center gap-1.5">
           <MapPin className="w-3.5 h-3.5 text-teal-600 shrink-0" />
-          <span className="line-clamp-1">{settings.address || "LIG 85 New Subhash Nagar Near Gurudwara-Raisen Road  Bhopal 462023"}</span>
+          <span className="line-clamp-1">
+            2 Clinics in Bhopal: Subhash Nagar &amp; Charbatti Chouraha
+          </span>
         </div>
         <div className="flex items-center gap-1.5 text-slate-500">
           <Clock className="w-3.5 h-3.5 text-teal-600 shrink-0" />

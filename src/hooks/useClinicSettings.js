@@ -2,6 +2,7 @@ import { useFirestoreDoc } from "./useFirestoreDoc";
 
 export const DEFAULT_CLINIC_SETTINGS = {
   address: "LIG 85 New Subhash Nagar Near Gurudwara-Raisen Road  Bhopal 462023",
+  address2: "Charbatti Chouraha, Aakas biryani, Shareef Complex, Building No 02, Chataipura Street 01, wali gali, near Sharif Complex, Bhopal, Madhya Pradesh 462001",
   phone: "+91 88094 91380",
   whatsapp: "+91 82525 80389",
   email: "healstride3@gmail.com",

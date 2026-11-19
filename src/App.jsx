@@ -125,6 +125,7 @@ function App() {
         <Route path="/services/:slug" element={<ServiceDetail />} />
 
         <Route path="/contact" element={<Contact />} />
+        <Route path="/branches" element={<Contact />} />
 
         <Route path="/booking" element={<Booking />} />
 

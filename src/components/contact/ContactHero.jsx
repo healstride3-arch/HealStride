@@ -145,19 +145,17 @@ const ContactHero = () => {
 
             {/* Card 4: Location */}
             <a
-              href={`https://maps.google.com/?q=${encodeURIComponent(settings.address || "Heal Stride Physiotherapy LIG 85 New Subhash Nagar Near Gurudwara-Raisen Road Bhopal 462023")}`}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#locations"
               className="bg-slate-900/85 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-3.5 border border-white/15 shadow-xl hover:border-cyan-400/50 hover:bg-slate-800/90 transition-all flex flex-col items-center justify-center text-center h-full min-h-[92px] sm:min-h-[102px] group"
             >
               <div className="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-300 flex items-center justify-center mb-1.5 mx-auto">
                 <MapPin size={16} />
               </div>
               <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
-                Location
+                Locations (2 Clinics)
               </p>
               <p className="text-xs sm:text-sm font-black text-white mt-0.5 group-hover:text-cyan-300 transition-colors whitespace-nowrap">
-                New Subhash Nagar, Bhopal
+                Subhash Nagar &amp; Charbatti
               </p>
             </a>
           </div>
